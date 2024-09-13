@@ -1,0 +1,14 @@
+<div>
+     @for(menu of menus; track menu.id) { 
+          <div class="flex flex-row items-center border-2 text-black bg-slate-100 m-1 hover:bg-slate-300">
+          
+               <div className='flex justify-center'>
+                    {{menu.icon}}
+               </div>
+               <div>
+               <p className='font-semibold'>{{menu.label}}</p>
+               </div>
+          
+          </div>
+     }
+</div>

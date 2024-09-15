@@ -1,9 +1,6 @@
 import { Component } from '@angular/core';
-import { ISideBarMenu } from '../../models/interfaces/common';
-import { BankNotesComponent } from '../../../assets/icons/bank-notes/bank-notes.component';
-import { ChartPieComponent } from '../../../assets/icons/chart-pie/chart-pie.component';
-import { NewspaperComponent } from '../../../assets/icons/newspaper/newspaper.component';
-import { GroupComponent } from '../../../assets/icons/group/group.component';
+import { ISideBarMenu } from '../../models/interfaces/ICommon';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-sidebar',
@@ -14,43 +11,51 @@ import { GroupComponent } from '../../../assets/icons/group/group.component';
 })
 export class SidebarComponent {
 
+  constructor(
+    private router: Router
+  ) {}
+
   menus: ISideBarMenu[] = [
     {
       id: 1,
-            name: 'dashboard',
-            url: '/dashboard',
-            label:'Dashboard',
-            icon: ChartPieComponent
+      name: 'dashboard',
+      url: '/dashboard',
+      label:'Dashboard',
+      icon: '/assets/icons/chart-pie.svg'
     },
     {
         id: 2,
         name: 'payment',
         url: '/payment/official-receipt',
         label:'Payment',
-        icon: BankNotesComponent
+        icon: '/assets/icons/bank-notes.svg'
     },
     {
         id: 3,
         name: 'billing',
         url: '/billing',
         label:'Billing',
-        icon: NewspaperComponent
+        icon: '/assets/icons/newspaper.svg'
     },
     {
         id: 4,
         name: 'customers',
         url: '/customer',
         label:'Customer',
-        icon: GroupComponent
+        icon: '/assets/icons/group.svg'
     },
     {
         id: 5,
         name:'settings',
         url: '/settings',
         label:'Settings',
-        icon: NewspaperComponent
+        icon: '/assets/icons/newspaper.svg'
     }
   ]
+
+  navigateTo(url: string): void {
+    this.router.navigateByUrl(url);
+  }
 
 
 }

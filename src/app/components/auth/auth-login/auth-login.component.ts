@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { UserService } from '../../../services/user.service';
-import { ILogin } from '../../../models/interfaces/user';
+import { ILogin } from '../../../models/interfaces/IUser';
 import { Router } from '@angular/router'; 
 @Component({
   selector: 'app-auth-login',
@@ -41,6 +41,7 @@ export class AuthLoginComponent implements OnInit {
     
     if(this.fg.valid) {
       this.router.navigateByUrl('dashboard')
+      localStorage.setItem('token','123');
     }
 
   }

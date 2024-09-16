@@ -1,0 +1,9 @@
+.mat-mdc-header-row {
+     background-color: #2381e0 !important;
+     font-weight: bold !important;
+     color: white !important;
+}
+
+.mat-mdc-row:nth-child(even) {
+     background-color: #f3f2ec !important;
+}

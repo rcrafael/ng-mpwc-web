@@ -2,14 +2,15 @@ import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { ICustomerList } from '../../../models/interfaces/ICustomer';
 import { MatButtonModule } from '@angular/material/button';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-customer-list',
   standalone: true,
   imports: [
     MatTableModule,
-    MatButtonModule
+    MatButtonModule,
+    RouterModule
   ],
   templateUrl: './customer-list.component.html',
   styleUrl: './customer-list.component.css'
@@ -21,7 +22,7 @@ export class CustomerListComponent implements OnInit {
   ) {}
 
   dataSource!: MatTableDataSource<ICustomerList>;
-  tableCols: string[] = ['Account No', 'Meter No', 'Alias', 'Last Name', 'First Name', 'Middle Name', 'Branch Code', 'Address', 'Customer Type'];
+  tableCols: string[] = ['Customer No', 'Last Name', 'First Name', 'Middle Name', 'Branch Code', 'Address', 'Customer Type'];
 
   ngOnInit(): void {
     this.dataSource = new MatTableDataSource<ICustomerList>(dummyData);

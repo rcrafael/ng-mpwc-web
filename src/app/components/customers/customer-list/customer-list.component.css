@@ -7,3 +7,8 @@
 .mat-mdc-row:nth-child(even) {
      background-color: #f3f2ec !important;
 }
+
+a span {
+     text-decoration: underline !important;
+     color: blue !important;
+}

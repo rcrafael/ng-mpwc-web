@@ -1,13 +1,16 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { IBranchCode, ICustomerType, IGender, IPhase } from '../../../models/interfaces/ICommon';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { ICustomerProfile } from '../../../models/interfaces/ICustomer';
+import { MatAccordion, MatExpansionModule } from '@angular/material/expansion';
+import { MatIcon, MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-customer-create',
   standalone: true,
   imports: [
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatExpansionModule,
+    MatIconModule
   ],
   templateUrl: './customer-create.component.html',
   styleUrl: './customer-create.component.css'
@@ -23,6 +26,20 @@ export class CustomerCreateComponent {
   customerType: ICustomerType[] = customerTypeData;
   phase: IPhase[] = phaseData;
 
+  step = signal(0);
+
+  setStep(index: number) {
+    this.step.set(index);
+  }
+
+  nextStep() {
+    this.step.update(i => i + 1);
+  }
+
+  prevStep() {
+    this.step.update(i => i - 1);
+  }
+  
   public fg = new FormGroup ({
     customerId: new FormControl(''),
     accountNo:  new FormControl(''),

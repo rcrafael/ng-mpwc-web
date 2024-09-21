@@ -1,3 +1,20 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+.mat-expansion-panel-header-description,
+.mat-expansion-indicator {
+       color: #000000 !important;
+}
+
+input {
+       padding-left: 5px;
+       padding-right: 5px;
+}
+
+mat-expansion-panel-header {
+       background-color: #2381e0 !important;
+       color: white !important;
+       font-weight: bold !important;
+}

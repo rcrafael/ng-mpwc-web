@@ -5,6 +5,7 @@ import { AppLayoutComponent } from "./components/app-layout/app-layout.component
 import { BrowserModule } from '@angular/platform-browser';
 import { AuthComponent } from "./components/auth/auth.component";
 import { NgIf } from '@angular/common';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @Component({
   selector: 'app-root',
@@ -14,7 +15,8 @@ import { NgIf } from '@angular/common';
     RouterOutlet,
     AuthLoginComponent,
     AppLayoutComponent,
-    AuthComponent
+    AuthComponent,
+    
 ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'

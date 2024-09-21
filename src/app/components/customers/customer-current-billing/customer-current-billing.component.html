@@ -1,0 +1,143 @@
+<mat-expansion-panel>
+     <mat-expansion-panel-header class="mb-2">
+          <mat-panel-title class="p-3 font-bold"> Current Billing </mat-panel-title>
+          <mat-icon fontIcon="request_quote" class="m-3"></mat-icon>
+     </mat-expansion-panel-header>
+
+     <div class="grid grid-col grid-cols-12 w-full gap-12" >
+          <div class="col-span-6 col-start-1">
+               <div class="grid grid-row gap-3">
+                    <div class="grid grid-cols-12">
+                         <div class="col-start-1 col-span-3">
+                              <label for="previousM3"> Previous M3: </label>
+                         </div>
+                         <div class="col-start-4 col-span-9">
+                              <input type="text" id="previousM3" class="border border-gray-400 rounded-md" disabled/>
+                         </div>
+                    </div>
+
+                    <div class="grid grid-cols-12">
+                         <div class="col-start-1 col-span-3">
+                              <label for="presentM3"> Present M3: </label>
+                         </div>
+                         <div class="col-start-4 col-span-9">
+                              <input type="text" id="presentM3" class="border border-gray-400 rounded-md" disabled/>
+                         </div>
+                    </div>
+
+                    <div class="grid grid-cols-12">
+                         <div class="col-start-1 col-span-3">
+                              <label for="totalM3"> Total M3 used: </label>
+                         </div>
+                         <div class="col-start-4 col-span-9">
+                              <input type="text" id="totalM3" class="border border-gray-400 rounded-md" disabled/>
+                         </div>
+                    </div>
+
+                    <div class="grid grid-cols-12">
+                         <div class="col-start-1 col-span-3">
+                              <label for="rate"> Rate: </label>
+                         </div>
+                         <div class="col-start-4 col-span-9">
+                              <input type="text" id="rate" class="border border-gray-400 rounded-md" disabled/>
+                         </div>
+                    </div>
+
+                    <div class="grid grid-cols-12">
+                         <div class="col-start-1 col-span-3">
+                              <label for="amount"> Amount: </label>
+                         </div>
+                         <div class="col-start-4 col-span-9">
+                              <input type="text" id="amount" class="border border-gray-400 rounded-md" disabled/>
+                         </div>
+                    </div>
+
+                    <div class="grid grid-cols-12">
+                         <div class="col-start-1 col-span-3">
+                              <label for="bilingDate"> Billing Date: </label>
+                         </div>
+                         <div class="col-start-4 col-span-9">
+                              <input type="text" id="bilingDate" class="border border-gray-400 rounded-md" disabled/>
+                         </div>
+                    </div>
+                    <div class="grid grid-cols-12">
+                         <div class="col-start-1 col-span-3">
+                              <label for="bilingPeriod"> Billing Period: </label>
+                         </div>
+                         <div class="col-start-4 col-span-9">
+                              <input type="text" id="bilingPeriod" class="border border-gray-400 rounded-md" disabled/>
+                         </div>
+                    </div>
+               </div>
+          </div>
+
+          <div class="col-span-6 col-start-7">
+               <div class="grid grid-row gap-3">
+                    <div class="grid grid-cols-12">
+                         <div class="col-start-1 col-span-4">
+                              <label for="previousWaterBalance"> Previous Water Balance: </label>
+                         </div>
+                         <div class="col-start-5 col-span-8">
+                              <input type="text" id="previousWaterBalance" class="border border-gray-400 rounded-md" disabled />
+                         </div>
+                    </div>
+
+                    <div class="grid grid-cols-12">
+                         <div class="col-start-1 col-span-4">
+                              <label for="previousPartsBalance"> Previous Parts Balance: </label>
+                         </div>
+                         <div class="col-start-5 col-span-8">
+                              <input type="text" id="previousPartsBalance" class="border border-gray-400 rounded-md" disabled />
+                         </div>
+                    </div>
+
+                    <div class="grid grid-cols-12">
+                         <div class="col-start-1 col-span-4">
+                              <label for="reconnectionFee"> Reconnection Fee: </label>
+                         </div>
+                         <div class="col-start-5 col-span-8">
+                              <input type="text" id="reconnectionFee" class="border border-gray-400 rounded-md" disabled />
+                         </div>
+                    </div>
+
+                    <div class="grid grid-cols-12">
+                         <div class="col-start-1 col-span-4">
+                              <label for="mmf"> MMF: </label>
+                         </div>
+                         <div class="col-start-5 col-span-8">
+                              <input type="text" id="mmf" class="border border-gray-400 rounded-md" disabled />
+                         </div>
+                    </div>
+
+                    <div class="grid grid-cols-12">
+                         <div class="col-start-1 col-span-4">
+                              <label for="septageFee"> Septage Fee: </label>
+                         </div>
+                         <div class="col-start-5 col-span-8">
+                              <input type="text" id="septageFee" class="border border-gray-400 rounded-md" disabled />
+                         </div>
+                    </div>
+
+                    <div class="grid grid-cols-12">
+                         <div class="col-start-1 col-span-4">
+                              <label for="totalAmount"> Total Amount to Pay: </label>
+                         </div>
+                         <div class="col-start-5 col-span-8">
+                              <input type="text" id="totalAmount" class="border border-gray-400 rounded-md" disabled />
+                         </div>
+                    </div>
+
+                    <div class="grid grid-cols-12">
+                         <div class="col-start-1 col-span-4">
+                              <label for="amountPaid"> Amount Paid: </label>
+                         </div>
+                         <div class="col-start-5 col-span-8">
+                              <input type="text" id="amountPaid" class="border border-gray-400 rounded-md" disabled />
+                         </div>
+                    </div>
+
+               </div>
+          </div>
+     </div>
+
+</mat-expansion-panel>

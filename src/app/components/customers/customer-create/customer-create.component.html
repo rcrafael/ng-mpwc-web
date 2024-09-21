@@ -1,112 +1,99 @@
 <div class="p-5 shadow-xl h-auto border rounded-md border-slate-200">
+
      <form [formGroup]="fg" (ngSubmit)="onSubmit()">
-          <div class="flex flex-row-reverse gap-2 mb-3">
-               <button type="submit" class="p-2 bg-green-300 font-bold rounded-md mb-1 w-[100px]">Save</button>
-               <button type="button" class="p-2 bg-red-300 font-bold rounded-md mb-1 w-[100px]">Clear</button>
-          </div>
           <div class="grid grid-col grid-cols-12 w-full gap-12">
                <!-- first column -->
                <div class="col-span-6 col-start-1">
                     <div class="grid grid-row gap-3">
                          <div class="grid grid-cols-12">
                               <div class="col-start-1 col-span-3">
-                                   <label for="customerId">
-                                        Customer ID:
-                                   </label>
+                                   <label for="customerId"> Customer ID: </label>
                               </div>
                               <div class="col-start-4 col-span-9">
-                                   <input type="text" id="customerId" formControlName="customerId" class="border border-gray-400 rounded-md" />
-                              </div>
-                         </div>
-     
-                         <div class="grid grid-cols-12">
-                              <div class="col-span-3">
-                                   <label for="accountNo">
-                                        Account No:
-                                   </label>
-                              </div>
-                              <div class="col-start-4 col-span-9">
-                                   <input type="text" id="accountNo" formControlName="accountNo" class="border border-gray-400 rounded-md" />
+                                   <input type="text" id="customerId" formControlName="customerId"
+                                        class="border border-gray-400 rounded-md" />
                               </div>
                          </div>
 
                          <div class="grid grid-cols-12">
                               <div class="col-span-3">
-                                   <label for="meterNo">
-                                        Meter No:
-                                   </label>
+                                   <label for="accountNo"> Account No: </label>
                               </div>
                               <div class="col-start-4 col-span-9">
-                                   <input type="text" id="meterNo" formControlName="meterNo" class="border border-gray-400 rounded-md" />
+                                   <input type="text" id="accountNo" formControlName="accountNo"
+                                        class="border border-gray-400 rounded-md" />
                               </div>
                          </div>
 
                          <div class="grid grid-cols-12">
                               <div class="col-span-3">
-                                   <label for="alias">
-                                        Alias:
-                                   </label>
+                                   <label for="meterNo"> Meter No: </label>
                               </div>
                               <div class="col-start-4 col-span-9">
-                                   <input type="text" id="alias" formControlName="alias" class="border border-gray-400 rounded-md" />
+                                   <input type="text" id="meterNo" formControlName="meterNo"
+                                        class="border border-gray-400 rounded-md" />
                               </div>
                          </div>
 
                          <div class="grid grid-cols-12">
                               <div class="col-span-3">
-                                   <label for="lastName">
-                                        Last Name:
-                                   </label>
+                                   <label for="alias"> Alias: </label>
                               </div>
                               <div class="col-start-4 col-span-9">
-                                   <input type="text" id="lastName" formControlName="lastName" class="border border-gray-400 rounded-md" />
+                                   <input type="text" id="alias" formControlName="alias"
+                                        class="border border-gray-400 rounded-md" />
                               </div>
                          </div>
 
                          <div class="grid grid-cols-12">
                               <div class="col-span-3">
-                                   <label for="firstName">
-                                        First Name:
-                                   </label>
+                                   <label for="lastName"> Last Name: </label>
                               </div>
                               <div class="col-start-4 col-span-9">
-                                   <input type="text" id="firstName" formControlName="firstName" class="border border-gray-400 rounded-md" />
+                                   <input type="text" id="lastName" formControlName="lastName"
+                                        class="border border-gray-400 rounded-md" />
                               </div>
                          </div>
 
                          <div class="grid grid-cols-12">
                               <div class="col-span-3">
-                                   <label for="middleName">
-                                        Middle Name:
-                                   </label>
+                                   <label for="firstName"> First Name: </label>
                               </div>
                               <div class="col-start-4 col-span-9">
-                                   <input type="text" id="middleName" formControlName="middleName" class="border border-gray-400 rounded-md" />
+                                   <input type="text" id="firstName" formControlName="firstName"
+                                        class="border border-gray-400 rounded-md" />
                               </div>
                          </div>
 
                          <div class="grid grid-cols-12">
                               <div class="col-span-3">
-                                   <label for="dateOfBirth">
-                                        Date of Birth:
-                                   </label>
+                                   <label for="middleName"> Middle Name: </label>
+                              </div>
+                              <div class="col-start-4 col-span-9">
+                                   <input type="text" id="middleName" formControlName="middleName"
+                                        class="border border-gray-400 rounded-md" />
+                              </div>
+                         </div>
+
+                         <div class="grid grid-cols-12">
+                              <div class="col-span-3">
+                                   <label for="dateOfBirth"> Date of Birth: </label>
                               </div>
                               <div class="col-start-4 col-span-4">
-                                   <input type="date" id="dateOfBirth" formControlName="dateOfBirth" class="w-full border border-gray-400 rounded-md" />
+                                   <input type="date" id="dateOfBirth" formControlName="dateOfBirth"
+                                        class="w-full border border-gray-400 rounded-md" />
                               </div>
                          </div>
 
                          <div class="grid grid-cols-12">
                               <div class="col-span-3">
-                                   <label for="gender">
-                                        Gender:
-                                   </label>
+                                   <label for="gender"> Gender: </label>
                               </div>
                               <div class="col-start-4 col-span-4">
-                                   <select id="gender" formControlName="gender" class="w-full border border-gray-400 rounded-md">
-                                        @for (g of gender; track g)
-                                        {
-                                             <option [value]="g.id">{{ g.name }}</option>
+                                   <select id="gender" formControlName="gender"
+                                        class="w-full border border-gray-400 rounded-md">
+                                        @for (g of gender; track g) {
+                                        <option [value]="g.id">{{ g.name }}</option>
                                         }
                                    </select>
                               </div>
@@ -114,15 +101,13 @@
 
                          <div class="grid grid-cols-12">
                               <div class="col-span-3">
-                                   <label for="branchCode">
-                                        Branch Code:
-                                   </label>
+                                   <label for="branchCode"> Branch Code: </label>
                               </div>
                               <div class="col-start-4 col-span-4">
-                                   <select id="branchCode" formControlName="branchCode" class="w-full border border-gray-400 rounded-md">
-                                        @for (br of branchCode; track br)
-                                        {
-                                             <option [value]="br.id">{{ br.name }}</option>
+                                   <select id="branchCode" formControlName="branchCode"
+                                        class="w-full border border-gray-400 rounded-md">
+                                        @for (br of branchCode; track br) {
+                                        <option [value]="br.id">{{ br.name }}</option>
                                         }
                                    </select>
                               </div>
@@ -130,12 +115,11 @@
 
                          <div class="grid grid-cols-12">
                               <div class="col-span-3">
-                                   <label for="address">
-                                        Address:
-                                   </label>
+                                   <label for="address"> Address: </label>
                               </div>
                               <div class="col-start-4 col-span-9">
-                                   <input type="text" id="address" formControlName="address" class="w-full border border-gray-400 rounded-md" />
+                                   <input type="text" id="address" formControlName="address"
+                                        class="w-full border border-gray-400 rounded-md" />
                               </div>
                          </div>
                     </div>
@@ -146,92 +130,84 @@
                     <div class="grid grid-row gap-3">
                          <div class="grid grid-cols-12">
                               <div class="col-start-1 col-span-3">
-                                   <label for="occupation">
-                                        Occupation:
-                                   </label>
+                                   <label for="occupation"> Occupation: </label>
                               </div>
                               <div class="col-start-4 col-span-9">
-                                   <input type="text" id="occupation" formControlName="occupation" class="border border-gray-400 rounded-md" />
+                                   <input type="text" id="occupation" formControlName="occupation"
+                                        class="border border-gray-400 rounded-md" />
                               </div>
                          </div>
-     
+
                          <div class="grid grid-cols-12">
                               <div class="col-span-3">
-                                   <label for="civilStatus">
-                                        Civil Status:
-                                   </label>
+                                   <label for="civilStatus"> Civil Status: </label>
                               </div>
                               <div class="col-start-4 col-span-9">
-                                   <input type="text" id="civilStatus" formControlName="civilStatus" class="border border-gray-400 rounded-md" />
+                                   <input type="text" id="civilStatus" formControlName="civilStatus"
+                                        class="border border-gray-400 rounded-md" />
                               </div>
                          </div>
 
                          <div class="grid grid-cols-12">
                               <div class="col-span-3 overflow-visible text-nowrap">
-                                   <label for="educationAttainment">
-                                        Educational Level:
-                                   </label>
+                                   <label for="educationAttainment"> Educational Level: </label>
                               </div>
                               <div class="col-start-4 col-span-9">
-                                   <input type="text" id="educationAttainment" formControlName="educationAttainment" class="border border-gray-400 rounded-md" />
+                                   <input type="text" id="educationAttainment"
+                                        formControlName="educationAttainment"
+                                        class="border border-gray-400 rounded-md" />
                               </div>
                          </div>
 
                          <div class="grid grid-cols-12">
                               <div class="col-span-3">
-                                   <label for="religion">
-                                        Religion:
-                                   </label>
+                                   <label for="religion"> Religion: </label>
                               </div>
                               <div class="col-start-4 col-span-9">
-                                   <input type="text" id="religion" formControlName="religion" class="border border-gray-400 rounded-md" />
+                                   <input type="text" id="religion" formControlName="religion"
+                                        class="border border-gray-400 rounded-md" />
                               </div>
                          </div>
 
                          <div class="grid grid-cols-12">
                               <div class="col-span-3">
-                                   <label for="noOfDependents">
-                                        No. of Dependents:
-                                   </label>
+                                   <label for="noOfDependents"> No. of Dependents: </label>
                               </div>
                               <div class="col-start-4 col-span-9">
-                                   <input type="number" id="noOfDependents" formControlName="noOfDependents" class="border border-gray-400 rounded-md" />
+                                   <input type="number" id="noOfDependents" formControlName="noOfDependents"
+                                        class="border border-gray-400 rounded-md" />
                               </div>
                          </div>
 
                          <div class="grid grid-cols-12">
                               <div class="col-span-3">
-                                   <label for="annualIncome">
-                                        Annual Income:
-                                   </label>
+                                   <label for="annualIncome"> Annual Income: </label>
                               </div>
                               <div class="col-start-4 col-span-9">
-                                   <input type="number" id="annualIncome" formControlName="annualIncome" class="border border-gray-400 rounded-md" />
+                                   <input type="number" id="annualIncome" formControlName="annualIncome"
+                                        class="border border-gray-400 rounded-md" />
                               </div>
                          </div>
 
                          <div class="grid grid-cols-12">
                               <div class="col-span-3">
-                                   <label for="dateAccepted">
-                                        Date Accepted:
-                                   </label>
+                                   <label for="dateAccepted"> Date Accepted: </label>
                               </div>
                               <div class="col-start-4 col-span-4">
-                                   <input type="date" id="dateAccepted" formControlName="dateAccepted" class="w-full border border-gray-400 rounded-md" />
+                                   <input type="date" id="dateAccepted" formControlName="dateAccepted"
+                                        class="w-full border border-gray-400 rounded-md" />
                               </div>
                          </div>
 
                          <div class="grid grid-cols-12">
                               <div class="col-span-3">
-                                   <label for="customerType">
-                                        Customer Type:
-                                   </label>
+                                   <label for="customerType"> Customer Type: </label>
                               </div>
                               <div class="col-start-4 col-span-4">
-                                   <select id="customerType" formControlName="customerType" class="w-full border border-gray-400 rounded-md">
-                                        @for (ct of customerType; track ct)
-                                        {
-                                             <option [value]="ct.id">{{ ct.name }}</option>
+                                   <select id="customerType" formControlName="customerType"
+                                        class="w-full border border-gray-400 rounded-md">
+                                        @for (ct of customerType; track ct) {
+                                        <option [value]="ct.id">{{ ct.name }}</option>
                                         }
                                    </select>
                               </div>
@@ -239,15 +215,13 @@
 
                          <div class="grid grid-cols-12">
                               <div class="col-span-3">
-                                   <label for="phase">
-                                        Phase:
-                                   </label>
+                                   <label for="phase"> Phase: </label>
                               </div>
                               <div class="col-start-4 col-span-4">
-                                   <select id="phase" formControlName="phase" class="w-full border border-gray-400 rounded-md">
-                                        @for (p of phase; track p)
-                                        {
-                                             <option [value]="p.id">{{ p.name }}</option>
+                                   <select id="phase" formControlName="phase"
+                                        class="w-full border border-gray-400 rounded-md">
+                                        @for (p of phase; track p) {
+                                        <option [value]="p.id">{{ p.name }}</option>
                                         }
                                    </select>
                               </div>
@@ -255,16 +229,24 @@
 
                          <div class="grid grid-cols-12">
                               <div class="col-span-3">
-                                   <label for="withMembership">
-                                        With Memberhip:
-                                   </label>
+                                   <label for="withMembership"> With Memberhip: </label>
                               </div>
                               <div class="col-start-4 col-span-9">
-                                   <input type="checkbox" id="withMembership" formControlName="withMembership" class="border border-gray-400 rounded-md" />
+                                   <input type="checkbox" id="withMembership" formControlName="withMembership"
+                                        class="border border-gray-400 rounded-md" />
                               </div>
                          </div>
                     </div>
                </div>
           </div>
-     </form>   
+          <div class="flex flex-row-reverse gap-2 mb-3"> 
+               <button type="submit" class="p-2 bg-green-300 font-bold rounded-md mb-1 w-[100px]">
+                    Save
+               </button>
+               <button type="button" class="p-2 bg-red-300 font-bold rounded-md mb-1 w-[100px]">
+                    Clear
+               </button>
+          </div>
+     </form>
+
 </div>

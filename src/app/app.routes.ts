@@ -8,6 +8,8 @@ import { CustomerListComponent } from './components/customers/customer-list/cust
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { AppLayoutComponent } from './components/app-layout/app-layout.component';
 import { AuthComponent } from './components/auth/auth.component';
+import { BillingListComponent } from './components/billing/billing-list/billing-list.component';
+import { BillingCreateComponent } from './components/billing/billing-create/billing-create.component';
 
 export const routes: Routes = [
 
@@ -21,7 +23,8 @@ export const routes: Routes = [
                { path: 'customer', component: CustomerListComponent},
                { path: 'customer/create', component: CustomerCreateComponent},
                { path: 'customer/:accountNo', component: CustomerEditComponent,},
-               
+               { path: 'billing', component: BillingListComponent},
+               { path: 'billing/create', component: BillingCreateComponent}
 
           ]
      },

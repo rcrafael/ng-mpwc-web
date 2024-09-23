@@ -18,3 +18,30 @@ mat-expansion-panel-header {
        color: white !important;
        font-weight: bold !important;
 }
+
+.mat-mdc-header-row {
+       background-color: #2381e0 !important;
+       font-weight: bold !important;
+       color: white !important;
+}
+  
+.mat-mdc-row {
+       height: 30px !important;
+       max-height: 50px;
+       padding-top:10px;
+       padding-bottom: 10px;
+}
+
+.mat-mdc-row:nth-child(even) {
+       background-color: #f3f2ec !important;
+}
+
+.mat-divider {
+       border-top-color: #b4b4b4 !important;
+       border-top-width: 2px !important;
+}
+
+a span {
+       text-decoration: underline !important;
+       color: blue !important;
+}

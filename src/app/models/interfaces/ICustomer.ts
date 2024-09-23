@@ -1,5 +1,6 @@
 export interface ICustomerList {
      customerId: number;
+     nationalId: string; //for future adoptability of national id and unified identifier (future use)
      accountNo: string;
      meterNo: string;
      alias: string;
@@ -13,6 +14,7 @@ export interface ICustomerList {
 
 export interface ICustomerProfile {
      customerId: number;
+     nationalId: string; //for future adoptability of national id and unified identifier (future use)
      meterNo: string;
      alias: string;
      firstName: string;

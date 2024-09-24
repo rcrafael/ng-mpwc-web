@@ -44,7 +44,8 @@ export class BillingCreateComponent {
     partsAmount: new FormControl(0),
     maintenanceFee: new FormControl(0),
     lessAmount: new FormControl(0),
-    totalAmount: new FormControl(0)
+    totalAmount: new FormControl(0),
+    status: new FormControl({value:'', disabled: true}),
   })
 
 

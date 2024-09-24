@@ -14,6 +14,7 @@ export interface IBillingList {
      billingEnd: string;
      billingDueDate: string;
      totalAmount: number;
+     status: string;
 }
 
 export interface IBillingInfo {
@@ -35,4 +36,5 @@ export interface IBillingInfo {
      lessAmount: number;
      totalAmount: number;
      remarks: string;
+     status: string;
 }

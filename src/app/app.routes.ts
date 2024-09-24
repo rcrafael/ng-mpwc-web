@@ -10,6 +10,7 @@ import { AppLayoutComponent } from './components/app-layout/app-layout.component
 import { AuthComponent } from './components/auth/auth.component';
 import { BillingListComponent } from './components/billing/billing-list/billing-list.component';
 import { BillingCreateComponent } from './components/billing/billing-create/billing-create.component';
+import { BillingViewComponent } from './components/billing/billing-view/billing-view.component';
 
 export const routes: Routes = [
 
@@ -24,8 +25,8 @@ export const routes: Routes = [
                { path: 'customer/create', component: CustomerCreateComponent},
                { path: 'customer/:accountNo', component: CustomerEditComponent,},
                { path: 'billing', component: BillingListComponent},
-               { path: 'billing/create', component: BillingCreateComponent}
-
+               { path: 'billing/create', component: BillingCreateComponent},
+               { path: 'billing/:readingNo', component: BillingViewComponent}
           ]
      },
      {

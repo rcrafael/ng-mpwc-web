@@ -23,7 +23,7 @@ export class BillingListComponent implements OnInit {
 
 
   dataSource!: MatTableDataSource<IBillingList>;
-  tableCols: string[] = ['Reading No', 'Customer Id', 'Meter No', 'Customer Name', 'Alias', 'Branch Code', 'Address', 'Month', 'Billing Period', 'Due Date', 'Amount'];
+  tableCols: string[] = ['Reading No', 'Customer Id', 'Meter No', 'Customer Name', 'Alias', 'Branch Code', 'Address', 'Month', 'Billing Period', 'Due Date', 'Amount', 'Status'];
   
   ngOnInit(): void {
     this.dataSource = new MatTableDataSource<IBillingList>(dummyData);
@@ -53,6 +53,7 @@ export const dummyData: IBillingList[] = [
     billingEnd: '2022-01-31',
     billingDueDate: '2022-01-25',
     totalAmount: 100.00,
+    status:'pending'
   },
   {
     readingNo: '456',
@@ -70,6 +71,7 @@ export const dummyData: IBillingList[] = [
     billingEnd: '2022-02-28',
     billingDueDate: '2022-02-25',
     totalAmount: 150.00,
+    status:'pending'
   },
   {
     readingNo: '789',
@@ -87,6 +89,7 @@ export const dummyData: IBillingList[] = [
     billingEnd: '2022-03-31',
     billingDueDate: '2022-03-25',
     totalAmount: 200.00,
+    status:'pending'
   },
   {
     readingNo: '1011',
@@ -104,6 +107,7 @@ export const dummyData: IBillingList[] = [
     billingEnd: '2022-04-30',
     billingDueDate: '2022-04-25',
     totalAmount: 250.00,
+    status:'pending'
   },
   {
     readingNo: '1234',
@@ -121,5 +125,6 @@ export const dummyData: IBillingList[] = [
     billingEnd: '2022-05-31',
     billingDueDate: '2022-05-25',
     totalAmount: 300.00,
+    status:'pending'
   }
 ]

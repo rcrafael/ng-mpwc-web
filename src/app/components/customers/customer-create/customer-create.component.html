@@ -1,6 +1,17 @@
 <div class="p-5 shadow-xl h-auto border rounded-md border-slate-200">
 
      <form [formGroup]="fg" (ngSubmit)="onSubmit()">
+
+          <div class="flex flex-col-12 w-full pb-5 ">
+               <div class="flex col-span-6 col-start-1 w-full  place-items-center ">
+                    <span class="font-bold">CREATE CUSTOMER</span>
+               </div>
+               <div class="flex col-span-6 col-start-7 w-full place-content-end">
+                    <button type="button" class="p-2 bg-red-300 font-bold border border-solid border-black rounded-md px-3 mr-3" >Reset</button>
+                    <button type="button" class="p-2 bg-green-300 font-bold border border-solid border-black rounded-md px-3" >Save</button>
+               </div>
+          </div>
+
           <div class="grid grid-col grid-cols-12 w-full gap-12">
                <!-- first column -->
                <div class="col-span-6 col-start-1">

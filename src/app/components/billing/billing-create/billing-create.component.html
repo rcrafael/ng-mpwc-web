@@ -1,5 +1,16 @@
 <div class="p-5 shadow-xl h-auto border rounded-md border-slate-200">
+
      <form [formGroup]="fg" (ngSubmit)="onSubmit()">
+          <div class="flex flex-col-12 w-full pb-5 ">
+               <div class="flex col-span-6 col-start-1 w-full  place-items-center ">
+                    <span class="font-bold">CREATE BILLING</span>
+               </div>
+               <div class="flex col-span-6 col-start-7 w-full place-content-end">
+                    <button type="button" class="p-2 bg-red-300 font-bold border border-solid border-black rounded-md px-3 mr-3" >Reset</button>
+                    <button type="button" class="p-2 bg-green-300 font-bold border border-solid border-black rounded-md px-3" >Save</button>
+               </div>
+          </div>
+
           <div class="grid grid-col grid-cols-12 w-full gap-12">
 
                <div class="col-span-4 col-start-1`">
@@ -184,56 +195,57 @@
                <div class="col-span-4 col-start-9">
                     <div class="grid grid-row gap-3">
                          <div class="grid grid-cols-12">
-                              <div class="col-start-1 col-span-3"> 
+                              <div class="col-start-1 col-span-4"> 
                                    <label for="waterAmount"> Amount </label>
                               </div>
-                              <div class="col-start-4 col-span-9">
+                              <div class="col-start-5 col-span-8">
                                    <input type="number" id="waterAmount" formControlName="waterAmount"
                                         class="border border-gray-400 rounded-md" />
                               </div>
                          </div>
 
                          <div class="grid grid-cols-12">
-                              <div class="col-start-1 col-span-3"> 
+                              <div class="col-start-1 col-span-4"> 
                                    <label for="partsAmount"> Parts </label>
                               </div>
-                              <div class="col-start-4 col-span-9">
+                              <div class="col-start-5 col-span-8">
                                    <input type="number" id="partsAmount" formControlName="partsAmount"
                                         class="border border-gray-400 rounded-md" />
                               </div>
                          </div>
 
                          <div class="grid grid-cols-12">
-                              <div class="col-start-1 col-span-3"> 
+                              <div class="col-start-1 col-span-4"> 
                                    <label for="maintenanceFee"> Maintenance Fee </label>
                               </div>
-                              <div class="col-start-4 col-span-9">
+                              <div class="col-start-5 col-span-8">
                                    <input type="number" id="maintenanceFee" formControlName="maintenanceFee"
                                         class="border border-gray-400 rounded-md" />
                               </div>
                          </div>
 
                          <div class="grid grid-cols-12">
-                              <div class="col-start-1 col-span-3"> 
+                              <div class="col-start-1 col-span-4"> 
                                    <label for="lessAmount"> Less </label>
                               </div>
-                              <div class="col-start-4 col-span-9">
+                              <div class="col-start-5 col-span-8">
                                    <input type="number" id="lessAmount" formControlName="lessAmount"
                                         class="border border-gray-400 rounded-md" />
                               </div>
                          </div>
 
                          <div class="grid grid-cols-12">
-                              <div class="col-start-1 col-span-3"> 
+                              <div class="col-start-1 col-span-4"> 
                                    <label for="totalAmount"> Total Amount </label>
                               </div>
-                              <div class="col-start-4 col-span-9">
+                              <div class="col-start-5 col-span-8">
                                    <input type="number" id="totalAmount" formControlName="totalAmount"
                                         class="border border-gray-400 rounded-md" />
                               </div>
                          </div>
                     </div>
                </div>
+
           </div>
      </form>
 </div>

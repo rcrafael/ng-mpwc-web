@@ -1,0 +1,261 @@
+<div class="p-5 shadow-xl h-auto border rounded-md border-slate-200">
+
+     <form [formGroup]="fg" (ngSubmit)="onSubmit()">
+          <div class="flex flex-col-12 w-full pb-5 ">
+               <div class="flex col-span-6 col-start-1 w-full  place-items-center ">
+                    <span class="font-bold">CREATE BILLING</span>
+               </div>
+               <div class="flex col-span-6 col-start-7 w-full place-content-end">
+                    <button type="button" class="p-2 bg-red-300 font-bold border border-solid border-black rounded-md px-3 mr-3" >Reset</button>
+                    <button type="button" class="p-2 bg-green-300 font-bold border border-solid border-black rounded-md px-3" >Save</button>
+               </div>
+          </div>
+
+          <div class="grid grid-col grid-cols-12 w-full gap-12">
+
+               <div class="col-span-4 col-start-1`">
+                    <div class="grid grid-row gap-3">
+                         <div class="grid grid-cols-12">
+                              <div class="col-start-1 col-span-3">
+                                   <label for="readingNo"> Reading No. </label>
+                              </div>
+                              <div class="col-start-4 col-span-9">
+                                   <input type="text" id="readingNo" formControlName="readingNo"
+                                        class="border border-gray-400 rounded-md">
+                              </div>
+                         </div>
+
+                         <div class="grid grid-cols-12">
+                              <div class="col-start-1 col-span-3">
+                                   <label for="meterNo"> Meter No. </label>
+                              </div>
+                              <div class="col-start-4 col-span-6">
+                                   <input type="text" id="meterNo" formControlName="meterNo"
+                                        class="border border-gray-400 rounded-md">
+                              </div>
+                              <div class="col-start-10 col-span-1">
+                                   <button type="button" class="bg-gray-300 w-full rounded-md border border-black border-solid"><span>...</span></button>
+                              </div>
+                         </div>
+
+                         <div class="grid grid-cols-12">
+                              <div class="col-start-1 col-span-3">
+                                   <label for="customerId"> Customer Id </label>
+                              </div>
+                              <div class="col-start-4 col-span-6">
+                                   <input type="text" id="customerId" formControlName="customerId"
+                                        class="border border-gray-400 rounded-md">
+                              </div>
+                              <div class="col-start-10 col-span-1">
+                                   <button type="button" class="bg-gray-300 w-full rounded-md border border-black border-solid"><span>...</span></button>
+                              </div>
+                         </div>
+                         
+                         <div class="grid grid-cols-12">
+                              <div class="col-start-1 col-span-3">
+                                   <label for="alias"> Alias </label>
+                              </div>
+                              <div class="col-start-4 col-span-9">
+                                   <input type="text" id="alias" formControlName="alias"
+                                        class="border border-gray-400 rounded-md">
+                              </div>
+                         </div>
+
+                         <div class="grid grid-cols-12">
+                              <div class="col-start-1 col-span-3">
+                                   <label for="customerName"> Name </label>
+                              </div>
+                              <div class="col-start-4 col-span-9">
+                                   <input type="text" id="customerName" formControlName="customerName"
+                                        class="border border-gray-400 rounded-md w-full">
+                              </div>
+                         </div>
+
+                         <div class="grid grid-cols-12">
+                              <div class="col-start-1 col-span-3">
+                                   <label for="branchCode"> Branch Code </label>
+                              </div>
+                              <div class="col-start-4 col-span-9">
+                                   <input type="text" id="branchCode" formControlName="branchCode"
+                                        class="border border-gray-400 rounded-md w-full">
+                              </div>
+                         </div>
+
+                         <div class="grid grid-cols-12">
+                              <div class="col-start-1 col-span-3">
+                                   <label for="address"> Address </label>
+                              </div>
+                              <div class="col-start-4 col-span-9">
+                                   <input type="text" id="address" formControlName="address"
+                                        class="border border-gray-400 rounded-md w-full">
+                              </div>
+                         </div>
+                    </div>
+               </div>
+
+               <div class="col-span-4 col-start-5">
+                    <div class="grid grid-row gap-3">
+                         <div class="grid grid-cols-12">
+                              <div class="col-start-1 col-span-3">
+                                   <label for="billingMonth"> Month </label>
+                              </div>
+                              <div class="col-start-4 col-span-6">
+                                   <select class="border border-gray-400 rounded-md w-full">
+                                        <option value="01">January</option>
+                                        <option value="02">February</option>
+                                        <option value="03">March</option>
+                                        <option value="04">April</option>
+                                        <option value="05">May</option>
+                                        <option value="06">June</option>
+                                        <option value="07">July</option>
+                                        <option value="08">August</option>
+                                        <option value="09">September</option>
+                                        <option value="10">October</option>
+                                        <option value="11">November</option>
+                                        <option value="12">December</option>
+                                   </select>
+                              </div>
+                         </div>
+                         
+                         <div class="grid grid-cols-12">
+                              <div class="col-start-1 col-span-3">
+                                   <label for="billingStart"> From </label>
+                              </div>
+                              <div class="col-start-4 col-span-6">
+                                   <input type="date" id="bilingStart" formControlName="billingStart"
+                                        class="border border-gray-400 rounded-md w-full">
+                              </div>
+                         </div>
+
+                         <div class="grid grid-cols-12">
+                              <div class="col-start-1 col-span-3">
+                                   <label for="billingEnd"> To </label>
+                              </div>
+                              <div class="col-start-4 col-span-6">
+                                   <input type="date" id="billingEnd" formControlName="billingEnd"
+                                        class="border border-gray-400 rounded-md w-full">
+                              </div>
+                         </div>
+
+                         <div class="grid grid-cols-12">
+                              <div class="col-start-1 col-span-3">
+                                   <label for="billingDueDate"> Due Date </label>
+                              </div>
+                              <div class="col-start-4 col-span-6">
+                                   <input type="date" id="billingDueDate" formControlName="billingDueDate"
+                                        class="border border-gray-400 rounded-md w-full">
+                              </div>
+                         </div>
+
+                         <div class="grid grid-cols-12">
+                              <div class="col-start-1 col-span-6">
+                                   <label for="rememberSettings"> Remember Date Settings </label>
+                              </div>
+                              <div class="col-start-7 col-span-6">
+                                   <input type="checkbox" id="rememberSettings"
+                                        class="border border-gray-400 rounded-md">
+                              </div>
+                         </div>
+
+                         <mat-divider />
+
+                         <div class="grid grid-cols-12">
+                              <div class="col-start-1 col-span-3"> 
+                                   <label for="previousM3"> Previous M3 </label>
+                              </div>
+                              <div class="col-start-4 col-span-9">
+                                   <input type="number" id="previousM3" formControlName="previousM3"
+                                        class="border border-gray-400 rounded-md" />
+                              </div>
+                         </div>
+
+                         <div class="grid grid-cols-12">
+                              <div class="col-start-1 col-span-3"> 
+                                   <label for="presentM3"> Present M3 </label>
+                              </div>
+                              <div class="col-start-4 col-span-9">
+                                   <input type="number" id="presentM3" formControlName="presentM3"
+                                        class="border border-gray-400 rounded-md" />
+                              </div>
+                         </div>
+
+                         <div class="grid grid-cols-12">
+                              <div class="col-start-1 col-span-3"> 
+                                   <label for="m3Used"> M3 Used </label>
+                              </div>
+                              <div class="col-start-4 col-span-9">
+                                   <input type="number" id="m3Used" formControlName="m3Used"
+                                        class="border border-gray-400 rounded-md" />
+                              </div>
+                         </div>
+
+                    </div>
+               </div>
+
+               <div class="col-span-4 col-start-9">
+                    <div class="grid grid-row gap-3">
+                         <div class="grid grid-cols-12">
+                              <div class="col-start-1 col-span-4"> 
+                                   <label for="waterAmount"> Amount </label>
+                              </div>
+                              <div class="col-start-5 col-span-8">
+                                   <input type="number" id="waterAmount" formControlName="waterAmount"
+                                        class="border border-gray-400 rounded-md" />
+                              </div>
+                         </div>
+
+                         <div class="grid grid-cols-12">
+                              <div class="col-start-1 col-span-4"> 
+                                   <label for="partsAmount"> Parts </label>
+                              </div>
+                              <div class="col-start-5 col-span-8">
+                                   <input type="number" id="partsAmount" formControlName="partsAmount"
+                                        class="border border-gray-400 rounded-md" />
+                              </div>
+                         </div>
+
+                         <div class="grid grid-cols-12">
+                              <div class="col-start-1 col-span-4"> 
+                                   <label for="maintenanceFee"> Maintenance Fee </label>
+                              </div>
+                              <div class="col-start-5 col-span-8">
+                                   <input type="number" id="maintenanceFee" formControlName="maintenanceFee"
+                                        class="border border-gray-400 rounded-md" />
+                              </div>
+                         </div>
+
+                         <div class="grid grid-cols-12">
+                              <div class="col-start-1 col-span-4"> 
+                                   <label for="lessAmount"> Less </label>
+                              </div>
+                              <div class="col-start-5 col-span-8">
+                                   <input type="number" id="lessAmount" formControlName="lessAmount"
+                                        class="border border-gray-400 rounded-md" />
+                              </div>
+                         </div>
+
+                         <div class="grid grid-cols-12">
+                              <div class="col-start-1 col-span-4"> 
+                                   <label for="totalAmount"> Total Amount </label>
+                              </div>
+                              <div class="col-start-5 col-span-8">
+                                   <input type="number" id="totalAmount" formControlName="totalAmount"
+                                        class="border border-gray-400 rounded-md" />
+                              </div>
+                         </div>
+
+                         <div class="grid grid-cols-12">
+                              <div class="col-start-1 col-span-4"> 
+                                   <label for="status"> Status </label>
+                              </div>
+                              <div class="col-start-5 col-span-8">
+                                   <input type="number" id="status" formControlName="status"
+                                        class="border border-gray-400 rounded-md" />
+                              </div>
+                         </div>
+                    </div>
+               </div>
+
+          </div>
+     </form>
+</div>

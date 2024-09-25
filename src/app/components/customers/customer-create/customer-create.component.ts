@@ -42,6 +42,7 @@ export class CustomerCreateComponent {
   
   public fg = new FormGroup ({
     customerId: new FormControl(''),
+    nationalId: new FormControl(''),
     accountNo:  new FormControl(''),
     meterNo:  new FormControl(''),
     alias:  new FormControl(''),

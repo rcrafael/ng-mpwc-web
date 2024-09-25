@@ -38,6 +38,7 @@ export class CustomerListComponent implements OnInit {
 export const dummyData: ICustomerList[] = [
   {
     customerId: 1,
+    nationalId: 'n1',
     accountNo: 'a1',
     meterNo: 'm1',
     alias: 'alias1',
@@ -50,6 +51,7 @@ export const dummyData: ICustomerList[] = [
   },
   {
     customerId: 2,
+    nationalId: 'n2',
     accountNo: 'a2',
     meterNo: 'm2',
     alias: 'alias2',
@@ -62,6 +64,7 @@ export const dummyData: ICustomerList[] = [
   },
   {
     customerId: 3,
+    nationalId: 'n3',
     accountNo: 'a3',
     meterNo: 'm3',
     alias: 'alias3',
@@ -74,6 +77,7 @@ export const dummyData: ICustomerList[] = [
   },
   {
     customerId: 4,
+    nationalId: 'n4',
     accountNo: 'a4',
     meterNo: 'm4',
     alias: 'alias4',
@@ -86,6 +90,7 @@ export const dummyData: ICustomerList[] = [
   },
   {
     customerId: 5,
+    nationalId: 'n5',
     accountNo: 'a5',
     meterNo: 'm5',
     alias: 'alias5',
@@ -98,6 +103,7 @@ export const dummyData: ICustomerList[] = [
   },
   {
     customerId: 6,
+    nationalId: 'n6',
     accountNo: 'a6',
     meterNo: 'm6',
     alias: 'alias6',
@@ -110,6 +116,7 @@ export const dummyData: ICustomerList[] = [
   },
   {
     customerId: 1,
+    nationalId: 'n7',
     accountNo: 'a1',
     meterNo: 'm1',
     alias: 'alias1',
@@ -122,6 +129,7 @@ export const dummyData: ICustomerList[] = [
   },
   {
     customerId: 2,
+    nationalId: 'n8',
     accountNo: 'a2',
     meterNo: 'm2',
     alias: 'alias2',
@@ -134,6 +142,7 @@ export const dummyData: ICustomerList[] = [
   },
   {
     customerId: 3,
+    nationalId: 'n9',
     accountNo: 'a3',
     meterNo: 'm3',
     alias: 'alias3',
@@ -146,6 +155,7 @@ export const dummyData: ICustomerList[] = [
   },
   {
     customerId: 4,
+    nationalId: 'n10',
     accountNo: 'a4',
     meterNo: 'm4',
     alias: 'alias4',
@@ -158,6 +168,7 @@ export const dummyData: ICustomerList[] = [
   },
   {
     customerId: 5,
+    nationalId: 'n11',
     accountNo: 'a5',
     meterNo: 'm5',
     alias: 'alias5',
@@ -170,6 +181,7 @@ export const dummyData: ICustomerList[] = [
   },
   {
     customerId: 6,
+    nationalId: 'n12',
     accountNo: 'a6',
     meterNo: 'm6',
     alias: 'alias6',
@@ -182,6 +194,7 @@ export const dummyData: ICustomerList[] = [
   },
   {
     customerId: 1,
+    nationalId: 'n13',
     accountNo: 'a1',
     meterNo: 'm1',
     alias: 'alias1',
@@ -194,6 +207,7 @@ export const dummyData: ICustomerList[] = [
   },
   {
     customerId: 2,
+    nationalId: 'n14',
     accountNo: 'a2',
     meterNo: 'm2',
     alias: 'alias2',
@@ -206,6 +220,7 @@ export const dummyData: ICustomerList[] = [
   },
   {
     customerId: 3,
+    nationalId: 'n15',
     accountNo: 'a3',
     meterNo: 'm3',
     alias: 'alias3',
@@ -218,6 +233,7 @@ export const dummyData: ICustomerList[] = [
   },
   {
     customerId: 4,
+    nationalId: 'n16',
     accountNo: 'a4',
     meterNo: 'm4',
     alias: 'alias4',
@@ -230,6 +246,7 @@ export const dummyData: ICustomerList[] = [
   },
   {
     customerId: 5,
+    nationalId: 'n17',
     accountNo: 'a5',
     meterNo: 'm5',
     alias: 'alias5',
@@ -242,6 +259,7 @@ export const dummyData: ICustomerList[] = [
   },
   {
     customerId: 6,
+    nationalId: 'n18',
     accountNo: 'a6',
     meterNo: 'm6',
     alias: 'alias6',
@@ -254,6 +272,7 @@ export const dummyData: ICustomerList[] = [
   },
   {
     customerId: 1,
+    nationalId: 'n19',
     accountNo: 'a1',
     meterNo: 'm1',
     alias: 'alias1',
@@ -266,6 +285,7 @@ export const dummyData: ICustomerList[] = [
   },
   {
     customerId: 2,
+    nationalId: 'n20',
     accountNo: 'a2',
     meterNo: 'm2',
     alias: 'alias2',
@@ -278,6 +298,7 @@ export const dummyData: ICustomerList[] = [
   },
   {
     customerId: 3,
+    nationalId: 'n21',
     accountNo: 'a3',
     meterNo: 'm3',
     alias: 'alias3',
@@ -290,6 +311,7 @@ export const dummyData: ICustomerList[] = [
   },
   {
     customerId: 4,
+    nationalId: 'n22',
     accountNo: 'a4',
     meterNo: 'm4',
     alias: 'alias4',
@@ -302,6 +324,7 @@ export const dummyData: ICustomerList[] = [
   },
   {
     customerId: 5,
+    nationalId: 'n23',
     accountNo: 'a5',
     meterNo: 'm5',
     alias: 'alias5',
@@ -314,6 +337,7 @@ export const dummyData: ICustomerList[] = [
   },
   {
     customerId: 6,
+    nationalId: 'n23',
     accountNo: 'a6',
     meterNo: 'm6',
     alias: 'alias6',

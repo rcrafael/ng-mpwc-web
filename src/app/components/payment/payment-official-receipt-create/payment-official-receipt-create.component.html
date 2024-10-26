@@ -1,1 +1,373 @@
-<p>payment-official-receipt-create works!</p>
+<div class="p-5 shadow-xl h-auto border rounded-md border-slate-200">
+
+     <form (ngSubmit)="onSubmit()">
+          <div class="flex flex-col-12 w-full pb-5 ">
+               <div class="flex col-span-6 col-start-1 w-full  place-items-center ">
+                    <span class="font-bold">CREATE BILLING</span>
+               </div>
+               <div class="flex col-span-6 col-start-7 w-full place-content-end">
+                    <button type="button" class="p-2 bg-red-300 font-bold border border-solid border-black rounded-md px-3 mr-3" >Reset</button>
+                    <button type="button" class="p-2 bg-green-300 font-bold border border-solid border-black rounded-md px-3" >Save</button>
+               </div>
+          </div>
+
+          <div class="grid grid-col grid-cols-12 w-full ">
+               <!-- personal info -->
+               <div class="xs:col-span-12 md:col-span-4 col-start-1">
+                    <div class="grid grid-row gap-3">
+                         <div class="grid grid-cols-12 gap-2">
+                              <div class="xs:col-span-12 md:col-span-3">
+                                   <label for="meterNo">Meter No</label>
+                              </div>
+                              <div class="xs:col-span-8 md:col-span-6">
+                                   <input type="text" id="meterNo" class="border border-gray-400 rounded-md w-full">
+                              </div>
+                              <div class="xs:col-span-2 md:col-span-1">
+                                   <button type="button" class="bg-gray-300 w-fit px-[10px] rounded-md border border-black border-solid"><span>...</span></button>
+                              </div>
+                         </div>
+
+                         <div class="grid grid-cols-12 gap-2">
+                              <div class="xs:col-span-12 md:col-span-3">
+                                   <label for="accountNo">Account No</label>
+                              </div>
+                              <div class="xs:col-span-10 md:col-span-6">
+                                   <input type="text" id="accountNo" class="border border-gray-400 rounded-md w-full">
+                              </div>
+                              <div class="xs:col-span-2 md:col-span-1">
+                                   <button type="button" class="bg-gray-300 w-fit px-[10px] rounded-md border border-black border-solid"><span>...</span></button>
+                              </div>
+                         </div>
+
+                         <div class="grid grid-cols-12 gap-2">
+                              <div class="xs:col-span-12 md:col-span-3">
+                                   <label for="customerId">Customer Id</label>
+                              </div>
+                              <div class="xs:col-span-10 md:col-span-6">
+                                   <input type="text" id="customerId" class="border border-gray-400 rounded-md w-full">
+                              </div>
+                              <div class="xs:col-span-2 md:col-span-1">
+                                   <button type="button" class="bg-gray-300 w-fit px-[10px] rounded-md border border-black border-solid"><span>...</span></button>
+                              </div>
+                         </div>
+
+                         <div class="grid grid-cols-12 gap-2">
+                              <div class="xs:col-span-12 md:col-span-3">
+                                   <label for="alias">Alias</label>
+                              </div>
+                              <div class="xs:col-span-10 md:col-span-9">
+                                   <input type="text" id="alias" class="border border-gray-400 rounded-md w-full">
+                              </div>
+                         </div>
+
+                         <div class="grid grid-cols-12 gap-2">
+                              <div class="col-span-3">
+                                   <label for="customerName">Name</label>
+                              </div>
+                              <div class="xs:col-span-10 md:col-span-9">
+                                   <input type="text" id="customerName" class="border border-gray-400 rounded-md w-full">
+                              </div>
+                         </div>
+
+                         <div class="grid grid-cols-12 gap-2">
+                              <div class="col-span-3">
+                                   <label for="branchCode">Branch Code</label>
+                              </div>
+                              <div class="xs:col-span-12 md:col-span-9">
+                                   <select id="branchCode" class="border border-gray-400 rounded-md w-full">
+                                        @for (br of branchCodes; track br) {
+                                             <option [value]="br.id">{{br.name}}</option>
+                                        }
+                                   </select>
+                              </div>
+                         </div>
+
+                         <div class="grid grid-cols-12 gap-2">
+                              <div class="col-span-3">
+                                   <label for="address">Address</label>
+                              </div>
+                              <div class="xs:col-span-12 md:col-span-9">
+                                   <textarea id="address" rows="3" class="border border-gray-400 rounded-md resize-none w-full">
+                                   </textarea>
+                              </div>
+                         </div>
+                    </div>
+               </div>
+
+          
+               <!-- OR info -->
+               <div class="xs:col-span-12 md:col-span-4 col-start-1 md:ml-[20px]">
+                    <div class="grid grid-row gap-3">
+                         <div class="grid grid-cols-12 gap-2">
+                              <div class="xs:col-span-12 md:col-span-3">
+                                   <label for="orNo">OR No</label>
+                              </div>
+                              <div class="xs:col-span-8 md:col-span-6">
+                                   <input type="text" id="orNo" class="border border-gray-400 rounded-md w-full">
+                              </div>
+                         </div>
+
+                         <div class="grid grid-cols-12 gap-2">
+                              <div class="xs:col-span-12 md:col-span-3">
+                                   <label for="orDate">OR Date</label>
+                              </div>
+                              <div class="xs:col-span-10 md:col-span-6">
+                                   <input type="date" id="orDate" class="border border-gray-400 rounded-md w-full">
+                              </div>
+                         </div>
+
+                         <div class="grid grid-cols-12 gap-2">
+                              <div class="xs:col-span-12 md:col-span-3">
+                                   <label for="entryDate">Entry Date</label>
+                              </div>
+                              <div class="xs:col-span-10 md:col-span-6">
+                                   <input type="date" disabled id="entryDate" class="border border-gray-400 rounded-md w-full">
+                              </div>
+                         </div>
+
+                         <div class="grid grid-cols-12 gap-2">
+                              <div class="xs:col-span-12 md:col-span-3">
+                                   <label for="createdDate">Created By</label>
+                              </div>
+                              <div class="xs:col-span-10 md:col-span-9">
+                                   <input type="text" id="createdDate" class="border border-gray-400 rounded-md w-full">
+                              </div>
+                         </div>
+                         
+                         <mat-divider />
+
+                         <div class="grid grid-cols-12 gap-2">
+                              <div class="col-span-3">
+                                   <label for="shareCapitalAmt">Share Capital</label>
+                              </div>
+                              <div class="xs:col-span-10 md:col-span-6">
+                                   <input type="number" id="shareCapitalAmt" class="border border-gray-400 rounded-md w-full">
+                              </div>
+                         </div>
+
+                         <div class="grid grid-cols-12 gap-2">
+                              <div class="col-span-3">
+                                   <label for="cbuAmt">CBU</label>
+                              </div>
+                              <div class="xs:col-span-10 md:col-span-6">
+                                   <input type="number" id="cbuAmt" class="border border-gray-400 rounded-md w-full">
+                              </div>
+                         </div>
+
+                         <div class="grid grid-cols-12 gap-2">
+                              <div class="col-span-3">
+                                   <label for="savingsAmt">Savings</label>
+                              </div>
+                              <div class="xs:col-span-10 md:col-span-6">
+                                   <input type="number" id="savingsAmt" class="border border-gray-400 rounded-md w-full">
+                              </div>
+                         </div>
+
+                    </div>
+               </div>
+
+               <!-- Payment info -->
+               <div class="xs:col-span-12 md:col-span-4 col-start-1 md:ml-[20px]">
+                    <div class="grid grid-row gap-3">
+                         <div class="grid grid-cols-12 gap-2">
+                              <div class="xs:col-span-12 md:col-span-5">
+                                   <label for="totalBillingAmt">Total Billing Amt</label>
+                              </div>
+                              <div class="xs:col-span-8 md:col-span-6">
+                                   <input type="number" id="totalBillingAmt" class="border border-gray-400 rounded-md w-full">
+                              </div>
+                         </div>
+
+                         <div class="grid grid-cols-12 gap-2">
+                              <div class="xs:col-span-12 md:col-span-5">
+                                   <label for="totalShareAmt">Total Share Amt</label>
+                              </div>
+                              <div class="xs:col-span-10 md:col-span-6">
+                                   <input type="number" id="totalShareAmt" class="border border-gray-400 rounded-md w-full">
+                              </div>
+                         </div>
+
+                         <div class="grid grid-cols-12 gap-2">
+                              <div class="xs:col-span-12 md:col-span-5">
+                                   <label for="shareAsPayment" class="md:text-sm">Share as Payment (Less)</label>
+                              </div>
+                              <div class="xs:col-span-10 md:col-span-6">
+                                   <input type="number" id="shareAsPayment" class="border border-gray-400 rounded-md w-full">
+                              </div>
+                              <div class="xs:col-span-2 md:col-span-1">
+                                   <button type="button" class="bg-gray-300 w-fit px-[10px] rounded-md border border-black border-solid"><span>...</span></button>
+                              </div>
+                         </div>
+
+                         <div class="grid grid-cols-12 gap-2">
+                              <div class="xs:col-span-12 md:col-span-5">
+                                   <label for="seniorDiscount" class="md:text-sm">Senior Discount (Less)</label>
+                              </div>
+                              <div class="xs:col-span-10 md:col-span-6">
+                                   <input type="number" id="seniorDiscount" class="border border-gray-400 rounded-md w-full">
+                              </div>
+                         </div>
+
+                         <div class="grid grid-cols-12 gap-2">
+                              <div class="xs:col-span-12 md:col-span-5">
+                                   <label for="totalAmtToPay" class="md:text-sm">Total Amount To Pay</label>
+                              </div>
+                              <div class="xs:col-span-10 md:col-span-6">
+                                   <input type="number" id="totalAmtToPay" class="border border-gray-400 rounded-md w-full">
+                              </div>
+                         </div>
+
+                         <div class="grid grid-cols-12 gap-2">
+                              <div class="xs:col-span-12 md:col-span-5">
+                                   <label for="checkNo" class="md:text-sm">Check No</label>
+                              </div>
+                              <div class="xs:col-span-10 md:col-span-6">
+                                   <input type="text" id="checkNo" class="border border-gray-400 rounded-md w-full">
+                              </div>
+                         </div>
+
+                         <div class="grid grid-cols-12 gap-2">
+                              <div class="xs:col-span-12 md:col-span-5">
+                                   <label for="bankName" class="md:text-sm">Bank Name</label>
+                              </div>
+                              <div class="xs:col-span-10 md:col-span-6">
+                                   <input type="text" id="bankName" class="border border-gray-400 rounded-md w-full">
+                              </div>
+                         </div>
+
+                         <div class="grid grid-cols-12 gap-2">
+                              <div class="xs:col-span-12 md:col-span-5">
+                                   <label for="checkDate" class="md:text-sm">Check Date</label>
+                              </div>
+                              <div class="xs:col-span-10 md:col-span-6">
+                                   <input type="date" id="checkDate" class="border border-gray-400 rounded-md w-full">
+                              </div>
+                         </div>
+
+                         <div class="grid grid-cols-12 gap-2">
+                              <div class="xs:col-span-12 md:col-span-5">
+                                   <label for="amountReceived" class="md:text-sm">Amount Received</label>
+                              </div>
+                              <div class="xs:col-span-10 md:col-span-6">
+                                   <input type="number" id="amountReceived" class="border border-gray-400 rounded-md w-full">
+                              </div>
+                         </div>
+
+                         <div class="grid grid-cols-12 gap-2">
+                              <div class="xs:col-span-12 md:col-span-5">
+                                   <label for="changeAmt" class="md:text-sm">Change</label>
+                              </div>
+                              <div class="xs:col-span-10 md:col-span-6">
+                                   <input type="number" disabled id="changeAmt" class="border border-gray-400 rounded-md w-full">
+                              </div>
+                         </div>
+
+                    </div>
+               </div>
+
+          </div>
+
+
+          <mat-divider  class="!my-5"/>
+
+          <div class="flex flex-col-12 w-full pb-5 ">
+               <div class="flex flex-col-6">
+                    <button type="button" (click)="openDetailFormDialog()" class="p-2 bg-blue-300 font-bold border border-solid border-black rounded-md px-3" >Add</button>
+               </div>
+          </div>
+               <div class="overflow-x-scroll overflow-y-hidden">
+                    <table mat-table [dataSource]="dataSource">
+                         <ng-container matColumnDef="Reading No">
+                              <th mat-header-cell *matHeaderCellDef class="min-w-[120px]" ><span >Reading No</span></th>
+                              <td mat-cell *matCellDef="let element"><span>{{element.readingNo}}</span></td>
+                         </ng-container>
+     
+                         <ng-container matColumnDef="Mobile Reading No">
+                              <th mat-header-cell *matHeaderCellDef>Mobile Reading No</th>
+                              <td mat-cell *matCellDef="let element"><span>{{element.mobileReadingNo}}</span></td>
+                         </ng-container>
+     
+                         <ng-container matColumnDef="Reading Amount Paid">
+                              <th mat-header-cell *matHeaderCellDef>Reading Amount Paid</th>
+                              <td mat-cell *matCellDef="let element"><span>{{element.readingAmount}}</span></td>
+                         </ng-container>
+     
+                         <ng-container matColumnDef="Parts">
+                              <th mat-header-cell *matHeaderCellDef>Parts</th>
+                              <td mat-cell *matCellDef="let element"><span>{{element.parts}}</span></td>
+                         </ng-container>
+     
+                         <ng-container matColumnDef="Maintenance Fee">
+                              <th mat-header-cell *matHeaderCellDef>Maintenance Fee</th>
+                              <td mat-cell *matCellDef="let element"><span>{{element.maintenanceFee}}</span></td>
+                         </ng-container>
+     
+                         <ng-container matColumnDef="Septage Fee">
+                              <th mat-header-cell *matHeaderCellDef>Septage Fee</th>
+                              <td mat-cell *matCellDef="let element"><span>{{element.septageFee}}</span></td>
+                         </ng-container>
+     
+                         <ng-container matColumnDef="Membership Fee">
+                              <th mat-header-cell *matHeaderCellDef>Membership Fee</th>
+                              <td mat-cell *matCellDef="let element"><span>{{element.membershipFee}}</span></td>
+                         </ng-container>
+     
+                         <ng-container matColumnDef="Tapping">
+                              <th mat-header-cell *matHeaderCellDef>Tapping</th>
+                              <td mat-cell *matCellDef="let element"><span>{{element.tapping}}</span></td>
+                         </ng-container>
+     
+                         <ng-container matColumnDef="Calibration">
+                              <th mat-header-cell *matHeaderCellDef>Calibration</th>
+                              <td mat-cell *matCellDef="let element"><span>{{element.calibration}}</span></td>
+                         </ng-container>
+     
+                         <ng-container matColumnDef="Reconnection">
+                              <th mat-header-cell *matHeaderCellDef>Reconnection</th>
+                              <td mat-cell *matCellDef="let element"><span>{{element.reconnection}}</span></td>
+                         </ng-container>
+     
+                         <ng-container matColumnDef="Sub Receivable">
+                              <th mat-header-cell *matHeaderCellDef>Sub Receivable</th>
+                              <td mat-cell *matCellDef="let element"><span>{{element.subReceivable}}</span></td>
+                         </ng-container>
+     
+                         <ng-container matColumnDef="Penalty">
+                              <th mat-header-cell *matHeaderCellDef>Penalty</th>
+                              <td mat-cell *matCellDef="let element"><span>{{element.penalty}}</span></td>
+                         </ng-container>
+     
+                         <ng-container matColumnDef="Other Collection">
+                              <th mat-header-cell *matHeaderCellDef>Other Collection</th>
+                              <td mat-cell *matCellDef="let element"><span>{{element.otherCollection}}</span></td>
+                         </ng-container>
+     
+                         <ng-container matColumnDef="Other Description">
+                              <th mat-header-cell *matHeaderCellDef>Other Description</th>
+                              <td mat-cell *matCellDef="let element"><span>{{element.otherDescription}}</span></td>
+                         </ng-container>
+     
+                         <ng-container matColumnDef="Senior Discount">
+                              <th mat-header-cell *matHeaderCellDef>Senior Discount</th>
+                              <td mat-cell *matCellDef="let element"><span>{{element.seniorDiscount}}</span></td>
+                         </ng-container>
+     
+                         <ng-container matColumnDef="Remarks">
+                              <th mat-header-cell *matHeaderCellDef>Remarks</th>
+                              <td mat-cell *matCellDef="let element"><span>{{element.remarks}}</span></td>
+                         </ng-container>
+     
+                         <ng-container matColumnDef="Total Amount">
+                              <th mat-header-cell *matHeaderCellDef>Total Amount</th>
+                              <td mat-cell *matCellDef="let element"><span>{{element.totalAmount}}</span></td>
+                         </ng-container>
+
+                         <tr mat-header-row *matHeaderRowDef="tableColumns; sticky: true" ></tr>
+                         <tr mat-row *matRowDef="let row; columns: tableColumns;"></tr>
+                    </table>
+               </div>
+          
+     </form>
+
+
+</div>

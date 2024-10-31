@@ -74,7 +74,10 @@ export class PaymentOfficialReceiptCreateComponent {
   }
 
   openDetailFormDialog(): void {
-    this.dialog.open(AddDetailsModalComponent);
+    this.dialog.open(AddDetailsModalComponent, {
+      width: '90%',
+      height: '90%'
+    });
   }
 
 }

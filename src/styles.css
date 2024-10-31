@@ -36,6 +36,13 @@ mat-expansion-panel-header {
        background-color: #f3f2ec !important;
 }
 
+.dialog-container .mat-mdc-table {
+       width: 100%;
+       overflow:auto !important;
+       max-height: 160px !important;
+}
+
+
 .mat-divider {
        border-top-color: #b4b4b4 !important;
        border-top-width: 2px !important;
@@ -44,4 +51,14 @@ mat-expansion-panel-header {
 a span {
        text-decoration: underline !important;
        color: blue !important;
+}
+
+.dialog-container .mat-mdc-dialog-content {
+       max-height: 100%;
+       overflow:unset !important;
+       padding: 10px 20px !important;
+}
+
+.dialog-container .mat-mdc-dialog-actions {
+       padding: 10px 20px !important;
 }

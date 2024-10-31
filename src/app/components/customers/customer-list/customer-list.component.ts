@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { ICustomerList } from '../../../models/interfaces/ICustomer';
 import { MatButtonModule } from '@angular/material/button';
 import { Router, RouterModule } from '@angular/router';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-customer-list',
@@ -10,16 +11,19 @@ import { Router, RouterModule } from '@angular/router';
   imports: [
     MatTableModule,
     MatButtonModule,
+    MatPaginatorModule,
     RouterModule
   ],
   templateUrl: './customer-list.component.html',
   styleUrl: './customer-list.component.css'
 })
-export class CustomerListComponent implements OnInit {
+export class CustomerListComponent implements OnInit,AfterViewInit {
 
   constructor(
     private router: Router,
   ) {}
+
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   dataSource!: MatTableDataSource<ICustomerList>;
   tableCols: string[] = ['Customer No', 'Last Name', 'First Name', 'Middle Name', 'Branch Code', 'Address', 'Customer Type'];
@@ -27,6 +31,10 @@ export class CustomerListComponent implements OnInit {
   ngOnInit(): void {
     this.dataSource = new MatTableDataSource<ICustomerList>(dummyData);
     console.log('DATASOURCE: ', this.dataSource)
+  }
+
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
   }
 
   onCreateNewClick(): void {
@@ -115,7 +123,7 @@ export const dummyData: ICustomerList[] = [
     customerType: 2
   },
   {
-    customerId: 1,
+    customerId: 7,
     nationalId: 'n7',
     accountNo: 'a1',
     meterNo: 'm1',
@@ -128,7 +136,7 @@ export const dummyData: ICustomerList[] = [
     customerType: 1
   },
   {
-    customerId: 2,
+    customerId: 8,
     nationalId: 'n8',
     accountNo: 'a2',
     meterNo: 'm2',
@@ -141,7 +149,7 @@ export const dummyData: ICustomerList[] = [
     customerType: 1
   },
   {
-    customerId: 3,
+    customerId: 9,
     nationalId: 'n9',
     accountNo: 'a3',
     meterNo: 'm3',
@@ -154,7 +162,7 @@ export const dummyData: ICustomerList[] = [
     customerType: 2
   },
   {
-    customerId: 4,
+    customerId: 10,
     nationalId: 'n10',
     accountNo: 'a4',
     meterNo: 'm4',
@@ -167,7 +175,7 @@ export const dummyData: ICustomerList[] = [
     customerType: 3
   },
   {
-    customerId: 5,
+    customerId: 11,
     nationalId: 'n11',
     accountNo: 'a5',
     meterNo: 'm5',
@@ -175,12 +183,25 @@ export const dummyData: ICustomerList[] = [
     lastName: 'Mabini',
     firstName: 'Apolinario',
     middleName: '',
-    branchCode: 1,
+    branchCode: 12,
     address: 'address5',
     customerType: 4
   },
   {
-    customerId: 6,
+    customerId: 12,
+    nationalId: 'n11',
+    accountNo: 'a5',
+    meterNo: 'm5',
+    alias: 'alias5',
+    lastName: 'Mabini',
+    firstName: 'Apolinario',
+    middleName: '',
+    branchCode: 12,
+    address: 'address5',
+    customerType: 4
+  },
+  {
+    customerId: 13,
     nationalId: 'n12',
     accountNo: 'a6',
     meterNo: 'm6',
@@ -193,7 +214,7 @@ export const dummyData: ICustomerList[] = [
     customerType: 2
   },
   {
-    customerId: 1,
+    customerId: 14,
     nationalId: 'n13',
     accountNo: 'a1',
     meterNo: 'm1',
@@ -206,7 +227,7 @@ export const dummyData: ICustomerList[] = [
     customerType: 1
   },
   {
-    customerId: 2,
+    customerId: 15,
     nationalId: 'n14',
     accountNo: 'a2',
     meterNo: 'm2',
@@ -219,7 +240,7 @@ export const dummyData: ICustomerList[] = [
     customerType: 1
   },
   {
-    customerId: 3,
+    customerId: 16,
     nationalId: 'n15',
     accountNo: 'a3',
     meterNo: 'm3',
@@ -232,7 +253,7 @@ export const dummyData: ICustomerList[] = [
     customerType: 2
   },
   {
-    customerId: 4,
+    customerId: 17,
     nationalId: 'n16',
     accountNo: 'a4',
     meterNo: 'm4',
@@ -245,7 +266,7 @@ export const dummyData: ICustomerList[] = [
     customerType: 3
   },
   {
-    customerId: 5,
+    customerId: 18,
     nationalId: 'n17',
     accountNo: 'a5',
     meterNo: 'm5',
@@ -258,7 +279,7 @@ export const dummyData: ICustomerList[] = [
     customerType: 4
   },
   {
-    customerId: 6,
+    customerId: 19,
     nationalId: 'n18',
     accountNo: 'a6',
     meterNo: 'm6',
@@ -271,7 +292,7 @@ export const dummyData: ICustomerList[] = [
     customerType: 2
   },
   {
-    customerId: 1,
+    customerId: 20,
     nationalId: 'n19',
     accountNo: 'a1',
     meterNo: 'm1',
@@ -284,7 +305,7 @@ export const dummyData: ICustomerList[] = [
     customerType: 1
   },
   {
-    customerId: 2,
+    customerId: 21,
     nationalId: 'n20',
     accountNo: 'a2',
     meterNo: 'm2',
@@ -297,7 +318,7 @@ export const dummyData: ICustomerList[] = [
     customerType: 1
   },
   {
-    customerId: 3,
+    customerId: 22,
     nationalId: 'n21',
     accountNo: 'a3',
     meterNo: 'm3',
@@ -310,7 +331,7 @@ export const dummyData: ICustomerList[] = [
     customerType: 2
   },
   {
-    customerId: 4,
+    customerId: 23,
     nationalId: 'n22',
     accountNo: 'a4',
     meterNo: 'm4',
@@ -323,7 +344,7 @@ export const dummyData: ICustomerList[] = [
     customerType: 3
   },
   {
-    customerId: 5,
+    customerId: 24,
     nationalId: 'n23',
     accountNo: 'a5',
     meterNo: 'm5',
@@ -336,7 +357,7 @@ export const dummyData: ICustomerList[] = [
     customerType: 4
   },
   {
-    customerId: 6,
+    customerId: 25,
     nationalId: 'n23',
     accountNo: 'a6',
     meterNo: 'm6',

@@ -26,7 +26,15 @@ export class CustomerListComponent implements OnInit,AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   dataSource!: MatTableDataSource<ICustomerList>;
-  tableCols: string[] = ['Customer No', 'Last Name', 'First Name', 'Middle Name', 'Branch Code', 'Address', 'Customer Type'];
+  tableCols: string[] = [
+    'Customer No', 
+    'Last Name', 
+    'First Name', 
+    'Middle Name', 
+    'Branch Code', 
+    'Address', 
+    'Customer Type'
+  ];
 
   ngOnInit(): void {
     this.dataSource = new MatTableDataSource<ICustomerList>(dummyData);

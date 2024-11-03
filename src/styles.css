@@ -13,7 +13,7 @@ input {
        padding-right: 5px;
 }
 
-mat-expansion-panel-header {
+.mat-expansion-panel-header {
        background-color: #2381e0 !important;
        color: white !important;
        font-weight: bold !important;

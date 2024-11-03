@@ -1,4 +1,16 @@
-import { NumberValueAccessor } from "@angular/forms";
+export interface IOfficialReceiptList {
+     id: number;
+     orNo: string;
+     orDate: string;
+     customerId: number;
+     meterNo: string;
+     accountNo: string;
+     customerName: string;
+     totalBillingAmount: number;
+     totalShareAmount: number;
+     totalAmountToPay: number;
+     status: string;
+}
 
 export interface IOfficialReceiptData {
      id: number;
@@ -25,21 +37,6 @@ export interface IOfficialReceiptData {
      isOutsideCollection: boolean;
      outsideCustomerNameL: string;
      isPartSale: boolean;
-}
-
-
-export interface IOfficialReceiptList {
-     id: number;
-     orNo: string;
-     orDate: string;
-     customerId: number;
-     meterNo: string;
-     accountNo: string;
-     customerName: string;
-     totalBillingAmount: number;
-     totalShareAmount: number;
-     totalAmountToPay: number;
-     status: string;
 }
 
 export interface IOfficialReceiptDetail {

@@ -1,11 +1,12 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { IBranchCode } from '../../../models/interfaces/ICommon';
 import { MatDivider } from '@angular/material/divider';
-import { IOfficialReceiptDetail } from '../../../models/interfaces/IOfficialReceipt';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
-import { AddDetailsModalComponent } from './add-details-modal/add-details-modal.component';
+import { IBranchCode } from '../../../../models/interfaces/ICommon';
+import { IOfficialReceiptDetail } from '../../../../models/interfaces/IOfficialReceipt';
+import { AddDetailsModalComponent } from '../add-details-modal/add-details-modal.component';
+import { CustomerListModalComponent } from '../../../common/search/customer-list-modal/customer-list-modal.component';
 
 @Component({
   selector: 'app-payment-official-receipt-create',
@@ -63,20 +64,28 @@ export class PaymentOfficialReceiptCreateComponent {
     'Total Amount'
   ]
 
-  dialog = inject(MatDialog)
+  dialogDetails = inject(MatDialog);
+  dialogCustomer = inject(MatDialog);
 
   public gf = new FormGroup({
 
-  })
+  });
 
   onSubmit = () => {
   
   }
 
   openDetailFormDialog(): void {
-    this.dialog.open(AddDetailsModalComponent, {
+    this.dialogDetails.open(AddDetailsModalComponent, {
       width: '90%',
       height: '90%'
+    });
+  }
+
+  openCustomerDialog(): void {
+    this.dialogCustomer.open(CustomerListModalComponent, {
+      width: '70%',
+      height: '60%'
     });
   }
 

@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { Router, RouterModule } from '@angular/router';
-import { dummyData } from '../../customers/customer-list/customer-list.component';
-import { IOfficialReceiptList } from '../../../models/interfaces/IOfficialReceipt';
+import { IOfficialReceiptList } from '../../../../models/interfaces/IOfficialReceipt';
 
 @Component({
   selector: 'app-payment-official-receipt-list',

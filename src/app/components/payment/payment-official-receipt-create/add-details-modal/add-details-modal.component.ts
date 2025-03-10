@@ -28,7 +28,6 @@ export class AddDetailsModalComponent {
   datasource: MatTableDataSource<IOfficialReceiptDetail> = new MatTableDataSource<IOfficialReceiptDetail>(dummyData);
   tableCols: string[] = [
     'Reading No',
-    'Mobile Reading No',
     'Reading Amount Paid',
     'Parts',
     'Maintenance Fee',

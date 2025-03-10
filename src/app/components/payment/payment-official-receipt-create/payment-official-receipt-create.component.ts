@@ -6,6 +6,9 @@ import { IOfficialReceiptDetail } from '../../../models/interfaces/IOfficialRece
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
 import { AddDetailsModalComponent } from './add-details-modal/add-details-modal.component';
+import { BrowseMeterNoComponent } from '../../modals/browse-meter-no/browse-meter-no.component';
+import { BrowseCustomersComponent } from '../../modals/browse-customers/browse-customers.component';
+import { ICustomerProfile } from '../../../models/interfaces/ICustomer';
 
 @Component({
   selector: 'app-payment-official-receipt-create',
@@ -20,8 +23,10 @@ import { AddDetailsModalComponent } from './add-details-modal/add-details-modal.
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PaymentOfficialReceiptCreateComponent {
-
-  constructor() {}
+  
+  constructor(
+    private dialog: MatDialog
+  ) {}
 
   branchCodes: IBranchCode[] = [
     {
@@ -40,7 +45,7 @@ export class PaymentOfficialReceiptCreateComponent {
       id: 4,
       name: 'Duhat'
     }
-  ]
+  ];
 
   dataSource!: MatTableDataSource<IOfficialReceiptDetail>;
   tableColumns: string[] = [
@@ -61,9 +66,10 @@ export class PaymentOfficialReceiptCreateComponent {
     'Senior Discount',
     'Remarks',
     'Total Amount'
-  ]
+  ];
 
-  dialog = inject(MatDialog)
+  selectedCustomerInfo!: any;
+  selectedMeterNo! : any;
 
   public gf = new FormGroup({
 
@@ -74,11 +80,40 @@ export class PaymentOfficialReceiptCreateComponent {
   }
 
   openDetailFormDialog(): void {
-    this.dialog.open(AddDetailsModalComponent, {
+    const dialogRef = this.dialog.open(AddDetailsModalComponent, {
       width: '90%',
       height: '90%'
     });
   }
 
+  openMeterDialog(): void {
+    const dialogRef = this.dialog.open(BrowseMeterNoComponent, {
+      data: {customerId: this.selectedCustomerInfo.id},
+      width: '90%',
+      height: '90%'
+    });
+
+    dialogRef.afterClosed().subscribe(data => {
+      if(data !== null) {
+        console.log('RECEIVED FROM DIALOG: ', data)
+        this.selectedMeterNo = data
+      }
+    })
+  }
+
+  openCustomerDialog(): void {
+    const dialogRef = this.dialog.open(BrowseCustomersComponent, {
+      width: '90%',
+      height: '90%'
+    });
+
+    dialogRef.afterClosed().subscribe(data => {
+      if(data !== null) {
+        console.log('RECEIVED FROM DIALOG: ', data)
+        this.selectedCustomerInfo = data
+      }
+    })
+  }
+
 }
- 
+  

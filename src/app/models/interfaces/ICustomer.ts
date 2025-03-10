@@ -8,19 +8,20 @@ export interface ICustomerList {
      firstName: string;
      middleName: string;
      branchCode: number;
+     phase: string
      address: string;
      customerType: number
 }
 
 export interface ICustomerProfile {
-     customerId: number;
+     id: string;
      nationalId: string; //for future adoptability of national id and unified identifier (future use)
      meterNo: string;
      alias: string;
      firstName: string;
      middleName: string;
      lastName: string;
-     branchCode: number;
+     branchCode: string;
      address: string;
      gender: number;
      civilStatus: string;

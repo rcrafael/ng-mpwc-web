@@ -15,13 +15,26 @@
 
                <div class="col-span-4 col-start-1`">
                     <div class="grid grid-row gap-3">
-                         <div class="grid grid-cols-12">
+                         <!-- <div class="grid grid-cols-12">
                               <div class="col-start-1 col-span-3">
                                    <label for="readingNo"> Reading No. </label>
                               </div>
                               <div class="col-start-4 col-span-9">
                                    <input type="text" id="readingNo" formControlName="readingNo"
                                         class="border border-gray-400 rounded-md">
+                              </div>
+                         </div> -->
+
+                         <div class="grid grid-cols-12">
+                              <div class="col-start-1 col-span-3">
+                                   <label for="alias"> Account No </label>
+                              </div>
+                              <div class="col-start-4 col-span-6">
+                                   <input type="text" id="alias" formControlName="accountNo"
+                                        class="border border-gray-400 rounded-md">
+                              </div>
+                              <div class="col-start-10 col-span-1">
+                                   <button type="button" (click)="openCustomerDialog()" class="bg-gray-300 w-full rounded-md border border-black border-solid"><span>...</span></button>
                               </div>
                          </div>
 
@@ -34,23 +47,10 @@
                                         class="border border-gray-400 rounded-md">
                               </div>
                               <div class="col-start-10 col-span-1">
-                                   <button type="button" class="bg-gray-300 w-full rounded-md border border-black border-solid"><span>...</span></button>
+                                   <button type="button" (click)="openMeterDialog()" class="bg-gray-300 w-full rounded-md border border-black border-solid"><span>...</span></button>
                               </div>
                          </div>
 
-                         <div class="grid grid-cols-12">
-                              <div class="col-start-1 col-span-3">
-                                   <label for="customerId"> Customer Id </label>
-                              </div>
-                              <div class="col-start-4 col-span-6">
-                                   <input type="text" id="customerId" formControlName="customerId"
-                                        class="border border-gray-400 rounded-md">
-                              </div>
-                              <div class="col-start-10 col-span-1">
-                                   <button type="button" class="bg-gray-300 w-full rounded-md border border-black border-solid"><span>...</span></button>
-                              </div>
-                         </div>
-                         
                          <div class="grid grid-cols-12">
                               <div class="col-start-1 col-span-3">
                                    <label for="alias"> Alias </label>
@@ -165,7 +165,7 @@
                               </div>
                               <div class="col-start-4 col-span-9">
                                    <input type="number" id="previousM3" formControlName="previousM3"
-                                        class="border border-gray-400 rounded-md" />
+                                        class="border border-gray-400 rounded-md" (blur)="onBlur()"/>
                               </div>
                          </div>
 
@@ -175,7 +175,7 @@
                               </div>
                               <div class="col-start-4 col-span-9">
                                    <input type="number" id="presentM3" formControlName="presentM3"
-                                        class="border border-gray-400 rounded-md" />
+                                        class="border border-gray-400 rounded-md" (blur)="onBlur()"/>
                               </div>
                          </div>
 

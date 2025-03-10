@@ -3,7 +3,7 @@
      <form (ngSubmit)="onSubmit()">
           <div class="flex flex-col-12 w-full pb-5 ">
                <div class="flex col-span-6 col-start-1 w-full  place-items-center ">
-                    <span class="font-bold">CREATE BILLING</span>
+                    <span class="font-bold">CREATE OFFICIAL RECEIPT</span>
                </div>
                <div class="flex col-span-6 col-start-7 w-full place-content-end">
                     <button type="button" class="p-2 bg-red-300 font-bold border border-solid border-black rounded-md px-3 mr-3" >Reset</button>
@@ -15,31 +15,21 @@
                <!-- personal info -->
                <div class="xs:col-span-12 md:col-span-4 col-start-1">
                     <div class="grid grid-row gap-3">
-                         <div class="grid grid-cols-12 gap-2">
-                              <div class="xs:col-span-12 md:col-span-3">
-                                   <label for="meterNo">Meter No</label>
-                              </div>
-                              <div class="xs:col-span-8 md:col-span-6">
-                                   <input type="text" id="meterNo" class="border border-gray-400 rounded-md w-full">
-                              </div>
-                              <div class="xs:col-span-2 md:col-span-1">
-                                   <button type="button" class="bg-gray-300 w-fit px-[10px] rounded-md border border-black border-solid"><span>...</span></button>
-                              </div>
-                         </div>
+                         
 
                          <div class="grid grid-cols-12 gap-2">
                               <div class="xs:col-span-12 md:col-span-3">
                                    <label for="accountNo">Account No</label>
                               </div>
                               <div class="xs:col-span-10 md:col-span-6">
-                                   <input type="text" id="accountNo" class="border border-gray-400 rounded-md w-full">
+                                   <input type="text" id="accountNo" class="border border-gray-400 rounded-md w-full" readonly>
                               </div>
                               <div class="xs:col-span-2 md:col-span-1">
-                                   <button type="button" class="bg-gray-300 w-fit px-[10px] rounded-md border border-black border-solid"><span>...</span></button>
+                                   <button type="button" (click)="openCustomerDialog()" class="bg-gray-300 w-fit px-[10px] rounded-md border border-black border-solid"><span>...</span></button>
                               </div>
                          </div>
 
-                         <div class="grid grid-cols-12 gap-2">
+                         <!-- <div class="grid grid-cols-12 gap-2">
                               <div class="xs:col-span-12 md:col-span-3">
                                    <label for="customerId">Customer Id</label>
                               </div>
@@ -47,7 +37,19 @@
                                    <input type="text" id="customerId" class="border border-gray-400 rounded-md w-full">
                               </div>
                               <div class="xs:col-span-2 md:col-span-1">
-                                   <button type="button" class="bg-gray-300 w-fit px-[10px] rounded-md border border-black border-solid"><span>...</span></button>
+                                   <button type="button"  class="bg-gray-300 w-fit px-[10px] rounded-md border border-black border-solid"><span>...</span></button>
+                              </div>
+                         </div> -->
+
+                         <div class="grid grid-cols-12 gap-2">
+                              <div class="xs:col-span-12 md:col-span-3">
+                                   <label for="meterNo">Meter No</label>
+                              </div>
+                              <div class="xs:col-span-8 md:col-span-6">
+                                   <input type="text" id="meterNo" class="border border-gray-400 rounded-md w-full" readonly>
+                              </div>
+                              <div class="xs:col-span-2 md:col-span-1">
+                                   <button type="button" (click)="openMeterDialog()" class="bg-gray-300 w-fit px-[10px] rounded-md border border-black border-solid"><span>...</span></button>
                               </div>
                          </div>
 

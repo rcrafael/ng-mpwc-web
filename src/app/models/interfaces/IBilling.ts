@@ -40,3 +40,15 @@ export interface IBillingInfo {
      remarks: string;
      status: string;
 }
+
+export interface IWaterRates {
+     id: string;
+     groupRatingId: string;
+     heirarchy: number;
+     from: number;
+     to: number;
+     ratingValue: number;
+     description: string;
+     isBaseAmount: boolean;
+     isActive: boolean;
+}

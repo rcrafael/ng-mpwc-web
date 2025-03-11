@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { IBillingInfo } from '../../../../models/interfaces/IBilling';
+import { IBillingInfo } from '../../../../../models/interfaces/IBilling';
 
 @Component({
   selector: 'app-select-billing-modal',

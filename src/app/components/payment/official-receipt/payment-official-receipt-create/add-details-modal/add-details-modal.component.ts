@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { IOfficialReceiptDetail } from '../../../../models/interfaces/IOfficialReceipt';
+import { IOfficialReceiptDetail } from '../../../../../models/interfaces/IOfficialReceipt';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { SelectBillingModalComponent } from '../select-billing-modal/select-billing-modal.component';
 

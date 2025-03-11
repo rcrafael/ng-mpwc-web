@@ -7,7 +7,7 @@
                </div>
                <div class="flex col-span-6 col-start-7 w-full place-content-end">
                     <button type="button" class="p-2 bg-red-300 font-bold border border-solid border-black rounded-md px-3 mr-3" >Reset</button>
-                    <button type="button" class="p-2 bg-green-300 font-bold border border-solid border-black rounded-md px-3" >Save</button>
+                    <button type="submit" class="p-2 bg-green-300 font-bold border border-solid border-black rounded-md px-3" >Save</button>
                </div>
           </div>
 
@@ -86,8 +86,9 @@
                                    <label for="address"> Address </label>
                               </div>
                               <div class="col-start-4 col-span-9">
-                                   <input type="text" id="address" formControlName="address"
+                                   <textarea rows="3" readonly id="address" formControlName="address"
                                         class="border border-gray-400 rounded-md w-full">
+                                   </textarea>
                               </div>
                          </div>
                     </div>
@@ -100,19 +101,19 @@
                                    <label for="billingMonth"> Month </label>
                               </div>
                               <div class="col-start-4 col-span-6">
-                                   <select class="border border-gray-400 rounded-md w-full">
-                                        <option value="01">January</option>
-                                        <option value="02">February</option>
-                                        <option value="03">March</option>
-                                        <option value="04">April</option>
-                                        <option value="05">May</option>
-                                        <option value="06">June</option>
-                                        <option value="07">July</option>
-                                        <option value="08">August</option>
-                                        <option value="09">September</option>
-                                        <option value="10">October</option>
-                                        <option value="11">November</option>
-                                        <option value="12">December</option>
+                                   <select class="border border-gray-400 rounded-md w-full" formControlName="monthOf">
+                                        <option value=1>January</option>
+                                        <option value=2>February</option>
+                                        <option value=3>March</option>
+                                        <option value=4>April</option>
+                                        <option value=5>May</option>
+                                        <option value=6>June</option>
+                                        <option value=7>July</option>
+                                        <option value=8>August</option>
+                                        <option value=9>September</option>
+                                        <option value=10>October</option>
+                                        <option value=11>November</option>
+                                        <option value=12>December</option>
                                    </select>
                               </div>
                          </div>
@@ -122,7 +123,7 @@
                                    <label for="billingStart"> From </label>
                               </div>
                               <div class="col-start-4 col-span-6">
-                                   <input type="date" id="bilingStart" formControlName="billingStart"
+                                   <input type="date" id="bilingStart" formControlName="dateFrom"
                                         class="border border-gray-400 rounded-md w-full">
                               </div>
                          </div>
@@ -132,7 +133,7 @@
                                    <label for="billingEnd"> To </label>
                               </div>
                               <div class="col-start-4 col-span-6">
-                                   <input type="date" id="billingEnd" formControlName="billingEnd"
+                                   <input type="date" id="billingEnd" formControlName="dateTo"
                                         class="border border-gray-400 rounded-md w-full">
                               </div>
                          </div>
@@ -142,7 +143,7 @@
                                    <label for="billingDueDate"> Due Date </label>
                               </div>
                               <div class="col-start-4 col-span-6">
-                                   <input type="date" id="billingDueDate" formControlName="billingDueDate"
+                                   <input type="date" id="billingDueDate" formControlName="dueDate"
                                         class="border border-gray-400 rounded-md w-full">
                               </div>
                          </div>
@@ -164,8 +165,8 @@
                                    <label for="previousM3"> Previous M3 </label>
                               </div>
                               <div class="col-start-4 col-span-9">
-                                   <input type="number" id="previousM3" formControlName="previousM3"
-                                        class="border border-gray-400 rounded-md" (blur)="onBlur()"/>
+                                   <input type="number" id="previousM3" formControlName="previous"
+                                        class="border border-gray-400 rounded-md" (blur)="onBlurUsage()"/>
                               </div>
                          </div>
 
@@ -174,8 +175,8 @@
                                    <label for="presentM3"> Present M3 </label>
                               </div>
                               <div class="col-start-4 col-span-9">
-                                   <input type="number" id="presentM3" formControlName="presentM3"
-                                        class="border border-gray-400 rounded-md" (blur)="onBlur()"/>
+                                   <input type="number" id="presentM3" formControlName="present"
+                                        class="border border-gray-400 rounded-md" (blur)="onBlurUsage()"/>
                               </div>
                          </div>
 
@@ -199,7 +200,7 @@
                                    <label for="waterAmount"> Amount </label>
                               </div>
                               <div class="col-start-5 col-span-8">
-                                   <input type="number" id="waterAmount" formControlName="waterAmount"
+                                   <input type="number" id="waterAmount" formControlName="readingAmount"
                                         class="border border-gray-400 rounded-md" />
                               </div>
                          </div>
@@ -209,7 +210,7 @@
                                    <label for="partsAmount"> Parts </label>
                               </div>
                               <div class="col-start-5 col-span-8">
-                                   <input type="number" id="partsAmount" formControlName="partsAmount"
+                                   <input type="number" id="partsAmount" formControlName="parts" (blur)="onBlurAmounts()"
                                         class="border border-gray-400 rounded-md" />
                               </div>
                          </div>
@@ -219,7 +220,17 @@
                                    <label for="maintenanceFee"> Maintenance Fee </label>
                               </div>
                               <div class="col-start-5 col-span-8">
-                                   <input type="number" id="maintenanceFee" formControlName="maintenanceFee"
+                                   <input type="number" id="maintenanceFee" formControlName="maintenanceFee" (blur)="onBlurAmounts()"
+                                        class="border border-gray-400 rounded-md" />
+                              </div>
+                         </div>
+
+                         <div class="grid grid-cols-12">
+                              <div class="col-start-1 col-span-4"> 
+                                   <label for="septageFee"> Septage Fee </label>
+                              </div>
+                              <div class="col-start-5 col-span-8">
+                                   <input type="number" id="septageFee" formControlName="septageFee" (blur)="onBlurAmounts()"
                                         class="border border-gray-400 rounded-md" />
                               </div>
                          </div>
@@ -229,7 +240,7 @@
                                    <label for="lessAmount"> Less </label>
                               </div>
                               <div class="col-start-5 col-span-8">
-                                   <input type="number" id="lessAmount" formControlName="lessAmount"
+                                   <input type="number" id="lessAmount" formControlName="lessAmount" (blur)="onBlurAmounts()"
                                         class="border border-gray-400 rounded-md" />
                               </div>
                          </div>

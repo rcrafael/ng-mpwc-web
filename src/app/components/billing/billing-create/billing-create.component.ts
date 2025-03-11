@@ -8,8 +8,10 @@ import { MatDialog } from '@angular/material/dialog';
 import { BrowseMeterNoComponent } from '../../modals/browse-meter-no/browse-meter-no.component';
 import { ICustomerProfile } from '../../../models/interfaces/ICustomer';
 import { CustomerService } from '../../../services/customer.service';
-import { IWaterRates } from '../../../models/interfaces/IBilling';
+import { IBillingInfo, IWaterRates } from '../../../models/interfaces/IBilling';
 import { BillingService } from '../../../services/billing.service';
+import { formatDate } from '@angular/common';
+import { IMeterDetails } from '../../../models/interfaces/IMeter';
 
 @Component({
   selector: 'app-billing-create',
@@ -33,9 +35,13 @@ export class BillingCreateComponent {
   ) {}
 
   selectedCustomerInfo!: ICustomerProfile;
-  selectedMeterNo! : any;
-
+  selectedMeterNo! : IMeterDetails;
   waterRates: IWaterRates[] = [];
+  totalBilingAmount: number = 0;
+  maxRateUsed: number = 0;
+
+  currentMonth = new Date().getMonth() + 1; //getMonth() is 0 to 11
+  currentDate = formatDate(new Date(),'yyyy-MM-dd','en-PH');
 
   public fg = new FormGroup({
     meterNo: new FormControl('', Validators.required),
@@ -44,25 +50,76 @@ export class BillingCreateComponent {
     customerName: new FormControl(''),
     branchCode: new FormControl(''),
     address: new FormControl(''),
-    billingMonth: new FormControl(''),
-    billingStart: new FormControl(''),
-    billingEnd: new FormControl(''),
-    billingDueDate: new FormControl(''),
-    previousM3: new FormControl<number>(0),
-    presentM3: new FormControl<number>(0),
+    monthOf: new FormControl<number>(this.currentMonth),
+    dateFrom: new FormControl<string>(this.currentDate),
+    dateTo: new FormControl<string>(this.currentDate),
+    dueDate: new FormControl<string>(this.currentDate),
+    previous: new FormControl<number>(0),
+    present: new FormControl<number>(0),
     m3Used: new FormControl(0),
-    rate: new FormControl(0),
-    waterAmount: new FormControl(0),
-    partsAmount: new FormControl(0),
+    readingAmount: new FormControl(0),
+    parts: new FormControl(0),
     maintenanceFee: new FormControl(0),
     lessAmount: new FormControl(0),
-    totalAmount: new FormControl(0),
+    septageFee: new FormControl(0),
+    totalAmount: new FormControl(this.totalBilingAmount ?? 0),
     status: new FormControl({value:'', disabled: true}),
   })
 
   
   onSubmit() {
-    
+    if(!this.fg.valid) {
+      alert('Invalid input! Please try again.');
+      return;
+    }
+
+    const frm = this.fg.value;
+
+    let params: IBillingInfo = {
+      meterNo: frm.meterNo!,
+      customerId: this.selectedCustomerInfo.id,
+      monthOf: frm.monthOf!,
+      dateFrom: frm.dateFrom!, 
+      dateTo: frm.dateTo!,
+      dueDate: frm.dueDate!,
+      previous: frm.previous!,
+      present: frm.present!,
+      m3Used: frm.m3Used!,
+      rating: this.maxRateUsed,
+      readingAmount: frm.readingAmount!,
+      parts: frm.parts ? frm.parts : 0,
+      maintenanceFee: frm.maintenanceFee ? frm.maintenanceFee : 0,
+      lessAmount: frm.lessAmount ? frm.lessAmount : 0,
+      totalAmount: frm.totalAmount ? frm.totalAmount : 0,
+      septageFee: frm.septageFee ? frm.septageFee : 0,
+      remarks: '',
+      status: '1'
+    }
+
+    this.billingService.createBilling(params).then(response => {
+      
+
+      let params: IMeterDetails = this.selectedMeterNo;
+      params.previous = this.selectedMeterNo.present;
+      params.present = frm.present ?? 0;
+
+      this.customerService.updateMeterNo(params).then(response => {
+        alert('SUCCESS!');
+      })
+      .catch((err: Error) => {
+        alert('ERROR IN UPDATING METER: ' + err.name);
+        console.log('Error:', err);
+      })
+    })
+    .catch((err: Error) => {
+      alert('ERROR IN CREATING READING: ' + err.name);
+      console.log('Error:', err);
+    })
+    .finally(() => {
+
+    });
+
+
   }
 
   openCustomerDialog(): void {
@@ -83,8 +140,8 @@ export class BillingCreateComponent {
   openMeterDialog(): void {
       const dialogRef = this.dialog.open(BrowseMeterNoComponent, {
         data: this.selectedCustomerInfo,
-        width: '90%',
-        height: '90%'
+        width: '50%',
+        height: '50%'
       });
   
       dialogRef.afterClosed().subscribe(data => {
@@ -109,8 +166,8 @@ export class BillingCreateComponent {
   updateFormFromMeterNo(data:any) {
     this.fg.patchValue({
       meterNo: data.meterNo,
-      previousM3: data.previous ? data.previous : 0,
-      presentM3: data.present ? data.present : 0,
+      previous:  data.present ?? 0, //use the latest present value as previous value to create new reading
+      present: 0, // default to zero when creating new reading
     });
   }
 
@@ -128,20 +185,23 @@ export class BillingCreateComponent {
     }
   } 
 
-
   getMeterInfo(meterNo: string) {
     this.customerService.getMeterbyMeterNo(meterNo).then(response => {
       this.updateFormFromMeterNo(response.result);
     })
   }
 
-  onBlur(): void {
+  onBlurUsage(): void {
     this.computeUsageAmount();
   }
 
+  onBlurAmounts(): void {
+    this.computerTotalBillingAmount();
+  }
+
   computeUsageAmount() {
-    const prev: number = this.fg.get('previousM3')?.value ? this.fg.get('previousM3')?.value! : 0;
-    const present: number = this.fg.get('presentM3')?.value ? this.fg.get('presentM3')?.value! : 0;
+    const prev: number = this.fg.get('previous')?.value ? this.fg.get('previous')?.value! : 0;
+    const present: number = this.fg.get('present')?.value ? this.fg.get('present')?.value! : 0;
     const useM3: number = present - prev;
     this.fg.patchValue({
       m3Used: useM3
@@ -165,16 +225,15 @@ export class BillingCreateComponent {
           currentAmount = baseAmount;
         } else {
           if (useM3 >= r.to) {
-            console.log('M3used: ', useM3, 'rate.To: ', r.to)
             previousCeiling = this.waterRates[idx-1].to ? this.waterRates[idx-1].to : 0 ;
             currentCeiling = r.to ? r.to : 0;
             currentAmount = ((currentCeiling - (previousCeiling ? previousCeiling : 0)) * r.ratingValue) + baseAmount;
             baseAmount = currentAmount;
           } else {
-            console.log('M3used: ', useM3, 'rate.To: ', r.to)
             previousCeiling = this.waterRates[idx-1].to ? this.waterRates[idx-1].to : 0 ;
             currentAmount = ((useM3 - (previousCeiling ? previousCeiling : 0)) * r.ratingValue) + baseAmount;
             baseAmount = currentAmount;
+            this.maxRateUsed = r.ratingValue;
             break;
           }
           
@@ -186,12 +245,22 @@ export class BillingCreateComponent {
         currentAmount = ((useM3 - (previousCeiling ? previousCeiling : 0)) * r.ratingValue) + baseAmount;
         baseAmount = currentAmount;
       }
-      console.log('from: ', r.from , 'to: ', r.to, 'rate: ', r.ratingValue, 'baseAmount: ', baseAmount, 'reading Amount: ', currentAmount);
+      // console.log('from: ', r.from , 'to: ', r.to, 'rate: ', r.ratingValue, 'baseAmount: ', baseAmount, 'reading Amount: ', currentAmount);
       idx += 1;
     };
-
+    
     this.fg.patchValue({
-      waterAmount: currentAmount,
+      readingAmount: currentAmount,
+    });
+    this.computerTotalBillingAmount();
+  }
+
+  computerTotalBillingAmount(): void {
+    const frm  = this.fg.value;
+
+    this.totalBilingAmount = (frm.readingAmount ?? 0) + (frm.parts ?? 0) + (frm.maintenanceFee ?? 0) + (frm.septageFee ?? 0) - (frm.lessAmount ?? 0)
+    this.fg.patchValue({
+      totalAmount: this.totalBilingAmount,
     });
   }
 

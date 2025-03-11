@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { ApiService } from './apis/api.service';
 import { IAPIResponse } from '../models/interfaces/IApiResponse';
 import { firstValueFrom } from 'rxjs';
+import { IBillingInfo } from '../models/interfaces/IBilling';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +17,10 @@ export class BillingService {
 
   getActiveWaterRatesCommercial(): Promise<IAPIResponse> {
     return firstValueFrom(this.http.getActiveWaterRatesCommercial());
+  }
+
+  createBilling(params: IBillingInfo): Promise<IAPIResponse> {
+    return firstValueFrom(this.http.createBilling(params));
   }
 
 }

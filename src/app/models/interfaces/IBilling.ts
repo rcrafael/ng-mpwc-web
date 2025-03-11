@@ -18,21 +18,20 @@ export interface IBillingList {
 }
 
 export interface IBillingInfo {
-     readingNo: string; 
-     mobileReadingNo: string;
+     readingNo?: string; 
      meterNo: string;
-     customerId: string; //CustId
-     accountId: string;
-     billingMonth: string; //MonthOf
-     billingStart: string; //DateFrom
-     billingEnd: string; //DateTo
-     billingDueDate: string; //DueDate
-     previousM3: number; //previous
-     presentM3: number; //present
+     customerId: string; 
+     accountId?: string;
+     monthOf: number; 
+     dateFrom: string; 
+     dateTo: string; 
+     dueDate: string; 
+     previous: number; 
+     present: number; 
      m3Used: number; 
-     rate: number; 
-     billingAmount: number; //readingAmount
-     partsAmount: number; //parts
+     rating: number; 
+     readingAmount: number;
+     parts: number; 
      maintenanceFee: number; 
      lessAmount: number;
      totalAmount: number;

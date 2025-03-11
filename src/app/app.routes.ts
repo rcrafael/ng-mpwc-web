@@ -11,9 +11,12 @@ import { AuthComponent } from './components/auth/auth.component';
 import { BillingListComponent } from './components/billing/billing-list/billing-list.component';
 import { BillingCreateComponent } from './components/billing/billing-create/billing-create.component';
 import { BillingViewComponent } from './components/billing/billing-view/billing-view.component';
-import { PaymentOfficialReceiptListComponent } from './components/payment/payment-official-receipt-list/payment-official-receipt-list.component';
-import { PaymentOfficialReceiptCreateComponent } from './components/payment/payment-official-receipt-create/payment-official-receipt-create.component';
-import { PaymentOfficialReceiptViewComponent } from './components/payment/payment-official-receipt-view/payment-official-receipt-view.component';
+import { OtherPaymentListComponent } from './components/payment/other-payments/other-payment-list/other-payment-list.component';
+import { OtherPaymentCreateComponent } from './components/payment/other-payments/other-payment-create/other-payment-create.component';
+import { OtherPaymentViewComponent } from './components/payment/other-payments/other-payment-view/other-payment-view.component';
+import { PaymentOfficialReceiptCreateComponent } from './components/payment/official-receipt/payment-official-receipt-create/payment-official-receipt-create.component';
+import { PaymentOfficialReceiptListComponent } from './components/payment/official-receipt/payment-official-receipt-list/payment-official-receipt-list.component';
+import { PaymentOfficialReceiptViewComponent } from './components/payment/official-receipt/payment-official-receipt-view/payment-official-receipt-view.component';
 
 export const routes: Routes = [
 
@@ -32,8 +35,10 @@ export const routes: Routes = [
                { path: 'billing/:readingNo', component: BillingViewComponent},
                { path: 'payment/official-receipt', component: PaymentOfficialReceiptListComponent},
                { path: 'payment/official-receipt/create', component: PaymentOfficialReceiptCreateComponent},
-               { path: 'payment/official-receipt/:receiptNo', component: PaymentOfficialReceiptViewComponent}
-               
+               { path: 'payment/official-receipt/:receiptNo', component: PaymentOfficialReceiptViewComponent},
+               { path: 'payment/other-receipt', component: OtherPaymentListComponent},
+               { path: 'payment/other-receipt/create', component: OtherPaymentCreateComponent},
+               { path: 'payment/other-receipt/:receiptNo', component: OtherPaymentViewComponent}
           ]
      },
      {

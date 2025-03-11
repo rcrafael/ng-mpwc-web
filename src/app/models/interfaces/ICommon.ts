@@ -1,5 +1,3 @@
-import { Type } from "@angular/core";
-
 export interface ISideBarMenu {
      id: number,
      name: string,

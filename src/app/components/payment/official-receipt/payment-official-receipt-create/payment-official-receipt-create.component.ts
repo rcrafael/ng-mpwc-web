@@ -1,14 +1,14 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { IBranchCode } from '../../../models/interfaces/ICommon';
 import { MatDivider } from '@angular/material/divider';
-import { IOfficialReceiptDetail } from '../../../models/interfaces/IOfficialReceipt';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
+import { IBranchCode } from '../../../../models/interfaces/ICommon';
+import { IOfficialReceiptDetail } from '../../../../models/interfaces/IOfficialReceipt';
+import { BrowseCustomersComponent } from '../../../modals/browse-customers/browse-customers.component';
+import { BrowseMeterNoComponent } from '../../../modals/browse-meter-no/browse-meter-no.component';
 import { AddDetailsModalComponent } from './add-details-modal/add-details-modal.component';
-import { BrowseMeterNoComponent } from '../../modals/browse-meter-no/browse-meter-no.component';
-import { BrowseCustomersComponent } from '../../modals/browse-customers/browse-customers.component';
-import { ICustomerProfile } from '../../../models/interfaces/ICustomer';
+
 
 @Component({
   selector: 'app-payment-official-receipt-create',

@@ -1,0 +1,107 @@
+<div class="dialog-container h-[100%]">
+     <mat-dialog-content class="!h-[90%]">
+          <div class="mb-[10px] font-bold text-lg">
+               <span>Payment Details</span>
+          </div>
+
+          <div class="table-container h-[200px] border border-solid border-black rounded-md overflow-y-auto">
+               <table mat-table [dataSource]="datasource" class="border border-solid border-slate-400 rounded-md" >
+                    <ng-container matColumnDef="Other Description">
+                         <th mat-header-cell *matHeaderCellDef class="min-w-[120px]"><span>Other Description</span></th>
+                         <td mat-cell *matCellDef="let element"><span>{{element.otherDescription}}</span></td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="Parts">
+                         <th mat-header-cell *matHeaderCellDef class="min-w-[120px]"><span>Parts</span></th>
+                         <td mat-cell *matCellDef="let element"><span>{{element.parts}}</span></td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="Remarks">
+                         <th mat-header-cell *matHeaderCellDef class="min-w-[120px]"><span>Remarks</span></th>
+                         <td mat-cell *matCellDef="let element"><span>{{element.remarks}}</span></td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="Total Amount">
+                         <th mat-header-cell *matHeaderCellDef class="min-w-[120px]"><span>Total Amount</span></th>
+                         <td mat-cell *matCellDef="let element"><span>{{element.totalAmount}}</span></td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="tableCols; sticky: true" ></tr>
+                    <tr mat-row *matRowDef="let row; columns: tableCols;"></tr>
+               </table> 
+          </div>
+
+          <div class="mt-10 px-4">
+               <form (submit)="handleSubmit($event)">
+
+                    <div class="grid grid-col grid-cols-12 w-full mb-4">
+                         <div class="xs:col-span-12 md:col-span-1">
+                              <button type="submit" class="bg-green-300 border border-solid border-black text-black rounded-md w-[80px] p-1" >Add</button>
+                         </div>
+                         <div class="xs:col-span-12 md:col-span-1">
+                              <button type="button" class="bg-red-300 border border-solid border-black text-black rounded-md w-[80px] p-1" >Reset</button>
+                         </div>
+                    </div>
+
+                    <div class="grid grid-col grid-cols-12 w-full">
+                         <!-- first column -->
+                         <div class="xs:col-span-12 md:col-span-6">
+                              <div class="grid grid-row gap-2">
+                                   <div class="grid grid-cols-12 gap-2">
+                                        <div class="xs:col-span-12 md:col-span-4">
+                                             <label for="othersDescription">Description</label>
+                                        </div>
+                                        <div class="xs:col-span-12 md:col-span-6">
+                                             <!-- <input id="othersAmount" type="text" class="border border-gray-400 rounded-md w-full"/> -->
+                                             <select class="w-full border border-black border-solid rounded-md">
+                                                  <option value="option1">Option 1</option>
+                                                  <option value="option2">Option 2</option>
+                                                  <option value="option3">Option 3</option>
+                                                  <option value="option4">Option 4</option>
+                                                  <option value="option5">Option 5</option>
+                                             </select>
+                                        </div>
+                                   </div>
+
+                                   <div class="grid grid-cols-12 gap-2">
+                                        <div class="xs:col-span-12 md:col-span-4">
+                                             <label for="parts">Parts</label>
+                                        </div>
+                                        <div class="xs:col-span-12 md:col-span-4">
+                                             <input id="parts" type="number" class="border border-gray-400 rounded-md w-full"/>
+                                        </div>
+                                   </div>
+                                   
+                                   <div class="grid grid-cols-12 gap-2">
+                                        <div class="xs:col-span-12 md:col-span-4">
+                                             <label for="totalAmount">Total Amount</label>
+                                        </div>
+                                        <div class="xs:col-span-12 md:col-span-4">
+                                             <input disabled id="totalAmount" type="number" class="border border-gray-400 rounded-md w-full"/>
+                                        </div>
+                                   </div>
+
+                              </div>
+                         </div>
+
+                        
+                    </div>
+               </form>
+          </div>
+
+
+     </mat-dialog-content>
+
+     <mat-dialog-actions>
+          <div class="flex flex-row w-full gap-3 justify-end">
+               <button (click)="onClose()" class="bg-blue-500 text-white rounded border border-black border-solid p-2 w-[80px]">
+                    Done
+               </button>
+
+               <button (click)="onClose()" class="bg-red-500 text-white rounded border border-black border-solid p-2 w-[80px]">
+                    Cancel
+               </button>
+          </div>
+     </mat-dialog-actions>
+</div>
+     

@@ -11,6 +11,7 @@ export class UserService {
 
   private userProfile = new BehaviorSubject<IUserProfile|null>(null);
   public currentUserProfile = this.userProfile.asObservable();
+  
   public setCurrentUserProfile(userProfile: IUserProfile) {
     this.userProfile.next(userProfile);
   }

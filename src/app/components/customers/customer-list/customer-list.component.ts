@@ -63,7 +63,8 @@ export const dummyData: ICustomerList[] = [
     middleName: '',
     branchCode: 1,
     address: 'address1',
-    customerType: 1
+    customerType: 1,
+    phase: 'Phase 1'
   },
   {
     customerId: 2,
@@ -76,7 +77,8 @@ export const dummyData: ICustomerList[] = [
     middleName: '',
     branchCode: 1,
     address: 'address2',
-    customerType: 1
+    customerType: 1,
+    phase: 'Phase 1'
   },
   {
     customerId: 3,
@@ -89,7 +91,8 @@ export const dummyData: ICustomerList[] = [
     middleName: '',
     branchCode: 1,
     address: 'address3',
-    customerType: 2
+    customerType: 2,
+    phase: 'Phase 2'
   },
   {
     customerId: 4,
@@ -102,7 +105,8 @@ export const dummyData: ICustomerList[] = [
     middleName: '',
     branchCode: 1,
     address: 'address4',
-    customerType: 3
+    customerType: 3,
+    phase: 'Phase 2'
   },
   {
     customerId: 5,
@@ -115,7 +119,8 @@ export const dummyData: ICustomerList[] = [
     middleName: '',
     branchCode: 1,
     address: 'address5',
-    customerType: 4
+    customerType: 4,
+    phase: 'Phase 2'
   },
   {
     customerId: 6,
@@ -128,7 +133,8 @@ export const dummyData: ICustomerList[] = [
     middleName: '',
     branchCode: 3,
     address: 'address6',
-    customerType: 2
+    customerType: 2,
+    phase: 'Phase 3'
   },
   {
     customerId: 7,
@@ -141,7 +147,8 @@ export const dummyData: ICustomerList[] = [
     middleName: '',
     branchCode: 1,
     address: 'address1',
-    customerType: 1
+    customerType: 1,
+    phase: 'Phase 3'
   },
   {
     customerId: 8,
@@ -154,7 +161,8 @@ export const dummyData: ICustomerList[] = [
     middleName: '',
     branchCode: 1,
     address: 'address2',
-    customerType: 1
+    customerType: 1,
+    phase: 'Phase 3'
   },
   {
     customerId: 9,
@@ -167,7 +175,8 @@ export const dummyData: ICustomerList[] = [
     middleName: '',
     branchCode: 1,
     address: 'address3',
-    customerType: 2
+    customerType: 2,
+    phase: 'Phase 3'
   },
   {
     customerId: 10,
@@ -180,7 +189,8 @@ export const dummyData: ICustomerList[] = [
     middleName: '',
     branchCode: 1,
     address: 'address4',
-    customerType: 3
+    customerType: 2,
+    phase: 'Phase 3'
   },
   {
     customerId: 11,
@@ -193,7 +203,8 @@ export const dummyData: ICustomerList[] = [
     middleName: '',
     branchCode: 12,
     address: 'address5',
-    customerType: 4
+    customerType: 1,
+    phase: 'Phase 1'
   },
   {
     customerId: 12,
@@ -206,7 +217,8 @@ export const dummyData: ICustomerList[] = [
     middleName: '',
     branchCode: 12,
     address: 'address5',
-    customerType: 4
+    customerType: 1,
+    phase: 'Phase 1'
   },
   {
     customerId: 13,
@@ -219,7 +231,8 @@ export const dummyData: ICustomerList[] = [
     middleName: '',
     branchCode: 3,
     address: 'address6',
-    customerType: 2
+    customerType: 2,
+    phase: 'Phase 2'
   },
   {
     customerId: 14,
@@ -232,7 +245,8 @@ export const dummyData: ICustomerList[] = [
     middleName: '',
     branchCode: 1,
     address: 'address1',
-    customerType: 1
+    customerType: 1,
+    phase: 'Phase 1'
   },
   {
     customerId: 15,
@@ -245,7 +259,8 @@ export const dummyData: ICustomerList[] = [
     middleName: '',
     branchCode: 1,
     address: 'address2',
-    customerType: 1
+    customerType: 1,
+    phase: 'Phase 3'
   },
   {
     customerId: 16,
@@ -258,7 +273,8 @@ export const dummyData: ICustomerList[] = [
     middleName: '',
     branchCode: 1,
     address: 'address3',
-    customerType: 2
+    customerType: 2,
+    phase: 'Phase 3'
   },
   {
     customerId: 17,
@@ -271,7 +287,8 @@ export const dummyData: ICustomerList[] = [
     middleName: '',
     branchCode: 1,
     address: 'address4',
-    customerType: 3
+    customerType: 1,
+    phase: 'Phase 1'
   },
   {
     customerId: 18,
@@ -284,7 +301,8 @@ export const dummyData: ICustomerList[] = [
     middleName: '',
     branchCode: 1,
     address: 'address5',
-    customerType: 4
+    customerType: 1,
+    phase: 'Phase 1'
   },
   {
     customerId: 19,
@@ -297,7 +315,8 @@ export const dummyData: ICustomerList[] = [
     middleName: '',
     branchCode: 3,
     address: 'address6',
-    customerType: 2
+    customerType: 1,
+    phase: 'Phase 2'
   },
   {
     customerId: 20,
@@ -310,7 +329,8 @@ export const dummyData: ICustomerList[] = [
     middleName: '',
     branchCode: 1,
     address: 'address1',
-    customerType: 1
+    customerType: 1,
+    phase: 'Phase 2'
   },
   {
     customerId: 21,
@@ -323,7 +343,8 @@ export const dummyData: ICustomerList[] = [
     middleName: '',
     branchCode: 1,
     address: 'address2',
-    customerType: 1
+    customerType: 1,
+    phase: 'Phase 1'
   },
   {
     customerId: 22,
@@ -336,7 +357,8 @@ export const dummyData: ICustomerList[] = [
     middleName: '',
     branchCode: 1,
     address: 'address3',
-    customerType: 2
+    customerType: 2,
+    phase: 'Phase 1'
   },
   {
     customerId: 23,
@@ -349,7 +371,8 @@ export const dummyData: ICustomerList[] = [
     middleName: '',
     branchCode: 1,
     address: 'address4',
-    customerType: 3
+    customerType: 1,
+    phase: 'Phase 1'
   },
   {
     customerId: 24,
@@ -362,7 +385,8 @@ export const dummyData: ICustomerList[] = [
     middleName: '',
     branchCode: 1,
     address: 'address5',
-    customerType: 4
+    customerType: 1,
+    phase: 'Phase 3'
   },
   {
     customerId: 25,
@@ -375,7 +399,8 @@ export const dummyData: ICustomerList[] = [
     middleName: '',
     branchCode: 3,
     address: 'address6',
-    customerType: 2
+    customerType: 2,
+    phase: 'Phase 1'
   }
   
 ]

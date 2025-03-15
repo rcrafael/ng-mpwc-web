@@ -97,7 +97,7 @@
           </div>
 
           <div class="mt-10">
-               <form (submit)="handleSubmit($event)">
+               <form [formGroup]="fg" (submit)="handleSubmit()">
                     <div class="grid grid-col grid-cols-12 w-full">
                          <div class="xs:col-span-12 md:col-span-5">
                               <div class="grid grid-row gap-2">
@@ -106,10 +106,10 @@
                                              <label for="readingNo" >Reading No</label>
                                         </div>
                                         <div class="xs:col-span-12 md:col-span-4">
-                                             <input id="readingNo" type="text" class="border border-gray-400 rounded-md w-full"/>
+                                             <input id="readingNo" type="text" formControlName="readingNo" class="border border-gray-400 rounded-md w-full"/>
                                         </div>
                                         <div class="xs:col-span-12 md:col-span-4">
-                                             <button (click)="openDetailFormDialog()" class="bg-gray-300 w-fit px-[10px] rounded-md border border-black border-solid">...</button>
+                                             <button type="button" (click)="openBillingListDialog()" class="bg-gray-300 w-fit px-[10px] rounded-md border border-black border-solid">...</button>
                                         </div>
                                    </div>
                               
@@ -130,7 +130,7 @@
                                              <label for="billingAmount">Billing Amount</label>
                                         </div>
                                         <div class="xs:col-span-12 md:col-span-4">
-                                             <input id="billingAmount" type="number" class="border border-gray-400 rounded-md w-full"/>
+                                             <input id="billingAmount" type="number" formControlName="readingAmount" class="border border-gray-400 rounded-md w-full"/>
                                         </div>
                                    </div>
 
@@ -139,7 +139,7 @@
                                              <label for="parts">Parts</label>
                                         </div>
                                         <div class="xs:col-span-12 md:col-span-4">
-                                             <input id="parts" type="number" class="border border-gray-400 rounded-md w-full"/>
+                                             <input id="parts" type="number" formControlName="parts" class="border border-gray-400 rounded-md w-full"/>
                                         </div>
                                    </div>
 
@@ -148,7 +148,7 @@
                                              <label for="maintenanceFee">Maintenance Fee</label>
                                         </div>
                                         <div class="xs:col-span-12 md:col-span-4">
-                                             <input id="maintenanceFee" type="number" class="border border-gray-400 rounded-md w-full"/>
+                                             <input id="maintenanceFee" type="number" formControlName="maintenanceFee" class="border border-gray-400 rounded-md w-full"/>
                                         </div>
                                    </div>
 
@@ -157,7 +157,7 @@
                                              <label for="membership">Membership</label>
                                         </div>
                                         <div class="xs:col-span-12 md:col-span-4">
-                                             <input id="membership" type="number" class="border border-gray-400 rounded-md w-full"/>
+                                             <input id="membership" type="number" formControlName="membershipFee" class="border border-gray-400 rounded-md w-full"/>
                                         </div>
                                    </div>
 
@@ -166,7 +166,7 @@
                                              <label for="receivable">Subs. Receivable</label>
                                         </div>
                                         <div class="xs:col-span-12 md:col-span-4">
-                                             <input id="receivable" type="number" class="border border-gray-400 rounded-md w-full"/>
+                                             <input id="receivable" type="number" formControlName="subReceivable" class="border border-gray-400 rounded-md w-full"/>
                                         </div>
                                    </div>
 
@@ -175,7 +175,7 @@
                                              <label for="remarks">Payment Remarks</label>
                                         </div>
                                         <div class="xs:col-span-12 md:col-span-6">
-                                             <input id="remarks" type="text" class="border border-gray-400 rounded-md w-full"/>
+                                             <input id="remarks" type="text" formControlName="remarks" class="border border-gray-400 rounded-md w-full"/>
                                         </div>
                                    </div>
                               </div>
@@ -188,7 +188,7 @@
                                              <label for="tapping">Tapping</label>
                                         </div>
                                         <div class="xs:col-span-12 md:col-span-4">
-                                             <input id="tapping" type="number" class="border border-gray-400 rounded-md w-full"/>
+                                             <input id="tapping" type="number" formControlName="tapping" class="border border-gray-400 rounded-md w-full"/>
                                         </div>
                                    </div>
 
@@ -197,7 +197,7 @@
                                              <label for="reconnectionFee">Reconnection Fee</label>
                                         </div>
                                         <div class="xs:col-span-12 md:col-span-4">
-                                             <input id="reconnectionFee" type="number" class="border border-gray-400 rounded-md w-full"/>
+                                             <input id="reconnectionFee" type="number" formControlName="reconnection" class="border border-gray-400 rounded-md w-full"/>
                                         </div>
                                    </div>
 
@@ -206,7 +206,7 @@
                                              <label for="calibration">Calibration</label>
                                         </div>
                                         <div class="xs:col-span-12 md:col-span-4">
-                                             <input id="calibration" type="number" class="border border-gray-400 rounded-md w-full"/>
+                                             <input id="calibration" type="number" formControlName="calibration" class="border border-gray-400 rounded-md w-full"/>
                                         </div>
                                    </div>
 
@@ -215,7 +215,7 @@
                                              <label for="septageFee">Septage Fee</label>
                                         </div>
                                         <div class="xs:col-span-12 md:col-span-4">
-                                             <input id="septageFee" type="number" class="border border-gray-400 rounded-md w-full"/>
+                                             <input id="septageFee" type="number" formControlName="septageFee" class="border border-gray-400 rounded-md w-full"/>
                                         </div>
                                    </div>
 
@@ -224,7 +224,7 @@
                                              <label for="othersAmount">Others</label>
                                         </div>
                                         <div class="xs:col-span-12 md:col-span-4">
-                                             <input id="othersAmount" type="number" class="border border-gray-400 rounded-md w-full"/>
+                                             <input id="othersAmount" type="number" formControlName="otherCollection" class="border border-gray-400 rounded-md w-full"/>
                                         </div>
                                    </div>
 
@@ -233,7 +233,7 @@
                                              <label for="othersDescription">Description</label>
                                         </div>
                                         <div class="xs:col-span-12 md:col-span-4">
-                                             <input id="othersAmount" type="text" class="border border-gray-400 rounded-md w-full"/>
+                                             <input id="othersAmount" type="text" formControlName="otherDescription" class="border border-gray-400 rounded-md w-full"/>
                                         </div>
                                    </div>
 
@@ -242,7 +242,7 @@
                                              <label for="seniorDiscount">Senior Discount</label>
                                         </div>
                                         <div class="xs:col-span-12 md:col-span-4">
-                                             <input id="seniorDiscount" type="number" class="border border-gray-400 rounded-md w-full"/>
+                                             <input id="seniorDiscount" type="number" formControlName="seniorDiscount" class="border border-gray-400 rounded-md w-full"/>
                                         </div>
                                    </div>
 
@@ -251,7 +251,7 @@
                                              <label for="penalty">10% Penalty</label>
                                         </div>
                                         <div class="xs:col-span-12 md:col-span-4">
-                                             <input disabled id="penalty" type="number" class="border border-gray-400 rounded-md w-full"/>
+                                             <input id="penalty" type="number" formControlName="penalty" class="border border-gray-400 rounded-md w-full"/>
                                         </div>
 
                                         <div class="xs:col-span-12 md:col-span-4 ">
@@ -264,7 +264,7 @@
                                              <label for="totalAmount">Total Amount</label>
                                         </div>
                                         <div class="xs:col-span-12 md:col-span-4">
-                                             <input disabled id="totalAmount" type="number" class="border border-gray-400 rounded-md w-full"/>
+                                             <input id="totalAmount" type="number" formControlName="totalAmount" class="border border-gray-400 rounded-md w-full"/>
                                         </div>
                                    </div>
 
@@ -290,7 +290,7 @@
 
      <mat-dialog-actions>
           <div class="flex flex-row w-full gap-3 justify-end">
-               <button (click)="onClose()" class="bg-blue-500 text-white rounded border border-black border-solid p-2 w-[80px]">
+               <button (click)="onDoneClick()" class="bg-blue-500 text-white rounded border border-black border-solid p-2 w-[80px]">
                     Done
                </button>
 

@@ -3,7 +3,11 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { ICustomerList } from '../../../models/interfaces/ICustomer';
 import { MatButtonModule } from '@angular/material/button';
 import { Router, RouterModule } from '@angular/router';
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatPaginator, MatPaginatorDefaultOptions, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { CustomerService } from '../../../services/customer.service';
+import { IAPIResponse } from '../../../models/interfaces/IApiResponse';
+import { SpinnerComponent } from "../../common/spinner/spinner.component";
+import { CommonService } from '../../../services/common.service';
 
 @Component({
   selector: 'app-customer-list',
@@ -12,22 +16,25 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
     MatTableModule,
     MatButtonModule,
     MatPaginatorModule,
-    RouterModule
-  ],
+    RouterModule,
+    SpinnerComponent
+],
   templateUrl: './customer-list.component.html',
   styleUrl: './customer-list.component.css'
 })
-export class CustomerListComponent implements OnInit,AfterViewInit {
+export class CustomerListComponent implements OnInit {
 
   constructor(
     private router: Router,
+    private customerService: CustomerService,
+    private commonService: CommonService
   ) {}
 
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatPaginator, {static: true}) paginator!: MatPaginator;
 
-  dataSource!: MatTableDataSource<ICustomerList>;
+  dataSource = new MatTableDataSource([]);
   tableCols: string[] = [
-    'Customer No', 
+    'Account No', 
     'Last Name', 
     'First Name', 
     'Middle Name', 
@@ -36,371 +43,50 @@ export class CustomerListComponent implements OnInit,AfterViewInit {
     'Customer Type'
   ];
 
-  ngOnInit(): void {
-    this.dataSource = new MatTableDataSource<ICustomerList>(dummyData);
-    console.log('DATASOURCE: ', this.dataSource)
-  }
-
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
+  pageIdx:number = 0;
+  pageSize: number = 50;
+  pageLength: number = 0;
+  totalRecordCount: number = 0;
+  isSpinnerVisible!: boolean;
+  
+  async ngOnInit(): Promise<void> {
+    this.commonService.getShowSpinnerVisibility().subscribe(spinnerVisibility => {
+      this.isSpinnerVisible = spinnerVisibility
+    });
+    this.loadData(this.pageIdx,this.pageSize)
   }
 
   onCreateNewClick(): void {
     this.router.navigateByUrl('/customer/create');
   }
   
-}
-
-export const dummyData: ICustomerList[] = [
-  {
-    customerId: 1,
-    nationalId: 'n1',
-    accountNo: 'a1',
-    meterNo: 'm1',
-    alias: 'alias1',
-    lastName: 'Dela Cruz',
-    firstName: 'Juan',
-    middleName: '',
-    branchCode: 1,
-    address: 'address1',
-    customerType: 1,
-    phase: 'Phase 1'
-  },
-  {
-    customerId: 2,
-    nationalId: 'n2',
-    accountNo: 'a2',
-    meterNo: 'm2',
-    alias: 'alias2',
-    lastName: 'San Pedro',
-    firstName: 'Pedro',
-    middleName: '',
-    branchCode: 1,
-    address: 'address2',
-    customerType: 1,
-    phase: 'Phase 1'
-  },
-  {
-    customerId: 3,
-    nationalId: 'n3',
-    accountNo: 'a3',
-    meterNo: 'm3',
-    alias: 'alias3',
-    lastName: 'Batute',
-    firstName: 'Jose',
-    middleName: '',
-    branchCode: 1,
-    address: 'address3',
-    customerType: 2,
-    phase: 'Phase 2'
-  },
-  {
-    customerId: 4,
-    nationalId: 'n4',
-    accountNo: 'a4',
-    meterNo: 'm4',
-    alias: 'alias4',
-    lastName: 'Rizal',
-    firstName: 'Jose',
-    middleName: '',
-    branchCode: 1,
-    address: 'address4',
-    customerType: 3,
-    phase: 'Phase 2'
-  },
-  {
-    customerId: 5,
-    nationalId: 'n5',
-    accountNo: 'a5',
-    meterNo: 'm5',
-    alias: 'alias5',
-    lastName: 'Mabini',
-    firstName: 'Apolinario',
-    middleName: '',
-    branchCode: 1,
-    address: 'address5',
-    customerType: 4,
-    phase: 'Phase 2'
-  },
-  {
-    customerId: 6,
-    nationalId: 'n6',
-    accountNo: 'a6',
-    meterNo: 'm6',
-    alias: 'alias6',
-    lastName: 'Bonifacio',
-    firstName: 'Andres',
-    middleName: '',
-    branchCode: 3,
-    address: 'address6',
-    customerType: 2,
-    phase: 'Phase 3'
-  },
-  {
-    customerId: 7,
-    nationalId: 'n7',
-    accountNo: 'a1',
-    meterNo: 'm1',
-    alias: 'alias1',
-    lastName: 'Dela Cruz',
-    firstName: 'Juan',
-    middleName: '',
-    branchCode: 1,
-    address: 'address1',
-    customerType: 1,
-    phase: 'Phase 3'
-  },
-  {
-    customerId: 8,
-    nationalId: 'n8',
-    accountNo: 'a2',
-    meterNo: 'm2',
-    alias: 'alias2',
-    lastName: 'San Pedro',
-    firstName: 'Pedro',
-    middleName: '',
-    branchCode: 1,
-    address: 'address2',
-    customerType: 1,
-    phase: 'Phase 3'
-  },
-  {
-    customerId: 9,
-    nationalId: 'n9',
-    accountNo: 'a3',
-    meterNo: 'm3',
-    alias: 'alias3',
-    lastName: 'Batute',
-    firstName: 'Jose',
-    middleName: '',
-    branchCode: 1,
-    address: 'address3',
-    customerType: 2,
-    phase: 'Phase 3'
-  },
-  {
-    customerId: 10,
-    nationalId: 'n10',
-    accountNo: 'a4',
-    meterNo: 'm4',
-    alias: 'alias4',
-    lastName: 'Rizal',
-    firstName: 'Jose',
-    middleName: '',
-    branchCode: 1,
-    address: 'address4',
-    customerType: 2,
-    phase: 'Phase 3'
-  },
-  {
-    customerId: 11,
-    nationalId: 'n11',
-    accountNo: 'a5',
-    meterNo: 'm5',
-    alias: 'alias5',
-    lastName: 'Mabini',
-    firstName: 'Apolinario',
-    middleName: '',
-    branchCode: 12,
-    address: 'address5',
-    customerType: 1,
-    phase: 'Phase 1'
-  },
-  {
-    customerId: 12,
-    nationalId: 'n11',
-    accountNo: 'a5',
-    meterNo: 'm5',
-    alias: 'alias5',
-    lastName: 'Mabini',
-    firstName: 'Apolinario',
-    middleName: '',
-    branchCode: 12,
-    address: 'address5',
-    customerType: 1,
-    phase: 'Phase 1'
-  },
-  {
-    customerId: 13,
-    nationalId: 'n12',
-    accountNo: 'a6',
-    meterNo: 'm6',
-    alias: 'alias6',
-    lastName: 'Bonifacio',
-    firstName: 'Andres',
-    middleName: '',
-    branchCode: 3,
-    address: 'address6',
-    customerType: 2,
-    phase: 'Phase 2'
-  },
-  {
-    customerId: 14,
-    nationalId: 'n13',
-    accountNo: 'a1',
-    meterNo: 'm1',
-    alias: 'alias1',
-    lastName: 'Dela Cruz',
-    firstName: 'Juan',
-    middleName: '',
-    branchCode: 1,
-    address: 'address1',
-    customerType: 1,
-    phase: 'Phase 1'
-  },
-  {
-    customerId: 15,
-    nationalId: 'n14',
-    accountNo: 'a2',
-    meterNo: 'm2',
-    alias: 'alias2',
-    lastName: 'San Pedro',
-    firstName: 'Pedro',
-    middleName: '',
-    branchCode: 1,
-    address: 'address2',
-    customerType: 1,
-    phase: 'Phase 3'
-  },
-  {
-    customerId: 16,
-    nationalId: 'n15',
-    accountNo: 'a3',
-    meterNo: 'm3',
-    alias: 'alias3',
-    lastName: 'Batute',
-    firstName: 'Jose',
-    middleName: '',
-    branchCode: 1,
-    address: 'address3',
-    customerType: 2,
-    phase: 'Phase 3'
-  },
-  {
-    customerId: 17,
-    nationalId: 'n16',
-    accountNo: 'a4',
-    meterNo: 'm4',
-    alias: 'alias4',
-    lastName: 'Rizal',
-    firstName: 'Jose',
-    middleName: '',
-    branchCode: 1,
-    address: 'address4',
-    customerType: 1,
-    phase: 'Phase 1'
-  },
-  {
-    customerId: 18,
-    nationalId: 'n17',
-    accountNo: 'a5',
-    meterNo: 'm5',
-    alias: 'alias5',
-    lastName: 'Mabini',
-    firstName: 'Apolinario',
-    middleName: '',
-    branchCode: 1,
-    address: 'address5',
-    customerType: 1,
-    phase: 'Phase 1'
-  },
-  {
-    customerId: 19,
-    nationalId: 'n18',
-    accountNo: 'a6',
-    meterNo: 'm6',
-    alias: 'alias6',
-    lastName: 'Bonifacio',
-    firstName: 'Andres',
-    middleName: '',
-    branchCode: 3,
-    address: 'address6',
-    customerType: 1,
-    phase: 'Phase 2'
-  },
-  {
-    customerId: 20,
-    nationalId: 'n19',
-    accountNo: 'a1',
-    meterNo: 'm1',
-    alias: 'alias1',
-    lastName: 'Dela Cruz',
-    firstName: 'Juan',
-    middleName: '',
-    branchCode: 1,
-    address: 'address1',
-    customerType: 1,
-    phase: 'Phase 2'
-  },
-  {
-    customerId: 21,
-    nationalId: 'n20',
-    accountNo: 'a2',
-    meterNo: 'm2',
-    alias: 'alias2',
-    lastName: 'San Pedro',
-    firstName: 'Pedro',
-    middleName: '',
-    branchCode: 1,
-    address: 'address2',
-    customerType: 1,
-    phase: 'Phase 1'
-  },
-  {
-    customerId: 22,
-    nationalId: 'n21',
-    accountNo: 'a3',
-    meterNo: 'm3',
-    alias: 'alias3',
-    lastName: 'Batute',
-    firstName: 'Jose',
-    middleName: '',
-    branchCode: 1,
-    address: 'address3',
-    customerType: 2,
-    phase: 'Phase 1'
-  },
-  {
-    customerId: 23,
-    nationalId: 'n22',
-    accountNo: 'a4',
-    meterNo: 'm4',
-    alias: 'alias4',
-    lastName: 'Rizal',
-    firstName: 'Jose',
-    middleName: '',
-    branchCode: 1,
-    address: 'address4',
-    customerType: 1,
-    phase: 'Phase 1'
-  },
-  {
-    customerId: 24,
-    nationalId: 'n23',
-    accountNo: 'a5',
-    meterNo: 'm5',
-    alias: 'alias5',
-    lastName: 'Mabini',
-    firstName: 'Apolinario',
-    middleName: '',
-    branchCode: 1,
-    address: 'address5',
-    customerType: 1,
-    phase: 'Phase 3'
-  },
-  {
-    customerId: 25,
-    nationalId: 'n23',
-    accountNo: 'a6',
-    meterNo: 'm6',
-    alias: 'alias6',
-    lastName: 'Bonifacio',
-    firstName: 'Andres',
-    middleName: '',
-    branchCode: 3,
-    address: 'address6',
-    customerType: 2,
-    phase: 'Phase 1'
+  handlePageChange(e: PageEvent) {
+    this.paginator.pageIndex = e.pageIndex;
+    this.paginator.pageSize = e.pageSize;
+    this.paginator.length = e.length;
+    this.loadData(e.pageIndex, e.pageSize);
   }
-  
-]
+
+
+  loadData(pageIdx: number, pageSize: number) {
+    this.commonService.showSpinner(true);
+    this.customerService.getCustomerList(pageIdx, pageSize).then((response: IAPIResponse) => {
+      if(response.result !== null) {
+        const result: any = response.result;
+
+        this.dataSource.data = result.data;
+        this.paginator.pageIndex = result.paginator.pageNumber;
+        this.paginator.pageSize = result.paginator.pageSize;
+        this.paginator.length =  result.paginator.totalRecordCount;
+      }
+    })
+    .catch(async (error: Error) => {
+      console.error('Error fetching customer list:', error);
+      this.commonService.showSpinner(false);
+    })
+    .finally(async () => {
+      this.commonService.showSpinner(false);
+    });
+  }
+
+}

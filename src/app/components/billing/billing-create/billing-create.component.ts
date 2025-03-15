@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDivider } from '@angular/material/divider';
 import { MatExpansionModule } from '@angular/material/expansion';
@@ -12,6 +12,7 @@ import { IBillingInfo, IWaterRates } from '../../../models/interfaces/IBilling';
 import { BillingService } from '../../../services/billing.service';
 import { formatDate } from '@angular/common';
 import { IMeterDetails } from '../../../models/interfaces/IMeter';
+import { IAPIResponse } from '../../../models/interfaces/IApiResponse';
 
 @Component({
   selector: 'app-billing-create',
@@ -25,7 +26,7 @@ import { IMeterDetails } from '../../../models/interfaces/IMeter';
   templateUrl: './billing-create.component.html',
   styleUrl: './billing-create.component.css'
 })
-export class BillingCreateComponent {
+export class BillingCreateComponent implements OnInit {
 
 
   constructor(
@@ -44,12 +45,13 @@ export class BillingCreateComponent {
   currentDate = formatDate(new Date(),'yyyy-MM-dd','en-PH');
 
   public fg = new FormGroup({
-    meterNo: new FormControl('', Validators.required),
-    accountNo: new FormControl('',Validators.required),
-    alias: new FormControl(''),
-    customerName: new FormControl(''),
-    branchCode: new FormControl(''),
-    address: new FormControl(''),
+    readingNo: new FormControl<string>({value: '', disabled: true}, Validators.required),
+    meterNo: new FormControl<string>('', Validators.required),
+    accountNo: new FormControl<string>('',Validators.required),
+    alias: new FormControl<string>(''),
+    customerName: new FormControl<string>(''),
+    branchCode: new FormControl<string>(''),
+    address: new FormControl<string>(''),
     monthOf: new FormControl<number>(this.currentMonth),
     dateFrom: new FormControl<string>(this.currentDate),
     dateTo: new FormControl<string>(this.currentDate),
@@ -66,6 +68,10 @@ export class BillingCreateComponent {
     status: new FormControl({value:'', disabled: true}),
   })
 
+
+  ngOnInit(): void {
+    this.generateReadingNo();
+  }
   
   onSubmit() {
     if(!this.fg.valid) {
@@ -76,8 +82,9 @@ export class BillingCreateComponent {
     const frm = this.fg.value;
 
     let params: IBillingInfo = {
+      readingNo: frm.readingNo!,
       meterNo: frm.meterNo!,
-      customerId: this.selectedCustomerInfo.id,
+      customerId: this.selectedCustomerInfo.id!,
       monthOf: frm.monthOf!,
       dateFrom: frm.dateFrom!, 
       dateTo: frm.dateTo!,
@@ -146,7 +153,6 @@ export class BillingCreateComponent {
   
       dialogRef.afterClosed().subscribe(data => {
         if(data !== null) {
-          console.log('RECEIVED FROM meter DIALOG: ', data);
           this.selectedMeterNo = data;
           this.getMeterInfo(this.selectedMeterNo.meterNo);
           this.getWaterRates(this.selectedCustomerInfo.customerType);
@@ -157,7 +163,7 @@ export class BillingCreateComponent {
   updateFormFromCustomer() {
     this.fg.patchValue({
       customerName: `${this.selectedCustomerInfo.lastName}, ${this.selectedCustomerInfo.firstName} ${this.selectedCustomerInfo.middleName}`,
-      branchCode: this.selectedCustomerInfo.branchCode,
+      branchCode: this.selectedCustomerInfo.branchCode.toString(),
       address: this.selectedCustomerInfo.address,
       accountNo: this.selectedCustomerInfo.accountNo,
     });
@@ -262,6 +268,14 @@ export class BillingCreateComponent {
     this.fg.patchValue({
       totalAmount: this.totalBilingAmount,
     });
+  }
+
+  generateReadingNo():void {
+    this.billingService.generateReadingNo().then((response: IAPIResponse) => {
+      this.fg.patchValue({
+        readingNo: response.result.toString()
+      })
+    })
   }
 
 }

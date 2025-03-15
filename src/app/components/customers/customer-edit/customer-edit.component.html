@@ -4,7 +4,7 @@
 
           <mat-expansion-panel [expanded]="step() === 0" (opened)="setStep(0)">     <!-- <mat-expansion-panel [expanded]="step() === 0" (opened)="setStep(0)">  -->
                <mat-expansion-panel-header class="mb-2">
-                    <mat-panel-title class="p-3 font-bold"> Customer Information </mat-panel-title>
+                    <mat-panel-title class="p-3 font-bold"> <span class="text-white">Customer Information</span> </mat-panel-title>
                     <mat-icon fontIcon="person" class="m-3"></mat-icon>
                </mat-expansion-panel-header>
 
@@ -13,15 +13,6 @@
                          <!-- first column -->
                          <div class="col-span-6 col-start-1">
                               <div class="grid grid-row gap-3">
-                                   <div class="grid grid-cols-12">
-                                        <div class="col-start-1 col-span-3">
-                                             <label for="customerId"> Customer ID: </label>
-                                        </div>
-                                        <div class="col-start-4 col-span-9">
-                                             <input type="text" id="customerId" formControlName="customerId"
-                                                  class="border border-gray-400 rounded-md" />
-                                        </div>
-                                   </div>
 
                                    <div class="grid grid-cols-12">
                                         <div class="col-span-3">
@@ -33,25 +24,6 @@
                                         </div>
                                    </div>
 
-                                   <div class="grid grid-cols-12">
-                                        <div class="col-span-3">
-                                             <label for="meterNo"> Meter No: </label>
-                                        </div>
-                                        <div class="col-start-4 col-span-9">
-                                             <input type="text" id="meterNo" formControlName="meterNo"
-                                                  class="border border-gray-400 rounded-md" />
-                                        </div>
-                                   </div>
-
-                                   <div class="grid grid-cols-12">
-                                        <div class="col-span-3">
-                                             <label for="alias"> Alias: </label>
-                                        </div>
-                                        <div class="col-start-4 col-span-9">
-                                             <input type="text" id="alias" formControlName="alias"
-                                                  class="border border-gray-400 rounded-md" />
-                                        </div>
-                                   </div>
 
                                    <div class="grid grid-cols-12">
                                         <div class="col-span-3">
@@ -127,7 +99,17 @@
                                         </div>
                                         <div class="col-start-4 col-span-9">
                                              <input type="text" id="address" formControlName="address"
-                                                  class="w-full border border-gray-400 rounded-md" />
+                                        class="w-full border border-gray-400 rounded-md" />
+                                        </div>
+                                   </div>
+
+                                   <div class="grid grid-cols-12">
+                                        <div class="col-start-1 col-span-3">
+                                             <label for="nationalId"> National ID No: </label>
+                                        </div>
+                                        <div class="col-start-4 col-span-9">
+                                             <input type="text" id="nationalId" formControlName="nationalId"
+                                                  class="border border-gray-400 rounded-md" />
                                         </div>
                                    </div>
                               </div>
@@ -158,11 +140,11 @@
 
                                    <div class="grid grid-cols-12">
                                         <div class="col-span-3 overflow-visible text-nowrap">
-                                             <label for="educationAttainment"> Educational Level: </label>
+                                             <label for="educationalLevel"> Educational Level: </label>
                                         </div>
                                         <div class="col-start-4 col-span-9">
-                                             <input type="text" id="educationAttainment"
-                                                  formControlName="educationAttainment"
+                                             <input type="text" id="educationalLevel"
+                                                  formControlName="educationalLevel"
                                                   class="border border-gray-400 rounded-md" />
                                         </div>
                                    </div>
@@ -179,10 +161,10 @@
 
                                    <div class="grid grid-cols-12">
                                         <div class="col-span-3">
-                                             <label for="noOfDependents"> No. of Dependents: </label>
+                                             <label for="numberOfDependent"> No. of Dependents: </label>
                                         </div>
                                         <div class="col-start-4 col-span-9">
-                                             <input type="number" id="noOfDependents" formControlName="noOfDependents"
+                                             <input type="number" id="numberOfDependent" formControlName="numberOfDependent"
                                                   class="border border-gray-400 rounded-md" />
                                         </div>
                                    </div>
@@ -234,16 +216,6 @@
                                              </select>
                                         </div>
                                    </div>
-
-                                   <div class="grid grid-cols-12">
-                                        <div class="col-span-3">
-                                             <label for="withMembership"> With Memberhip: </label>
-                                        </div>
-                                        <div class="col-start-4 col-span-9">
-                                             <input type="checkbox" id="withMembership" formControlName="withMembership"
-                                                  class="border border-gray-400 rounded-md" />
-                                        </div>
-                                   </div>
                               </div>
                          </div>
                     </div>
@@ -252,13 +224,13 @@
                               Save
                          </button>
                          <button type="button" class="p-2 bg-red-300 font-bold rounded-md mb-1 w-[100px]">
-                              Clear
+                              Reset
                          </button>
                     </div>
                </form>
           </mat-expansion-panel>
 
-          <app-customer-current-billing />
+          <app-customer-current-billing [customerId]="customerId" />
 
           <app-customer-share-cap />
 

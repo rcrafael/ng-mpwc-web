@@ -17,12 +17,7 @@
                     <table mat-table [dataSource]="dataSource" class="block">
                          <ng-container matColumnDef="Reading No">
                               <th mat-header-cell *matHeaderCellDef class="min-w-[120px]"><span>Reading No</span></th>
-                              <td mat-cell *matCellDef="let element"><span>{{element.readingNo}}</span></td>
-                         </ng-container>
-
-                         <ng-container matColumnDef="Mobile Reading No">
-                              <th mat-header-cell *matHeaderCellDef class="min-w-[120px]"><span>Mobile Reading No</span></th>
-                              <td mat-cell *matCellDef="let element"><span>{{element.mobileReadingNo}}</span></td>
+                              <td mat-cell *matCellDef="let element"><span class="underline text-blue-500 cursor-pointer" (click)="onSelectRow(element)">{{element.readingNo}}</span></td>
                          </ng-container>
 
                          <ng-container matColumnDef="Meter No">
@@ -32,42 +27,37 @@
 
                          <ng-container matColumnDef="Month Of">
                               <th mat-header-cell *matHeaderCellDef class="min-w-[120px]"><span>Month Of</span></th>
-                              <td mat-cell *matCellDef="let element"><span>{{element.billingMonth}}</span></td>
+                              <td mat-cell *matCellDef="let element"><span>{{element.monthOf}}</span></td>
                          </ng-container>
                          
                          <ng-container matColumnDef="Date From">
                               <th mat-header-cell *matHeaderCellDef class="min-w-[120px]"><span>Date From</span></th>
-                              <td mat-cell *matCellDef="let element"><span>{{element.billingDateStart}}</span></td>
+                              <td mat-cell *matCellDef="let element"><span>{{element.dateFrom}}</span></td>
                          </ng-container>
                          
                          <ng-container matColumnDef="Date To">
                               <th mat-header-cell *matHeaderCellDef class="min-w-[120px]"><span>Date To</span></th>
-                              <td mat-cell *matCellDef="let element"><span>{{element.billingDateEnd}}</span></td>
+                              <td mat-cell *matCellDef="let element"><span>{{element.dateTo}}</span></td>
                          </ng-container>
 
                          <ng-container matColumnDef="Due Date">
                               <th mat-header-cell *matHeaderCellDef class="min-w-[120px]"><span>Due Date</span></th>
-                              <td mat-cell *matCellDef="let element"><span>{{element.billingDueDate}}</span></td>
+                              <td mat-cell *matCellDef="let element"><span>{{element.dueDate}}</span></td>
                          </ng-container>
 
                          <ng-container matColumnDef="Previous">
                               <th mat-header-cell *matHeaderCellDef class="min-w-[120px]"><span>Previous</span></th>
-                              <td mat-cell *matCellDef="let element"><span>{{element.previousM3}}</span></td>
+                              <td mat-cell *matCellDef="let element"><span>{{element.previous}}</span></td>
                          </ng-container>
 
                          <ng-container matColumnDef="Present">
                               <th mat-header-cell *matHeaderCellDef class="min-w-[120px]"><span>Present</span></th>
-                              <td mat-cell *matCellDef="let element"><span>{{element.presentM3}}</span></td>
+                              <td mat-cell *matCellDef="let element"><span>{{element.present}}</span></td>
                          </ng-container>
 
                          <ng-container matColumnDef="M3 Used">
                               <th mat-header-cell *matHeaderCellDef class="min-w-[120px]"><span>M3 Used</span></th>
                               <td mat-cell *matCellDef="let element"><span>{{element.m3Used}}</span></td>
-                         </ng-container>
-
-                         <ng-container matColumnDef="Rate">
-                              <th mat-header-cell *matHeaderCellDef class="min-w-[120px]"><span>Rate</span></th>
-                              <td mat-cell *matCellDef="let element"><span>{{element.rate}}</span></td>
                          </ng-container>
 
                          <ng-container matColumnDef="Remarks">
@@ -77,12 +67,12 @@
 
                          <ng-container matColumnDef="Reading Amount">
                               <th mat-header-cell *matHeaderCellDef class="min-w-[120px]"><span>Reading Amount</span></th>
-                              <td mat-cell *matCellDef="let element"><span>{{element.billingAmount}}</span></td>
+                              <td mat-cell *matCellDef="let element"><span>{{element.readingAmount}}</span></td>
                          </ng-container>
 
                          <ng-container matColumnDef="Parts">
                               <th mat-header-cell *matHeaderCellDef class="min-w-[120px]"><span>Parts</span></th>
-                              <td mat-cell *matCellDef="let element"><span>{{element.partsAmount}}</span></td>
+                              <td mat-cell *matCellDef="let element"><span>{{element.parts}}</span></td>
                          </ng-container>
 
                          <ng-container matColumnDef="Maintenance Fee">
@@ -114,10 +104,6 @@
 
      <mat-dialog-actions>
           <div class="flex flex-row w-full gap-3 justify-end">
-               <button (click)="onClose()" class="bg-blue-500 text-white rounded border border-black border-solid p-2 w-[80px]">
-                    Select
-               </button>
-
                <button (click)="onClose()" class="bg-red-500 text-white rounded border border-black border-solid p-2 w-[80px]">
                     Cancel
                </button>

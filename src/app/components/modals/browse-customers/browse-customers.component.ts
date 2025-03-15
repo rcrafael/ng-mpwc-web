@@ -41,10 +41,11 @@ export class BrowseCustomersComponent implements OnInit {
   ngOnInit(): void {
     this.customerService.getCustomerList().then((response:any) => {
       this.data = response;
-      this.dataSource = this.data.result;
+      this.dataSource = this.data.result.data;
     });
-   
   }
+
+
 
   onClose(): void {
     this.dialogRef.close();

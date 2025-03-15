@@ -8,7 +8,7 @@
                </div>
                <div class="flex col-span-6 col-start-7 w-full place-content-end">
                     <button type="button" class="p-2 bg-red-300 font-bold border border-solid border-black rounded-md px-3 mr-3" >Reset</button>
-                    <button type="button" class="p-2 bg-green-300 font-bold border border-solid border-black rounded-md px-3" >Save</button>
+                    <button type="submit" class="p-2 bg-green-300 font-bold border border-solid border-black rounded-md px-3" >Save</button>
                </div>
           </div>
 
@@ -16,7 +16,7 @@
                <!-- first column -->
                <div class="col-span-6 col-start-1">
                     <div class="grid grid-row gap-3">
-                         <div class="grid grid-cols-12">
+                         <!-- <div class="grid grid-cols-12">
                               <div class="col-start-1 col-span-3">
                                    <label for="customerId"> Customer ID: </label>
                               </div>
@@ -24,17 +24,7 @@
                                    <input type="text" id="customerId" formControlName="customerId"
                                         class="border border-gray-400 rounded-md" />
                               </div>
-                         </div>
-
-                         <div class="grid grid-cols-12">
-                              <div class="col-start-1 col-span-3">
-                                   <label for="nationalId"> National ID No: </label>
-                              </div>
-                              <div class="col-start-4 col-span-9">
-                                   <input type="text" id="nationalId" formControlName="nationalId"
-                                        class="border border-gray-400 rounded-md" />
-                              </div>
-                         </div>
+                         </div> -->
 
                          <div class="grid grid-cols-12">
                               <div class="col-span-3">
@@ -46,7 +36,7 @@
                               </div>
                          </div>
 
-                         <div class="grid grid-cols-12">
+                         <!-- <div class="grid grid-cols-12">
                               <div class="col-span-3">
                                    <label for="meterNo"> Meter No: </label>
                               </div>
@@ -54,9 +44,9 @@
                                    <input type="text" id="meterNo" formControlName="meterNo"
                                         class="border border-gray-400 rounded-md" />
                               </div>
-                         </div>
+                         </div> -->
 
-                         <div class="grid grid-cols-12">
+                         <!-- <div class="grid grid-cols-12">
                               <div class="col-span-3">
                                    <label for="alias"> Alias: </label>
                               </div>
@@ -64,7 +54,7 @@
                                    <input type="text" id="alias" formControlName="alias"
                                         class="border border-gray-400 rounded-md" />
                               </div>
-                         </div>
+                         </div> -->
 
                          <div class="grid grid-cols-12">
                               <div class="col-span-3">
@@ -143,6 +133,17 @@
                                         class="w-full border border-gray-400 rounded-md" />
                               </div>
                          </div>
+
+                         <div class="grid grid-cols-12">
+                              <div class="col-start-1 col-span-3">
+                                   <label for="nationalId"> National ID No: </label>
+                              </div>
+                              <div class="col-start-4 col-span-9">
+                                   <input type="text" id="nationalId" formControlName="nationalId"
+                                        class="border border-gray-400 rounded-md" />
+                              </div>
+                         </div>
+
                     </div>
                </div>
 
@@ -171,11 +172,11 @@
 
                          <div class="grid grid-cols-12">
                               <div class="col-span-3 overflow-visible text-nowrap">
-                                   <label for="educationAttainment"> Educational Level: </label>
+                                   <label for="educationalLevel"> Educational Level: </label>
                               </div>
                               <div class="col-start-4 col-span-9">
-                                   <input type="text" id="educationAttainment"
-                                        formControlName="educationAttainment"
+                                   <input type="text" id="educationalLevel"
+                                        formControlName="educationalLevel"
                                         class="border border-gray-400 rounded-md" />
                               </div>
                          </div>
@@ -248,7 +249,7 @@
                               </div>
                          </div>
 
-                         <div class="grid grid-cols-12">
+                         <!-- <div class="grid grid-cols-12">
                               <div class="col-span-3">
                                    <label for="withMembership"> With Memberhip: </label>
                               </div>
@@ -256,18 +257,18 @@
                                    <input type="checkbox" id="withMembership" formControlName="withMembership"
                                         class="border border-gray-400 rounded-md" />
                               </div>
-                         </div>
+                         </div> -->
                     </div>
                </div>
           </div>
-          <div class="flex flex-row-reverse gap-2 mb-3"> 
+          <!-- <div class="flex flex-row-reverse gap-2 mb-3"> 
                <button type="submit" class="p-2 bg-green-300 font-bold rounded-md mb-1 w-[100px]">
                     Save
                </button>
                <button type="button" class="p-2 bg-red-300 font-bold rounded-md mb-1 w-[100px]">
                     Clear
                </button>
-          </div>
+          </div> -->
      </form>
 
 </div>

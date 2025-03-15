@@ -1,8 +1,12 @@
-import { Component, signal } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { IBranchCode, ICustomerType, IGender, IPhase } from '../../../models/interfaces/ICommon';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatAccordion, MatExpansionModule } from '@angular/material/expansion';
 import { MatIcon, MatIconModule } from '@angular/material/icon';
+import { ICustomerProfile } from '../../../models/interfaces/ICustomer';
+import { formatDate } from '@angular/common';
+import { CustomerService } from '../../../services/customer.service';
+import { IAPIResponse } from '../../../models/interfaces/IApiResponse';
 
 @Component({
   selector: 'app-customer-create',
@@ -15,59 +19,84 @@ import { MatIcon, MatIconModule } from '@angular/material/icon';
   templateUrl: './customer-create.component.html',
   styleUrl: './customer-create.component.css'
 })
-export class CustomerCreateComponent {
+export class CustomerCreateComponent implements OnInit {
 
   constructor(
-
+    private customerService: CustomerService
   ) {}
 
   branchCode: IBranchCode[] = branchCodeData;
   gender: IGender[] = genderData;
   customerType: ICustomerType[] = customerTypeData;
   phase: IPhase[] = phaseData;
-
-  step = signal(0);
-
-  setStep(index: number) {
-    this.step.set(index);
-  }
-
-  nextStep() {
-    this.step.update(i => i + 1);
-  }
-
-  prevStep() {
-    this.step.update(i => i - 1);
-  }
   
-  public fg = new FormGroup ({
-    customerId: new FormControl(''),
-    nationalId: new FormControl(''),
-    accountNo:  new FormControl(''),
-    meterNo:  new FormControl(''),
-    alias:  new FormControl(''),
-    lastName:  new FormControl(''),
-    firstName:  new FormControl(''),
-    middleName:  new FormControl(''),
-    branchCode:  new FormControl(-1),
-    address:  new FormControl(''),
-    gender:  new FormControl(-1),
-    civilStatus:  new FormControl(''),
-    dateOfBirth:  new FormControl(new Date()),
-    occupation: new FormControl(''),
-    educationAttainment: new FormControl(''),
-    noOfDependents: new FormControl(0),
-    religion: new FormControl(''),
-    annualIncome: new FormControl(''),
-    dateAccepted: new FormControl(new Date()),
-    customerType: new FormControl(-1),
-    phase: new FormControl(-1),
-    withMembership: new FormControl(true)
+  currentDate: string = formatDate(new Date(),'yyyy-MM-dd','en-PH');
+
+  fg = new FormGroup ({
+    accountNo:  new FormControl<string>('',Validators.required),
+    lastName:  new FormControl<string>('',Validators.required),
+    firstName:  new FormControl<string>('',Validators.required),
+    middleName:  new FormControl<string>(''),
+    branchCode:  new FormControl<number>(-1,Validators.required),
+    address:  new FormControl<string>('',Validators.required),
+    gender:  new FormControl<number>(-1,Validators.required),
+    civilStatus:  new FormControl<string>('',Validators.required),
+    dateOfBirth:  new FormControl<string>(this.currentDate,Validators.required),
+    nationalId: new FormControl<string>(''),
+    occupation: new FormControl<string>(''),
+    educationalLevel: new FormControl<string>(''),
+    numberOfDependent: new FormControl<number>(0),
+    religion: new FormControl<string>(''),
+    annualIncome: new FormControl<number | null>(0),
+    dateAccepted: new FormControl<string>(this.currentDate,Validators.required),
+    customerType: new FormControl<number>(-1,Validators.required),
+    phase: new FormControl<number>(-1,Validators.required),
   });
   
+  ngOnInit(): void {
+    this.customerService.generateAccountNumber().then((response: IAPIResponse) => { 
+      this.fg.patchValue({ accountNo: response.result.toString() });
+    })
+  }
+
   onSubmit() : void {
-    console.log('FORM VALUE ',this.fg.value);
-    
+    if(!this.fg.valid) {
+      alert("Invalid inputs! Please try again.");
+      console.log('FORM: ', this.fg);
+      return;
+    }
+
+    const frm = this.fg.value;
+    let cust: ICustomerProfile = {
+      accountNo: frm.accountNo!,
+      lastName: frm.lastName!,
+      firstName:frm.firstName!,
+      middleName: frm.middleName!,
+      branchCode: frm.branchCode ?? 1,
+      address: frm.address!,
+      gender: frm.gender!,
+      civilStatus: frm.civilStatus ?? '',
+      dateOfBirth: frm.dateOfBirth!,
+      nationalId: frm.nationalId ?? '',
+      occupation: frm.occupation ?? '',
+      educationalLevel: frm.educationalLevel ?? '',
+      numberOfDependent: frm.numberOfDependent ?? 0,
+      religion: frm.religion ?? '',
+      annualIncome: frm.annualIncome ?? 0,
+      dateAccepted: frm.dateAccepted!,
+      customerType: frm.customerType ?? 1,
+      phase: frm.phase ?? 1,
+    }
+
+    this.customerService.createCustomer(cust).then((response: IAPIResponse)=> {
+      alert("CUSTOMER CREATED");
+      console.log('CUSTOMER CREATED',response);
+    })
+    .catch((error: Error) => {
+      console.error('Error creating customer:', error);
+    });
+
+
   }
 
 }

@@ -40,9 +40,8 @@ export interface IOfficialReceiptData {
 }
 
 export interface IOfficialReceiptDetail {
-     id:number;
-     readingNo: number;
-     mobileReadingNo: number;
+     id?:number;
+     readingNo: string;
      readingAmount: number;
      parts: number;
      maintenanceFee: number;

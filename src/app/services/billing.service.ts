@@ -23,4 +23,21 @@ export class BillingService {
     return firstValueFrom(this.http.createBilling(params));
   }
 
+  getBillingByCustomerId(customerId: string, pageNo: number = 0, pageSize: number = 50): Promise<IAPIResponse> {
+    return firstValueFrom(this.http.getBillingByCustomerId(customerId,pageNo,pageSize));
+  }
+
+  getRecentBillingByCustomerId(customerId: string): Promise<IAPIResponse> {
+    return firstValueFrom(this.http.getRecentBillingsByCustomerId(customerId));
+  }
+
+  generateReadingNo(): Promise<IAPIResponse> {
+    return firstValueFrom(this.http.geneateReadingNo());
+  }
+
+  getUnpaidBillsByCustomerId(customerId: string): Promise<IAPIResponse> {
+    return firstValueFrom(this.http.getUnpaidBillsByCustomerId(customerId));
+  }
+
+
 }

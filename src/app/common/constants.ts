@@ -24,3 +24,10 @@ export class BillingApi {
      public static GET_RECENT_BILLING_BY_CUSTOMER_ID = 'api/billing/get-recent-billings';
      public static GET_UNPAID_BILLING_BY_CUSTOMER_ID = 'api/billing/get-unpaid-bills';
 }
+
+export class PaymentApi {
+     public static GET_OR_ALL_PAYMENTS = 'api/payment/official-receipt/{pageNo}/{pageSize}';
+     public static GET_OR_ALL_PAYMENTS_BY_CUSTOMER_ID = 'api/payment/customer/{customerId}/{pageNo}/{pageSize}';
+     public static GENERATE_OR_NUMBER = 'api/payment/official-receipt/new-or-number';
+     public static CREATE_OR_PAYMENT = 'api/payment/official-receipt';
+}

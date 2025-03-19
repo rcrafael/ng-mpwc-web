@@ -18,7 +18,7 @@
 
                     <ng-container matColumnDef="Reading Amount Paid">
                          <th mat-header-cell *matHeaderCellDef class="min-w-[120px]"><span>Reading Amount Paid</span></th>
-                         <td mat-cell *matCellDef="let element"><span>{{element.readingAmount}}</span></td>
+                         <td mat-cell *matCellDef="let element"><span>{{element.readingAmountPaid}}</span></td>
                     </ng-container>
 
                     <ng-container matColumnDef="Parts">
@@ -38,7 +38,7 @@
 
                     <ng-container matColumnDef="Membership Fee">
                          <th mat-header-cell *matHeaderCellDef class="min-w-[120px]"><span>Membership Fee</span></th>
-                         <td mat-cell *matCellDef="let element"><span>{{element.membershipFee}}</span></td>
+                         <td mat-cell *matCellDef="let element"><span>{{element.membership}}</span></td>
                     </ng-container>
 
                     <ng-container matColumnDef="Tapping">
@@ -124,6 +124,15 @@
                                              <button class="bg-gray-300 w-fit px-[10px] rounded-md border border-black border-solid">...</button>
                                         </div>
                                    </div> -->
+
+                                   <div class="grid grid-cols-12 gap-2">
+                                        <div class="xs:col-span-12 md:col-span-4">
+                                             <label for="meterNo">Meter No</label>
+                                        </div>
+                                        <div class="xs:col-span-12 md:col-span-4">
+                                             <input id="meterNo" type="text" formControlName="meterNo" class="border border-gray-400 rounded-md w-full"/>
+                                        </div>
+                                   </div>
                
                                    <div class="grid grid-cols-12 gap-2">
                                         <div class="xs:col-span-12 md:col-span-4">

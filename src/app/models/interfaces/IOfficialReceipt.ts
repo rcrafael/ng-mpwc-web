@@ -12,41 +12,33 @@ export interface IOfficialReceiptList {
      status: string;
 }
 
-export interface IOfficialReceiptData {
-     id: number;
+export interface IOfficialReceiptHeader {
+     id?: number;
      orNo: string;
+     customerId: string
      orDate: string;
-     entryDate: string;
-     createdby: string;
-     meterNo: string;
-     accountNo: number;
-     customerId: number;
-     shareCapital: number;
-     cbu: number;
-     savings: number;
      totalBillingAmount: number;
      totalShareAmount: number;
-     shareAsPayment: number;
+     totalAmountPay: number;
      seniorDiscount: number;
-     totalAmountToPay: number;
-     checkNo: string;
-     checkBankName: string;
-     checkDate: string;
-     checkAmount: number;
+     entryDate: string;
+     createdBy: string;
+     checkNo?: string;
+     checkBank?: string;
+     checkDate?: string;
      status: number;
-     isOutsideCollection: boolean;
-     outsideCustomerNameL: string;
-     isPartSale: boolean;
+     isPartSale?: boolean;
+     isOutsideCollection?: boolean;
+     outsideCustomerName?: string;
 }
-
 export interface IOfficialReceiptDetail {
      id?:number;
+     orNo?: string;
      readingNo: string;
-     readingAmount: number;
+     meterNo: string;
+     readingAmountPaid: number;
      parts: number;
-     maintenanceFee: number;
-     septageFee: number;
-     membershipFee: number;
+     membership: number;
      tapping: number;
      calibration: number;
      reconnection: number;
@@ -54,7 +46,46 @@ export interface IOfficialReceiptDetail {
      penalty:number;
      otherCollection:number;
      otherDescription: string;
+     maintenanceFee: number;
      seniorDiscount: number;
-     remarks: string;
+     septageFee: number;
      totalAmount: number;
+     remarks: string;
+     billingStatus: number;
+}
+
+export interface IShareCapital {
+     id?: string;
+     orNo: string;
+     customerId: string;
+     amount: number;
+     entryDate: string;
+     transactionType: number; // 1 = deposit, 2 = withdraw
+}
+
+export interface IShareCbu {
+     id?: string;
+     orNo: string;
+     customerId: string;
+     amount: number;
+     entryDate: string;
+     transactionType: number; // 1 = deposit, 2 = withdraw
+}
+
+export interface IShareSavings {
+     id?: string;
+     orNo: string;
+     customerId: string;
+     amount: number;
+     entryDate: string;
+     transactionType: number; // 1 = deposit, 2 = withdraw
+}
+
+
+export interface IOfficialReceipt {
+     header: IOfficialReceiptHeader;
+     details: IOfficialReceiptDetail[];
+     shareCapital?: IShareCapital;
+     cbu?: IShareCbu;
+     savings?: IShareSavings;
 }

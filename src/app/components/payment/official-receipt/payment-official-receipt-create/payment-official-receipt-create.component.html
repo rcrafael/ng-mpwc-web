@@ -7,7 +7,7 @@
                </div>
                <div class="flex col-span-6 col-start-7 w-full place-content-end">
                     <button type="button" class="p-2 bg-red-300 font-bold border border-solid border-black rounded-md px-3 mr-3" >Reset</button>
-                    <button type="button" class="p-2 bg-green-300 font-bold border border-solid border-black rounded-md px-3" >Save</button>
+                    <button type="submit" class="p-2 bg-green-300 font-bold border border-solid border-black rounded-md px-3" >Save</button>
                </div>
           </div>
 
@@ -129,10 +129,10 @@
 
                          <div class="grid grid-cols-12 gap-2">
                               <div class="xs:col-span-12 md:col-span-3">
-                                   <label for="createdDate">Created By</label>
+                                   <label for="createdBy">Created By</label>
                               </div>
                               <div class="xs:col-span-10 md:col-span-6">
-                                   <input type="text" id="createdDate" formControlName="createdBy" class="border border-gray-400 rounded-md w-full">
+                                   <input type="text" id="createdBy" formControlName="createdBy" class="border border-gray-400 rounded-md w-full">
                               </div>
                          </div>
                          
@@ -215,7 +215,7 @@
                                    <label for="totalAmtToPay" class="md:text-sm">Total Amount To Pay</label>
                               </div>
                               <div class="xs:col-span-10 md:col-span-6">
-                                   <input type="number" id="totalAmtToPay" formControlName="totalAmountToPay" class="border border-gray-400 rounded-md w-full">
+                                   <input type="number" id="totalAmtToPay" formControlName="totalAmountPay" class="border border-gray-400 rounded-md w-full">
                               </div>
                          </div>
 
@@ -233,7 +233,7 @@
                                    <label for="bankName" class="md:text-sm">Bank Name</label>
                               </div>
                               <div class="xs:col-span-10 md:col-span-6">
-                                   <input type="text" id="bankName" formControlName="checkBankName" class="border border-gray-400 rounded-md w-full">
+                                   <input type="text" id="bankName" formControlName="checkBank" class="border border-gray-400 rounded-md w-full">
                               </div>
                          </div>
 
@@ -284,14 +284,14 @@
                          <td mat-cell *matCellDef="let element"><span>{{element.readingNo}}</span></td>
                     </ng-container>
 
-                    <ng-container matColumnDef="Mobile Reading No">
+                    <!-- <ng-container matColumnDef="Mobile Reading No">
                          <th mat-header-cell *matHeaderCellDef>Mobile Reading No</th>
                          <td mat-cell *matCellDef="let element"><span>{{element.mobileReadingNo}}</span></td>
-                    </ng-container>
+                    </ng-container> -->
 
                     <ng-container matColumnDef="Reading Amount Paid">
                          <th mat-header-cell *matHeaderCellDef>Reading Amount Paid</th>
-                         <td mat-cell *matCellDef="let element"><span>{{element.readingAmount}}</span></td>
+                         <td mat-cell *matCellDef="let element"><span>{{element.readingAmountPaid}}</span></td>
                     </ng-container>
 
                     <ng-container matColumnDef="Parts">
@@ -311,7 +311,7 @@
 
                     <ng-container matColumnDef="Membership Fee">
                          <th mat-header-cell *matHeaderCellDef>Membership Fee</th>
-                         <td mat-cell *matCellDef="let element"><span>{{element.membershipFee}}</span></td>
+                         <td mat-cell *matCellDef="let element"><span>{{element.membership}}</span></td>
                     </ng-container>
 
                     <ng-container matColumnDef="Tapping">

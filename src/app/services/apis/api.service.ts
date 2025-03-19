@@ -1,11 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BillingApi, Constants, CustomerApi } from '../../common/constants';
+import { BillingApi, Constants, CustomerApi, PaymentApi } from '../../common/constants';
 import { firstValueFrom, Observable } from 'rxjs';
 import { IAPIResponse } from '../../models/interfaces/IApiResponse';
 import { IBillingInfo } from '../../models/interfaces/IBilling';
 import { IMeterDetails } from '../../models/interfaces/IMeter';
 import { ICustomerProfile } from '../../models/interfaces/ICustomer';
+import { IOfficialReceipt } from '../../models/interfaces/IOfficialReceipt';
 @Injectable({
   providedIn: 'root'
 })
@@ -84,6 +85,26 @@ export class ApiService {
       customerId: customerId,
     }
     return this.httpClient.get<IAPIResponse>(`${Constants.HOST}${BillingApi.GET_UNPAID_BILLING_BY_CUSTOMER_ID}`, {params});
+  }
+
+
+
+  //payment APIs
+
+  getORAllPayments(pageNo: number = 0, pageSize: number = 50): Observable<IAPIResponse> {
+    return this.httpClient.get<IAPIResponse>(`${Constants.HOST}${PaymentApi.GET_OR_ALL_PAYMENTS.replace('{pageNo}', pageNo.toString()).replace('{pageSize}', pageSize.toString())}`);
+  } 
+
+  getORPaymentsByCustomerId(customerId: string, pageNo: number = 0, pageSize: number = 50): Observable<IAPIResponse> {
+    return this.httpClient.get<IAPIResponse>(`${Constants.HOST}${PaymentApi.GET_OR_ALL_PAYMENTS_BY_CUSTOMER_ID.replace('{customerId}',customerId).replace('{pageNo}', pageNo.toString()).replace('{pageSize}', pageSize.toString())}`);
+  } 
+
+  generateNewORNo(): Observable<IAPIResponse> {
+    return this.httpClient.get<IAPIResponse>(`${Constants.HOST}${PaymentApi.GENERATE_OR_NUMBER}`);
+  }
+
+  createORPayment(params: IOfficialReceipt): Observable<IAPIResponse> {
+    return this.httpClient.post<IAPIResponse>(`${Constants.HOST}${PaymentApi.CREATE_OR_PAYMENT}`, params);
   }
 
 }

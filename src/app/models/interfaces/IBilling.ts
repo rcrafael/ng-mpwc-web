@@ -1,18 +1,14 @@
+import { ICustomerProfile } from "./ICustomer";
+
 export interface IBillingList {
      readingNo: string;
      meterNo: string;
      customerId: string;
-     accountId: string;
-     firstName: string;
-     middleName: string;
-     lastName: string;
-     alias: string;
-     branchCode: number;
-     address:string;
-     billingMonth: string;
-     billingStart: string;
-     billingEnd: string;
-     billingDueDate: string;
+     customer: ICustomerProfile;
+     monthOf: string;
+     dateFrom: string;
+     dateTo: string;
+     dueDate: string;
      totalAmount: number;
      status: string;
 }
@@ -21,7 +17,7 @@ export interface IBillingInfo {
      readingNo?: string; 
      meterNo: string;
      customerId: string; 
-     accountId?: string;
+     customer?: ICustomerProfile;
      monthOf: number; 
      dateFrom: string; 
      dateTo: string; 
@@ -37,7 +33,7 @@ export interface IBillingInfo {
      totalAmount: number;
      septageFee: number;
      remarks: string;
-     status: string;
+     status: number;
 }
 
 export interface IWaterRates {

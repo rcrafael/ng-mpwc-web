@@ -62,3 +62,28 @@ a span {
 .dialog-container .mat-mdc-dialog-actions {
        padding: 10px 20px !important;
 }
+
+table.mat-mdc-table td.mat-column-Total-Amount-To-Pay,
+table.mat-mdc-table td.mat-column-Reading-Amount,
+table.mat-mdc-table td.mat-column-Parts,
+table.mat-mdc-table td.mat-column-Maintenance-Fee,
+table.mat-mdc-table td.mat-column-Septage-Fee,
+table.mat-mdc-table td.mat-column-Less,
+table.mat-mdc-table td.mat-column-Reading-Amount-Paid,
+table.mat-mdc-table td.mat-column-Membership-Fee,
+table.mat-mdc-table td.mat-column-Calibration,
+table.mat-mdc-table td.mat-column-Reconnection,
+table.mat-mdc-table td.mat-column-Sub-Receivable,
+table.mat-mdc-table td.mat-column-Penalty,
+table.mat-mdc-table td.mat-column-Other-Collection,
+table.mat-mdc-table td.mat-column-Senior-Discount,
+table.mat-mdc-table td.mat-column-Total-Amount
+ {
+     text-align: right !important;
+     padding-right: 20px;
+}
+
+table.mat-mdc-table td.mat-column-Meter-No {
+       text-align: left !important;
+}
+

@@ -10,7 +10,7 @@ import { ICustomerProfile } from '../../../models/interfaces/ICustomer';
 import { CustomerService } from '../../../services/customer.service';
 import { IBillingInfo, IWaterRates } from '../../../models/interfaces/IBilling';
 import { BillingService } from '../../../services/billing.service';
-import { formatDate } from '@angular/common';
+import { DecimalPipe, formatDate } from '@angular/common';
 import { IMeterDetails } from '../../../models/interfaces/IMeter';
 import { IAPIResponse } from '../../../models/interfaces/IApiResponse';
 
@@ -100,7 +100,7 @@ export class BillingCreateComponent implements OnInit {
       totalAmount: frm.totalAmount ? frm.totalAmount : 0,
       septageFee: frm.septageFee ? frm.septageFee : 0,
       remarks: '',
-      status: '1'
+      status: 2 //2 = incomplete; by default
     }
 
     this.billingService.createBilling(params).then(response => {

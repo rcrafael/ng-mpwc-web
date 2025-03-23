@@ -5,6 +5,7 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { IOfficialReceiptDetail } from '../../../../../models/interfaces/IOfficialReceipt';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { SelectBillingModalComponent } from '../select-billing-modal/select-billing-modal.component';
+import { Utils } from '../../../../../common/util';
 
 @Component({
   selector: 'app-add-details-modal',
@@ -47,6 +48,8 @@ export class AddDetailsModalComponent implements OnInit {
 
   customerId: string = '';
   billingAmount: number = 0;
+
+  formatAmount = Utils.formatCurrency;
 
   fg = new FormGroup({
     readingNo: new FormControl<string>('', Validators.required),

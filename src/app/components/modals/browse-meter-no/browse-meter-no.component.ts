@@ -35,6 +35,8 @@ export class BrowseMeterNoComponent implements OnInit {
   dataSource: MatTableDataSource<IMeterDetails> = new MatTableDataSource<IMeterDetails>();
 
   getStatus = Utils.getStatusName;
+
+
   ngOnInit(): void {
     this.customerService.getMeterNoByCustomerId(this.customerInfo.id).then((response:any) => {
       this.data = response;

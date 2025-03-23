@@ -103,10 +103,10 @@ export class CustomerCreateComponent implements OnInit {
 
 
 export const branchCodeData: IBranchCode[] = [
-  { id: 1, name: 'Branch 1' },
-  { id: 2, name: 'Branch 2' },
-  { id: 3, name: 'Branch 3' },
-  { id: 4, name: 'Branch 4' },
+  { id: 1, name: 'Patubig' },
+  { id: 2, name: 'Mahabang Parang' },
+  { id: 3, name: 'Sta. Rosa' },
+  { id: 4, name: 'Duhat' },
 ]
 
 export const genderData: IGender[] = [

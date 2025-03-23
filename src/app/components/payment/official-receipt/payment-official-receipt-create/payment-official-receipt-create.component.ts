@@ -13,6 +13,7 @@ import { ActivatedRoute } from '@angular/router';
 import { CustomerService } from '../../../../services/customer.service';
 import { PaymentService } from '../../../../services/payment.service';
 import { IAPIResponse } from '../../../../models/interfaces/IApiResponse';
+import { Utils } from '../../../../common/util';
 
 
 @Component({
@@ -76,7 +77,9 @@ export class PaymentOfficialReceiptCreateComponent implements OnInit {
 
   currentDate = formatDate(new Date(), 'yyyy-MM-dd', 'en-PH');
   selectedCustomerInfo!: any;
-  orDetails: IOfficialReceiptDetail[] = []; //
+  orDetails: IOfficialReceiptDetail[] = []; 
+
+  formatAmount = Utils.formatCurrency;
 
   public fg = new FormGroup({
     accountNo: new FormControl<string>('', Validators.required),
@@ -192,7 +195,7 @@ export class PaymentOfficialReceiptCreateComponent implements OnInit {
         checkNo: frm.checkNo ?? '',
         checkBank: frm.checkBank ?? '', 
         checkDate: frm.checkDate ?? '',
-        status: 2, //2 = incomplete
+        status: 1, //1 = complete
       },
       details: this.orDetails,
       shareCapital: shareCap,

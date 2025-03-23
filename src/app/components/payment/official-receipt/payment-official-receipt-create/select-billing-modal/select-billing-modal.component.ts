@@ -4,6 +4,7 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { IBillingInfo } from '../../../../../models/interfaces/IBilling';
 import { BillingService } from '../../../../../services/billing.service';
 import { IAPIResponse } from '../../../../../models/interfaces/IApiResponse';
+import { Utils } from '../../../../../common/util';
 
 @Component({
   selector: 'app-select-billing-modal',
@@ -45,6 +46,9 @@ export class SelectBillingModalComponent implements OnInit {
   ]
 
   customerId: string = '';
+  
+  getMonth = Utils.getMonth;
+  formatAmount = Utils.formatCurrency;
   
   ngOnInit(): void {
     this.customerId = this.modalData.customerId;

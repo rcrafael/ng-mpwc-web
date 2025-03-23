@@ -1,14 +1,22 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { Router, RouterModule } from '@angular/router';
 import { IOfficialReceiptList } from '../../../../models/interfaces/IOfficialReceipt';
+import { CommonService } from '../../../../services/common.service';
+import { PaymentService } from '../../../../services/payment.service';
+import { Utils } from '../../../../common/util';
+import { IAPIResponse } from '../../../../models/interfaces/IApiResponse';
+import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { SpinnerComponent } from '../../../common/spinner/spinner.component';
 
 @Component({
   selector: 'app-payment-official-receipt-list',
   standalone: true,
   imports: [
     MatTableModule,
-    RouterModule
+    RouterModule,
+    MatPaginatorModule,
+    SpinnerComponent
   ],
   templateUrl: './payment-official-receipt-list.component.html',
   styleUrl: './payment-official-receipt-list.component.css'
@@ -17,16 +25,17 @@ export class PaymentOfficialReceiptListComponent implements OnInit {
 
   constructor(
     private router: Router,
+    private commonService: CommonService,
+    private paymentService: PaymentService
   ) {}
+  @ViewChild(MatPaginator, {static: true}) paginator!: MatPaginator;
 
-
-  dataSource!: MatTableDataSource<IOfficialReceiptList>;
+  dataSource = new MatTableDataSource([]);
 
   tableCols: string[] = [
     'Official Receipt No', 
     'OR Date', 
-    'Meter No',
-    'Customer No', 
+    'Account No', 
     'Customer Name', 
     'Total Billing Amount', 
     'Total Share Amount', 
@@ -34,83 +43,54 @@ export class PaymentOfficialReceiptListComponent implements OnInit {
     'Status'
   ];
   
-  ngOnInit(): void {
-    this.dataSource = new MatTableDataSource<IOfficialReceiptList>(dummyDataOR);
-  }
+  pageIdx:number = 0;
+  pageSize: number = 50;
+  pageLength: number = 0;
+  totalRecordCount: number = 0;
+  isSpinnerVisible!: boolean;
 
+
+  getStatus = Utils.getStatusName;
+  formatAmount = Utils.formatCurrency;
+  formatDate = Utils.dateFormatter;
+
+  ngOnInit(): void {
+    this.commonService.getShowSpinnerVisibility().subscribe(spinnerVisibility => {
+      this.isSpinnerVisible = spinnerVisibility
+    });
+    this.loadORData(this.pageIdx,this.pageSize)
+  }
 
   onCreateNewClick() {
     this.router.navigateByUrl('/payment/official-receipt/create');
   }
 
-}
+  handlePageChange(e: PageEvent) {
+      this.paginator.pageIndex = e.pageIndex;
+      this.paginator.pageSize = e.pageSize;
+      this.paginator.length = e.length;
+      this.loadORData(e.pageIndex, e.pageSize);
+    }
 
+  loadORData(pageIdx: number, pageSize: number): void {
+    this.commonService.showSpinner(true);
+    this.paymentService.getORAllWithCustomerInfo(pageIdx, pageSize).then((response: IAPIResponse) => {
+      if(response.result !== null) {
+        const result: any = response.result;
 
-export const dummyDataOR: IOfficialReceiptList[] = [
-  {
-    id: 1,
-    orNo: 'OR123',
-    orDate: '2022-12-01',
-    customerId: 1,
-    meterNo: 'ABC123',
-    accountNo: '123456',
-    customerName: 'John Doe',
-    totalBillingAmount: 1000,
-    totalShareAmount: 500,
-    totalAmountToPay: 500,
-    status: 'Pending'
-  },
-  {
-    id: 2,
-    orNo: 'OR456',
-    orDate: '2022-12-05',
-    customerId: 2,
-    meterNo: 'DEF789',
-    accountNo: '654321',
-    customerName: 'Jane Smith',
-    totalBillingAmount: 1500,
-    totalShareAmount: 750,
-    totalAmountToPay: 750,
-    status: 'Pending'
-  },
-  {
-    id: 3,
-    orNo: 'OR789',
-    orDate: '2022-12-08',
-    customerId: 3,
-    meterNo: 'GHI901',
-    accountNo: '1234567',
-    customerName: 'Michael Johnson',
-    totalBillingAmount: 2000,
-    totalShareAmount: 1000,
-    totalAmountToPay: 1000,
-    status: 'Pending'
-  },
-  {
-    id: 4,
-    orNo: 'OR123',
-    orDate: '2022-12-01',
-    customerId: 4,
-    meterNo: 'ABC123',
-    accountNo: '123456',
-    customerName: 'John Doe',
-    totalBillingAmount: 1000,
-    totalShareAmount: 500,
-    totalAmountToPay: 500,
-    status: 'Pending'
-  },
-  {
-    id: 5,
-    orNo: 'OR456',
-    orDate: '2022-12-05',
-    customerId: 5,
-    meterNo: 'DEF789',
-    accountNo: '654321',
-    customerName: 'Jane Smith',
-    totalBillingAmount: 1500,
-    totalShareAmount: 750,
-    totalAmountToPay: 750,
-    status: 'Pending'
+        this.dataSource.data = result.data;
+        this.paginator.pageIndex = result.paginator.pageNumber;
+        this.paginator.pageSize = result.paginator.pageSize;
+        this.paginator.length =  result.paginator.totalRecordCount;
+      }
+    })
+    .catch(async (error: Error) => {
+      console.error('Error fetching OR list:', error);
+      this.commonService.showSpinner(false);
+    })
+    .finally(async () => {
+      this.commonService.showSpinner(false);
+    });
   }
-]
 
+}

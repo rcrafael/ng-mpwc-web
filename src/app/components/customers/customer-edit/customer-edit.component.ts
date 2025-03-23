@@ -11,6 +11,7 @@ import { ICustomerProfile } from '../../../models/interfaces/ICustomer';
 import { ActivatedRoute } from '@angular/router';
 import { IAPIResponse } from '../../../models/interfaces/IApiResponse';
 import { formatDate } from '@angular/common';
+import { CustomerMeterComponent } from "../customer-meter/customer-meter.component";
 
 @Component({
   selector: 'app-customer-edit',
@@ -20,7 +21,8 @@ import { formatDate } from '@angular/common';
     MatIcon,
     ReactiveFormsModule,
     CustomerCurrentBillingComponent,
-    CustomerShareCapComponent
+    CustomerShareCapComponent,
+    CustomerMeterComponent
 ],
   templateUrl: './customer-edit.component.html',
   styleUrl: './customer-edit.component.css'

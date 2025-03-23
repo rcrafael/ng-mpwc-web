@@ -6,6 +6,7 @@ import { BillingService } from '../../../services/billing.service';
 import { IAPIResponse } from '../../../models/interfaces/IApiResponse';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { Utils } from '../../../common/util';
 
 @Component({
   selector: 'app-customer-current-billing',
@@ -50,6 +51,10 @@ export class CustomerCurrentBillingComponent implements OnInit {
   dataSource = new MatTableDataSource([]);
   isPaymentBtnVisible:boolean = false;
 
+  formatAmount = Utils.formatCurrency;
+  getTransactionStatus = Utils.getStatusName;
+  getMonth = Utils.getMonth;
+  
   ngOnInit():void {
     this.billingService.getRecentBillingByCustomerId(this.customerId).then((response:IAPIResponse) => {
       const result: any = response.result;

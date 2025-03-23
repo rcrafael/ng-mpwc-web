@@ -1,0 +1,33 @@
+table.mat-mdc-table th {
+     text-align: center;
+}
+
+table.mat-mdc-table td.mat-column-Month {
+     min-width: 40px;
+     text-align: center;
+}
+
+table.mat-mdc-table td.mat-column-Branch-Code {
+     min-width: 150px;
+     text-align: center;
+}
+
+table.mat-mdc-table td.mat-column-Due-Date {
+     min-width: 120px;
+     text-align: center;
+}
+
+table.mat-mdc-table td.mat-column-Customer-Name,
+table.mat-mdc-table td.mat-column-Alias,
+table.mat-mdc-table td.mat-column-Billing-Period {
+     min-width: 220px;
+}
+
+table.mat-mdc-table td.mat-column-Address {
+     min-width: 300px;
+}
+
+table.mat-mdc-table td.mat-column-Amount {
+     min-width: 120px;
+     text-align: right;
+}

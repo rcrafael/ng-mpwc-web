@@ -1,11 +1,11 @@
+import { ICustomerProfile } from "./ICustomer";
+
 export interface IOfficialReceiptList {
      id: number;
      orNo: string;
      orDate: string;
      customerId: number;
-     meterNo: string;
-     accountNo: string;
-     customerName: string;
+     customer: ICustomerProfile;
      totalBillingAmount: number;
      totalShareAmount: number;
      totalAmountToPay: number;

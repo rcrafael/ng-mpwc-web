@@ -1,0 +1,11 @@
+table.mat-mdc-table td.mat-column-Total-Billing-Amount,
+table.mat-mdc-table th.mat-column-Total-Billing-Amount,
+table.mat-mdc-table td.mat-column-Total-Share-Amount,
+table.mat-mdc-table th.mat-column-Total-Share-Amount {
+     text-align: right;
+}
+
+table.mat-mdc-table td.mat-column-Status,
+table.mat-mdc-table th.mat-column-Status {
+     text-align: center;
+}

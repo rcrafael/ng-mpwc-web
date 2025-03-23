@@ -13,8 +13,8 @@
                     </div>
                </div>
      
-               <div class="table-container "> 
-                    <table mat-table [dataSource]="dataSource" class="block">
+               <div class="table-container"> 
+                    <table mat-table [dataSource]="dataSource" class="w-full">
                          <ng-container matColumnDef="Meter No">
                               <th mat-header-cell *matHeaderCellDef class="min-w-[120px]"><span>Meter No</span></th>
                               <td mat-cell *matCellDef="let element"><span class="underline text-blue-500 cursor-pointer" (click)="onSelectMeter(element)">{{element.meterNo}}</span></td>
@@ -39,12 +39,12 @@
 
      <mat-dialog-actions>
           <div class="flex flex-row w-full gap-3 justify-end">
-               <button (click)="onClose()" class="bg-blue-500 text-white rounded border border-black border-solid p-2 w-[80px]">
+               <!-- <button (click)="onClose()" class="bg-blue-500 text-white rounded border border-black border-solid p-2 w-[80px]">
                     Select
-               </button>
+               </button> -->
 
                <button (click)="onClose()" class="bg-red-500 text-white rounded border border-black border-solid p-2 w-[80px]">
-                    Cancel
+                    Close
                </button>
           </div>
      </mat-dialog-actions>

@@ -45,6 +45,13 @@ export class ApiService {
     return this.httpClient.get<IAPIResponse>(`${Constants.HOST}${BillingApi.GET_ACTIVE_WATER_RATES_COMMERCIAL}`);
   }
 
+  getBillings(pageNo: number, pageSize: number) {
+    return this.httpClient.get<IAPIResponse>(`${Constants.HOST}${BillingApi.GET_BILLING.replace('{pageNo}', pageNo.toString()).replace('{pageSize}', pageSize.toString())}`);
+  }
+
+  getBillingById(readingId: string) {
+    return this.httpClient.get<IAPIResponse>(`${Constants.HOST}${BillingApi.GET_BILLING_BY_ID.replace('{billingId}',readingId)}`);
+  }
 
   createBilling(params:IBillingInfo) {
     return this.httpClient.post<IAPIResponse>(`${Constants.HOST}${BillingApi.CREATE_BILLING}`, params);
@@ -98,6 +105,10 @@ export class ApiService {
   getORPaymentsByCustomerId(customerId: string, pageNo: number = 0, pageSize: number = 50): Observable<IAPIResponse> {
     return this.httpClient.get<IAPIResponse>(`${Constants.HOST}${PaymentApi.GET_OR_ALL_PAYMENTS_BY_CUSTOMER_ID.replace('{customerId}',customerId).replace('{pageNo}', pageNo.toString()).replace('{pageSize}', pageSize.toString())}`);
   } 
+
+  getORAllPaymentsWithCustomerInfo(pageNo: number = 0, pageSize: number = 50): Observable<IAPIResponse> {
+    return this.httpClient.get<IAPIResponse>(`${Constants.HOST}${PaymentApi.GET_OR_ALL_PAYMENTS_WITH_CUSTOMER_INFO.replace('{pageNo}', pageNo.toString()).replace('{pageSize}', pageSize.toString())}`);
+  }
 
   generateNewORNo(): Observable<IAPIResponse> {
     return this.httpClient.get<IAPIResponse>(`${Constants.HOST}${PaymentApi.GENERATE_OR_NUMBER}`);

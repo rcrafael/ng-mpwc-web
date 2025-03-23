@@ -19,6 +19,14 @@ export class BillingService {
     return firstValueFrom(this.http.getActiveWaterRatesCommercial());
   }
 
+  getBillings(pageNo: number = 0, pageSize: number = 50): Promise<IAPIResponse> {
+    return firstValueFrom(this.http.getBillings(pageNo,pageSize));
+  }
+
+  getBillingById(id: string): Promise<IAPIResponse> {
+    return firstValueFrom(this.http.getBillingById(id));
+  }
+
   createBilling(params: IBillingInfo): Promise<IAPIResponse> {
     return firstValueFrom(this.http.createBilling(params));
   }

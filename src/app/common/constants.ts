@@ -19,6 +19,8 @@ export class BillingApi {
      public static GET_ACTIVE_WATER_RATES_RESIDENTIAL = 'api/billing/rates/residential/active';
      public static GET_ACTIVE_WATER_RATES_COMMERCIAL = 'api/billing/rates/commercial/active';
      public static CREATE_BILLING = 'api/billing';
+     public static GET_BILLING_BY_ID = 'api/billing/id/{billingId}';
+     public static GET_BILLING = 'api/billing/{pageNo}/{pageSize}';
      public static GET_BILLING_BY_CUSTOMER_ID = 'api/billing/customer/{customerId}/{pageNo}/{pageSize}';
      public static GET_NEW_READING_NUMBER = 'api/billing/new-reading-number';
      public static GET_RECENT_BILLING_BY_CUSTOMER_ID = 'api/billing/get-recent-billings';
@@ -30,4 +32,6 @@ export class PaymentApi {
      public static GET_OR_ALL_PAYMENTS_BY_CUSTOMER_ID = 'api/payment/customer/{customerId}/{pageNo}/{pageSize}';
      public static GENERATE_OR_NUMBER = 'api/payment/official-receipt/new-or-number';
      public static CREATE_OR_PAYMENT = 'api/payment/official-receipt';
+     public static GET_OR_ALL_PAYMENTS_WITH_CUSTOMER_INFO = 'api/payment/official-receipt/with-cust-info/{pageNo}/{pageSize}'
+
 }

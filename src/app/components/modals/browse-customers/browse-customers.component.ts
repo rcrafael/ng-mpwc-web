@@ -30,13 +30,15 @@ export class BrowseCustomersComponent implements OnInit {
     'Branch Code', 
     'Address', 
     'Phase', 
-    'Account Type'
+    'Customer Type'
   ];
 
   dataSource: MatTableDataSource<ICustomerProfile> = new MatTableDataSource<ICustomerProfile>();
 
-
   getStatus = Utils.getStatusName;
+  getCustomerType = Utils.getCustomerType;
+  getPhase = Utils.getPhase;
+  getBranch = Utils.getBranchCode;
 
   ngOnInit(): void {
     this.customerService.getCustomerList().then((response:any) => {

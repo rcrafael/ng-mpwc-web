@@ -19,4 +19,8 @@ export class PaymentService {
     return firstValueFrom(this.http.generateNewORNo());
   }
 
+  getORAllWithCustomerInfo(pageNo: number, pageSize: number): Promise<IAPIResponse> {
+    return firstValueFrom(this.http.getORAllPaymentsWithCustomerInfo(pageNo, pageSize));
+  }
+
 }

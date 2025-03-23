@@ -8,6 +8,7 @@ import { CustomerService } from '../../../services/customer.service';
 import { IAPIResponse } from '../../../models/interfaces/IApiResponse';
 import { SpinnerComponent } from "../../common/spinner/spinner.component";
 import { CommonService } from '../../../services/common.service';
+import { Utils } from '../../../common/util';
 
 @Component({
   selector: 'app-customer-list',
@@ -49,6 +50,9 @@ export class CustomerListComponent implements OnInit {
   totalRecordCount: number = 0;
   isSpinnerVisible!: boolean;
   
+  getCustomerType = Utils.getCustomerType;
+  getBranchCode = Utils.getBranchCode;
+
   async ngOnInit(): Promise<void> {
     this.commonService.getShowSpinnerVisibility().subscribe(spinnerVisibility => {
       this.isSpinnerVisible = spinnerVisibility

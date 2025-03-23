@@ -32,7 +32,7 @@ export const routes: Routes = [
                { path: 'customer/:customerId', component: CustomerEditComponent,},
                { path: 'billing', component: BillingListComponent},
                { path: 'billing/create', component: BillingCreateComponent},
-               { path: 'billing/:readingNo', component: BillingViewComponent},
+               { path: 'billing/:readingId', component: BillingViewComponent},
                { path: 'payment/official-receipt', component: PaymentOfficialReceiptListComponent},
                { path: 'payment/official-receipt/create', component: PaymentOfficialReceiptCreateComponent},
                { path: 'payment/official-receipt/create/:customerId', component: PaymentOfficialReceiptCreateComponent},

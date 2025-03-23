@@ -2,3 +2,7 @@
      min-width: 120px !important;
      text-align: center !important;
 }
+
+table.mat-mdc-table td {
+     text-align: center;
+}

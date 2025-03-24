@@ -23,4 +23,8 @@ export class PaymentService {
     return firstValueFrom(this.http.getORAllPaymentsWithCustomerInfo(pageNo, pageSize));
   }
 
+  getORWithCustomerInfoById(orId: String): Promise<IAPIResponse> {
+    return firstValueFrom(this.http.getORPaymentsWithCustomerInfoById(orId));
+  }
+
 }

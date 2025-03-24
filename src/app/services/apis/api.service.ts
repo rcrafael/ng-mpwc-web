@@ -110,6 +110,11 @@ export class ApiService {
     return this.httpClient.get<IAPIResponse>(`${Constants.HOST}${PaymentApi.GET_OR_ALL_PAYMENTS_WITH_CUSTOMER_INFO.replace('{pageNo}', pageNo.toString()).replace('{pageSize}', pageSize.toString())}`);
   }
 
+  getORPaymentsWithCustomerInfoById(orId: String): Observable<IAPIResponse> {
+    return this.httpClient.get<IAPIResponse>(`${Constants.HOST}${PaymentApi.GET_OR_ALL_PAYMENTS_WITH_CUSTOMER_INFO_BY_ID.replace('{id}', orId.toString())}`);
+  }
+
+
   generateNewORNo(): Observable<IAPIResponse> {
     return this.httpClient.get<IAPIResponse>(`${Constants.HOST}${PaymentApi.GENERATE_OR_NUMBER}`);
   }

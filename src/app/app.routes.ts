@@ -36,7 +36,7 @@ export const routes: Routes = [
                { path: 'payment/official-receipt', component: PaymentOfficialReceiptListComponent},
                { path: 'payment/official-receipt/create', component: PaymentOfficialReceiptCreateComponent},
                { path: 'payment/official-receipt/create/:customerId', component: PaymentOfficialReceiptCreateComponent},
-               { path: 'payment/official-receipt/:receiptNo', component: PaymentOfficialReceiptViewComponent},
+               { path: 'payment/official-receipt/:orId', component: PaymentOfficialReceiptViewComponent},
                { path: 'payment/other-receipt', component: OtherPaymentListComponent},
                { path: 'payment/other-receipt/create', component: OtherPaymentCreateComponent},
                { path: 'payment/other-receipt/:receiptNo', component: OtherPaymentViewComponent}

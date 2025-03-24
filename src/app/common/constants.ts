@@ -33,5 +33,5 @@ export class PaymentApi {
      public static GENERATE_OR_NUMBER = 'api/payment/official-receipt/new-or-number';
      public static CREATE_OR_PAYMENT = 'api/payment/official-receipt';
      public static GET_OR_ALL_PAYMENTS_WITH_CUSTOMER_INFO = 'api/payment/official-receipt/with-cust-info/{pageNo}/{pageSize}'
-
+     public static GET_OR_ALL_PAYMENTS_WITH_CUSTOMER_INFO_BY_ID = 'api/payment/official-receipt/with-cust-info/{id}'
 }

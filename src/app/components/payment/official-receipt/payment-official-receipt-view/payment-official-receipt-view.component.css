@@ -1,0 +1,4 @@
+table.mat-mdc-table th,
+table.mat-mdc-table td {
+     min-width: 150px;
+}

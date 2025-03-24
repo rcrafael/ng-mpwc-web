@@ -15,7 +15,7 @@
           <table mat-table [dataSource]="dataSource">
                <ng-container matColumnDef="Official Receipt No" [sticky]="true">
                     <th mat-header-cell *matHeaderCellDef><span>OR No</span></th>
-    SpinnerComponentModule         <td mat-cell *matCellDef="let element"> <a [routerLink]="['/payment/official-receipt/',element.orNo]" ><span>{{element.orNo}}</span></a> </td>
+    SpinnerComponentModule         <td mat-cell *matCellDef="let element"> <a [routerLink]="['/payment/official-receipt/',element.id]" ><span>{{element.orNo}}</span></a> </td>
                </ng-container>
                <ng-container matColumnDef="OR Date" [sticky]="true">
                     <th mat-header-cell *matHeaderCellDef><span>OR Date</span></th>

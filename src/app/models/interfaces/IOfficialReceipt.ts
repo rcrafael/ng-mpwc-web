@@ -15,7 +15,7 @@ export interface IOfficialReceiptList {
 export interface IOfficialReceiptHeader {
      id?: number;
      orNo: string;
-     customerId: string
+     customerId: string;
      orDate: string;
      totalBillingAmount: number;
      totalShareAmount: number;
@@ -31,6 +31,36 @@ export interface IOfficialReceiptHeader {
      isOutsideCollection?: boolean;
      outsideCustomerName?: string;
 }
+
+export interface IOfficialReceiptHeaderWithCustomer {
+     id?: number;
+     orNo: string;
+     customerId: string;
+     customer: ICustomerProfile;
+     orDate: string;
+     totalBillingAmount: number;
+     totalShareAmount: number;
+     totalAmountPay: number;
+     seniorDiscount: number;
+     entryDate: string;
+     createdBy: string;
+     checkNo?: string;
+     checkBank?: string;
+     checkDate?: string;
+     status: number;
+     isPartSale?: boolean;
+     isOutsideCollection?: boolean;
+     outsideCustomerName?: string;
+}
+
+export interface IOfficialReceiptWithDetails {
+     header: IOfficialReceiptHeaderWithCustomer;
+     details: IOfficialReceiptDetail[];
+     shareCapital: IShareCapital;
+     shareCbu: IShareCbu;
+     shareSavings: IShareSavings;
+}
+
 export interface IOfficialReceiptDetail {
      id?:number;
      orNo?: string;

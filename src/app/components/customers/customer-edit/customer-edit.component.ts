@@ -22,7 +22,7 @@ import { CustomerMeterComponent } from "../customer-meter/customer-meter.compone
     ReactiveFormsModule,
     CustomerCurrentBillingComponent,
     CustomerShareCapComponent,
-    CustomerMeterComponent
+    CustomerMeterComponent,
 ],
   templateUrl: './customer-edit.component.html',
   styleUrl: './customer-edit.component.css'
@@ -45,7 +45,7 @@ export class CustomerEditComponent implements OnInit {
   currentDate: string = formatDate(new Date(),'yyyy-MM-dd','en-PH');
   
   public fg = new FormGroup ({
-    accountNo:  new FormControl<string>({value: '', disabled: true},Validators.required),
+    accountNo:  new FormControl<string>({value: '', disabled:true},Validators.required),
     lastName:  new FormControl<string>('',Validators.required),
     firstName:  new FormControl<string>('',Validators.required),
     middleName:  new FormControl<string>(''),
@@ -105,7 +105,7 @@ loadCustomerInfo(): void {
 }
 
 onSubmit(): void {
-
+  console.log('fg: ' ,this.fg.getRawValue());
 }
 
 onFormReset(): void {

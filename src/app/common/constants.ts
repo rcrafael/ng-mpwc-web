@@ -12,7 +12,7 @@ export class CustomerApi {
      public static GET_METER_BY_CUSTOMER_ID = 'api/customer/meter';
      public static GET_METER_BY_METER_NO = 'api/customer/meter/{meterNo}';
      public static UPDATE_METER_NO = 'api/customer/meter/single-update';
-
+     public static CREATE_METER_NO = 'api/customer/meter';
 }
 
 export class BillingApi {
@@ -32,6 +32,10 @@ export class PaymentApi {
      public static GET_OR_ALL_PAYMENTS_BY_CUSTOMER_ID = 'api/payment/customer/{customerId}/{pageNo}/{pageSize}';
      public static GENERATE_OR_NUMBER = 'api/payment/official-receipt/new-or-number';
      public static CREATE_OR_PAYMENT = 'api/payment/official-receipt';
-     public static GET_OR_ALL_PAYMENTS_WITH_CUSTOMER_INFO = 'api/payment/official-receipt/with-cust-info/{pageNo}/{pageSize}'
-     public static GET_OR_ALL_PAYMENTS_WITH_CUSTOMER_INFO_BY_ID = 'api/payment/official-receipt/with-cust-info/{id}'
+     public static GET_OR_ALL_PAYMENTS_WITH_CUSTOMER_INFO = 'api/payment/official-receipt/with-cust-info/{pageNo}/{pageSize}';
+     public static GET_OR_ALL_PAYMENTS_WITH_CUSTOMER_INFO_BY_ID = 'api/payment/official-receipt/with-cust-info/{id}';
+}
+
+export class AuthApi {
+     public static LOGIN = 'api/auth/login';
 }

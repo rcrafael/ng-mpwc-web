@@ -44,5 +44,8 @@ export class CustomerService {
   }
 
 
+  createMeterNo(params: any): Promise<IAPIResponse> {
+    return firstValueFrom(this.http.createMeterNo(params));
+  }
 
 }

@@ -4,66 +4,73 @@
           <mat-icon fontIcon="speed" class="m-3"></mat-icon>
      </mat-expansion-panel-header>
 
-     <div class="grid grid-col grid-cols-12 w-full gap-12" >
-          <div class="col-span-6 col-start-1">
-               <div class="grid grid-row gap-3">
-                    <div class="grid grid-cols-12">
-                         <div class="col-start-1 col-span-4">
-                              <label for="shareCapBeginning"> Share Capital Beginning: </label>
-                         </div>
-                         <div class="col-start-5 col-span-8">
-                              <input type="text" id="shareCapBeginning" class="border border-gray-400 rounded-md" disabled/>
-                         </div>
-                    </div>
 
-                    <div class="grid grid-cols-12">
-                         <div class="col-start-1 col-span-4">
-                              <label for="cbu"> CBU: </label>
-                         </div>
-                         <div class="col-start-5 col-span-8">
-                              <input type="text" id="cbu" class="border border-gray-400 rounded-md" disabled/>
-                         </div>
-                    </div>
-
-                    <div class="grid grid-cols-12">
-                         <div class="col-start-1 col-span-4">
-                              <label for="divident"> Divident: </label>
-                         </div>
-                         <div class="col-start-5 col-span-8">
-                              <input type="text" id="divident" class="border border-gray-400 rounded-md" disabled/>
-                         </div>
-                    </div>
-
-                    <div class="grid grid-cols-12">
-                         <div class="col-start-1 col-span-4">
-                              <label for="rate"> Rate: </label>
-                         </div>
-                         <div class="col-start-5 col-span-8">
-                              <input type="text" id="rate" class="border border-gray-400 rounded-md" disabled/>
-                         </div>
-                    </div>
-
-                    <div class="grid grid-cols-12">
-                         <div class="col-start-1 col-span-4">
-                              <label for="patronageRefundWater"> Patronage Refund Water: </label>
-                         </div>
-                         <div class="col-start-5 col-span-8">
-                              <input type="text" id="patronageRefundWater" class="border border-gray-400 rounded-md" disabled/>
-                         </div>
-                    </div>
-
-                    <div class="grid grid-cols-12">
-                         <div class="col-start-1 col-span-4">
-                              <label for="patronageRefundRefilling"> Patronage Refund Refilling: </label>
-                         </div>
-                         <div class="col-start-5 col-span-8">
-                              <input type="text" id="patronageRefundRefilling" class="border border-gray-400 rounded-md" disabled/>
-                         </div>
-                    </div>
+     
+     <form [formGroup]="fg" (submit)="onSaveClick()">
+          
+          <div class="d-flex flex-col w-full my-2">
+               <div class="flex place-content-end">
+                    <ng-container *ngIf="!isFieldsVisible">
+                         <button type="button" (click)="onAddNewClick()" class="bg-blue-300 font-bold border border-solid border-black rounded-md py-2 px-3">
+                              Add New Meter
+                         </button>
+                    </ng-container>
+                    <ng-container *ngIf="isFieldsVisible">
+                         <button type="submit" class="bg-blue-300 font-bold border border-solid border-black rounded-md py-2 px-3">
+                              Save
+                         </button>
+                    </ng-container>
                </div>
           </div>
 
-     </div>
+          <ng-container *ngIf="isFieldsVisible">
+               <div class="grid grid-col grid-cols-12 w-full gap-12 mb-5 mt-3" >
+                    <div class="col-span-6 col-start-1">
+                         <div class="grid grid-row gap-3">
+                              <div class="grid grid-cols-12">
+                                   <div class="col-start-1 col-span-4">
+                                        <label for="cm_meterNo"> Meter No: </label>
+                                   </div>
+                                   <div class="col-start-5 col-span-8">
+                                        <input type="text" id="cm_meterNo" formControlName="meterNo" class="border border-gray-400 rounded-md"/>
+                                   </div>
+                              </div>
+          
+                              <div class="grid grid-cols-12">
+                                   <div class="col-start-1 col-span-4">
+                                        <label for="cm_alias"> Alias: </label>
+                                   </div>
+                                   <div class="col-start-5 col-span-8">
+                                        <input type="text" id="cm_alias" formControlName="alias" class="border border-gray-400 rounded-md w-full"/>
+                                   </div>
+                              </div>
+                         </div>
+                    </div>
+     
+                    <div class="col-span-6 col-start-7">
+                         <div class="grid grid-row gap-3">
+                              <div class="grid grid-cols-12">
+                                   <div class="col-start-1 col-span-4">
+                                        <label for="cm_previous"> Previous: </label>
+                                   </div>
+                                   <div class="col-start-5 col-span-8">
+                                        <input type="text" id="cm_previous" formControlName="previous" class="border border-gray-400 rounded-md"/>
+                                   </div>
+                              </div>
+          
+                              <div class="grid grid-cols-12">
+                                   <div class="col-start-1 col-span-4">
+                                        <label for="cm_present"> Present: </label>
+                                   </div>
+                                   <div class="col-start-5 col-span-8">
+                                        <input type="text" id="cm_present" formControlName="present" class="border border-gray-400 rounded-md"/>
+                                   </div>
+                              </div>
+                         </div>
+                    </div>
+               </div>
+          </ng-container>
+     </form>
 
      <div class="overflow-x-auto">
           <table mat-table [dataSource]="dataSource">

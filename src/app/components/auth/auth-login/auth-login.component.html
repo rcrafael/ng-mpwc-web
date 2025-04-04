@@ -12,9 +12,7 @@
                          <input type="email" placeholder="example@youremail.com" formControlName="email"
                               class="border rounded-md p-1 w-[100%] col-span-9"
                          />
-                         @if((!fg.controls.email.valid && fg.controls.email.touched && fg.controls.email.dirty) 
-                              || (fg.controls.email.touched && fg.controls.email.value == '')
-                              || (isSubmitted && fg.controls.email.value == '')) {
+                         @if(!fg.controls.email.valid && fg.controls.email.touched) {
                               <span class="col-start-4 col-span-9 text-sm text-red-500">Enter valid email address.</span>
                          }
                     </div>
@@ -23,9 +21,7 @@
                          <input type="password" placeholder="yourpassword"  formControlName="password"
                               class="border rounded-md p-1 w-[100%] col-span-9"
                          />
-                         @if((!fg.controls.password.valid && fg.controls.password.touched && fg.controls.password.dirty) 
-                              || (fg.controls.password.touched && fg.controls.password.value == '')
-                              || (isSubmitted && fg.controls.password.value == '')) {
+                         @if(!fg.controls.password.valid && fg.controls.password.touched) {
                               <span class="col-start-4 col-span-9 text-sm text-red-500">Enter your password.</span>
                          }
                     </div>

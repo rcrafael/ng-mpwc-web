@@ -1,5 +1,5 @@
 export interface IMeterDetails {
-     id: string;
+     id?: string;
      customerId: string;
      meterNo: string;
      alias: string;

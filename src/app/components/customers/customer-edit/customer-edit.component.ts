@@ -3,7 +3,6 @@ import { FormGroup, FormControl, ReactiveFormsModule, Validators } from '@angula
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatIcon } from '@angular/material/icon';
 import { IBranchCode, IGender, ICustomerType, IPhase } from '../../../models/interfaces/ICommon';
-import { branchCodeData, genderData, customerTypeData, phaseData } from '../customer-create/customer-create.component';
 import { CustomerCurrentBillingComponent } from "../customer-current-billing/customer-current-billing.component";
 import { CustomerShareCapComponent } from "../customer-share-cap/customer-share-cap.component";
 import { CustomerService } from '../../../services/customer.service';
@@ -14,6 +13,7 @@ import { formatDate } from '@angular/common';
 import { CustomerMeterComponent } from "../customer-meter/customer-meter.component";
 import { fromIterable } from 'rxjs/internal/observable/innerFrom';
 import { AuthService } from '../../../services/auth.service';
+import { branchCodeData, genderData, customerTypeData, phaseData } from '../../../common/enum';
 
 @Component({
   selector: 'app-customer-edit',

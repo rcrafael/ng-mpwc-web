@@ -8,11 +8,13 @@ export class CustomerApi {
      public static GET_CUSTOMER_BY_ID = 'api/customer/{id}';
      public static CREATE_CUSTOMER = 'api/customer';
      public static GET_NEW_ACCOUNT_NUMBER = 'api/customer/new-account-number';
+     public static UPDATE_CUSTOMER = 'api/customer';
 
      public static GET_METER_BY_CUSTOMER_ID = 'api/customer/meter';
      public static GET_METER_BY_METER_NO = 'api/customer/meter/{meterNo}';
      public static UPDATE_METER_NO = 'api/customer/meter/single-update';
      public static CREATE_METER_NO = 'api/customer/meter';
+     
 }
 
 export class BillingApi {

@@ -20,6 +20,10 @@ export class CustomerService {
     return firstValueFrom(this.http.createCustomer(params));
   }
 
+  updateCustomer(params: ICustomerProfile): Promise<IAPIResponse> {
+    return firstValueFrom(this.http.updateCustomer(params));
+  }
+
   getCustomerById(customerId: string): Promise<IAPIResponse> {
     return firstValueFrom(this.http.getCustomerById(customerId));
   }

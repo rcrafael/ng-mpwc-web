@@ -37,7 +37,6 @@ export class CustomerCreateComponent implements OnInit {
     lastName:  new FormControl<string>('',Validators.required),
     firstName:  new FormControl<string>('',Validators.required),
     middleName:  new FormControl<string>(''),
-    branchCode:  new FormControl<number>(-1,Validators.required),
     address:  new FormControl<string>('',Validators.required),
     gender:  new FormControl<number>(-1,Validators.required),
     civilStatus:  new FormControl<string>('',Validators.required),
@@ -51,6 +50,7 @@ export class CustomerCreateComponent implements OnInit {
     dateAccepted: new FormControl<string>(this.currentDate,Validators.required),
     customerType: new FormControl<number>(-1,Validators.required),
     phase: new FormControl<number>(-1,Validators.required),
+    tin: new FormControl<string>(''),
   });
   
   ngOnInit(): void {
@@ -72,7 +72,6 @@ export class CustomerCreateComponent implements OnInit {
       lastName: frm.lastName!,
       firstName:frm.firstName!,
       middleName: frm.middleName!,
-      branchCode: frm.branchCode ?? 1,
       address: frm.address!,
       gender: frm.gender!,
       civilStatus: frm.civilStatus ?? '',
@@ -86,6 +85,7 @@ export class CustomerCreateComponent implements OnInit {
       dateAccepted: frm.dateAccepted!,
       customerType: frm.customerType ?? 1,
       phase: frm.phase ?? 1,
+      tin: frm.tin ?? ''
     }
 
     this.customerService.createCustomer(cust).then((response: IAPIResponse)=> {

@@ -9,6 +9,8 @@ import { IMeterDetails } from '../../../models/interfaces/IMeter';
 import { Utils } from '../../../common/util';
 import { NgIf } from '@angular/common';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { IBranchCode } from '../../../models/interfaces/ICommon';
+import { branchCodeData } from '../../../common/enum';
 
 @Component({
   selector: 'app-customer-meter',
@@ -32,11 +34,14 @@ export class CustomerMeterComponent implements OnInit {
 
   @Input() customerId: string = '';
 
-  tableCols: string[] = ['Meter No', 'Alias', 'Previous', 'Present', 'Status'];
+  tableCols: string[] = ['Meter No', 'Alias', 'Branch Code', 'Location', 'Previous', 'Present', 'Status'];
   dataSource: MatTableDataSource<IMeterDetails> = new MatTableDataSource<IMeterDetails>();
+  branchCodes: IBranchCode[] = branchCodeData;
+
 
   getStatus = Utils.getStatusName;
-
+  getBranchCode = Utils.getBranchCode;
+  
   isFieldsVisible = false;
   isUpdate = false;
 
@@ -45,6 +50,8 @@ export class CustomerMeterComponent implements OnInit {
     alias: new FormControl<string>('', Validators.required),
     previous: new FormControl<number>(0),
     present: new FormControl<number>(0),
+    branchCode: new FormControl<number>(-1, Validators.required),
+    location: new FormControl<string>('')
   })
 
   ngOnInit(): void {
@@ -75,12 +82,19 @@ export class CustomerMeterComponent implements OnInit {
 
   }
 
+  onCancelClick():void {
+    this.fg.reset();
+    this.isFieldsVisible = false;
+  }
+
 
   createNew(): void {
     const params: any = {
       customerId: this.customerId,
       meterNo: this.fg.value.meterNo!,
       alias: this.fg.value.alias!,
+      branchCode: this.fg.value.branchCode!,
+      location: this.fg.value.location!,
       previous: this.fg.value.previous!,
       present: this.fg.value.present!,
       status: 6, //6 = active

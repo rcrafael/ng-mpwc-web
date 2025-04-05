@@ -9,13 +9,16 @@
      <form [formGroup]="fg" (submit)="onSaveClick()">
           
           <div class="d-flex flex-col w-full my-2">
-               <div class="flex place-content-end">
+               <div class="flex gap-2 place-content-end">
                     <ng-container *ngIf="!isFieldsVisible">
                          <button type="button" (click)="onAddNewClick()" class="bg-blue-300 font-bold border border-solid border-black rounded-md py-2 px-3">
                               Add New Meter
                          </button>
                     </ng-container>
                     <ng-container *ngIf="isFieldsVisible">
+                         <button type="button" (click)="onCancelClick()" class="bg-red-300 font-bold border border-solid border-black rounded-md py-2 px-3">
+                              Cancel
+                         </button>
                          <button type="submit" class="bg-blue-300 font-bold border border-solid border-black rounded-md py-2 px-3">
                               Save
                          </button>
@@ -44,11 +47,35 @@
                                         <input type="text" id="cm_alias" formControlName="alias" class="border border-gray-400 rounded-md w-full"/>
                                    </div>
                               </div>
+
+                              <div class="grid grid-cols-12">
+                                   <div class="col-start-1 col-span-4">
+                                        <label for="cm_location"> Location: </label>
+                                   </div>
+                                   <div class="col-start-5 col-span-8">
+                                        <input type="text" id="cm_location" formControlName="location" class="border border-gray-400 rounded-md w-full"/>
+                                   </div>
+                              </div>
                          </div>
                     </div>
      
                     <div class="col-span-6 col-start-7">
                          <div class="grid grid-row gap-3">
+
+                              <div class="grid grid-cols-12">
+                                   <div class="col-start-1 col-span-4">
+                                        <label for="cm_branchCode"> Branch Code: </label>
+                                   </div>
+                                   <div class="col-start-5 col-span-8">
+                                        <select id="cm_branchCode" formControlName="branchCode"
+                                             class="w-[50%] border border-gray-400 rounded-md">
+                                             @for (br of branchCodes; track br) {
+                                                  <option [value]="br.id">{{ br.name }}</option>
+                                             }
+                                        </select>
+                                   </div>
+                              </div>
+
                               <div class="grid grid-cols-12">
                                    <div class="col-start-1 col-span-4">
                                         <label for="cm_previous"> Previous: </label>
@@ -81,6 +108,14 @@
                <ng-container matColumnDef="Alias">
                     <th mat-header-cell *matHeaderCellDef>Alias</th>
                     <td mat-cell *matCellDef="let element"><span>{{element.alias}}</span></td>
+               </ng-container>
+               <ng-container matColumnDef="Branch Code">
+                    <th mat-header-cell *matHeaderCellDef>Branch Code</th>
+                    <td mat-cell *matCellDef="let element"><span>{{getBranchCode(element.branchCode)}}</span></td>
+               </ng-container>
+               <ng-container matColumnDef="Location">
+                    <th mat-header-cell *matHeaderCellDef>Location</th>
+                    <td mat-cell *matCellDef="let element"><span>{{element.location}}</span></td>
                </ng-container>
                <ng-container matColumnDef="Previous">
                     <th mat-header-cell *matHeaderCellDef>Previous</th>

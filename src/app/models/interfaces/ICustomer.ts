@@ -16,12 +16,9 @@ export interface ICustomerList {
 export interface ICustomerProfile {
      id?: string;
      nationalId: string; //for future adoptability of national id and unified identifier (future use)
-     meterNo?: string;
-     alias?: string;
      firstName: string;
      middleName: string;
      lastName: string;
-     branchCode: number;
      address: string;
      gender: number;
      civilStatus: string;
@@ -38,4 +35,5 @@ export interface ICustomerProfile {
      phase: number;
      accountNo: string; //use for universal account number instead of customerId
      userId?: string | null; //connect for user login if system is ready to go online
+     tin: string;
 }

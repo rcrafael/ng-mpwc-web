@@ -36,6 +36,10 @@ export class ApiService {
     return this.httpClient.post<IAPIResponse>(`${Constants.HOST}${CustomerApi.CREATE_CUSTOMER}`, params);
   }
 
+  updateCustomer(params: ICustomerProfile): Observable<IAPIResponse> {
+    return this.httpClient.put<IAPIResponse>(`${Constants.HOST}${CustomerApi.UPDATE_CUSTOMER}`, params);
+  }
+
   generateAccountNumber(): Observable<IAPIResponse> {
     return this.httpClient.get<IAPIResponse>(`${Constants.HOST}${CustomerApi.GET_NEW_ACCOUNT_NUMBER}`);
   }

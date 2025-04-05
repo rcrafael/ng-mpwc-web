@@ -19,7 +19,7 @@
                                              <label for="accountNo"> Account No: </label>
                                         </div>
                                         <div class="col-start-4 col-span-9">
-                                             <input type="text" id="accountNo" formControlName="accountNo"  [disabled]="true"
+                                             <input type="text" id="accountNo" formControlName="accountNo" 
                                                   class="border border-gray-400 rounded-md"/>
                                         </div>
                                    </div>
@@ -79,7 +79,7 @@
                                         </div>
                                    </div>
 
-                                   <div class="grid grid-cols-12">
+                                   <!-- <div class="grid grid-cols-12">
                                         <div class="col-span-3">
                                              <label for="branchCode"> Branch Code: </label>
                                         </div>
@@ -91,7 +91,7 @@
                                                   }
                                              </select>
                                         </div>
-                                   </div>
+                                   </div> -->
 
                                    <div class="grid grid-cols-12">
                                         <div class="col-span-3">
@@ -100,6 +100,16 @@
                                         <div class="col-start-4 col-span-9">
                                              <input type="text" id="address" formControlName="address"
                                         class="w-full border border-gray-400 rounded-md" />
+                                        </div>
+                                   </div>
+
+                                   <div class="grid grid-cols-12">
+                                        <div class="col-start-1 col-span-3">
+                                             <label for="tin"> TIN: </label>
+                                        </div>
+                                        <div class="col-start-4 col-span-9">
+                                             <input type="text" id="tin" formControlName="tin"
+                                                  class="border border-gray-400 rounded-md" />
                                         </div>
                                    </div>
 
@@ -219,14 +229,24 @@
                               </div>
                          </div>
                     </div>
-                    <div class="flex flex-row-reverse gap-2 mb-3"> 
-                         <button type="submit" class="p-2 bg-green-300 font-bold rounded-md mb-1 w-[100px]">
-                              Save
-                         </button>
-                         <button type="button" class="p-2 bg-red-300 font-bold rounded-md mb-1 w-[100px]">
-                              Reset
-                         </button>
-                    </div>
+                    @if(isEdit) {
+                         <div class="flex flex-row-reverse gap-2 mb-3"> 
+                              <button type="submit" class="p-2 bg-green-300 font-bold rounded-md mb-1 w-[100px]">
+                                   Save
+                              </button>
+                              <button type="button" (click)="onFormReset()" class="p-2 bg-red-300 font-bold rounded-md mb-1 w-[100px]">
+                                   Reset
+                              </button>
+                         </div>
+                    } @else {
+                         <div class="flex flex-row-reverse gap-2 mb-3"> 
+                              <button type="button" (click)="onEditClick()" class="p-2 bg-blue-300 font-bold rounded-md mb-1 w-[100px]">
+                                   Edit
+                              </button>
+                         </div>
+                    }
+                    
+                    
                </form>
           </mat-expansion-panel>
 

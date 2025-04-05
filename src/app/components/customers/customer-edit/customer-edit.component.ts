@@ -12,6 +12,8 @@ import { ActivatedRoute } from '@angular/router';
 import { IAPIResponse } from '../../../models/interfaces/IApiResponse';
 import { formatDate } from '@angular/common';
 import { CustomerMeterComponent } from "../customer-meter/customer-meter.component";
+import { fromIterable } from 'rxjs/internal/observable/innerFrom';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-customer-edit',
@@ -31,8 +33,11 @@ export class CustomerEditComponent implements OnInit {
 
   constructor(
     private customerService: CustomerService,
-    private activeRoute: ActivatedRoute
+    private activeRoute: ActivatedRoute,
+    private authService: AuthService
   ) { }
+
+  isEdit: boolean = false;
 
   branchCode: IBranchCode[] = branchCodeData;
   gender: IGender[] = genderData;
@@ -49,7 +54,6 @@ export class CustomerEditComponent implements OnInit {
     lastName:  new FormControl<string>('',Validators.required),
     firstName:  new FormControl<string>('',Validators.required),
     middleName:  new FormControl<string>(''),
-    branchCode:  new FormControl<number>(-1,Validators.required),
     address:  new FormControl<string>('',Validators.required),
     gender:  new FormControl<number>(-1,Validators.required),
     civilStatus:  new FormControl<string>('',Validators.required),
@@ -63,6 +67,7 @@ export class CustomerEditComponent implements OnInit {
     dateAccepted: new FormControl<string>({value: this.currentDate, disabled: true},Validators.required),
     customerType: new FormControl<number>(-1,Validators.required),
     phase: new FormControl<number>(-1,Validators.required),
+    tin: new FormControl<string>('')
   });
 
 ngOnInit(): void {
@@ -86,7 +91,6 @@ loadCustomerInfo(): void {
       lastName:  c.lastName,
       firstName: c.firstName,
       middleName:  c.middleName,
-      branchCode:  c.branchCode,
       address:  c.address,
       gender:  c.gender,
       civilStatus:  c.civilStatus,
@@ -100,17 +104,67 @@ loadCustomerInfo(): void {
       dateAccepted: c.dateAccepted,
       customerType: c.customerType,
       phase: c.phase,
+      tin: c.tin
     })
   });
 }
 
 onSubmit(): void {
   console.log('fg: ' ,this.fg.getRawValue());
+
+  const frm = this.fg.value;
+
+  if(!this.fg.valid) {
+    alert('Please enter a valid info');
+    return;
+  }
+
+  const params: ICustomerProfile = {
+    id: this.customerId,
+    nationalId: frm.nationalId ?? '',
+    firstName: frm.firstName ?? '',
+    middleName: frm.middleName?? '',
+    lastName: frm.lastName ?? '',
+    address: frm.address ?? '',
+    gender: frm.gender ?? -1,
+    civilStatus: frm.civilStatus?? '',
+    dateOfBirth: frm.dateOfBirth?? '',
+    occupation: frm.occupation?? '',
+    educationalLevel: frm.educationalLevel?? '',
+    numberOfDependent: frm.numberOfDependent?? 0,
+    religion: frm.religion?? '',
+    annualIncome: frm.annualIncome?? 0,
+    dateAccepted: frm.dateAccepted?? '',
+    customerType: frm.customerType?? -1,
+    phase: frm.phase?? -1,
+    dateUpdated: this.currentDate,
+    updatedBy: this.authService.getUserId(),
+    accountNo: frm.accountNo ?? '',
+    userId: null,
+    tin: frm.tin ?? ''
+  }
+
+  this.customerService.updateCustomer(params).then((response: IAPIResponse) => {
+    console.log('response: ', response);
+    alert('Customer updated successfully');
+  })
+  .catch((error: any) => {
+    console.log('error: ', error);
+    alert('Failed to update customer');
+  })
+  .finally(() => {
+    this.isEdit = false
+  });
+
+  
 }
 
 onFormReset(): void {
 
 }
 
+onEditClick(): void {
+  this.isEdit = true;
+}
 
 }

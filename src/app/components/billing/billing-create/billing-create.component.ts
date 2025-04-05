@@ -163,7 +163,7 @@ export class BillingCreateComponent implements OnInit {
   updateFormFromCustomer() {
     this.fg.patchValue({
       customerName: `${this.selectedCustomerInfo.lastName}, ${this.selectedCustomerInfo.firstName} ${this.selectedCustomerInfo.middleName}`,
-      branchCode: this.selectedCustomerInfo.branchCode.toString(),
+      // branchCode: this.selectedCustomerInfo.branchCode.toString(),
       address: this.selectedCustomerInfo.address,
       accountNo: this.selectedCustomerInfo.accountNo,
     });

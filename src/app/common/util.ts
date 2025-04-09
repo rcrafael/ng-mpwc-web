@@ -11,6 +11,10 @@ export class Utils {
           return true;
      }
 
+     public static sanitizeAmount(amount: String): number {
+          return parseFloat(amount.replace(/,/g, ''));
+     }
+
      public static getStatusName(statusId: number): string {
 
           switch(statusId) {

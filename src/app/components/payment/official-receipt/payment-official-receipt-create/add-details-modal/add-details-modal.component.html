@@ -112,18 +112,6 @@
                                              <button type="button" (click)="openBillingListDialog()" class="bg-gray-300 w-fit px-[10px] rounded-md border border-black border-solid">...</button>
                                         </div>
                                    </div>
-                              
-                                   <!-- <div class="grid grid-cols-12 gap-2">
-                                        <div class="xs:col-span-12 md:col-span-4">
-                                             <label for="mobileReadingNo">Mobile Reading No</label>
-                                        </div>
-                                        <div class="xs:col-span-12 md:col-span-4">
-                                             <input id="mobileReadingNo" type="text" class="border border-gray-400 rounded-md w-full"/>
-                                        </div>
-                                        <div class="xs:col-span-12 md:col-span-4">
-                                             <button class="bg-gray-300 w-fit px-[10px] rounded-md border border-black border-solid">...</button>
-                                        </div>
-                                   </div> -->
 
                                    <div class="grid grid-cols-12 gap-2">
                                         <div class="xs:col-span-12 md:col-span-4">
@@ -139,7 +127,7 @@
                                              <label for="billingAmount">Billing Amount</label>
                                         </div>
                                         <div class="xs:col-span-12 md:col-span-4">
-                                             <input id="billingAmount" type="number" formControlName="readingAmount" class="border border-gray-400 rounded-md w-full"/>
+                                             <input id="billingAmount" type="text" formControlName="readingAmount" (change)="computeTotalAmount()" (blur)="handleOnBlur($event,'readingAmount')" class="border border-gray-400 rounded-md w-full"/>
                                         </div>
                                    </div>
 
@@ -148,7 +136,7 @@
                                              <label for="parts">Parts</label>
                                         </div>
                                         <div class="xs:col-span-12 md:col-span-4">
-                                             <input id="parts" type="number" formControlName="parts" class="border border-gray-400 rounded-md w-full"/>
+                                             <input id="parts" type="text" formControlName="parts" (change)="computeTotalAmount()" (blur)="handleOnBlur($event,'parts')" class="border border-gray-400 rounded-md w-full"/>
                                         </div>
                                    </div>
 
@@ -157,7 +145,7 @@
                                              <label for="maintenanceFee">Maintenance Fee</label>
                                         </div>
                                         <div class="xs:col-span-12 md:col-span-4">
-                                             <input id="maintenanceFee" type="number" formControlName="maintenanceFee" class="border border-gray-400 rounded-md w-full"/>
+                                             <input id="maintenanceFee" type="text" formControlName="maintenanceFee" (change)="computeTotalAmount()" (blur)="handleOnBlur($event,'maintenanceFee')" class="border border-gray-400 rounded-md w-full"/>
                                         </div>
                                    </div>
 
@@ -166,7 +154,7 @@
                                              <label for="membership">Membership</label>
                                         </div>
                                         <div class="xs:col-span-12 md:col-span-4">
-                                             <input id="membership" type="number" formControlName="membershipFee" class="border border-gray-400 rounded-md w-full"/>
+                                             <input id="membership" type="text" formControlName="membershipFee" (change)="computeTotalAmount()" (blur)="handleOnBlur($event,'membershipFee')" class="border border-gray-400 rounded-md w-full"/>
                                         </div>
                                    </div>
 
@@ -175,7 +163,7 @@
                                              <label for="receivable">Subs. Receivable</label>
                                         </div>
                                         <div class="xs:col-span-12 md:col-span-4">
-                                             <input id="receivable" type="number" formControlName="subReceivable" class="border border-gray-400 rounded-md w-full"/>
+                                             <input id="receivable" type="text" formControlName="subReceivable" (change)="computeTotalAmount()" (blur)="handleOnBlur($event,'subReceivable')" class="border border-gray-400 rounded-md w-full"/>
                                         </div>
                                    </div>
 
@@ -197,7 +185,7 @@
                                              <label for="tapping">Tapping</label>
                                         </div>
                                         <div class="xs:col-span-12 md:col-span-4">
-                                             <input id="tapping" type="number" formControlName="tapping" class="border border-gray-400 rounded-md w-full"/>
+                                             <input id="tapping" type="text" formControlName="tapping" (change)="computeTotalAmount()" (blur)="handleOnBlur($event,'tapping')" class="border border-gray-400 rounded-md w-full"/>
                                         </div>
                                    </div>
 
@@ -206,7 +194,7 @@
                                              <label for="reconnectionFee">Reconnection Fee</label>
                                         </div>
                                         <div class="xs:col-span-12 md:col-span-4">
-                                             <input id="reconnectionFee" type="number" formControlName="reconnection" class="border border-gray-400 rounded-md w-full"/>
+                                             <input id="reconnectionFee" type="text" formControlName="reconnection" (change)="computeTotalAmount()" (blur)="handleOnBlur($event,'reconnection')" class="border border-gray-400 rounded-md w-full"/>
                                         </div>
                                    </div>
 
@@ -215,7 +203,7 @@
                                              <label for="calibration">Calibration</label>
                                         </div>
                                         <div class="xs:col-span-12 md:col-span-4">
-                                             <input id="calibration" type="number" formControlName="calibration" class="border border-gray-400 rounded-md w-full"/>
+                                             <input id="calibration" type="text" formControlName="calibration" (change)="computeTotalAmount()" (blur)="handleOnBlur($event,'calibration')" class="border border-gray-400 rounded-md w-full"/>
                                         </div>
                                    </div>
 
@@ -224,7 +212,7 @@
                                              <label for="septageFee">Septage Fee</label>
                                         </div>
                                         <div class="xs:col-span-12 md:col-span-4">
-                                             <input id="septageFee" type="number" formControlName="septageFee" class="border border-gray-400 rounded-md w-full"/>
+                                             <input id="septageFee" type="text" formControlName="septageFee" (change)="computeTotalAmount()" (blur)="handleOnBlur($event,'septageFee')" class="border border-gray-400 rounded-md w-full"/>
                                         </div>
                                    </div>
 
@@ -233,7 +221,7 @@
                                              <label for="othersAmount">Others</label>
                                         </div>
                                         <div class="xs:col-span-12 md:col-span-4">
-                                             <input id="othersAmount" type="number" formControlName="otherCollection" class="border border-gray-400 rounded-md w-full"/>
+                                             <input id="othersAmount" type="text" formControlName="otherCollection" (change)="computeTotalAmount()" (blur)="handleOnBlur($event,'otherCollection')" class="border border-gray-400 rounded-md w-full"/>
                                         </div>
                                    </div>
 
@@ -251,7 +239,7 @@
                                              <label for="seniorDiscount">Senior Discount</label>
                                         </div>
                                         <div class="xs:col-span-12 md:col-span-4">
-                                             <input id="seniorDiscount" type="number" formControlName="seniorDiscount" class="border border-gray-400 rounded-md w-full"/>
+                                             <input id="seniorDiscount" type="text" formControlName="seniorDiscount" (change)="computeTotalAmount()" (blur)="handleOnBlur($event,'seniorDiscount')" class="border border-gray-400 rounded-md w-full"/>
                                         </div>
                                    </div>
 
@@ -260,11 +248,11 @@
                                              <label for="penalty">10% Penalty</label>
                                         </div>
                                         <div class="xs:col-span-12 md:col-span-4">
-                                             <input id="penalty" type="number" formControlName="penalty" class="border border-gray-400 rounded-md w-full"/>
+                                             <input id="penalty" type="text" formControlName="penalty" (change)="computeTotalAmount()" (blur)="handleOnBlur($event,'penalty')" class="border border-gray-400 rounded-md w-full"/>
                                         </div>
 
                                         <div class="xs:col-span-12 md:col-span-4 ">
-                                             <input type="checkbox" id="isPenalty" />
+                                             <input type="checkbox" (change)="addPenalty($event)" id="isPenalty" />
                                         </div>
                                    </div>
 
@@ -273,7 +261,7 @@
                                              <label for="totalAmount">Total Amount</label>
                                         </div>
                                         <div class="xs:col-span-12 md:col-span-4">
-                                             <input id="totalAmount" type="number" formControlName="totalAmount" class="border border-gray-400 rounded-md w-full"/>
+                                             <input id="totalAmount" type="text" formControlName="totalAmount" class="border border-gray-400 rounded-md w-full"/>
                                         </div>
                                    </div>
 

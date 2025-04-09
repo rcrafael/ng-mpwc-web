@@ -143,7 +143,7 @@
                                    <label for="shareCapitalAmt">Share Capital</label>
                               </div>
                               <div class="xs:col-span-10 md:col-span-6">
-                                   <input type="number" id="shareCapitalAmt" formControlName="shareCapital" class="border border-gray-400 rounded-md w-full">
+                                   <input type="text" id="shareCapitalAmt" formControlName="shareCapital" (blur)="computeShares()" class="border border-gray-400 rounded-md w-full text-right">
                               </div>
                          </div>
 
@@ -152,7 +152,7 @@
                                    <label for="cbuAmt">CBU</label>
                               </div>
                               <div class="xs:col-span-10 md:col-span-6">
-                                   <input type="number" id="cbuAmt" formControlName="cbu" class="border border-gray-400 rounded-md w-full">
+                                   <input type="text" id="cbuAmt" formControlName="cbu" (blur)="computeShares()" class="border border-gray-400 rounded-md w-full text-right">
                               </div>
                          </div>
 
@@ -161,7 +161,7 @@
                                    <label for="savingsAmt">Savings</label>
                               </div>
                               <div class="xs:col-span-10 md:col-span-6">
-                                   <input type="number" id="savingsAmt" formControlName="savings" class="border border-gray-400 rounded-md w-full">
+                                   <input type="text" id="savingsAmt" formControlName="savings" (blur)="computeShares()" class="border border-gray-400 rounded-md w-full text-right">
                               </div>
                          </div>
 
@@ -176,7 +176,7 @@
                                    <label for="totalBillingAmt">Total Billing Amt</label>
                               </div>
                               <div class="xs:col-span-8 md:col-span-6">
-                                   <input type="number" id="totalBillingAmt" formControlName="totalBillingAmount" class="border border-gray-400 rounded-md w-full">
+                                   <input type="text" id="totalBillingAmt" formControlName="totalBillingAmount" class="border border-gray-400 rounded-md w-full text-right">
                               </div>
                          </div>
 
@@ -185,7 +185,7 @@
                                    <label for="totalShareAmt">Total Share Amt</label>
                               </div>
                               <div class="xs:col-span-10 md:col-span-6">
-                                   <input type="number" id="totalShareAmt" formControlName="totalShareAmount" class="border border-gray-400 rounded-md w-full">
+                                   <input type="text" id="totalShareAmt" formControlName="totalShareAmount" class="border border-gray-400 rounded-md w-full text-right">
                               </div>
                          </div>
 
@@ -194,7 +194,7 @@
                                    <label for="shareAsPayment" class="md:text-sm">Share as Payment (Less)</label>
                               </div>
                               <div class="xs:col-span-10 md:col-span-6">
-                                   <input type="number" id="shareAsPayment" formControlName="shareAsPayment" class="border border-gray-400 rounded-md w-full">
+                                   <input type="text" id="shareAsPayment" formControlName="shareAsPayment" class="border border-gray-400 rounded-md w-full text-right">
                               </div>
                               <div class="xs:col-span-2 md:col-span-1">
                                    <button type="button" class="bg-gray-300 w-fit px-[10px] rounded-md border border-black border-solid"><span>...</span></button>
@@ -206,7 +206,7 @@
                                    <label for="seniorDiscount" class="md:text-sm">Senior Discount (Less)</label>
                               </div>
                               <div class="xs:col-span-10 md:col-span-6">
-                                   <input type="number" id="seniorDiscount" formControlName="seniorDiscount" class="border border-gray-400 rounded-md w-full">
+                                   <input type="text" id="seniorDiscount" formControlName="seniorDiscount" class="border border-gray-400 rounded-md w-full text-right">
                               </div>
                          </div>
 
@@ -215,7 +215,7 @@
                                    <label for="totalAmtToPay" class="md:text-sm">Total Amount To Pay</label>
                               </div>
                               <div class="xs:col-span-10 md:col-span-6">
-                                   <input type="number" id="totalAmtToPay" formControlName="totalAmountPay" class="border border-gray-400 rounded-md w-full">
+                                   <input type="text" id="totalAmtToPay" formControlName="totalAmountPay" class="border border-gray-400 rounded-md w-full text-right">
                               </div>
                          </div>
 
@@ -251,7 +251,7 @@
                                    <label for="amountReceived" class="md:text-sm">Amount Received</label>
                               </div>
                               <div class="xs:col-span-10 md:col-span-6">
-                                   <input type="number" id="amountReceived" class="border border-gray-400 rounded-md w-full">
+                                   <input type="text" id="amountReceived" [(ngModel)]="amountReceived" [ngModelOptions]="{standalone: true}" (blur)="computeChange()" class="border border-gray-400 rounded-md w-full">
                               </div>
                          </div>
 
@@ -260,10 +260,9 @@
                                    <label for="changeAmt" class="md:text-sm">Change</label>
                               </div>
                               <div class="xs:col-span-10 md:col-span-6">
-                                   <input type="number" disabled id="changeAmt" class="border border-gray-400 rounded-md w-full">
-                              </div>
+                                   <input type="text" disabled id="changeAmt" [(ngModel)]="amountChange" [ngModelOptions]="{standalone: true}" class="border border-gray-400 rounded-md w-full">
+                              </div>                         
                          </div>
-
                     </div>
                </div>
 

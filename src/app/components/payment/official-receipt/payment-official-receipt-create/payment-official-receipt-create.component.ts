@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, NgModel, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDivider } from '@angular/material/divider';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
@@ -22,7 +22,8 @@ import { Utils } from '../../../../common/util';
   imports: [
     ReactiveFormsModule,
     MatDivider,
-    MatTableModule
+    MatTableModule,
+    FormsModule
   ],
   templateUrl: './payment-official-receipt-create.component.html',
   styleUrl: './payment-official-receipt-create.component.css',
@@ -80,6 +81,11 @@ export class PaymentOfficialReceiptCreateComponent implements OnInit {
   orDetails: IOfficialReceiptDetail[] = []; 
 
   formatAmount = Utils.formatCurrency;
+  sanitizeAmount = Utils.sanitizeAmount;
+  numberFormat = Utils.formatNumber;
+
+  amountReceived: string = '0.00';
+  amountChange: string = '0.00';
 
   public fg = new FormGroup({
     accountNo: new FormControl<string>('', Validators.required),
@@ -90,14 +96,14 @@ export class PaymentOfficialReceiptCreateComponent implements OnInit {
     orDate: new FormControl<string>(this.currentDate),
     entryDate: new FormControl<string>(this.currentDate),
     createdBy: new FormControl<string>(''),
-    shareCapital: new FormControl<number>(0),
-    cbu: new FormControl<number>(0),
-    savings: new FormControl<number>(0),
-    totalBillingAmount: new FormControl<number>(0),
-    totalShareAmount: new FormControl<number>(0),
-    shareAsPayment: new FormControl<number>(0),
-    seniorDiscount: new FormControl<number>(0),
-    totalAmountPay: new FormControl<number>(0),
+    shareCapital: new FormControl<string>('0.00'),
+    cbu: new FormControl<string>('0.00'),
+    savings: new FormControl<string>('0.00'),
+    totalBillingAmount: new FormControl<string>('0.00'),
+    totalShareAmount: new FormControl<string>('0.00'),
+    shareAsPayment: new FormControl<string>('0.00'),
+    seniorDiscount: new FormControl<string>('0.00'),
+    totalAmountPay: new FormControl<string>('0.00'),
     checkNo: new FormControl<string>(''),
     checkBank: new FormControl<string>(''),
     checkDate: new FormControl<string|null>(null),
@@ -151,31 +157,31 @@ export class PaymentOfficialReceiptCreateComponent implements OnInit {
     let cbu!: IShareCbu
     let savings!: IShareSavings
 
-    if(frm.cbu !== null && frm.cbu !== undefined && frm.cbu > 0) {
+    if(frm.cbu !== null && frm.cbu !== undefined && frm.cbu !== '') {
       cbu = {
         orNo: frm.orNo!,
         customerId: this.selectedCustomerInfo.id,
-        amount: frm.cbu,
+        amount: this.sanitizeAmount(frm.cbu) ,
         entryDate: frm.entryDate!,
         transactionType: 1
       }
     }
 
-    if(frm.shareCapital !== null && frm.shareCapital !== undefined && frm.shareCapital > 0) {
+    if(frm.shareCapital !== null && frm.shareCapital !== undefined && frm.shareCapital !== '') {
       shareCap = {
         orNo: frm.orNo!,
         customerId: this.selectedCustomerInfo.id,
-        amount: frm.shareCapital,
+        amount: this.sanitizeAmount(frm.shareCapital),
         entryDate: frm.entryDate!,
         transactionType: 1
       }
     }
 
-    if(frm.savings !== null && frm.savings !== undefined && frm.savings > 0) {
+    if(frm.savings !== null && frm.savings !== undefined && frm.savings != '') {
       savings = {
         orNo: frm.orNo!,
         customerId: this.selectedCustomerInfo.id,
-        amount: frm.savings,
+        amount: this.sanitizeAmount(frm.savings),
         entryDate: frm.entryDate!,
         transactionType: 1
       }
@@ -186,10 +192,10 @@ export class PaymentOfficialReceiptCreateComponent implements OnInit {
         orNo: frm.orNo!,
         customerId: this.selectedCustomerInfo.id,
         orDate: frm.orDate!,
-        totalBillingAmount: frm.totalBillingAmount ?? 0,
-        totalShareAmount: frm.totalShareAmount ?? 0,
-        totalAmountPay: frm.totalAmountPay ?? 0,
-        seniorDiscount: frm.seniorDiscount ?? 0,
+        totalBillingAmount: this.sanitizeAmount(frm.totalBillingAmount ?? '0'),
+        totalShareAmount: this.sanitizeAmount(frm.totalShareAmount ?? '0'),
+        totalAmountPay: this.sanitizeAmount(frm.totalAmountPay ?? '0'),
+        seniorDiscount: this.sanitizeAmount(frm.seniorDiscount ?? '0'),
         entryDate: frm.entryDate!,
         createdBy: frm.createdBy!,
         checkNo: frm.checkNo ?? '',
@@ -232,6 +238,25 @@ export class PaymentOfficialReceiptCreateComponent implements OnInit {
       if(data!== null) {
         this.orDetails = data;
         this.dataSource = new MatTableDataSource<IOfficialReceiptDetail>(this.orDetails);
+        console.log('OR DETAILS : ', this.orDetails);
+        
+        let totalBillingAmountPay: number = 0;
+        let totalDiscount: number = 0;
+
+        this.orDetails.map((or: IOfficialReceiptDetail) => {
+          totalBillingAmountPay += or.totalAmount
+          totalDiscount += or.seniorDiscount
+        })
+
+        console.log('totalBillingAmountPay',this.numberFormat(totalBillingAmountPay ?? '0'));
+
+        this.fg.patchValue({
+          totalBillingAmount: this.numberFormat((totalBillingAmountPay + totalDiscount)) ,
+          seniorDiscount: this.numberFormat(totalDiscount ?? 0),
+          totalAmountPay:  this.numberFormat(totalBillingAmountPay ?? 0)
+        })
+
+        this.computeTotalAmountToPay();
       }
     })
   }
@@ -253,6 +278,48 @@ export class PaymentOfficialReceiptCreateComponent implements OnInit {
         })
       }
     })
+  }
+
+  computeShares(): void {
+    
+    const frm = this.fg.value;
+    const shareCap = this.sanitizeAmount(frm.shareCapital ?? '0');
+    const cbu = this.sanitizeAmount(frm.cbu ?? '0');
+    const savings = this.sanitizeAmount(frm.savings ?? '0');
+    
+    const totalSavings:number = shareCap + cbu + savings;
+    
+    this.fg.patchValue({
+      totalShareAmount: this.numberFormat(totalSavings ?? 0)
+    })
+
+    this.computeTotalAmountToPay()
+
+  }
+
+
+  computeTotalAmountToPay() : void {
+
+    const frm = this.fg.value;
+    const totalBilling = this.sanitizeAmount(frm.totalBillingAmount ?? '0');
+    const totalShare = this.sanitizeAmount(frm.totalShareAmount ?? '0');
+    const totalDiscount = this.sanitizeAmount(frm.seniorDiscount ?? '0');
+
+    const totalAmountToPay: number = (totalBilling + totalShare) - totalDiscount;
+
+    this.fg.patchValue({
+      totalAmountPay: this.numberFormat(totalAmountToPay ?? 0)
+    })
+
+    this.amountChange = '0.00';
+    this.amountReceived = '0.00';
+
+  }
+
+  computeChange(): void {
+    const totalAmounToPay: number = this.sanitizeAmount(this.fg.get('totalAmountPay')?.value ?? '0');
+    this.amountChange = this.numberFormat(this.sanitizeAmount(this.amountReceived ?? '0') - totalAmounToPay);
+    this.amountReceived = this.numberFormat(this.sanitizeAmount(this.amountReceived ?? '0'));
   }
 
 }

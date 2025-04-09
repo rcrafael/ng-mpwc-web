@@ -57,18 +57,19 @@ throw new Error('Method not implemented.');
     previous: new FormControl<number>(0),
     present: new FormControl<number>(0),
     m3Used: new FormControl<number>(0),
-    readingAmount: new FormControl<string>('0'),
-    parts: new FormControl<string>('0'),
-    maintenanceFee: new FormControl<string>('0'),
-    lessAmount: new FormControl<string>('0'),
-    septageFee: new FormControl<string>('0'),
-    totalAmount: new FormControl<string>({value:'0', disabled: true}),
+    readingAmount: new FormControl<string>('0.00'),
+    parts: new FormControl<string>('0.00'),
+    maintenanceFee: new FormControl<string>('0.00'),
+    lessAmount: new FormControl<string>('0.00'),
+    septageFee: new FormControl<string>('0.00'),
+    totalAmount: new FormControl<string>({value:'0.00', disabled: true}),
     status: new FormControl<string>({value:'', disabled: true}),
   })
 
   getBranchCode = Utils.getBranchCode;
   getStatus = Utils.getStatusName;
   numberFormat = Utils.formatNumber;
+  sanitizeAmount = Utils.sanitizeAmount;
 
   ngOnInit(): void {
       this.readingId = this.activeRoute.snapshot.paramMap.get('readingId') || '';
@@ -106,7 +107,7 @@ throw new Error('Method not implemented.');
     });
   }
 
-  computerTotalBillingAmount(): void {
+  computeTotalBillingAmount(): void {
     const frm  = this.fg.value;
     const readingAmount: number = this.sanitizeAmount(frm.readingAmount ?? '0');
     const parts: number = this.sanitizeAmount(frm.parts ?? '0');
@@ -121,8 +122,5 @@ throw new Error('Method not implemented.');
   }
 
 
-  sanitizeAmount(amount: String): number {
-    return parseFloat(amount.replace(/,/g, ''));
-  }
 
 }

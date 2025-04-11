@@ -60,6 +60,13 @@ export class SidebarComponent {
     },
     {
       id: 7,
+      name:'reports',
+      url: '/reports',
+      label:'Reports',
+      icon: '/assets/icons/reports.svg'
+    },
+    {
+      id: 8,
       name:'settings',
       url: '/settings',
       label:'Settings',

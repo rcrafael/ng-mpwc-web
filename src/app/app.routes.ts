@@ -17,6 +17,7 @@ import { OtherPaymentViewComponent } from './components/payment/other-payments/o
 import { PaymentOfficialReceiptCreateComponent } from './components/payment/official-receipt/payment-official-receipt-create/payment-official-receipt-create.component';
 import { PaymentOfficialReceiptListComponent } from './components/payment/official-receipt/payment-official-receipt-list/payment-official-receipt-list.component';
 import { PaymentOfficialReceiptViewComponent } from './components/payment/official-receipt/payment-official-receipt-view/payment-official-receipt-view.component';
+import { SettingsComponent } from './components/settings/settings.component';
 
 export const routes: Routes = [
 
@@ -39,7 +40,10 @@ export const routes: Routes = [
                { path: 'payment/official-receipt/:orId', component: PaymentOfficialReceiptViewComponent},
                { path: 'payment/other-receipt', component: OtherPaymentListComponent},
                { path: 'payment/other-receipt/create', component: OtherPaymentCreateComponent},
-               { path: 'payment/other-receipt/:receiptNo', component: OtherPaymentViewComponent}
+               { path: 'payment/other-receipt/:receiptNo', component: OtherPaymentViewComponent},
+
+               { path: 'settings', component: SettingsComponent},
+               { path: 'settings/water-rates', component: SettingsComponent}
           ]
      },
      {

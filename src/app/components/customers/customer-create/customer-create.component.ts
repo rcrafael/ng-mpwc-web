@@ -49,7 +49,7 @@ export class CustomerCreateComponent implements OnInit {
     religion: new FormControl<string>(''),
     annualIncome: new FormControl<number | null>(0),
     dateAccepted: new FormControl<string>(this.currentDate,Validators.required),
-    customerType: new FormControl<number>(-1,Validators.required),
+    // customerType: new FormControl<number>(-1,Validators.required),
     phase: new FormControl<number>(-1,Validators.required),
     tin: new FormControl<string>(''),
   });
@@ -84,7 +84,7 @@ export class CustomerCreateComponent implements OnInit {
       religion: frm.religion ?? '',
       annualIncome: frm.annualIncome ?? 0,
       dateAccepted: frm.dateAccepted!,
-      customerType: frm.customerType ?? 1,
+      // customerType: frm.customerType ?? 1,
       phase: frm.phase ?? 1,
       tin: frm.tin ?? ''
     }

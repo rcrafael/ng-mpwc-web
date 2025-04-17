@@ -156,7 +156,7 @@ export class BillingCreateComponent implements OnInit {
         if(data !== null) {
           this.selectedMeterNo = data;
           this.getMeterInfo(this.selectedMeterNo.meterNo);
-          this.getWaterRates(this.selectedCustomerInfo.customerType);
+          // this.getWaterRates(this.selectedCustomerInfo.customerType);
         }
       })
     }

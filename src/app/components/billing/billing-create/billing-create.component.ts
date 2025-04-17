@@ -8,11 +8,12 @@ import { MatDialog } from '@angular/material/dialog';
 import { BrowseMeterNoComponent } from '../../modals/browse-meter-no/browse-meter-no.component';
 import { ICustomerProfile } from '../../../models/interfaces/ICustomer';
 import { CustomerService } from '../../../services/customer.service';
-import { IBillingInfo, IWaterRates } from '../../../models/interfaces/IBilling';
+import { IBillingInfo } from '../../../models/interfaces/IBilling';
 import { BillingService } from '../../../services/billing.service';
 import { DecimalPipe, formatDate } from '@angular/common';
 import { IMeterDetails } from '../../../models/interfaces/IMeter';
 import { IAPIResponse } from '../../../models/interfaces/IApiResponse';
+import { IWaterRates } from '../../../models/interfaces/IWaterRates';
 
 @Component({
   selector: 'app-billing-create',
@@ -155,7 +156,7 @@ export class BillingCreateComponent implements OnInit {
         if(data !== null) {
           this.selectedMeterNo = data;
           this.getMeterInfo(this.selectedMeterNo.meterNo);
-          this.getWaterRates(this.selectedCustomerInfo.customerType);
+          // this.getWaterRates(this.selectedCustomerInfo.customerType);
         }
       })
     }

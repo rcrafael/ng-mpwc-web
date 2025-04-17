@@ -31,7 +31,7 @@ export interface ICustomerProfile {
      dateAccepted: string;
      dateUpdated?: string;
      updatedBy?: string;
-     customerType: number;
+     // customerType: number;
      phase: number;
      accountNo: string; //use for universal account number instead of customerId
      userId?: string | null; //connect for user login if system is ready to go online

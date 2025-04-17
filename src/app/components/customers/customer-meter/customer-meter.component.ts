@@ -9,8 +9,8 @@ import { IMeterDetails } from '../../../models/interfaces/IMeter';
 import { Utils } from '../../../common/util';
 import { NgIf } from '@angular/common';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { IBranchCode } from '../../../models/interfaces/ICommon';
-import { branchCodeData } from '../../../common/enum';
+import { IBranchCode, ICustomerType } from '../../../models/interfaces/ICommon';
+import { branchCodeData, customerTypeData } from '../../../common/enum';
 
 @Component({
   selector: 'app-customer-meter',
@@ -37,7 +37,7 @@ export class CustomerMeterComponent implements OnInit {
   tableCols: string[] = ['Meter No', 'Alias', 'Branch Code', 'Location', 'Previous', 'Present', 'Status'];
   dataSource: MatTableDataSource<IMeterDetails> = new MatTableDataSource<IMeterDetails>();
   branchCodes: IBranchCode[] = branchCodeData;
-
+  customerTypes: ICustomerType[] = customerTypeData;
 
   getStatus = Utils.getStatusName;
   getBranchCode = Utils.getBranchCode;
@@ -47,10 +47,12 @@ export class CustomerMeterComponent implements OnInit {
 
   fg = new FormGroup({
     meterNo: new FormControl<string>('', Validators.required),
+    serialNo: new FormControl<string>('',Validators.required),
     alias: new FormControl<string>('', Validators.required),
     previous: new FormControl<number>(0),
     present: new FormControl<number>(0),
     branchCode: new FormControl<number>(-1, Validators.required),
+    meterType: new FormControl<number>(-1, Validators.required),
     location: new FormControl<string>('')
   })
 

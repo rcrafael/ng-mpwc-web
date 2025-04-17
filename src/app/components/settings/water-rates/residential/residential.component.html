@@ -1,0 +1,135 @@
+<div class="grid m-5">
+     <div class="grid grid-cols-12">
+          <div class="col-span-6">
+               <form [formGroup]="fg" (submit)="handleSubmit()">
+                    <div class="grid grid-flow-row gap-3">
+                    
+                         <div>
+                             <button type="submit" class="bg-blue-300 h-10 w-14 rounded-md">
+                                   Add
+                             </button>
+                         </div>
+     
+                         <div class="grid grid-flow-col grid-cols-12 items-center">
+                              <div class="col-span-3">
+                                   <label for="description">Description</label>
+                              </div>
+                              <div>
+                                   <input type="text" id="description" formControlName="description" class="border border-gray-400 rounded-md" />
+                              </div>
+                         </div>
+     
+                         <div class="grid grid-flow-col grid-cols-12 items-center">
+                              <div class="col-span-3">
+                                   <label for="heirarchy">Heirarchy</label>
+                              </div>
+                              <div>
+                                   <input type="text" id="heirarchy" formControlName="heirarchy" class="border border-gray-400 rounded-md" />
+                              </div>
+                         </div>
+     
+                         <div class="grid grid-flow-col grid-cols-12 items-center">
+                              <div class="col-span-3">
+                                   <label for="from-m3">From</label>
+                              </div>
+                              <div>
+                                   <input type="text" id="from-m3" formControlName="fromM3" class="border border-gray-400 rounded-md" />
+                              </div>
+                         </div>
+     
+                         <div class="grid grid-flow-col grid-cols-12 items-center">
+                              <div class="col-span-3">
+                                   <label for="to-m3">To</label>
+                              </div>
+                              <div>
+                                   <input type="text" id="to-m3" formControlName="toM3" class="border border-gray-400 rounded-md" />
+                              </div>
+                         </div>
+     
+                         <div class="grid grid-flow-col grid-cols-12 items-center">
+                              <div class="col-span-3">
+                                   <label for="rating">Rating</label>
+                              </div>
+                              <div>
+                                   <input type="text" id="rating" formControlName="rating" class="border border-gray-400 rounded-md" />
+                              </div>
+                         </div>
+     
+                         <div class="grid grid-flow-col grid-cols-12 items-center">
+                              <div class="col-span-3">
+                                   <label for="base-amount">Base Amount</label>
+                              </div>
+                              <div>
+                                   <input type="checkbox" id="base-amount" formControlName="isBaseAmount" class="border border-gray-400 rounded-md" />
+                              </div>
+                         </div>
+                         
+                    </div>
+               </form>
+               
+               
+          </div>
+          <div class="col-span-6">
+               <table mat-table [dataSource]="dataSource">
+                    <ng-container matColumnDef="Description">
+                         <th mat-header-cell *matHeaderCellDef>Description</th>
+                         <td mat-cell *matCellDef="let element">
+                              <span>
+                                   {{element.description}}
+                              </span>
+                         </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="Heirarchy">
+                         <th mat-header-cell *matHeaderCellDef>Heirarchy</th>
+                         <td mat-cell *matCellDef="let element">
+                              <span>
+                                   {{element.heirarchy}}
+                              </span>
+                         </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="From">
+                         <th mat-header-cell *matHeaderCellDef>From</th>
+                         <td mat-cell *matCellDef="let element">
+                              <span>
+                                   {{element.from}}
+                              </span>
+                         </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="To">
+                         <th mat-header-cell *matHeaderCellDef>To</th>
+                         <td mat-cell *matCellDef="let element">
+                              <span>
+                                   {{element.to}}
+                              </span>
+                         </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="Rating">
+                         <th mat-header-cell *matHeaderCellDef>Rating</th>
+                         <td mat-cell *matCellDef="let element">
+                              <span>
+                                   {{element.ratingValue}}
+                              </span>
+                         </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="Base Amount">
+                         <th mat-header-cell *matHeaderCellDef>Base Amount</th>
+                         <td mat-cell *matCellDef="let element">
+                              <span>
+                                   {{element.isBaseAmount ? "Y" : "N"}}
+                              </span>
+                         </td>
+                    </ng-container>
+     
+                    <tr mat-header-row *matHeaderRowDef="tableCols; sticky: true" ></tr>
+                    <tr mat-row *matRowDef="let row; columns: tableCols;"></tr>
+               
+               </table>
+          </div>
+     </div>
+
+</div>

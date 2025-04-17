@@ -38,6 +38,15 @@
                                         <input type="text" id="cm_meterNo" formControlName="meterNo" class="border border-gray-400 rounded-md"/>
                                    </div>
                               </div>
+
+                              <div class="grid grid-cols-12">
+                                   <div class="col-start-1 col-span-4">
+                                        <label for="cm_serialNo"> Serial No: </label>
+                                   </div>
+                                   <div class="col-start-5 col-span-8">
+                                        <input type="text" id="cm_serialNo" formControlName="serialNo" class="border border-gray-400 rounded-md"/>
+                                   </div>
+                              </div>
           
                               <div class="grid grid-cols-12">
                                    <div class="col-start-1 col-span-4">
@@ -71,6 +80,20 @@
                                              class="w-[50%] border border-gray-400 rounded-md">
                                              @for (br of branchCodes; track br) {
                                                   <option [value]="br.id">{{ br.name }}</option>
+                                             }
+                                        </select>
+                                   </div>
+                              </div>
+
+                              <div class="grid grid-cols-12">
+                                   <div class="col-start-1 col-span-4">
+                                        <label for="cm_branchCode"> Customer Type: </label>
+                                   </div>
+                                   <div class="col-start-5 col-span-8">
+                                        <select id="cm_branchCode" formControlName="meterType"
+                                             class="w-[50%] border border-gray-400 rounded-md">
+                                             @for (cs of customerTypes; track cs) {
+                                                  <option [value]="cs.id">{{ cs.name }}</option>
                                              }
                                         </select>
                                    </div>

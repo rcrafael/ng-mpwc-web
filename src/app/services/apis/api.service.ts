@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { AuthApi, BillingApi, Constants, CustomerApi, PaymentApi } from '../../common/constants';
 import { firstValueFrom, Observable } from 'rxjs';
 import { IAPIResponse } from '../../models/interfaces/IApiResponse';
-import { IBillingInfo } from '../../models/interfaces/IBilling';
+import { IBillingInfo, IUpdateBilling } from '../../models/interfaces/IBilling';
 import { IMeterDetails } from '../../models/interfaces/IMeter';
 import { ICustomerProfile } from '../../models/interfaces/ICustomer';
 import { IOfficialReceipt } from '../../models/interfaces/IOfficialReceipt';
@@ -87,6 +87,10 @@ export class ApiService {
 
   createBilling(params:IBillingInfo) {
     return this.httpClient.post<IAPIResponse>(`${Constants.HOST}${BillingApi.CREATE_BILLING}`, params);
+  }
+
+  updateBilling(params: IUpdateBilling) {
+    return this.httpClient.put<IAPIResponse>(`${Constants.HOST}${BillingApi.CREATE_BILLING}`, params);
   }
 
   getBillingByCustomerId(customerId: string, pageNo: number = 0 , pageSize: number = 50): Observable<IAPIResponse> {

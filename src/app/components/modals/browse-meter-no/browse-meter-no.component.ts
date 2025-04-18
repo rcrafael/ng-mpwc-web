@@ -27,7 +27,11 @@ export class BrowseMeterNoComponent implements OnInit {
   
   tableCols: string[] = [
     'Meter No',
+    'Serial No',
     'Alias',
+    'Branch Code',
+    'Meter Type',
+    'Location',
     'Status',
   ]
 
@@ -35,10 +39,12 @@ export class BrowseMeterNoComponent implements OnInit {
   dataSource: MatTableDataSource<IMeterDetails> = new MatTableDataSource<IMeterDetails>();
 
   getStatus = Utils.getStatusName;
-
+  getCustomerType = Utils.getCustomerType;
+  getBranchCode = Utils.getBranchCode;
 
   ngOnInit(): void {
     this.customerService.getMeterNoByCustomerId(this.customerInfo.id).then((response:any) => {
+      console.log('METERS: ', response);
       this.data = response;
       this.dataSource = this.data.result;
     });

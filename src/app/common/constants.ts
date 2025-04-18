@@ -21,6 +21,7 @@ export class BillingApi {
      public static GET_ACTIVE_WATER_RATES_RESIDENTIAL = 'api/billing/rates/residential/active';
      public static GET_ACTIVE_WATER_RATES_COMMERCIAL = 'api/billing/rates/commercial/active';
      public static CREATE_BILLING = 'api/billing';
+     public static UPDATE_BILLING = 'api/billing';
      public static GET_BILLING_BY_ID = 'api/billing/id/{billingId}';
      public static GET_BILLING = 'api/billing/{pageNo}/{pageSize}';
      public static GET_BILLING_BY_CUSTOMER_ID = 'api/billing/customer/{customerId}/{pageNo}/{pageSize}';

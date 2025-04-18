@@ -5,7 +5,7 @@ export interface IMeterDetails {
      serialNo: string;
      alias: string;
      branchCode: number;
-     meterType: number;
+     customerType: number;
      location: string;
      previous: number;
      present: number;

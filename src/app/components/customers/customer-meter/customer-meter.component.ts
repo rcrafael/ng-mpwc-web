@@ -94,8 +94,10 @@ export class CustomerMeterComponent implements OnInit {
     const params: any = {
       customerId: this.customerId,
       meterNo: this.fg.value.meterNo!,
+      serialNo: this.fg.value.serialNo!,
       alias: this.fg.value.alias!,
       branchCode: this.fg.value.branchCode!,
+      customerType: this.fg.value.meterType!,
       location: this.fg.value.location!,
       previous: this.fg.value.previous!,
       present: this.fg.value.present!,

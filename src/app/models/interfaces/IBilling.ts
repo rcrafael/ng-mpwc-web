@@ -1,4 +1,5 @@
 import { ICustomerProfile } from "./ICustomer";
+import { IMeterDetails } from "./IMeter";
 
 export interface IBillingList {
      readingNo: string;
@@ -16,6 +17,7 @@ export interface IBillingList {
 export interface IBillingInfo {
      readingNo?: string; 
      meterNo: string;
+     meterInfo?: IMeterDetails;
      customerId: string; 
      customer?: ICustomerProfile;
      monthOf: number; 
@@ -36,3 +38,19 @@ export interface IBillingInfo {
      status: number;
 }
 
+export interface IUpdateBilling {
+     id: string;
+     readingNo: string;
+     monthOf: number;
+     dateFrom: string;
+     dateTo: string;
+     dueDate: string;
+     previous: number; 
+     present: number; 
+     m3Used: number; 
+     readingAmount: number;
+     parts: number; 
+     maintenanceFee: number; 
+     totalAmount: number;
+     septageFee: number;
+}

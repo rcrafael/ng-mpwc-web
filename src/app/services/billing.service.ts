@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { ApiService } from './apis/api.service';
 import { IAPIResponse } from '../models/interfaces/IApiResponse';
 import { firstValueFrom } from 'rxjs';
-import { IBillingInfo } from '../models/interfaces/IBilling';
+import { IBillingInfo, IUpdateBilling } from '../models/interfaces/IBilling';
 
 @Injectable({
   providedIn: 'root'
@@ -29,6 +29,10 @@ export class BillingService {
 
   createBilling(params: IBillingInfo): Promise<IAPIResponse> {
     return firstValueFrom(this.http.createBilling(params));
+  }
+
+  updateBilling(params: IUpdateBilling): Promise<IAPIResponse> {
+    return firstValueFrom(this.http.updateBilling(params));
   }
 
   getBillingByCustomerId(customerId: string, pageNo: number = 0, pageSize: number = 50): Promise<IAPIResponse> {

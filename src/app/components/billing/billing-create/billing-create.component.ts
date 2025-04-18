@@ -14,6 +14,7 @@ import { DecimalPipe, formatDate } from '@angular/common';
 import { IMeterDetails } from '../../../models/interfaces/IMeter';
 import { IAPIResponse } from '../../../models/interfaces/IApiResponse';
 import { IWaterRates } from '../../../models/interfaces/IWaterRates';
+import { Utils } from '../../../common/util';
 
 @Component({
   selector: 'app-billing-create',
@@ -69,6 +70,8 @@ export class BillingCreateComponent implements OnInit {
     status: new FormControl({value:'', disabled: true}),
   })
 
+
+  getBranchCode = Utils.getBranchCode;
 
   ngOnInit(): void {
     this.generateReadingNo();
@@ -148,7 +151,7 @@ export class BillingCreateComponent implements OnInit {
   openMeterDialog(): void {
       const dialogRef = this.dialog.open(BrowseMeterNoComponent, {
         data: this.selectedCustomerInfo,
-        width: '50%',
+        width: '70%',
         height: '50%'
       });
   
@@ -156,7 +159,12 @@ export class BillingCreateComponent implements OnInit {
         if(data !== null) {
           this.selectedMeterNo = data;
           this.getMeterInfo(this.selectedMeterNo.meterNo);
-          // this.getWaterRates(this.selectedCustomerInfo.customerType);
+          this.getWaterRates(this.selectedMeterNo.customerType);
+          this.fg.patchValue({
+            branchCode: this.getBranchCode(data.branchCode),
+            alias: data.alias,
+          })
+          console.log("CUSTOMER TYPE: ", this.selectedMeterNo.customerType);
         }
       })
     }
@@ -179,6 +187,7 @@ export class BillingCreateComponent implements OnInit {
   }
 
   getWaterRates(customerType: number) {
+
     if (customerType === 1) { // 1 - residential
       this.billingService.getActiveWaterRatesResidential().then((response) => {
         const resp = response.result as IWaterRates[];

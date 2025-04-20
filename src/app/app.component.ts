@@ -11,13 +11,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
   selector: 'app-root',
   standalone: true,
   imports: [
-    NgIf,
     RouterOutlet,
-    AuthLoginComponent,
-    AppLayoutComponent,
-    AuthComponent,
-    
-],
+  ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })

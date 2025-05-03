@@ -52,4 +52,8 @@ export class CustomerService {
     return firstValueFrom(this.http.createMeterNo(params));
   }
 
+  getCustomerWithSearch(keyword: string, pageNo: number = 0, pageSize: number = 50): Promise<IAPIResponse> {
+    return firstValueFrom(this.http.getCustomerWithSearch(keyword, pageNo, pageSize));
+  }
+
 }

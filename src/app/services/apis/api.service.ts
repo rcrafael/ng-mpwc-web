@@ -68,7 +68,12 @@ export class ApiService {
   }
   
 
-
+  getCustomerWithSearch(keyword: string, pageNo: number = 0, pageSize:number = 50): Observable<IAPIResponse> {
+    let params = {
+      searchKeyword: keyword
+    }
+    return this.httpClient.get<IAPIResponse>(`${this.env.apiHost}${CustomerApi.GET_CUSTOMER_SEARCH.replace('{pageNo}',pageNo.toString()).replace('{pageSize}', pageSize.toString())}`, {params});
+  }
 
 
   // billing APIs

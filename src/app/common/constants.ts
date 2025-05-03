@@ -42,3 +42,8 @@ export class PaymentApi {
 export class AuthApi {
      public static LOGIN = '/auth/login';
 }
+
+export class SeptageFeeApi {
+     public static GET_SEPTAGE_FEES = '/billing/septage-fee/rates' 
+     public static UPDATE_SEPTAGE_FEES = '/billing/septage-fee/rates' 
+}

@@ -15,6 +15,7 @@ import { IMeterDetails } from '../../../models/interfaces/IMeter';
 import { IAPIResponse } from '../../../models/interfaces/IApiResponse';
 import { IWaterRates } from '../../../models/interfaces/IWaterRates';
 import { Utils } from '../../../common/util';
+import { SeptageFeeService } from '../../../services/septage-fee.service';
 
 @Component({
   selector: 'app-billing-create',
@@ -34,6 +35,7 @@ export class BillingCreateComponent implements OnInit {
   constructor(
     private customerService: CustomerService,
     private billingService: BillingService,
+    private septageService: SeptageFeeService,
     private dialog: MatDialog
   ) {}
 
@@ -42,6 +44,7 @@ export class BillingCreateComponent implements OnInit {
   waterRates: IWaterRates[] = [];
   totalBilingAmount: number = 0;
   maxRateUsed: number = 0;
+  septageFees!: any;
 
   currentMonth = new Date().getMonth() + 1; //getMonth() is 0 to 11
   currentDate = formatDate(new Date(),'yyyy-MM-dd','en-PH');
@@ -75,6 +78,7 @@ export class BillingCreateComponent implements OnInit {
 
   ngOnInit(): void {
     this.generateReadingNo();
+    this.getSeptageFees();
   }
   
   onSubmit() {
@@ -219,8 +223,10 @@ export class BillingCreateComponent implements OnInit {
     const prev: number = this.fg.get('previous')?.value ? this.fg.get('previous')?.value! : 0;
     const present: number = this.fg.get('present')?.value ? this.fg.get('present')?.value! : 0;
     const useM3: number = present - prev;
+
     this.fg.patchValue({
-      m3Used: useM3
+      m3Used: useM3,
+      septageFee: this.computeSeptageFee(useM3)
     })
 
     let billingAmount: number = 0;
@@ -286,6 +292,65 @@ export class BillingCreateComponent implements OnInit {
         readingNo: response.result.toString()
       })
     })
+  }
+
+  getSeptageFees(): void {
+    this.septageService.getSeptageFees().then((response: IAPIResponse) => {
+      this.septageFees = response.result;
+    })
+    .catch((err: Error) => {
+      console.error('FAILED TO FETCH SEPTAGE FEES: ', err.message);
+    })
+  }
+
+  computeSeptageFee(m3Used: number): number {
+    
+    if(m3Used <= 10) {
+      return this.septageFees.minimumZeroTo10;
+    } else if(m3Used === 11) {
+      return this.septageFees.m3To11;
+    } else if(m3Used === 12) {
+      return this.septageFees.m3To12;
+    } else if(m3Used === 13) {
+      return this.septageFees.m3To13;
+    } else if(m3Used === 14) {
+      return this.septageFees.m3To14;
+    } else if(m3Used === 15) {
+      return this.septageFees.m3To15;
+    } else if(m3Used === 16) {
+      return this.septageFees.m3To16;
+    } else if(m3Used === 17) {
+      return this.septageFees.m3To17;
+    } else if(m3Used === 18) {
+      return this.septageFees.m3To18;
+    } else if(m3Used === 19) {
+      return this.septageFees.m3To19;
+    } else if(m3Used === 20) {
+      return this.septageFees.m3To20;
+    } else if(m3Used === 21) {
+      return this.septageFees.m3To21;
+    } else if(m3Used === 22) {
+      return this.septageFees.m3To22;
+    } else if(m3Used === 23) {
+      return this.septageFees.m3To23;
+    } else if(m3Used === 24) {
+      return this.septageFees.m3To24;
+    } else if(m3Used === 25) {
+      return this.septageFees.m3To25;
+    } else if(m3Used === 26) {
+      return this.septageFees.m3To26;
+    } else if(m3Used === 27) {
+      return this.septageFees.m3To27;
+    } else if(m3Used === 28) {
+      return this.septageFees.m3To28;
+    } else if(m3Used === 29) {
+      return this.septageFees.m3To29;
+    } else if(m3Used >= 30) {
+      return this.septageFees.m3To30;
+    } else {
+      return 0;
+    }
+
   }
 
 }

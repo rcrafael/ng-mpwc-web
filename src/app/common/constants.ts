@@ -6,6 +6,7 @@ export class CustomerApi {
      
      public static GET_CUSTOMER_LIST = '/customer/get/{pageNo}/{pageSize}';
      public static GET_CUSTOMER_BY_ID = '/customer/{id}';
+     public static GET_CUSTOMER_SEARCH = '/customer/search/{pageNo}/{pageSize}';
      public static CREATE_CUSTOMER = '/customer';
      public static GET_NEW_ACCOUNT_NUMBER = '/customer/new-account-number';
      public static UPDATE_CUSTOMER = '/customer';

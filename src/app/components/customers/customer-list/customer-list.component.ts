@@ -9,6 +9,8 @@ import { IAPIResponse } from '../../../models/interfaces/IApiResponse';
 import { SpinnerComponent } from "../../common/spinner/spinner.component";
 import { CommonService } from '../../../services/common.service';
 import { Utils } from '../../../common/util';
+import { FormsModule, NgModel } from '@angular/forms';
+import { debounceTime, distinctUntilChanged, Subject, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-customer-list',
@@ -18,7 +20,8 @@ import { Utils } from '../../../common/util';
     MatButtonModule,
     MatPaginatorModule,
     RouterModule,
-    SpinnerComponent
+    SpinnerComponent,
+    FormsModule
 ],
   templateUrl: './customer-list.component.html',
   styleUrl: './customer-list.component.css'
@@ -29,7 +32,14 @@ export class CustomerListComponent implements OnInit {
     private router: Router,
     private customerService: CustomerService,
     private commonService: CommonService
-  ) {}
+  ) {
+    this.subscription = this.subjectKeyword.pipe(
+      debounceTime(1000),
+      distinctUntilChanged()
+    ).subscribe(keyword => {
+        this.loadDataWithSarch(keyword, this.paginator.pageIndex, this.paginator.pageSize);
+    })
+  }
 
   @ViewChild(MatPaginator, {static: true}) paginator!: MatPaginator;
 
@@ -49,9 +59,15 @@ export class CustomerListComponent implements OnInit {
   pageLength: number = 0;
   totalRecordCount: number = 0;
   isSpinnerVisible!: boolean;
-  
+  searchKeyword: string = '';
+
+
   getCustomerType = Utils.getCustomerType;
   getBranchCode = Utils.getBranchCode;
+
+
+  private subjectKeyword = new Subject<string>();
+  private subscription: Subscription;
 
   async ngOnInit(): Promise<void> {
     this.commonService.getShowSpinnerVisibility().subscribe(spinnerVisibility => {
@@ -68,7 +84,13 @@ export class CustomerListComponent implements OnInit {
     this.paginator.pageIndex = e.pageIndex;
     this.paginator.pageSize = e.pageSize;
     this.paginator.length = e.length;
-    this.loadData(e.pageIndex, e.pageSize);
+    
+    if(this.searchKeyword.trim() === '') {
+      this.loadData(e.pageIndex, e.pageSize);
+    } else {
+      this.loadDataWithSarch(this.searchKeyword, e.pageIndex, e.pageSize);
+    }
+    
   }
 
 
@@ -91,6 +113,31 @@ export class CustomerListComponent implements OnInit {
     .finally(async () => {
       this.commonService.showSpinner(false);
     });
+  }
+
+  loadDataWithSarch(keyword: string, pageIdx: number, pageSize: number) {
+    this.customerService.getCustomerWithSearch(keyword, pageIdx, pageSize).then((response:IAPIResponse) => {
+      if(response.result !== null) {
+        const result: any = response.result;
+
+        this.dataSource.data = result.data;
+        this.paginator.pageIndex = result.paginator.pageNumber;
+        this.paginator.pageSize = result.paginator.pageSize;
+        this.paginator.length =  result.paginator.totalRecordCount;
+      }
+    })
+    .catch(async (error: Error) => {
+      console.error('Error fetching customer list with search:', error);
+      this.commonService.showSpinner(false);
+    })
+    .finally(async () => {
+      this.commonService.showSpinner(false);
+    });
+  }
+
+  onSearchInputChanged(keyword: string): void {
+    this.subjectKeyword.next(keyword);
+    this.paginator.pageIndex = 0;
   }
 
 }

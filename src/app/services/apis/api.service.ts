@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { AuthApi, BillingApi, Constants, CustomerApi, PaymentApi } from '../../common/constants';
-import { firstValueFrom, Observable } from 'rxjs';
+import { AuthApi, BillingApi, Constants, CustomerApi, PaymentApi, SeptageFeeApi } from '../../common/constants';
+import { firstValueFrom, Observable, ObservedValueOf } from 'rxjs';
 import { IAPIResponse } from '../../models/interfaces/IApiResponse';
 import { IBillingInfo, IUpdateBilling } from '../../models/interfaces/IBilling';
 import { IMeterDetails } from '../../models/interfaces/IMeter';
@@ -119,6 +119,12 @@ export class ApiService {
     return this.httpClient.get<IAPIResponse>(`${this.env.apiHost}${BillingApi.GET_UNPAID_BILLING_BY_CUSTOMER_ID}`, {params});
   }
 
+
+
+  //septage fee APIs
+  getSeptageFees(): Observable<IAPIResponse> {
+    return this.httpClient.get<IAPIResponse>(`${this.env.apiHost}${SeptageFeeApi.GET_SEPTAGE_FEES}`);
+  }
 
 
 

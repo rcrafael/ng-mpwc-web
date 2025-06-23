@@ -37,25 +37,6 @@ export class PaymentOfficialReceiptCreateComponent implements OnInit {
     private paymentService: PaymentService
   ) {}
 
-  branchCodes: IBranchCode[] = [
-    {
-      id: 1,
-      name: 'Patubig'
-    },
-    {
-      id: 2,
-      name: 'Mahabang Parang'
-    },
-    {
-      id: 3,
-      name:'Santa Rosa'
-    },
-    {
-      id: 4,
-      name: 'Duhat'
-    }
-  ];
-
   dataSource!: MatTableDataSource<IOfficialReceiptDetail>;
   tableColumns: string[] = [
     'Reading No',

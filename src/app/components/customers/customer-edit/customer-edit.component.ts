@@ -15,6 +15,7 @@ import { fromIterable } from 'rxjs/internal/observable/innerFrom';
 import { AuthService } from '../../../services/auth.service';
 import { branchCodeData, genderData, customerTypeData, phaseData } from '../../../common/enum';
 
+
 @Component({
   selector: 'app-customer-edit',
   standalone: true,

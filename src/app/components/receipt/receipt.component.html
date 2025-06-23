@@ -1,0 +1,10 @@
+<div class="container mt-3 flex flex-col items-center">
+  <div>
+      <h2>Receipt Preview</h2>
+
+    <div *ngIf="receiptHtml" class="preview mt-4">
+      <div [innerHTML]="receiptHtml" class="receipt-preview"></div>
+      <button class="btn btn-primary mt-3" (click)="print()">Print</button>
+    </div>
+  </div>
+</div>

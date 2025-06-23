@@ -8,11 +8,15 @@ import { Utils } from '../../../../common/util';
 import { IAPIResponse } from '../../../../models/interfaces/IApiResponse';
 import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { SpinnerComponent } from '../../../common/spinner/spinner.component';
+import { MatIcon } from '@angular/material/icon';
+import { ReceiptComponent } from '../../../receipt/receipt.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-payment-official-receipt-list',
   standalone: true,
   imports: [
+    MatIcon,
     MatTableModule,
     RouterModule,
     MatPaginatorModule,
@@ -26,7 +30,8 @@ export class PaymentOfficialReceiptListComponent implements OnInit {
   constructor(
     private router: Router,
     private commonService: CommonService,
-    private paymentService: PaymentService
+    private paymentService: PaymentService,
+    private dialog: MatDialog,
   ) {}
   @ViewChild(MatPaginator, {static: true}) paginator!: MatPaginator;
 
@@ -40,7 +45,8 @@ export class PaymentOfficialReceiptListComponent implements OnInit {
     'Total Billing Amount', 
     'Total Share Amount', 
     'Total Amount To Pay', 
-    'Status'
+    'Status',
+    'Actions'
   ];
   
   pageIdx:number = 0;
@@ -92,5 +98,24 @@ export class PaymentOfficialReceiptListComponent implements OnInit {
       this.commonService.showSpinner(false);
     });
   }
+
+  openPrint(): void {
+      const dialogRef = this.dialog.open(ReceiptComponent, {
+        width: '30%',
+        height: '90%'
+      });
+  
+      // dialogRef.afterClosed().subscribe(data => {
+      //   if(data !== null) {
+      //     this.selectedCustomerInfo = data
+      //     this.fg.patchValue({
+      //       accountNo: this.selectedCustomerInfo.accountNo,
+      //       customerName: `${this.selectedCustomerInfo.lastName}, ${this.selectedCustomerInfo.firstName} ${this.selectedCustomerInfo.middleName}` ,
+      //       branchCode: this.selectedCustomerInfo.branchCode,
+      //       address: this.selectedCustomerInfo.address
+      //     })
+      //   }
+      // })
+    }
 
 }

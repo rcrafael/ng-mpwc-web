@@ -17,10 +17,10 @@ export interface IOfficialReceiptHeader {
      orNo: string;
      customerId: string;
      orDate: string;
-     totalBillingAmount: number;
-     totalShareAmount: number;
+     totalBillingAmount?: number;
+     totalShareAmount?: number;
      totalAmountPay: number;
-     seniorDiscount: number;
+     seniorDiscount?: number;
      entryDate: string;
      createdBy: string;
      checkNo?: string;

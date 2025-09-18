@@ -1,11 +1,19 @@
-import { Component, inject } from '@angular/core';
-import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { Component, inject, OnInit } from '@angular/core';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDivider } from '@angular/material/divider';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { IOtherPaymentDetails } from '../../../../models/interfaces/IOtherPayments';
+import { IOtherPaymentDetail, IOtherPaymentHeader, IOtherPaymentPayload, IOtherPaymentTableDetails } from '../../../../models/interfaces/IOtherPayments';
 import { IBranchCode } from '../../../../models/interfaces/ICommon';
 import { MatDialog } from '@angular/material/dialog';
 import { AddDetailsModalComponent } from '../add-details-modal/add-details-modal.component';
+import { branchCodeData } from '../../../../common/enum';
+import { BrowseCustomersComponent } from '../../../modals/browse-customers/browse-customers.component';
+import { Utils } from '../../../../common/util';
+import { formatDate } from '@angular/common';
+import { IMeterDetails } from '../../../../models/interfaces/IMeter';
+import { AuthService } from '../../../../services/auth.service';
+import { PaymentService } from '../../../../services/payment.service';
+import { IAPIResponse } from '../../../../models/interfaces/IApiResponse';
 
 @Component({
   selector: 'app-other-payment-create',
@@ -13,57 +21,198 @@ import { AddDetailsModalComponent } from '../add-details-modal/add-details-modal
   imports: [
     ReactiveFormsModule,
     MatDivider,
-    MatTableModule
+    MatTableModule,
+    FormsModule
   ],
   templateUrl: './other-payment-create.component.html',
   styleUrl: './other-payment-create.component.css'
 })
-export class OtherPaymentCreateComponent {
-
-  constructor() {}
+export class OtherPaymentCreateComponent implements OnInit {
+  
+  constructor(
+    private authService: AuthService,
+    private paymentService: PaymentService
+  ) {
+    this.fg.patchValue({
+      createdBy: this.authService.getUserName()
+    })
+  }
 
   dialog = inject(MatDialog)
 
-  branchCodes: IBranchCode[] = [
-    {
-      id: 1,
-      name: 'Patubig'
-    },
-    {
-      id: 2,
-      name: 'Mahabang Parang'
-    },
-    {
-      id: 3,
-      name:'Santa Rosa'
-    },
-    {
-      id: 4,
-      name: 'Duhat'
-    }
-  ]
+  branchCodes:IBranchCode[] = branchCodeData;
+  dataSource!: MatTableDataSource<IOtherPaymentTableDetails>;
+  
+  buildCustomerName = Utils.buildCustomerName;
+  sanitizeAmount = Utils.sanitizeAmount;
+  numberFormat = Utils.formatNumber;
 
-  dataSource!: MatTableDataSource<IOtherPaymentDetails>;
+  currentDate = formatDate(new Date(), 'yyyy-MM-dd', 'en-PH');
+  selectedCustomer!: any;
+  // selectedMeter!: IMeterDetails;
+
+  amountChange: string = '0.00';
+  amountReceived: string = '0.00';
+
+  isCustomerEditable: boolean = false;
+
   tableColumns: string[] = [
-    'Parts',
-    'Item Name',
+    'Description',
     'Remarks',
-    'Total Amount'
+    'Amount'
   ]
 
-  public gf = new FormGroup({
-
+  public fg = new FormGroup({
+    isOutsideCollection: new FormControl<boolean>(false),
+    accountNo: new FormControl<string>('', Validators.required),
+    customerName: new FormControl<string | null>('', Validators.required),
+    branchCode: new FormControl<number>({value: 0, disabled: true}),
+    address: new FormControl<string>('', Validators.required),
+    orNo: new FormControl<string>('', Validators.required),
+    orDate: new FormControl<string>(this.currentDate),
+    entryDate: new FormControl<string>(this.currentDate),
+    createdBy: new FormControl<string>(''),
+    totalBillingAmount: new FormControl<string>('0.00'),
+    totalAmountPay: new FormControl<string>('0.00'),
+    checkNo: new FormControl<string>(''),
+    checkBank: new FormControl<string>(''),
+    checkDate: new FormControl<string | null>(null),
   })
 
-  onSubmit = () => {
-  
+  ngOnInit(): void {
+
+    this.paymentService.generateNewORno().then((response: IAPIResponse) => {
+      if(response.result) {
+        this.fg.patchValue({
+          orNo: response.result.toString()
+        });
+      }
+    })
+    .catch((error: Error) => {
+      console.error('ERROR GENERATING NEW OR NUMBER: ', error);
+        this.fg.patchValue({
+          orNo: ''
+        });
+    });
+
   }
 
-  openDetailFormDialog(): void {
-    this.dialog.open(AddDetailsModalComponent, {
+  async onSubmit(): Promise<void> {
+    
+    const formData = this.fg.value;
+
+    if(!this.fg.valid) {
+      alert('Invalid Input. Please try again.');
+      return;
+    }
+    
+    const header: IOtherPaymentHeader = {
+      orNo: formData.orNo ?? '',
+      customerId: this.selectedCustomer.id ?? null,
+      orDate: formData.orDate ?? '',
+      entryDate: formData.entryDate ?? '',
+      createdBy: this.authService.getUserId() ?? '',
+      totalBillingAmount: this.sanitizeAmount(formData.totalBillingAmount ?? '0'),
+      totalAmountPay: this.sanitizeAmount(formData.totalAmountPay ?? '0'),
+      checkBank: formData.checkBank ?? '',
+      checkNo: formData.checkNo ?? '',
+      checkDate: formData.checkDate ?? null,
+      status: 1,
+      isPartSale: true,
+      isOutsideCollection: formData.isOutsideCollection ?? false,
+      outsideCustomerName: formData.isOutsideCollection ? formData.customerName ?? '' : ''
+    };
+
+    const details: IOtherPaymentDetail[] = [];
+    this.dataSource.data.map((d: IOtherPaymentTableDetails) => {
+      const detail: IOtherPaymentDetail = {
+        orNo: formData.orNo ?? '',
+        partId: d.id ?? '',
+        parts: this.sanitizeAmount(d.amount ?? 0),
+        remarks: d.remarks ?? '',
+        totalAmount: this.sanitizeAmount(d.amount ?? '0')
+      };
+
+      details.push(detail);
+    })
+
+    const params: IOtherPaymentPayload = {
+      header: header,
+      details: details,
+    };
+    
+
+    await this.paymentService.createOtherPayment(params).then((response: IAPIResponse) => {
+      console.log('API RESPONSE: ', response);
+      alert('OTHER PAYMENT SUCCESSFULLY CREATED!');
+    })
+    .catch((error: Error) => {
+      console.error('ERROR CREATING OTHER PAYMENT: ', error);
+    })
+    .finally(() => {
+      this.fg.reset();
+      this.dataSource = new MatTableDataSource<IOtherPaymentTableDetails>([]);
+    });
+
+
+    console.log('API PAYLOAD: ', params);
+  }
+
+  openCustomerDialog(): void { 
+    const dialogRef = this.dialog.open(BrowseCustomersComponent, {
       width: '90%',
       height: '90%'
     });
+
+    dialogRef.afterClosed().subscribe(data => {
+      console.log('DATA FROM CUSTOMER DIALOG: ', data);
+      if (data !== null) {
+        this.selectedCustomer = data;
+
+        this.fg.patchValue({
+          accountNo: data.accountNo,
+          customerName: this.buildCustomerName(data.firstName, data.middleName, data.lastName),
+          branchCode: data.branchCode,
+          address: data.address
+        });
+      }
+    });
+
+  }
+
+
+  openDetailFormDialog(): void {
+    const dialogRef = this.dialog.open(AddDetailsModalComponent, {
+      width: '90%',
+      height: '90%'
+    });
+    
+    dialogRef.afterClosed().subscribe(data => {
+      console.log('DATA FROM DIALOG:', data);
+      
+      if(data!== null) {
+        this.dataSource = new MatTableDataSource<IOtherPaymentTableDetails>(data);
+
+        let totalAmount: number = 0;
+
+        data.map((detail: IOtherPaymentTableDetails) => {
+          totalAmount += this.sanitizeAmount(detail.amount);
+        })
+
+        this.fg.patchValue({
+          totalBillingAmount: this.numberFormat(totalAmount),
+          totalAmountPay: this.numberFormat(totalAmount)
+        });
+
+      }
+    });
+
+  }
+
+  computeChange(): void {
+    const totalAmounToPay: number = this.sanitizeAmount(this.fg.get('totalAmountPay')?.value ?? '0');
+    this.amountChange = this.numberFormat(this.sanitizeAmount(this.amountReceived ?? '0') - totalAmounToPay);
+    this.amountReceived = this.numberFormat(this.sanitizeAmount(this.amountReceived ?? '0'));
   }
 
 }

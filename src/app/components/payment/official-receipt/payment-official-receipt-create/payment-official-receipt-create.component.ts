@@ -14,6 +14,7 @@ import { CustomerService } from '../../../../services/customer.service';
 import { PaymentService } from '../../../../services/payment.service';
 import { IAPIResponse } from '../../../../models/interfaces/IApiResponse';
 import { Utils } from '../../../../common/util';
+import { AuthService } from '../../../../services/auth.service';
 
 
 @Component({
@@ -34,8 +35,13 @@ export class PaymentOfficialReceiptCreateComponent implements OnInit {
     private dialog: MatDialog,
     private activeRoute: ActivatedRoute,
     private customerService: CustomerService,
-    private paymentService: PaymentService
-  ) {}
+    private paymentService: PaymentService,
+    private authService: AuthService
+  ) {
+    this.fg.patchValue({
+      createdBy: this.authService.getUserName()
+    })
+  }
 
   branchCodes: IBranchCode[] = [
     {
@@ -109,6 +115,7 @@ export class PaymentOfficialReceiptCreateComponent implements OnInit {
     checkDate: new FormControl<string|null>(null),
   })
 
+
   ngOnInit(): void {
     this.activeRoute.paramMap.subscribe(params => {
       const customerId = params.get('customerId');
@@ -129,7 +136,7 @@ export class PaymentOfficialReceiptCreateComponent implements OnInit {
       }
     })
 
-    this.paymentService.generateNewORno().then((response: IAPIResponse) => {
+   this.paymentService.generateNewORno().then((response: IAPIResponse) => {
       if(response.result) {
         this.fg.patchValue({
           orNo: response.result.toString()

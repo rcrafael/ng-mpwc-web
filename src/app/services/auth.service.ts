@@ -15,6 +15,14 @@ export class AuthService {
     return firstValueFrom(this.http.login(params));
   }
 
+  getUserId(): string {
+    return (window as any).userId || '';
+  }
+
+  getUserName(): string {
+    return (window as any).userName || '';
+  }
+
   getToken(): String {
     return localStorage.getItem('accessToken') || '';
   }
@@ -29,35 +37,10 @@ export class AuthService {
     }
   }
 
-  decodeToken(): string {
+  decodeToken(): any {
     const token = this.getToken();
     const tokenPayload = token.split('.')[1];
     return JSON.parse(atob(tokenPayload));
   }
 
-  getUserName(): string {
-
-    try {
-      const token = this.getToken();
-      const tokenPayload = JSON.parse(atob(token.split('.')[1]));
-      return tokenPayload.username;
-    } catch (error) {
-      console.error('ERROR: JWT could not parse : ', error)
-      return '';
-    }
-    
-  }
-
-  getUserId(): string {
-    try {
-      const token = this.getToken();
-      const tokenPayload = JSON.parse(atob(token.split('.')[1]));
-      console.log(tokenPayload);
-      return tokenPayload.id;
-    } catch (error) {
-      console.error('ERROR: JWT could not parse : ', error)
-      return '';
-    }
-  }
-  
 }

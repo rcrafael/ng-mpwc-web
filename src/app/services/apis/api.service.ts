@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { AuthApi, BillingApi, Constants, CustomerApi, PaymentApi, SeptageFeeApi } from '../../common/constants';
+import { AuthApi, BillingApi, Constants, CustomerApi, PartsApi, PaymentApi, SeptageFeeApi } from '../../common/constants';
 import { firstValueFrom, Observable, ObservedValueOf } from 'rxjs';
 import { IAPIResponse } from '../../models/interfaces/IApiResponse';
 import { IBillingInfo, IUpdateBilling } from '../../models/interfaces/IBilling';
@@ -9,6 +9,7 @@ import { ICustomerProfile } from '../../models/interfaces/ICustomer';
 import { IOfficialReceipt } from '../../models/interfaces/IOfficialReceipt';
 import { ILogin } from '../../models/interfaces/IUser';
 import { EnvService } from './env.service';
+import { IOtherPaymentPayload } from '../../models/interfaces/IOtherPayments';
 @Injectable({
   providedIn: 'root'
 })
@@ -24,7 +25,6 @@ export class ApiService {
   login(params: ILogin): Observable<IAPIResponse> {
     return this.httpClient.post<IAPIResponse>(`${this.env.apiHost}${AuthApi.LOGIN}`, params );
   }
-
  
   // customer APIs
 
@@ -158,6 +158,26 @@ export class ApiService {
 
   createORPayment(params: IOfficialReceipt): Observable<IAPIResponse> {
     return this.httpClient.post<IAPIResponse>(`${this.env.apiHost}${PaymentApi.CREATE_OR_PAYMENT}`, params);
+  }
+
+  //OTHER PAYMENTS APIs
+
+  createOtherPayment(params: IOtherPaymentPayload): Observable<IAPIResponse> {
+    return this.httpClient.post<IAPIResponse>(`${this.env.apiHost}${PaymentApi.CREATE_OTHER_PAYMENT}`, params);
+  }
+
+  getAllOtherPayments(pageNo:number = 0, pageSize: number = 50): Observable<IAPIResponse> {
+    return this.httpClient.get<IAPIResponse>(`${this.env.apiHost}${PaymentApi.GET_ALL_OTHER_PAYMENTS}`.replace('{pageNo}',pageNo.toString()).replace('{pageSize}',pageSize.toString()));
+  }
+
+  getAllOtherPaymentsWithCustomerInfo(pageNo: number = 0, pageSize: number = 50): Observable<IAPIResponse> {
+    return this.httpClient.get<IAPIResponse>(`${this.env.apiHost}${PaymentApi.GET_ALL_OTHER_PAYMENTS_WITH_CUSTOMER_INFO}`.replace('{pageNo}',pageNo.toString()).replace('{pageSize}',pageSize.toString()));
+  }
+
+
+  // SETTINGS APIs
+  getPartsListing(): Observable<IAPIResponse> {
+    return this.httpClient.get<IAPIResponse>(`${this.env.apiHost}${PartsApi.GET_PARTS_LIST}`);
   }
 
 }

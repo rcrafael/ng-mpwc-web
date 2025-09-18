@@ -53,7 +53,8 @@ export class PaymentOfficialReceiptListComponent implements OnInit {
   getStatus = Utils.getStatusName;
   formatAmount = Utils.formatCurrency;
   formatDate = Utils.dateFormatter;
-
+  buildCustName = Utils.buildCustomerName;
+  
   ngOnInit(): void {
     this.commonService.getShowSpinnerVisibility().subscribe(spinnerVisibility => {
       this.isSpinnerVisible = spinnerVisibility
@@ -66,18 +67,18 @@ export class PaymentOfficialReceiptListComponent implements OnInit {
   }
 
   handlePageChange(e: PageEvent) {
-      this.paginator.pageIndex = e.pageIndex;
-      this.paginator.pageSize = e.pageSize;
-      this.paginator.length = e.length;
-      this.loadORData(e.pageIndex, e.pageSize);
-    }
+    this.paginator.pageIndex = e.pageIndex;
+    this.paginator.pageSize = e.pageSize;
+    this.paginator.length = e.length;
+    this.loadORData(e.pageIndex, e.pageSize);
+  }
 
   loadORData(pageIdx: number, pageSize: number): void {
     this.commonService.showSpinner(true);
     this.paymentService.getORAllWithCustomerInfo(pageIdx, pageSize).then((response: IAPIResponse) => {
       if(response.result !== null) {
         const result: any = response.result;
-
+        console.log('PAGINATOR: ', this.paginator);
         this.dataSource.data = result.data;
         this.paginator.pageIndex = result.paginator.pageNumber;
         this.paginator.pageSize = result.paginator.pageSize;

@@ -38,6 +38,14 @@ export class PaymentApi {
      public static CREATE_OR_PAYMENT = '/payment/official-receipt';
      public static GET_OR_ALL_PAYMENTS_WITH_CUSTOMER_INFO = '/payment/official-receipt/with-cust-info/{pageNo}/{pageSize}';
      public static GET_OR_ALL_PAYMENTS_WITH_CUSTOMER_INFO_BY_ID = '/payment/official-receipt/with-cust-info/{id}';
+
+     //Others
+     public static CREATE_OTHER_PAYMENT = '/payment/others';
+     public static GET_ALL_OTHER_PAYMENTS = '/payment/others/{pageNo}/{pageSize}';
+     public static GET_ALL_OTHER_PAYMENTS_WITH_CUSTOMER_INFO = '/payment/others/with-cust-info/{pageNo}/{pageSize}';
+     public static GET_ALL_OTHER_PAYMENTS_BY_CUSTOMER_ID = '/payment/others/customer/{customerId}/{pageNo}/{pageSize}';
+     public static GET_ALL_OTHER_PAYMENTS_WITH_CUSTOMER_INFO_BY_ID = '/payment/others/official-receipt/with-cust-info/{id}';
+
 }
 
 export class AuthApi {
@@ -45,6 +53,13 @@ export class AuthApi {
 }
 
 export class SeptageFeeApi {
-     public static GET_SEPTAGE_FEES = '/billing/septage-fee/rates' 
-     public static UPDATE_SEPTAGE_FEES = '/billing/septage-fee/rates' 
+     public static GET_SEPTAGE_FEES = '/billing/septage-fee/rates';
+     public static UPDATE_SEPTAGE_FEES = '/billing/septage-fee/rates';
+}
+
+export class PartsApi {
+     public static GET_PARTS_LIST = '/settings/part/list-all';
+     public static GET_PARTS_ALL = '/settings/part/{pageNo}/{pageSize}';
+     public static CREATE_PARTS = '/settings/part';
+     public static GET_PARTS_BY_ID = '/settings/part/{id}';
 }

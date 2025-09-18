@@ -10,6 +10,9 @@ export const authGuard: CanActivateFn = (route, state) => {
 
   if(token && token !== '') {
     if(authService.isValidToken(token.toString())) {
+      const decodeToken = authService.decodeToken();
+      (window as any).userId = decodeToken.id;
+      (window as any).userName = decodeToken.username;
       return true;
     } else {
       router.navigateByUrl('auth/login');

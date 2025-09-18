@@ -41,7 +41,7 @@ export const routes: Routes = [
                { path: 'payment/official-receipt/:orId', component: PaymentOfficialReceiptViewComponent},
                { path: 'payment/other-receipt', component: OtherPaymentListComponent},
                { path: 'payment/other-receipt/create', component: OtherPaymentCreateComponent},
-               { path: 'payment/other-receipt/:receiptNo', component: OtherPaymentViewComponent},
+               { path: 'payment/other-receipt/:orId', component: OtherPaymentViewComponent},
 
                { path: 'settings', component: SettingsComponent},
                { path: 'settings/water-rates', component: WaterRatesComponent}

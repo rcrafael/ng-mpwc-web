@@ -3,6 +3,7 @@ import { ApiService } from './apis/api.service';
 import { IOfficialReceipt } from '../models/interfaces/IOfficialReceipt';
 import { IAPIResponse } from '../models/interfaces/IApiResponse';
 import { firstValueFrom } from 'rxjs';
+import { IOtherPaymentPayload } from '../models/interfaces/IOtherPayments';
 
 @Injectable({
   providedIn: 'root'
@@ -11,20 +12,33 @@ export class PaymentService {
 
   constructor(private http: ApiService) { }
 
-  createORPayment(params: IOfficialReceipt): Promise<IAPIResponse> {
+  async createORPayment(params: IOfficialReceipt): Promise<IAPIResponse> {
     return firstValueFrom(this.http.createORPayment(params));
   }
 
-  generateNewORno(): Promise<IAPIResponse> {
+  async generateNewORno(): Promise<IAPIResponse> {
     return firstValueFrom(this.http.generateNewORNo());
   }
 
-  getORAllWithCustomerInfo(pageNo: number, pageSize: number): Promise<IAPIResponse> {
+  async getORAllWithCustomerInfo(pageNo: number, pageSize: number): Promise<IAPIResponse> {
     return firstValueFrom(this.http.getORAllPaymentsWithCustomerInfo(pageNo, pageSize));
   }
 
-  getORWithCustomerInfoById(orId: String): Promise<IAPIResponse> {
+  async getORWithCustomerInfoById(orId: String): Promise<IAPIResponse> {
     return firstValueFrom(this.http.getORPaymentsWithCustomerInfoById(orId));
+  }
+
+  //OTHERS
+  async createOtherPayment(params: IOtherPaymentPayload): Promise<IAPIResponse> {
+    return firstValueFrom(this.http.createOtherPayment(params));
+  }
+
+  async getAllOtherPayments(pageNo: number, pageSize: number): Promise<IAPIResponse> {
+    return firstValueFrom(this.http.getAllOtherPayments(pageNo, pageSize));
+  }
+
+  async getAllOtherPaymentsWithCustomerInfo(pageNo: number, pageSize: number): Promise<IAPIResponse> {
+    return firstValueFrom(this.http.getAllOtherPaymentsWithCustomerInfo(pageNo, pageSize));
   }
 
 }

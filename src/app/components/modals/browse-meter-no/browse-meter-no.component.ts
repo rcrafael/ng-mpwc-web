@@ -22,7 +22,7 @@ export class BrowseMeterNoComponent implements OnInit {
   ) {}
 
   readonly dialogRef = inject(MatDialogRef<BrowseMeterNoComponent>);
-  readonly customerInfo:any =  inject<MatDialog>(MAT_DIALOG_DATA)
+  readonly customerId:any =  inject<MatDialog>(MAT_DIALOG_DATA)
   dialog = inject(MatDialog)
   
   tableCols: string[] = [
@@ -43,7 +43,7 @@ export class BrowseMeterNoComponent implements OnInit {
   getBranchCode = Utils.getBranchCode;
 
   ngOnInit(): void {
-    this.customerService.getMeterNoByCustomerId(this.customerInfo.id).then((response:any) => {
+    this.customerService.getMeterNoByCustomerId(this.customerId).then((response:any) => {
       console.log('METERS: ', response);
       this.data = response;
       this.dataSource = this.data.result;

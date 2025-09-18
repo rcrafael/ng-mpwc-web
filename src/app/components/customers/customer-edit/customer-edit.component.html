@@ -5,7 +5,7 @@
           <mat-expansion-panel [expanded]="step() === 0" (opened)="setStep(0)">     <!-- <mat-expansion-panel [expanded]="step() === 0" (opened)="setStep(0)">  -->
                <mat-expansion-panel-header class="mb-2">
                     <mat-panel-title class="p-3 font-bold"> <span class="text-white">Customer Information</span> </mat-panel-title>
-                    <mat-icon fontIcon="person" class="m-3"></mat-icon>
+                    <mat-icon class="m-3">person</mat-icon>
                </mat-expansion-panel-header>
 
                <form [formGroup]="fg" (ngSubmit)="onSubmit()">

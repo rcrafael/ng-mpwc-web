@@ -37,7 +37,7 @@ export class CustomerListComponent implements OnInit {
       debounceTime(1000),
       distinctUntilChanged()
     ).subscribe(keyword => {
-        this.loadDataWithSarch(keyword, this.paginator.pageIndex, this.paginator.pageSize);
+        this.loadDataWithSearch(keyword, this.paginator.pageIndex, this.paginator.pageSize);
     })
   }
 
@@ -88,7 +88,7 @@ export class CustomerListComponent implements OnInit {
     if(this.searchKeyword.trim() === '') {
       this.loadData(e.pageIndex, e.pageSize);
     } else {
-      this.loadDataWithSarch(this.searchKeyword, e.pageIndex, e.pageSize);
+      this.loadDataWithSearch(this.searchKeyword, e.pageIndex, e.pageSize);
     }
     
   }
@@ -115,7 +115,7 @@ export class CustomerListComponent implements OnInit {
     });
   }
 
-  loadDataWithSarch(keyword: string, pageIdx: number, pageSize: number) {
+  loadDataWithSearch(keyword: string, pageIdx: number, pageSize: number) {
     this.customerService.getCustomerWithSearch(keyword, pageIdx, pageSize).then((response:IAPIResponse) => {
       if(response.result !== null) {
         const result: any = response.result;

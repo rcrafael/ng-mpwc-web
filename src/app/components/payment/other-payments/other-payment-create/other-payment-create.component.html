@@ -16,11 +16,11 @@
                     <div class="grid grid-row gap-3">
 
                          <div class="grid grid-cols-12 gap-2">
-                              <div class="xs:col-span-12 md:col-span-4">
+                              <div class="xs:col-span-12 md:col-span-3">
                                    <label for="isOutsideCollection">Outside Collection</label>
                               </div>
                               <div class="xs:col-span-8 md:col-span-6">
-                                   <input type="checkbox" id="isOutsideCollection" formControlName="isOutsideCollection" class="border border-gray-400 rounded-md" (change)="onCheckChanged($event)">
+                                   <input type="checkbox" id="isOutsideCollection" fprmControlName="isOutsideCollection" class="border border-gray-400 rounded-md">
                               </div>
                          </div>
 
@@ -29,29 +29,82 @@
                                    <label for="accountNo">Account No</label>
                               </div>
                               <div class="xs:col-span-10 md:col-span-6">
-                                   <input type="text" id="accountNo"  class="border border-gray-400 rounded-md w-full" formControlName="accountNo">
+                                   <input type="text" id="accountNo" formControlName="accountNo" class="border border-gray-400 rounded-md w-full" readonly>
+                              </div>
+                              <div class="xs:col-span-2 md:col-span-1">
+                                   <button type="button" class="bg-gray-300 w-fit px-[10px] rounded-md border border-black border-solid"
+                                        (click)="openCustomerDialog()"
+                                   >
+                                        <span>...</span>
+                                   </button>
+                              </div>
+                         </div>
+<!-- 
+                         <div class="grid grid-cols-12 gap-2">
+                              <div class="xs:col-span-12 md:col-span-3">
+                                   <label for="meterNo">Meter No</label>
+                              </div>
+                              <div class="xs:col-span-8 md:col-span-6">
+                                   <input type="text" id="meterNo" formControlName="meterNo" class="border border-gray-400 rounded-md w-full">
+                              </div>
+                              <div class="xs:col-span-2 md:col-span-1">
+                                   <button type="button" class="bg-gray-300 w-fit px-[10px] rounded-md border border-black border-solid"
+                                        (click)="openMeterDialog()"
+                                   >
+                                        <span>...</span>
+                                   </button>
+                              </div>
+                         </div> -->
+
+                         <!-- <div class="grid grid-cols-12 gap-2">
+                              <div class="xs:col-span-12 md:col-span-3">
+                                   <label for="customerId">Customer Id</label>
+                              </div>
+                              <div class="xs:col-span-10 md:col-span-6">
+                                   <input type="text" id="customerId" class="border border-gray-400 rounded-md w-full">
                               </div>
                               <div class="xs:col-span-2 md:col-span-1">
                                    <button type="button" class="bg-gray-300 w-fit px-[10px] rounded-md border border-black border-solid"><span>...</span></button>
                               </div>
-                         </div>
+                         </div> -->
 
                          <div class="grid grid-cols-12 gap-2">
                               <div class="col-span-3">
                                    <label for="customerName">Name</label>
                               </div>
                               <div class="xs:col-span-10 md:col-span-9">
-                                   <input type="text" id="customerName" class="border border-gray-400 rounded-md w-full" formControlName="customerName">
+                                   <input type="text" id="customerName" formControlName="customerName" class="border border-gray-400 rounded-md w-full" [readOnly]="isCustomerEditable">
                               </div>
                          </div>
 
+                         <!-- <div class="grid grid-cols-12 gap-2">
+                              <div class="xs:col-span-12 md:col-span-3">
+                                   <label for="alias">Alias</label>
+                              </div>
+                              <div class="xs:col-span-10 md:col-span-9">
+                                   <input type="text" id="alias" formControlName="alias" class="border border-gray-400 rounded-md w-full" readonly>
+                              </div>
+                         </div> -->
+
+                         <div class="grid grid-cols-12 gap-2">
+                              <div class="col-span-3">
+                                   <label for="branchCode">Branch Code</label>
+                              </div>
+                              <div class="xs:col-span-12 md:col-span-9">
+                                   <select id="branchCode" formControlName="branchCode" class="border border-gray-400 rounded-md w-full">
+                                        @for (br of branchCodes; track br) {
+                                             <option [value]="br.id">{{br.name}}</option>
+                                        }
+                                   </select>
+                              </div>
+                         </div>
 
                          <div class="grid grid-cols-12 gap-2">
                               <div class="col-span-3">
                                    <label for="address">Address</label>
                               </div>
                               <div class="xs:col-span-12 md:col-span-9">
-                                   <textarea id="address" rows="3" [disabled]="!isOutsideCollection" class="border border-gray-400 rounded-md resize-none w-full" formControlName="address">
+                                   <textarea id="address" rows="3" formControlName="address" class="border border-gray-400 rounded-md resize-none w-full" readonly>
                                    </textarea>
                               </div>
                          </div>
@@ -66,7 +119,7 @@
                                    <label for="orNo">OR No</label>
                               </div>
                               <div class="xs:col-span-8 md:col-span-6">
-                                   <input type="text" id="orNo" class="border border-gray-400 rounded-md w-full" formControlName="orNo">
+                                   <input type="text" id="orNo" formControlName="orNo" class="border border-gray-400 rounded-md w-full" readonly>
                               </div>
                          </div>
 
@@ -75,7 +128,7 @@
                                    <label for="orDate">OR Date</label>
                               </div>
                               <div class="xs:col-span-10 md:col-span-6">
-                                   <input type="date" id="orDate" class="border border-gray-400 rounded-md w-full" formControlName="orDate">
+                                   <input type="date" id="orDate" formControlName="orDate" class="border border-gray-400 rounded-md w-full">
                               </div>
                          </div>
 
@@ -84,16 +137,16 @@
                                    <label for="entryDate">Entry Date</label>
                               </div>
                               <div class="xs:col-span-10 md:col-span-6">
-                                   <input type="date" readonly id="entryDate" class="border border-gray-400 rounded-md w-full" formControlName="entryDate">
+                                   <input type="date" readonly id="entryDate" formControlName="entryDate" class="border border-gray-400 rounded-md w-full">
                               </div>
                          </div>
 
                          <div class="grid grid-cols-12 gap-2">
                               <div class="xs:col-span-12 md:col-span-3">
-                                   <label for="createdBy">Created By</label>
+                                   <label for="createdDate">Created By</label>
                               </div>
                               <div class="xs:col-span-10 md:col-span-6">
-                                   <input type="text" id="createdBy" class="border border-gray-400 rounded-md w-full" formControlName="createdBy">
+                                   <input type="text" id="createdDate" readonly formControlName="createdBy" class="border border-gray-400 rounded-md w-full">
                               </div>
                          </div>
 
@@ -105,10 +158,19 @@
                     <div class="grid grid-row gap-3">
                          <div class="grid grid-cols-12 gap-2">
                               <div class="xs:col-span-12 md:col-span-5">
-                                   <label for="totalAmtToPay" class="md:text-sm">Total Amount To Pay</label>
+                                   <label for="totalBillingAmount">Total Billing Amt</label>
+                              </div>
+                              <div class="xs:col-span-8 md:col-span-6">
+                                   <input type="text" id="totalBillingAmount" formControlName="totalBillingAmount" class="border border-gray-400 rounded-md w-full" readonly>
+                              </div>
+                         </div>
+
+                         <div class="grid grid-cols-12 gap-2">
+                              <div class="xs:col-span-12 md:col-span-5">
+                                   <label for="totalAmountPay" class="md:text-sm">Total Amount To Pay</label>
                               </div>
                               <div class="xs:col-span-10 md:col-span-6">
-                                   <input type="text" id="totalAmtToPay" class="border border-gray-400 rounded-md w-full" formControlName="totalAmountPay">
+                                   <input type="text" id="totalAmountPay" formControlName="totalAmountPay" class="border border-gray-400 rounded-md w-full" readonly> 
                               </div>
                          </div>
 
@@ -117,16 +179,16 @@
                                    <label for="checkNo" class="md:text-sm">Check No</label>
                               </div>
                               <div class="xs:col-span-10 md:col-span-6">
-                                   <input type="text" id="checkNo" class="border border-gray-400 rounded-md w-full" formControlName="checkNo">
+                                   <input type="text" id="checkNo" formControlName="checkNo" class="border border-gray-400 rounded-md w-full">
                               </div>
                          </div>
 
                          <div class="grid grid-cols-12 gap-2">
                               <div class="xs:col-span-12 md:col-span-5">
-                                   <label for="bankName" class="md:text-sm">Bank Name</label>
+                                   <label for="checkBank" class="md:text-sm">Bank Name</label>
                               </div>
                               <div class="xs:col-span-10 md:col-span-6">
-                                   <input type="text" id="bankName" class="border border-gray-400 rounded-md w-full" formControlName="checkBank">
+                                   <input type="text" id="checkBank" formControlName="checkBank" class="border border-gray-400 rounded-md w-full">
                               </div>
                          </div>
 
@@ -135,7 +197,7 @@
                                    <label for="checkDate" class="md:text-sm">Check Date</label>
                               </div>
                               <div class="xs:col-span-10 md:col-span-6">
-                                   <input type="date" id="checkDate" class="border border-gray-400 rounded-md w-full" formControlName="checkDate">
+                                   <input type="date" id="checkDate" formControlName="checkDate" class="border border-gray-400 rounded-md w-full">
                               </div>
                          </div>
 
@@ -144,7 +206,7 @@
                                    <label for="amountReceived" class="md:text-sm">Amount Received</label>
                               </div>
                               <div class="xs:col-span-10 md:col-span-6">
-                                   <input type="text" id="amountReceived" class="border border-gray-400 rounded-md w-full">
+                                   <input type="text" id="amountReceived" [(ngModel)]="amountReceived" [ngModelOptions]="{standalone: true}" (blur)="computeChange()" class="border border-gray-400 rounded-md w-full">
                               </div>
                          </div>
 
@@ -153,7 +215,7 @@
                                    <label for="changeAmt" class="md:text-sm">Change</label>
                               </div>
                               <div class="xs:col-span-10 md:col-span-6">
-                                   <input type="text" readonly id="changeAmt" class="border border-gray-400 rounded-md w-full" >
+                                   <input type="text" disabled id="changeAmt" [(ngModel)]="amountChange" [ngModelOptions]="{standalone: true}" class="border border-gray-400 rounded-md w-full">
                               </div>
                          </div>
 
@@ -172,14 +234,9 @@
           </div>
           <div class="overflow-x-scroll overflow-y-hidden">
                <table mat-table [dataSource]="dataSource">
-                    <ng-container matColumnDef="Parts">
-                         <th mat-header-cell *matHeaderCellDef>Parts Amount</th>
-                         <td mat-cell *matCellDef="let element"><span>{{element.parts}}</span></td>
-                    </ng-container>
-
-                    <ng-container matColumnDef="Item Name">
-                         <th mat-header-cell *matHeaderCellDef>Item Name</th>
-                         <td mat-cell *matCellDef="let element"><span>{{element.otherDescription}}</span></td>
+                    <ng-container matColumnDef="Description">
+                         <th mat-header-cell *matHeaderCellDef>Description</th>
+                         <td mat-cell *matCellDef="let element"><span>{{element.description}}</span></td>
                     </ng-container>
 
                     <ng-container matColumnDef="Remarks">
@@ -187,9 +244,9 @@
                          <td mat-cell *matCellDef="let element"><span>{{element.remarks}}</span></td>
                     </ng-container>
 
-                    <ng-container matColumnDef="Total Amount">
+                    <ng-container matColumnDef="Amount">
                          <th mat-header-cell *matHeaderCellDef>Total Amount</th>
-                         <td mat-cell *matCellDef="let element"><span>{{element.totalAmount}}</span></td>
+                         <td mat-cell *matCellDef="let element"><span> {{numberFormat(sanitizeAmount(element.amount))}}</span></td>
                     </ng-container>
 
                     <tr mat-header-row *matHeaderRowDef="tableColumns; sticky: true" ></tr>

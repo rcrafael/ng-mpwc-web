@@ -9,51 +9,43 @@ export interface IOtherPaymentList {
      status:string; 
 }
 
-
-export interface IOtherPaymentData {
-     id: number;
+export interface IOtherPaymentHeader {
+     id?: number;
      orNo: string;
+     customerId?: string;
      orDate: string;
-     entryDate: string;
-     createdby: string;
-     meterNo: string;
-     accountNo: number;
-     customerId: number;
-     shareCapital: number;
-     cbu: number;
-     savings: number;
      totalBillingAmount: number;
-     totalShareAmount: number;
-     shareAsPayment: number;
-     seniorDiscount: number;
-     totalAmountToPay: number;
-     checkNo: string;
-     checkBankName: string;
-     checkDate: string;
-     checkAmount: number;
+     totalAmountPay: number;
+     entryDate: string;
+     createdBy: string;
+     checkNo?: string;
+     checkBank?: string;
+     checkDate?: string| null;
      status: number;
-     isOutsideCollection: boolean;
-     outsideCustomerNameL: string;
-     isPartSale: boolean;
+     isPartSale?: boolean;
+     isOutsideCollection?: boolean;
+     outsideCustomerName?: string;
 }
 
-export interface IOtherPaymentDetails {
-     id:number;
-     readingNo: number;
-     mobileReadingNo: number;
-     readingAmount: number;
+export interface IOtherPaymentDetail {
+     id?: string;
+     orNo: string;
+     partId: string;
      parts: number;
-     maintenanceFee: number;
-     septageFee: number;
-     membershipFee: number;
-     tapping: number;
-     calibration: number;
-     reconnection: number;
-     subReceivable: number;
-     penalty:number;
-     otherCollection:number;
-     otherDescription: string;
-     seniorDiscount: number;
      remarks: string;
      totalAmount: number;
+}
+
+export interface IOtherPaymentPayload {
+     header: IOtherPaymentHeader;
+     details: IOtherPaymentDetail[];
+}
+
+
+
+export interface IOtherPaymentTableDetails {
+     id: string;
+     description: string;
+     amount: string;
+     remarks: string;
 }

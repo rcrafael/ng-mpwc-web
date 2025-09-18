@@ -154,7 +154,7 @@ export class BillingCreateComponent implements OnInit {
 
   openMeterDialog(): void {
       const dialogRef = this.dialog.open(BrowseMeterNoComponent, {
-        data: this.selectedCustomerInfo,
+        data: this.selectedCustomerInfo.id,
         width: '70%',
         height: '50%'
       });

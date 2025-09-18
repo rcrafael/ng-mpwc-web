@@ -94,6 +94,9 @@ export class Utils {
           return new Intl.NumberFormat('en-PH',{style: 'decimal', minimumFractionDigits: 2, maximumFractionDigits: 2}).format(number);
      }
 
-     
+     public static buildCustomerName(firstName: string, middleName: string, lastName: string): string {
+          return `${lastName}, ${firstName} ${middleName}`;
+     }
+
 
 }

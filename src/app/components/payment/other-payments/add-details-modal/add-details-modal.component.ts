@@ -1,9 +1,15 @@
-import { Component, inject } from '@angular/core';
-import { MatDialogRef, MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { Component, inject, OnInit } from '@angular/core';
+import { MatDialogRef, MatDialog, MatDialogModule, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { IOtherPaymentDetails } from '../../../../models/interfaces/IOtherPayments';
-import { ReactiveFormsModule } from '@angular/forms';
+import { IOtherPaymentTableDetails } from '../../../../models/interfaces/IOtherPayments';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { PartsService } from '../../../../services/parts.service';
+import { IPartItem, IPartsList } from '../../../../models/interfaces/IParts';
+import { IAPIResponse } from '../../../../models/interfaces/IApiResponse';
+import { Utils } from '../../../../common/util';
+import { A11yModule } from "@angular/cdk/a11y";
+import { MatIcon } from "@angular/material/icon";
 
 @Component({
   selector: 'app-add-details-modal',
@@ -12,31 +18,118 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     ReactiveFormsModule,
     MatDialogModule,
     MatTableModule,
-    MatCheckboxModule
-  ],
+    MatCheckboxModule,
+    ReactiveFormsModule,
+    A11yModule,
+    MatIcon
+],
   templateUrl: './add-details-modal.component.html',
   styleUrl: './add-details-modal.component.css'
 })
-export class AddDetailsModalComponent {
-  readonly dialogRef = inject(MatDialogRef<AddDetailsModalComponent>);
+export class AddDetailsModalComponent implements OnInit {
 
+  constructor(
+    private partsSvc: PartsService
+  ) { }
+
+  readonly dialogRef = inject(MatDialogRef<AddDetailsModalComponent>);
+  readonly modalData = inject<MatDialog>(MAT_DIALOG_DATA);
   dialog = inject(MatDialog)
 
-  datasource: MatTableDataSource<IOtherPaymentDetails> = new MatTableDataSource<IOtherPaymentDetails>();
+  datasource: MatTableDataSource<IOtherPaymentTableDetails> = new MatTableDataSource<IOtherPaymentTableDetails>();
   tableCols: string[] = [
-    'Parts',
-    'Other Description',
+    'Description',
     'Remarks',
-    'Total Amount'
-  ]
+    'Amount',
+    'Action'
+  ];
 
-  onClose(): void {
+  partsList: IPartsList[] = [];
+  userParts: IPartItem[] = [];
+
+
+  fg = new FormGroup({
+    partId: new FormControl<string | null>(null, Validators.required),
+    sellingPrice: new FormControl<string>('0.00', Validators.required),
+    remarks: new FormControl<string>(''),
+  })
+
+  sanitizeAmount = Utils.sanitizeAmount;
+  formatNumber = Utils.formatNumber;
+
+  ngOnInit(): void {
+    this.getPartsList();   
+  }
+
+  handleDoneButton(): void {
+    this.dialogRef.close(this.userParts);
+  }
+
+  handleCancelButton(): void {
     this.dialogRef.close();
   }
 
   handleSubmit(e: Event) {
-    console.log('form submitted',e);
-    e.preventDefault();
+    const data = this.fg.value;
+
+    if(!this.fg.valid) {
+      alert('Invalid Input. Please try again.');
+    }
+
+    const part: IPartItem = {
+      id: data.partId!,
+      description: this.getPartDescription(data.partId!),
+      amount: this.sanitizeAmount(data.sellingPrice ?? '0.00').toString(),
+      remarks: data.remarks!
+    }
+
+    this.userParts.push(part);
+    this.datasource.data = this.userParts;
+
+    this.handleReset();
+  }
+
+  getPartsList(): void {
+    this.partsSvc.getPartsListing().then((response: IAPIResponse) => {
+      this.partsList = response.result as IPartsList[];
+    })
+    .catch((err: Error) => {
+      
+    })
+    .finally(() => {
+
+    });
+  } 
+
+  handlePartChange(e: Event): void {
+    const partId = (e.target as HTMLInputElement).value;
+    const part = this.partsList.find((part) => part.id === partId);
+    if(part) {
+      this.fg.get('sellingPrice')?.setValue(this.formatNumber(this.sanitizeAmount(part.sellingPrice.toString())) ?? '0.00');
+    }
+  }
+
+  getPartDescription(partId: string): string {
+    const part = this.partsList.find((part) => part.id === partId);
+    return part ? part.description : '';
+  }
+  
+  handleReset(): void {
+    this.fg.reset({
+      partId: null,
+      sellingPrice: '0.00',
+      remarks: ''
+    });  
+  }
+
+  handleAmountOnBlur(e: any): void {
+    const input = e.target as HTMLInputElement;
+    this.fg.get('sellingPrice')?.setValue(this.formatNumber(this.sanitizeAmount(input.value) ?? '0.00')); 
+  }
+
+  handleRowDelete(e: any): void {
+    this.userParts = this.userParts.filter((part) => part.id !== e.id);
+    this.datasource.data = this.userParts;
   }
 
 }

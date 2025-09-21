@@ -24,7 +24,7 @@ export class PaymentService {
     return firstValueFrom(this.http.getORAllPaymentsWithCustomerInfo(pageNo, pageSize));
   }
 
-  async getORWithCustomerInfoById(orId: String): Promise<IAPIResponse> {
+  async getORWithCustomerInfoById(orId: string): Promise<IAPIResponse> {
     return firstValueFrom(this.http.getORPaymentsWithCustomerInfoById(orId));
   }
 
@@ -39,6 +39,10 @@ export class PaymentService {
 
   async getAllOtherPaymentsWithCustomerInfo(pageNo: number, pageSize: number): Promise<IAPIResponse> {
     return firstValueFrom(this.http.getAllOtherPaymentsWithCustomerInfo(pageNo, pageSize));
+  }
+
+  async getOtherPaymentWithCustomerInfoById(orId: string): Promise<IAPIResponse> {
+    return firstValueFrom(this.http.getOtherPaymentWithCustomerInfoById(orId));
   }
 
 }

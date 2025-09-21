@@ -20,7 +20,7 @@
                                    <label for="isOutsideCollection">Outside Collection</label>
                               </div>
                               <div class="xs:col-span-8 md:col-span-6">
-                                   <input type="checkbox" id="isOutsideCollection" fprmControlName="isOutsideCollection" class="border border-gray-400 rounded-md">
+                                   <input type="checkbox" id="isOutsideCollection" formControlName="isOutsideCollection" class="border border-gray-400 rounded-md">
                               </div>
                          </div>
 
@@ -34,6 +34,7 @@
                               <div class="xs:col-span-2 md:col-span-1">
                                    <button type="button" class="bg-gray-300 w-fit px-[10px] rounded-md border border-black border-solid"
                                         (click)="openCustomerDialog()"
+                                        [disabled]="isCustomerEditable"
                                    >
                                         <span>...</span>
                                    </button>
@@ -73,7 +74,7 @@
                                    <label for="customerName">Name</label>
                               </div>
                               <div class="xs:col-span-10 md:col-span-9">
-                                   <input type="text" id="customerName" formControlName="customerName" class="border border-gray-400 rounded-md w-full" [readOnly]="isCustomerEditable">
+                                   <input type="text" id="customerName" formControlName="customerName" class="border border-gray-400 rounded-md w-full" [readOnly]="!isCustomerEditable">
                               </div>
                          </div>
 
@@ -86,7 +87,7 @@
                               </div>
                          </div> -->
 
-                         <div class="grid grid-cols-12 gap-2">
+                         <!-- <div class="grid grid-cols-12 gap-2">
                               <div class="col-span-3">
                                    <label for="branchCode">Branch Code</label>
                               </div>
@@ -97,14 +98,14 @@
                                         }
                                    </select>
                               </div>
-                         </div>
+                         </div> -->
 
                          <div class="grid grid-cols-12 gap-2">
                               <div class="col-span-3">
                                    <label for="address">Address</label>
                               </div>
                               <div class="xs:col-span-12 md:col-span-9">
-                                   <textarea id="address" rows="3" formControlName="address" class="border border-gray-400 rounded-md resize-none w-full" readonly>
+                                   <textarea id="address" rows="3" formControlName="address" class="border border-gray-400 rounded-md resize-none w-full" [readonly]="!isCustomerEditable">
                                    </textarea>
                               </div>
                          </div>

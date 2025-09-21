@@ -1,3 +1,5 @@
+import { IOfficialReceiptDetail, IOfficialReceiptHeaderWithCustomer } from "./IOfficialReceipt";
+
 export interface IOtherPaymentList {
      id: number;
      orNo: string;
@@ -25,6 +27,7 @@ export interface IOtherPaymentHeader {
      isPartSale?: boolean;
      isOutsideCollection?: boolean;
      outsideCustomerName?: string;
+     outsideCustomerAddress?: string;
 }
 
 export interface IOtherPaymentDetail {
@@ -32,6 +35,7 @@ export interface IOtherPaymentDetail {
      orNo: string;
      partId: string;
      parts: number;
+     otherDescription: string;
      remarks: string;
      totalAmount: number;
 }
@@ -48,4 +52,10 @@ export interface IOtherPaymentTableDetails {
      description: string;
      amount: string;
      remarks: string;
+}
+
+
+export interface IOtherPaymenttWithDetails {
+     header: IOfficialReceiptHeaderWithCustomer;
+     details: IOfficialReceiptDetail[];
 }

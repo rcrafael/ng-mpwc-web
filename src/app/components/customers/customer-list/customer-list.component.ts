@@ -11,6 +11,7 @@ import { CommonService } from '../../../services/common.service';
 import { Utils } from '../../../common/util';
 import { FormsModule, NgModel } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, Subject, Subscription } from 'rxjs';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-customer-list',
@@ -20,8 +21,8 @@ import { debounceTime, distinctUntilChanged, Subject, Subscription } from 'rxjs'
     MatButtonModule,
     MatPaginatorModule,
     RouterModule,
-    SpinnerComponent,
-    FormsModule
+    FormsModule,
+    NgIf
 ],
   templateUrl: './customer-list.component.html',
   styleUrl: './customer-list.component.css'
@@ -58,7 +59,6 @@ export class CustomerListComponent implements OnInit {
   pageSize: number = 50;
   pageLength: number = 0;
   totalRecordCount: number = 0;
-  isSpinnerVisible!: boolean;
   searchKeyword: string = '';
 
 
@@ -70,9 +70,6 @@ export class CustomerListComponent implements OnInit {
   private subscription: Subscription;
 
   async ngOnInit(): Promise<void> {
-    this.commonService.getShowSpinnerVisibility().subscribe(spinnerVisibility => {
-      this.isSpinnerVisible = spinnerVisibility
-    });
     this.loadData(this.pageIdx,this.pageSize)
   }
 
@@ -95,7 +92,6 @@ export class CustomerListComponent implements OnInit {
 
 
   loadData(pageIdx: number, pageSize: number) {
-    this.commonService.showSpinner(true);
     this.customerService.getCustomerList(pageIdx, pageSize).then((response: IAPIResponse) => {
       if(response.result !== null) {
         const result: any = response.result;
@@ -108,10 +104,8 @@ export class CustomerListComponent implements OnInit {
     })
     .catch(async (error: Error) => {
       console.error('Error fetching customer list:', error);
-      this.commonService.showSpinner(false);
     })
     .finally(async () => {
-      this.commonService.showSpinner(false);
     });
   }
 

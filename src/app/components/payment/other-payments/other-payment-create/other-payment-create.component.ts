@@ -48,7 +48,7 @@ export class OtherPaymentCreateComponent implements OnInit {
   numberFormat = Utils.formatNumber;
 
   currentDate = formatDate(new Date(), 'yyyy-MM-dd', 'en-PH');
-  selectedCustomer!: any;
+  selectedCustomer: any = null;
   // selectedMeter!: IMeterDetails;
 
   amountChange: string = '0.00';
@@ -62,11 +62,11 @@ export class OtherPaymentCreateComponent implements OnInit {
     'Amount'
   ]
 
-  public fg = new FormGroup({
+  fg = new FormGroup({
     isOutsideCollection: new FormControl<boolean>(false),
     accountNo: new FormControl<string>('', Validators.required),
     customerName: new FormControl<string | null>('', Validators.required),
-    branchCode: new FormControl<number>({value: 0, disabled: true}),
+    // branchCode: new FormControl<number>({value: 0, disabled: true}),
     address: new FormControl<string>('', Validators.required),
     orNo: new FormControl<string>('', Validators.required),
     orDate: new FormControl<string>(this.currentDate),
@@ -95,6 +95,18 @@ export class OtherPaymentCreateComponent implements OnInit {
         });
     });
 
+    this.fg.get('isOutsideCollection')?.valueChanges.subscribe((value) => {
+      this.isCustomerEditable = value ?? false;
+
+      if(value) {
+        this.fg.get('accountNo')?.clearValidators();
+      } else {
+        this.fg.get('accountNo')?.setValidators([Validators.required]);
+      }
+      this.fg.get('accountNo')?.updateValueAndValidity();
+      this.fg.get('accountNo')?.setValue('');
+    })
+
   }
 
   async onSubmit(): Promise<void> {
@@ -102,13 +114,14 @@ export class OtherPaymentCreateComponent implements OnInit {
     const formData = this.fg.value;
 
     if(!this.fg.valid) {
+      console.log('INVALID INPUT',this.fg);
       alert('Invalid Input. Please try again.');
       return;
     }
     
     const header: IOtherPaymentHeader = {
       orNo: formData.orNo ?? '',
-      customerId: this.selectedCustomer.id ?? null,
+      customerId: this.selectedCustomer?.id ?? null,
       orDate: formData.orDate ?? '',
       entryDate: formData.entryDate ?? '',
       createdBy: this.authService.getUserId() ?? '',
@@ -120,7 +133,8 @@ export class OtherPaymentCreateComponent implements OnInit {
       status: 1,
       isPartSale: true,
       isOutsideCollection: formData.isOutsideCollection ?? false,
-      outsideCustomerName: formData.isOutsideCollection ? formData.customerName ?? '' : ''
+      outsideCustomerName: formData.isOutsideCollection ? formData.customerName ?? '' : '',
+      outsideCustomerAddress: formData.isOutsideCollection ? formData.address ?? '' : '',
     };
 
     const details: IOtherPaymentDetail[] = [];
@@ -129,6 +143,7 @@ export class OtherPaymentCreateComponent implements OnInit {
         orNo: formData.orNo ?? '',
         partId: d.id ?? '',
         parts: this.sanitizeAmount(d.amount ?? 0),
+        otherDescription: d.description ?? '',
         remarks: d.remarks ?? '',
         totalAmount: this.sanitizeAmount(d.amount ?? '0')
       };
@@ -172,7 +187,7 @@ export class OtherPaymentCreateComponent implements OnInit {
         this.fg.patchValue({
           accountNo: data.accountNo,
           customerName: this.buildCustomerName(data.firstName, data.middleName, data.lastName),
-          branchCode: data.branchCode,
+          // branchCode: data.branchCode,
           address: data.address
         });
       }

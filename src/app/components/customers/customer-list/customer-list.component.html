@@ -24,7 +24,7 @@
           
      </div>
      
-     <div class="overflow-y-scroll">
+     <div *ngIf="dataSource.data.length > 0" class="overflow-y-scroll">
           <table mat-table [dataSource]="dataSource">
                <!-- <ng-container matColumnDef="Customer No">
                     <th mat-header-cell *matHeaderCellDef>Customer No</th>
@@ -64,6 +64,10 @@
           </table>
      </div>
      
+     <div *ngIf="dataSource.data.length === 0">
+          <div>Please wait while loading...</div>
+     </div>
+
      <mat-paginator
           showFirstLastButtons
           aria-label="Select page of customers"
@@ -72,10 +76,7 @@
           
      >
      </mat-paginator>
-     
-     @if(isSpinnerVisible) {
-          <app-loading-spinner></app-loading-spinner>
-     }
+
 </div>
 
 

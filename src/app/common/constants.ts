@@ -44,12 +44,16 @@ export class PaymentApi {
      public static GET_ALL_OTHER_PAYMENTS = '/payment/others/{pageNo}/{pageSize}';
      public static GET_ALL_OTHER_PAYMENTS_WITH_CUSTOMER_INFO = '/payment/others/with-cust-info/{pageNo}/{pageSize}';
      public static GET_ALL_OTHER_PAYMENTS_BY_CUSTOMER_ID = '/payment/others/customer/{customerId}/{pageNo}/{pageSize}';
-     public static GET_ALL_OTHER_PAYMENTS_WITH_CUSTOMER_INFO_BY_ID = '/payment/others/official-receipt/with-cust-info/{id}';
+     public static GET_ALL_OTHER_PAYMENTS_WITH_CUSTOMER_INFO_BY_ID = '/payment/others/with-cust-info/{id}';
 
 }
 
 export class AuthApi {
      public static LOGIN = '/auth/login';
+}
+
+export class UserApi {
+     public static GET_USERNAME = '/user/username/{id}';
 }
 
 export class SeptageFeeApi {

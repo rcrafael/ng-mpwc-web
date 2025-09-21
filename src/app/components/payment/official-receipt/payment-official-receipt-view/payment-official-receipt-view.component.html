@@ -35,7 +35,7 @@
                                    <label for="customerName">Name</label>
                               </div>
                               <div class="xs:col-span-10 md:col-span-9">
-                                   <input type="text" id="customerName" formControlName="customerName"  class="border border-gray-400 rounded-md w-full">
+                                   <input type="text" id="customerName" formControlName="customerName"  class="border border-gray-400 rounded-md w-full" readonly>
                               </div>
                          </div>
 
@@ -57,7 +57,7 @@
                                    <label for="address">Address</label>
                               </div>
                               <div class="xs:col-span-12 md:col-span-9">
-                                   <textarea id="address" rows="3" formControlName="address" class="border border-gray-400 rounded-md resize-none w-full px-1">
+                                   <textarea id="address" rows="3" formControlName="address" class="border border-gray-400 rounded-md resize-none w-full px-1" readonly>
                                    </textarea>
                               </div>
                          </div>
@@ -73,7 +73,7 @@
                                    <label for="orNo">OR No</label>
                               </div>
                               <div class="xs:col-span-8 md:col-span-6">
-                                   <input type="text" id="orNo" formControlName="orNo" class="border border-gray-400 rounded-md w-full">
+                                   <input type="text" id="orNo" formControlName="orNo" class="border border-gray-400 rounded-md w-full" readonly>
                               </div>
                          </div>
 
@@ -82,7 +82,7 @@
                                    <label for="orDate">OR Date</label>
                               </div>
                               <div class="xs:col-span-10 md:col-span-6">
-                                   <input type="date" id="orDate" formControlName="orDate" class="border border-gray-400 rounded-md w-full">
+                                   <input type="date" id="orDate" formControlName="orDate" class="border border-gray-400 rounded-md w-full" readonly>
                               </div>
                          </div>
 
@@ -91,7 +91,7 @@
                                    <label for="entryDate">Entry Date</label>
                               </div>
                               <div class="xs:col-span-10 md:col-span-6">
-                                   <input type="date" readonly id="entryDate" formControlName="entryDate" class="border border-gray-400 rounded-md w-full">
+                                   <input type="date" readonly id="entryDate" formControlName="entryDate" class="border border-gray-400 rounded-md w-full" readonly>
                               </div>
                          </div>
 
@@ -100,7 +100,7 @@
                                    <label for="createdBy">Created By</label>
                               </div>
                               <div class="xs:col-span-10 md:col-span-6">
-                                   <input type="text" id="createdBy" formControlName="createdBy" class="border border-gray-400 rounded-md w-full">
+                                   <input type="text" id="createdBy" formControlName="createdBy" class="border border-gray-400 rounded-md w-full" readonly>
                               </div>
                          </div>
                          
@@ -111,7 +111,7 @@
                                    <label for="shareCapitalAmt">Share Capital</label>
                               </div>
                               <div class="xs:col-span-10 md:col-span-6">
-                                   <input type="text" id="shareCapitalAmt" formControlName="shareCapital" class="border border-gray-400 rounded-md w-full text-right">
+                                   <input type="text" id="shareCapitalAmt" formControlName="shareCapital" class="border border-gray-400 rounded-md w-full text-right" readonly>
                               </div>
                          </div>
 
@@ -120,7 +120,7 @@
                                    <label for="cbuAmt">CBU</label>
                               </div>
                               <div class="xs:col-span-10 md:col-span-6">
-                                   <input type="text" id="cbuAmt" formControlName="cbu" class="border border-gray-400 rounded-md w-full text-right">
+                                   <input type="text" id="cbuAmt" formControlName="cbu" class="border border-gray-400 rounded-md w-full text-right" readonly>
                               </div>
                          </div>
 
@@ -129,7 +129,7 @@
                                    <label for="savingsAmt">Savings</label>
                               </div>
                               <div class="xs:col-span-10 md:col-span-6">
-                                   <input type="text" id="savingsAmt" formControlName="savings" class="border border-gray-400 rounded-md w-full text-right">
+                                   <input type="text" id="savingsAmt" formControlName="savings" class="border border-gray-400 rounded-md w-full text-right" readonly>
                               </div>
                          </div>
 
@@ -144,7 +144,7 @@
                                    <label for="totalBillingAmt">Total Billing Amt</label>
                               </div>
                               <div class="xs:col-span-8 md:col-span-6">
-                                   <input type="text" id="totalBillingAmt" formControlName="totalBillingAmount" class="border border-gray-400 rounded-md w-full text-right">
+                                   <input type="text" id="totalBillingAmt" formControlName="totalBillingAmount" class="border border-gray-400 rounded-md w-full text-right" readonly>
                               </div>
                          </div>
 
@@ -153,28 +153,28 @@
                                    <label for="totalShareAmt">Total Share Amt</label>
                               </div>
                               <div class="xs:col-span-10 md:col-span-6">
-                                   <input type="text" id="totalShareAmt" formControlName="totalShareAmount" class="border border-gray-400 rounded-md w-full text-right">
+                                   <input type="text" id="totalShareAmt" formControlName="totalShareAmount" class="border border-gray-400 rounded-md w-full text-right" readonly>
                               </div>
                          </div>
 
-                         <div class="grid grid-cols-12 gap-2">
+                         <!-- <div class="grid grid-cols-12 gap-2">
                               <div class="xs:col-span-12 md:col-span-5">
                                    <label for="shareAsPayment" class="md:text-sm">Share as Payment (Less)</label>
                               </div>
                               <div class="xs:col-span-10 md:col-span-6">
-                                   <input type="text" id="shareAsPayment" formControlName="shareAsPayment" class="border border-gray-400 rounded-md w-full text-right">
+                                   <input type="text" id="shareAsPayment" formControlName="shareAsPayment" class="border border-gray-400 rounded-md w-full text-right" readonly>
                               </div>
                               <div class="xs:col-span-2 md:col-span-1">
                                    <button type="button" class="bg-gray-300 w-fit px-[10px] rounded-md border border-black border-solid"><span>...</span></button>
                               </div>
-                         </div>
+                         </div> -->
 
                          <div class="grid grid-cols-12 gap-2">
                               <div class="xs:col-span-12 md:col-span-5">
                                    <label for="seniorDiscount" class="md:text-sm">Senior Discount (Less)</label>
                               </div>
                               <div class="xs:col-span-10 md:col-span-6">
-                                   <input type="text" id="seniorDiscount" formControlName="seniorDiscount" class="border border-gray-400 rounded-md w-full text-right">
+                                   <input type="text" id="seniorDiscount" formControlName="seniorDiscount" class="border border-gray-400 rounded-md w-full text-right" readonly>
                               </div>
                          </div>
 
@@ -183,7 +183,7 @@
                                    <label for="totalAmtToPay" class="md:text-sm">Total Amount To Pay</label>
                               </div>
                               <div class="xs:col-span-10 md:col-span-6">
-                                   <input type="text" id="totalAmtToPay" formControlName="totalAmountPay" class="border border-gray-400 rounded-md w-full text-right">
+                                   <input type="text" id="totalAmtToPay" formControlName="totalAmountPay" class="border border-gray-400 rounded-md w-full text-right" readonly>
                               </div>
                          </div>
 
@@ -192,7 +192,7 @@
                                    <label for="checkNo" class="md:text-sm">Check No</label>
                               </div>
                               <div class="xs:col-span-10 md:col-span-6">
-                                   <input type="text" id="checkNo" formControlName="checkNo" class="border border-gray-400 rounded-md w-full">
+                                   <input type="text" id="checkNo" formControlName="checkNo" class="border border-gray-400 rounded-md w-full" readonly>
                               </div>
                          </div>
 
@@ -201,7 +201,7 @@
                                    <label for="bankName" class="md:text-sm">Bank Name</label>
                               </div>
                               <div class="xs:col-span-10 md:col-span-6">
-                                   <input type="text" id="bankName" formControlName="checkBank" class="border border-gray-400 rounded-md w-full">
+                                   <input type="text" id="bankName" formControlName="checkBank" class="border border-gray-400 rounded-md w-full" readonly>
                               </div>
                          </div>
 
@@ -210,7 +210,7 @@
                                    <label for="checkDate" class="md:text-sm">Check Date</label>
                               </div>
                               <div class="xs:col-span-10 md:col-span-6">
-                                   <input type="date" id="checkDate" formControlName="checkDate" class="border border-gray-400 rounded-md w-full">
+                                   <input type="date" id="checkDate" formControlName="checkDate" class="border border-gray-400 rounded-md w-full" readonly>
                               </div>
                          </div>
 

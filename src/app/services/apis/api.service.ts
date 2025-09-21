@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { AuthApi, BillingApi, Constants, CustomerApi, PartsApi, PaymentApi, SeptageFeeApi } from '../../common/constants';
+import { AuthApi, BillingApi, Constants, CustomerApi, PartsApi, PaymentApi, SeptageFeeApi, UserApi } from '../../common/constants';
 import { firstValueFrom, Observable, ObservedValueOf } from 'rxjs';
 import { IAPIResponse } from '../../models/interfaces/IApiResponse';
 import { IBillingInfo, IUpdateBilling } from '../../models/interfaces/IBilling';
@@ -26,6 +26,11 @@ export class ApiService {
     return this.httpClient.post<IAPIResponse>(`${this.env.apiHost}${AuthApi.LOGIN}`, params );
   }
  
+  // Users APIs
+  getUsername(id: string): Observable<IAPIResponse> {
+    return this.httpClient.get<IAPIResponse>(`${this.env.apiHost}${UserApi.GET_USERNAME.replace('{id}', id)}`);
+  }
+
   // customer APIs
 
   getCustomerList(pageNo: number = 0, pageSize: number = 50): Observable<IAPIResponse> {
@@ -147,7 +152,7 @@ export class ApiService {
     return this.httpClient.get<IAPIResponse>(`${this.env.apiHost}${PaymentApi.GET_OR_ALL_PAYMENTS_WITH_CUSTOMER_INFO.replace('{pageNo}', pageNo.toString()).replace('{pageSize}', pageSize.toString())}`);
   }
 
-  getORPaymentsWithCustomerInfoById(orId: String): Observable<IAPIResponse> {
+  getORPaymentsWithCustomerInfoById(orId: string): Observable<IAPIResponse> {
     return this.httpClient.get<IAPIResponse>(`${this.env.apiHost}${PaymentApi.GET_OR_ALL_PAYMENTS_WITH_CUSTOMER_INFO_BY_ID.replace('{id}', orId.toString())}`);
   }
 
@@ -172,6 +177,10 @@ export class ApiService {
 
   getAllOtherPaymentsWithCustomerInfo(pageNo: number = 0, pageSize: number = 50): Observable<IAPIResponse> {
     return this.httpClient.get<IAPIResponse>(`${this.env.apiHost}${PaymentApi.GET_ALL_OTHER_PAYMENTS_WITH_CUSTOMER_INFO}`.replace('{pageNo}',pageNo.toString()).replace('{pageSize}',pageSize.toString()));
+  }
+
+  getOtherPaymentWithCustomerInfoById(orId: string): Observable<IAPIResponse> {
+    return this.httpClient.get<IAPIResponse>(`${this.env.apiHost}${PaymentApi.GET_ALL_OTHER_PAYMENTS_WITH_CUSTOMER_INFO_BY_ID}`.replace('{id}',orId));
   }
 
 

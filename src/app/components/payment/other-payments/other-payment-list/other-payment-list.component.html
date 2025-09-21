@@ -21,24 +21,37 @@
                     </ng-container>
                     <ng-container matColumnDef="OR Date">
                          <th mat-header-cell *matHeaderCellDef><span>OR Date</span></th>
-                         <td mat-cell *matCellDef="let element"><span>{{element.orDate}}</span></td>
+                         <td mat-cell *matCellDef="let element"><span>{{formatDate(element.orDate)}}</span></td>
                     </ng-container>
                     <ng-container matColumnDef="Account No">
                          <th mat-header-cell *matHeaderCellDef><span>Account No</span></th>
-                         <td mat-cell *matCellDef="let element"><span>{{element.customer ? element.accountNo : ''}}</span></td>
+                         <td mat-cell *matCellDef="let element"><span>{{element.customer ? element.customer.accountNo : ''}}</span></td>
                     </ng-container>
                     <ng-container matColumnDef="Customer Name">
                          <th mat-header-cell *matHeaderCellDef><span>Customer Name</span></th>
                          <!-- <td mat-cell *matCellDef="let element"><span> {{element.customer ?  `${element.customer.lastName, element.customer.firstName element.customer.middleName}` : '' }}</span></td> -->
-                           <td mat-cell *matCellDef="let element"><span> {{element.customer ? buildCustName(element.customer.firstName, element.customer.middleName, element.customer.lastName) : ''}}</span></td>
+                           <td mat-cell *matCellDef="let element"><span> {{element.customerId ? buildCustName(element.customer.firstName, element.customer.middleName, element.customer.lastName) : element.outsideCustomerName}}</span></td>
+                    </ng-container>
+                    <ng-container matColumnDef="Address">
+                         <th mat-header-cell *matHeaderCellDef><span>Address</span></th>
+                         <td mat-cell *matCellDef="let element"><span>{{element.customerId ? element.customer.address : element.outsideCustomerAddress}}</span></td>
                     </ng-container>
                     <ng-container matColumnDef="Total Amount To Pay">
-                         <th mat-header-cell *matHeaderCellDef><span>Total Amount To Pay</span></th>
-                         <td mat-cell *matCellDef="let element"><span>{{element.totalAmountToPay}}</span></td>
+                         <th mat-header-cell *matHeaderCellDef class="!text-right"><span>Total Amount To Pay</span></th>
+                         <td mat-cell *matCellDef="let element"><span>{{formatCurrency(element.totalAmountPay)}}</span></td>
                     </ng-container>
                     <ng-container matColumnDef="Status">
                          <th mat-header-cell *matHeaderCellDef><span>Status</span></th>
-                         <td mat-cell *matCellDef="let element"><span>{{element.status}}</span></td>
+                         <td mat-cell *matCellDef="let element"><span>{{getStatus(element.status)}}</span></td>
+                    </ng-container>
+                    <ng-container matColumnDef="Action">
+                         <th mat-header-cell *matHeaderCellDef><span>Action</span></th>
+                         <td mat-cell *matCellDef="let element">
+                              <div class="flex flex-row gap-3">
+                                   <mat-icon fontIcon="print" class="cursor-pointer"></mat-icon>
+                                   <mat-icon fontIcon="delete_forever" class="cursor-pointer"></mat-icon>
+                              </div>
+                         </td>
                     </ng-container>
 
                     <tr mat-header-row *matHeaderRowDef="tableCols; sticky: true" ></tr>

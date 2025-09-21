@@ -13,6 +13,7 @@ import { IAPIResponse } from '../../../../models/interfaces/IApiResponse';
 import { BrowseCustomersComponent } from '../../../modals/browse-customers/browse-customers.component';
 import { AddDetailsModalComponent } from '../payment-official-receipt-create/add-details-modal/add-details-modal.component';
 import { MatDivider } from '@angular/material/divider';
+import { AuthService } from '../../../../services/auth.service';
 
 @Component({
   selector: 'app-payment-official-receipt-view',
@@ -31,7 +32,8 @@ constructor(
     private dialog: MatDialog,
     private activeRoute: ActivatedRoute,
     private customerService: CustomerService,
-    private paymentService: PaymentService
+    private paymentService: PaymentService,
+    private authService: AuthService
   ) {}
 
   branchCodes: IBranchCode[] = [
@@ -95,7 +97,7 @@ constructor(
     savings: new FormControl<string>('0.00'),
     totalBillingAmount: new FormControl<string>('0.00'),
     totalShareAmount: new FormControl<string>('0.00'),
-    shareAsPayment: new FormControl<string>('0.00'),
+    // shareAsPayment: new FormControl<string>('0.00'),
     seniorDiscount: new FormControl<string>('0.00'),
     totalAmountPay: new FormControl<string>('0.00'),
     checkNo: new FormControl<string>(''),
@@ -107,13 +109,24 @@ constructor(
     this.activeRoute.paramMap.subscribe(params => {
       const orId = params.get('orId');
       if(orId !== undefined && orId !== null && orId !== '') {
-        this.paymentService.getORWithCustomerInfoById(orId).then((response: IAPIResponse) => {
+        this.paymentService.getORWithCustomerInfoById(orId).then(async (response: IAPIResponse) => {
           
           if(response.result) {
             const result = response.result as IOfficialReceiptWithDetails;
             this.selectedCustomerInfo = result.header.customer;
             this.orDetails = result.details;
             this.dataSource = new MatTableDataSource<IOfficialReceiptDetail>(this.orDetails);
+            
+            let username = '';
+            try {
+              await this.authService.getUsernameById(result.header.createdBy).then((res) => {
+                console.log('RESPONSE FOR: ', res);
+                username = res.result as any;
+              })
+            } catch(err) {
+              console.error('ERROR FETCHING USERNAME BY ID: ', err);
+            }
+            
             this.fg.patchValue({
               accountNo: this.selectedCustomerInfo.accountNo,
               customerName: `${this.selectedCustomerInfo.lastName}, ${this.selectedCustomerInfo.firstName} ${this.selectedCustomerInfo.middleName}` ,
@@ -122,13 +135,13 @@ constructor(
               orNo: result.header.orNo,
               orDate: result.header.orDate,
               entryDate: result.header.entryDate,
-              createdBy: result.header.createdBy,
+              createdBy:  username || '',
               shareCapital: this.formatNumber(result.shareCapital?.amount ?? 0) ,
               cbu: this.formatNumber(result.shareCbu?.amount ?? 0),
               savings: this.formatNumber(result.shareSavings?.amount ?? 0),
               totalBillingAmount: this.formatNumber(result.header.totalBillingAmount ?? 0),
               totalShareAmount: this.formatNumber(result.header.totalShareAmount ?? 0),
-              shareAsPayment: this.formatNumber(result.header.totalShareAmount ?? 0), 
+              // shareAsPayment: this.formatNumber(result.header.totalShareAmount ?? 0), 
               seniorDiscount: this.formatNumber(result.header.seniorDiscount ?? 0),
               totalAmountPay: this.formatNumber(result.header.totalAmountPay ?? 0),
               checkNo: result.header.checkNo,
@@ -195,11 +208,12 @@ constructor(
         totalAmountPay: this.sanitizeAmount(frm.totalAmountPay ?? '0'),
         seniorDiscount: this.sanitizeAmount(frm.seniorDiscount ?? '0'),
         entryDate: frm.entryDate!,
-        createdBy: frm.createdBy!,
+        createdBy: this.authService.getUserId(),
         checkNo: frm.checkNo ?? '',
         checkBank: frm.checkBank ?? '', 
         checkDate: frm.checkDate ?? '',
         status: 1, //1 = complete
+        isPartSale: false,
       },
       details: this.orDetails,
       shareCapital: shareCap,

@@ -11,6 +11,7 @@ import { SpinnerComponent } from '../../../common/spinner/spinner.component';
 import { MatIcon } from '@angular/material/icon';
 import { ReceiptComponent } from '../../../receipt/receipt.component';
 import { MatDialog } from '@angular/material/dialog';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-payment-official-receipt-list',
@@ -20,7 +21,7 @@ import { MatDialog } from '@angular/material/dialog';
     MatTableModule,
     RouterModule,
     MatPaginatorModule,
-    SpinnerComponent
+    NgIf
   ],
   templateUrl: './payment-official-receipt-list.component.html',
   styleUrl: './payment-official-receipt-list.component.css'
@@ -53,8 +54,6 @@ export class PaymentOfficialReceiptListComponent implements OnInit {
   pageSize: number = 50;
   pageLength: number = 0;
   totalRecordCount: number = 0;
-  isSpinnerVisible!: boolean;
-
 
   getStatus = Utils.getStatusName;
   formatAmount = Utils.formatCurrency;
@@ -62,9 +61,6 @@ export class PaymentOfficialReceiptListComponent implements OnInit {
   buildCustName = Utils.buildCustomerName;
   
   ngOnInit(): void {
-    this.commonService.getShowSpinnerVisibility().subscribe(spinnerVisibility => {
-      this.isSpinnerVisible = spinnerVisibility
-    });
     this.loadORData(this.pageIdx,this.pageSize)
   }
 
@@ -80,7 +76,6 @@ export class PaymentOfficialReceiptListComponent implements OnInit {
   }
 
   loadORData(pageIdx: number, pageSize: number): void {
-    this.commonService.showSpinner(true);
     this.paymentService.getORAllWithCustomerInfo(pageIdx, pageSize).then((response: IAPIResponse) => {
       if(response.result !== null) {
         const result: any = response.result;
@@ -93,10 +88,9 @@ export class PaymentOfficialReceiptListComponent implements OnInit {
     })
     .catch(async (error: Error) => {
       console.error('Error fetching OR list:', error);
-      this.commonService.showSpinner(false);
     })
     .finally(async () => {
-      this.commonService.showSpinner(false);
+     
     });
   }
 

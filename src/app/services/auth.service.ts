@@ -23,6 +23,10 @@ export class AuthService {
     return (window as any).userName || '';
   }
 
+  getUsernameById(id: string): Promise<IAPIResponse> {
+    return firstValueFrom(this.http.getUsername(id));
+  }
+
   getToken(): String {
     return localStorage.getItem('accessToken') || '';
   }

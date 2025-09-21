@@ -51,6 +51,7 @@ export interface IOfficialReceiptHeaderWithCustomer {
      isPartSale?: boolean;
      isOutsideCollection?: boolean;
      outsideCustomerName?: string;
+     outsideCustomerAddress?: string;
 }
 
 export interface IOfficialReceiptWithDetails {
@@ -62,7 +63,7 @@ export interface IOfficialReceiptWithDetails {
 }
 
 export interface IOfficialReceiptDetail {
-     id?:number;
+     id?:string;
      orNo?: string;
      readingNo: string;
      meterNo: string;

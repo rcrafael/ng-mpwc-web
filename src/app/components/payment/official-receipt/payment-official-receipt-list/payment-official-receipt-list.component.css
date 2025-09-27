@@ -1,11 +1,23 @@
 table.mat-mdc-table td.mat-column-Total-Billing-Amount,
 table.mat-mdc-table th.mat-column-Total-Billing-Amount,
 table.mat-mdc-table td.mat-column-Total-Share-Amount,
-table.mat-mdc-table th.mat-column-Total-Share-Amount {
+table.mat-mdc-table th.mat-column-Total-Share-Amount,
+table.mat-mdc-table td.mat-column-Total-Amount-To-Pay,
+table.mat-mdc-table th.mat-column-Total-Amount-To-Pay  {
      text-align: right;
+     width: 115px;
 }
 
 table.mat-mdc-table td.mat-column-Status,
 table.mat-mdc-table th.mat-column-Status {
      text-align: center;
+}
+
+table.mat-mdc-table td.mat-column-OR-Date,
+table.mat-mdc-table th.mat-column-OR-Date {
+     width: 120px;
+}
+
+table.mat-mdc-table tr:hover {
+     background-color: rgb(134, 194, 230) !important;
 }

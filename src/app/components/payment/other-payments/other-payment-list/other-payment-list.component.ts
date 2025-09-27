@@ -7,6 +7,7 @@ import { PaymentService } from '../../../../services/payment.service';
 import { MatPaginator, MatPaginatorModule, PageEvent } from "@angular/material/paginator";
 import { Utils } from '../../../../common/util';
 import { MatIconModule } from "@angular/material/icon";
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-other-payment-list',
@@ -16,7 +17,8 @@ import { MatIconModule } from "@angular/material/icon";
     RouterModule,
     NgIf,
     MatPaginatorModule,
-    MatIconModule
+    MatIconModule,
+    MatTooltipModule
 ],
   templateUrl: './other-payment-list.component.html',
   styleUrl: './other-payment-list.component.css'
@@ -66,6 +68,8 @@ export class OtherPaymentListComponent implements OnInit {
     this.paginator.pageIndex = e.pageIndex;
     this.paginator.pageSize = e.pageSize;
     this.paginator.length = e.length;
+    this.pageIdx = e.pageIndex;
+    this.pageSize = e.pageSize;
     this.getOtherPaymentList(e.pageIndex, e.pageSize);
   }
 
@@ -94,5 +98,35 @@ export class OtherPaymentListComponent implements OnInit {
     
   }
 
+  async handleVoidRecord(orId: string) {
+
+    const isConfirm = confirm('Are you sure you want to VOID this record?');
+    if(!isConfirm) return;
+
+    const VOID_STATUS_ID = 4;
+    try {
+      const response = await this.paymentService.updateStatus(orId, VOID_STATUS_ID);
+      console.log('RESPONSE: ', response);
+      await this.getOtherPaymentList(this.pageIdx, this.pageSize);
+    } catch (err) {
+      console.error('ERROR VOIDING OTHER PAYMENT RECORD: ', err);
+    }
+    
+
+  }
+
+  async handleDeleteRecord(orId: string) {
+
+    const isConfirm = confirm('Are you sure you want to DELETE this record?');
+    if(!isConfirm) return;
+    
+    try {
+      const response = await this.paymentService.deleteRecord(orId);
+      console.log('RESPONSE: ', response);
+      await this.getOtherPaymentList(this.pageIdx, this.pageSize);
+    } catch (err) {
+      console.error('ERROR DELETING OTHER PAYMENT RECORD: ', err);
+    }
+  }
     
 }

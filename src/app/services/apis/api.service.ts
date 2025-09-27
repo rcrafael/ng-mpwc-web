@@ -184,6 +184,21 @@ export class ApiService {
   }
 
 
+  //GENERIC OR APIs
+  updateStatus(id: string, status: number): Observable<IAPIResponse> {
+    const params = {
+      id: id,
+      status: status
+    }
+
+    return this.httpClient.post<IAPIResponse>(`${this.env.apiHost}${PaymentApi.UPDATE_STATUS}`,params);
+  }
+
+  deleteRecord(id: string): Observable<IAPIResponse> {
+    return this.httpClient.delete<IAPIResponse>(`${this.env.apiHost}${PaymentApi.DELETE_RECORD}`.replace('{id}',id));
+  }
+
+
   // SETTINGS APIs
   getPartsListing(): Observable<IAPIResponse> {
     return this.httpClient.get<IAPIResponse>(`${this.env.apiHost}${PartsApi.GET_PARTS_LIST}`);

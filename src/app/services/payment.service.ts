@@ -45,4 +45,12 @@ export class PaymentService {
     return firstValueFrom(this.http.getOtherPaymentWithCustomerInfoById(orId));
   }
 
+  async updateStatus(orId: string, statusIs: number): Promise<IAPIResponse> {
+    return firstValueFrom(this.http.updateStatus(orId, statusIs));
+  }
+
+  async deleteRecord(orId: string): Promise<IAPIResponse> {
+    return firstValueFrom(this.http.deleteRecord(orId));
+  }
+
 }

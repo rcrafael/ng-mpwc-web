@@ -46,6 +46,10 @@ export class PaymentApi {
      public static GET_ALL_OTHER_PAYMENTS_BY_CUSTOMER_ID = '/payment/others/customer/{customerId}/{pageNo}/{pageSize}';
      public static GET_ALL_OTHER_PAYMENTS_WITH_CUSTOMER_INFO_BY_ID = '/payment/others/with-cust-info/{id}';
 
+     
+     //Generics
+     public static UPDATE_STATUS = '/payment/official-receipt/update-status';
+     public static DELETE_RECORD = '/payment/official-receipt/{id}';
 }
 
 export class AuthApi {

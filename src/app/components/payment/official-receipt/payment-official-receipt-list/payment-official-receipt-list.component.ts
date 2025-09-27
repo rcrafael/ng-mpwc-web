@@ -12,6 +12,7 @@ import { MatIcon } from '@angular/material/icon';
 import { ReceiptComponent } from '../../../receipt/receipt.component';
 import { MatDialog } from '@angular/material/dialog';
 import { NgIf } from '@angular/common';
+import { MatTooltip } from "@angular/material/tooltip";
 
 @Component({
   selector: 'app-payment-official-receipt-list',
@@ -21,8 +22,9 @@ import { NgIf } from '@angular/common';
     MatTableModule,
     RouterModule,
     MatPaginatorModule,
-    NgIf
-  ],
+    NgIf,
+    MatTooltip
+],
   templateUrl: './payment-official-receipt-list.component.html',
   styleUrl: './payment-official-receipt-list.component.css'
 })
@@ -43,6 +45,7 @@ export class PaymentOfficialReceiptListComponent implements OnInit {
     'OR Date', 
     'Account No', 
     'Customer Name', 
+    'Address',
     'Total Billing Amount', 
     'Total Share Amount', 
     'Total Amount To Pay', 
@@ -72,6 +75,8 @@ export class PaymentOfficialReceiptListComponent implements OnInit {
     this.paginator.pageIndex = e.pageIndex;
     this.paginator.pageSize = e.pageSize;
     this.paginator.length = e.length;
+    this.pageIdx = e.pageIndex;
+    this.pageSize = e.pageSize;
     this.loadORData(e.pageIndex, e.pageSize);
   }
 
@@ -112,5 +117,36 @@ export class PaymentOfficialReceiptListComponent implements OnInit {
       //   }
       // })
     }
+
+      async handleVoidRecord(orId: string) {
+
+    const isConfirm = confirm('Are you sure you want to VOID this record?');
+    if(!isConfirm) return;
+
+    const VOID_STATUS_ID = 4;
+    try {
+      const response = await this.paymentService.updateStatus(orId, VOID_STATUS_ID);
+      console.log('RESPONSE: ', response);
+      await this.loadORData(this.pageIdx, this.pageSize);
+    } catch (err) {
+      console.error('ERROR VOIDING OTHER PAYMENT RECORD: ', err);
+    }
+    
+
+  }
+
+  async handleDeleteRecord(orId: string) {
+
+    const isConfirm = confirm('Are you sure you want to DELETE this record?');
+    if(!isConfirm) return;
+    
+    try {
+      const response = await this.paymentService.deleteRecord(orId);
+      console.log('RESPONSE: ', response);
+      await this.loadORData(this.pageIdx, this.pageSize);
+    } catch (err) {
+      console.error('ERROR DELETING OTHER PAYMENT RECORD: ', err);
+    }
+  }
 
 }

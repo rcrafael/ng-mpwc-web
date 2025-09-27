@@ -25,3 +25,8 @@ export interface IPhase {
      id: number,
      name: string
 }
+
+export interface ITransactionStatus {
+     id: number,
+     name: string
+}

@@ -38,6 +38,7 @@ export class PaymentApi {
      public static CREATE_OR_PAYMENT = '/payment/official-receipt';
      public static GET_OR_ALL_PAYMENTS_WITH_CUSTOMER_INFO = '/payment/official-receipt/with-cust-info/{pageNo}/{pageSize}';
      public static GET_OR_ALL_PAYMENTS_WITH_CUSTOMER_INFO_BY_ID = '/payment/official-receipt/with-cust-info/{id}';
+     public static GET_OR_ALL_WITH_SEARCH = '/payment/official-receipt/search/{pageNo}/{pageSize}';
 
      //Others
      public static CREATE_OTHER_PAYMENT = '/payment/others';
@@ -45,11 +46,12 @@ export class PaymentApi {
      public static GET_ALL_OTHER_PAYMENTS_WITH_CUSTOMER_INFO = '/payment/others/with-cust-info/{pageNo}/{pageSize}';
      public static GET_ALL_OTHER_PAYMENTS_BY_CUSTOMER_ID = '/payment/others/customer/{customerId}/{pageNo}/{pageSize}';
      public static GET_ALL_OTHER_PAYMENTS_WITH_CUSTOMER_INFO_BY_ID = '/payment/others/with-cust-info/{id}';
-
+     public static GET_ALL_OTHER_PAYMENTS_WITH_SEARCH = '/payment/others/search/{pageNo}/{pageSize}';
      
      //Generics
      public static UPDATE_STATUS = '/payment/official-receipt/update-status';
      public static DELETE_RECORD = '/payment/official-receipt/{id}';
+     
 }
 
 export class AuthApi {

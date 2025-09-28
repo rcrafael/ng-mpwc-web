@@ -156,6 +156,12 @@ export class ApiService {
     return this.httpClient.get<IAPIResponse>(`${this.env.apiHost}${PaymentApi.GET_OR_ALL_PAYMENTS_WITH_CUSTOMER_INFO_BY_ID.replace('{id}', orId.toString())}`);
   }
 
+  getORAllPaymentsWithSearch(keyword: string, pageNo: number = 0, pageSize:number = 50): Observable<IAPIResponse> {
+    let params = {
+      searchKeyword: keyword
+    }
+    return this.httpClient.get<IAPIResponse>(`${this.env.apiHost}${PaymentApi.GET_OR_ALL_WITH_SEARCH.replace('{pageNo}',pageNo.toString()).replace('{pageSize}', pageSize.toString())}`, {params});
+  }
 
   generateNewORNo(): Observable<IAPIResponse> {
     return this.httpClient.get<IAPIResponse>(`${this.env.apiHost}${PaymentApi.GENERATE_OR_NUMBER}`);
@@ -183,6 +189,12 @@ export class ApiService {
     return this.httpClient.get<IAPIResponse>(`${this.env.apiHost}${PaymentApi.GET_ALL_OTHER_PAYMENTS_WITH_CUSTOMER_INFO_BY_ID}`.replace('{id}',orId));
   }
 
+  getAllOtherPaymentsWithSearch(keyword: string, pageNo: number = 0, pageSize:number = 50): Observable<IAPIResponse> {
+    let params = {
+      searchKeyword: keyword
+    }
+    return this.httpClient.get<IAPIResponse>(`${this.env.apiHost}${PaymentApi.GET_ALL_OTHER_PAYMENTS_WITH_SEARCH.replace('{pageNo}',pageNo.toString()).replace('{pageSize}', pageSize.toString())}`, {params});
+  }
 
   //GENERIC OR APIs
   updateStatus(id: string, status: number): Observable<IAPIResponse> {

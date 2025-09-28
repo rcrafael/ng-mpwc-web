@@ -77,22 +77,25 @@ export class CustomerListComponent implements OnInit {
     this.router.navigateByUrl('/customer/create');
   }
   
-  handlePageChange(e: PageEvent) {
+  async handlePageChange(e: PageEvent): Promise<void> {
     this.paginator.pageIndex = e.pageIndex;
     this.paginator.pageSize = e.pageSize;
     this.paginator.length = e.length;
     
+    this.pageIdx = e.pageIndex;
+    this.pageSize = e.pageSize;
+
     if(this.searchKeyword.trim() === '') {
-      this.loadData(e.pageIndex, e.pageSize);
+      await this.loadData(e.pageIndex, e.pageSize);
     } else {
-      this.loadDataWithSearch(this.searchKeyword, e.pageIndex, e.pageSize);
+      await this.loadDataWithSearch(this.searchKeyword, e.pageIndex, e.pageSize);
     }
     
   }
 
 
-  loadData(pageIdx: number, pageSize: number) {
-    this.customerService.getCustomerList(pageIdx, pageSize).then((response: IAPIResponse) => {
+  async loadData(pageIdx: number, pageSize: number) {
+    await this.customerService.getCustomerList(pageIdx, pageSize).then((response: IAPIResponse) => {
       if(response.result !== null) {
         const result: any = response.result;
 
@@ -109,8 +112,8 @@ export class CustomerListComponent implements OnInit {
     });
   }
 
-  loadDataWithSearch(keyword: string, pageIdx: number, pageSize: number) {
-    this.customerService.getCustomerWithSearch(keyword, pageIdx, pageSize).then((response:IAPIResponse) => {
+  async loadDataWithSearch(keyword: string, pageIdx: number, pageSize: number) {
+    await this.customerService.getCustomerWithSearch(keyword, pageIdx, pageSize).then((response:IAPIResponse) => {
       if(response.result !== null) {
         const result: any = response.result;
 

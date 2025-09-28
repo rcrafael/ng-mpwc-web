@@ -28,6 +28,10 @@ export class PaymentService {
     return firstValueFrom(this.http.getORPaymentsWithCustomerInfoById(orId));
   }
 
+  async getORAllPaymentWithSearch(keyword: string, pageNo: number = 0, pageSize: number = 50): Promise<IAPIResponse> {
+    return firstValueFrom(this.http.getORAllPaymentsWithSearch(keyword, pageNo, pageSize));
+  }
+
   //OTHERS
   async createOtherPayment(params: IOtherPaymentPayload): Promise<IAPIResponse> {
     return firstValueFrom(this.http.createOtherPayment(params));
@@ -43,6 +47,10 @@ export class PaymentService {
 
   async getOtherPaymentWithCustomerInfoById(orId: string): Promise<IAPIResponse> {
     return firstValueFrom(this.http.getOtherPaymentWithCustomerInfoById(orId));
+  }
+
+  async getAllOtherPaymentWithSearch(keyword: string, pageNo: number = 0, pageSize: number = 50): Promise<IAPIResponse> {
+    return firstValueFrom(this.http.getAllOtherPaymentsWithSearch(keyword, pageNo, pageSize));
   }
 
   async updateStatus(orId: string, statusIs: number): Promise<IAPIResponse> {

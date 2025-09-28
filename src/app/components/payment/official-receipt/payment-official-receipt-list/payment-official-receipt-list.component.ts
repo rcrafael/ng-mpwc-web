@@ -13,6 +13,8 @@ import { ReceiptComponent } from '../../../receipt/receipt.component';
 import { MatDialog } from '@angular/material/dialog';
 import { NgIf } from '@angular/common';
 import { MatTooltip } from "@angular/material/tooltip";
+import { debounceTime, distinctUntilChanged, Subject, Subscription } from 'rxjs';
+import { FormsModule, NgModel } from '@angular/forms';
 
 @Component({
   selector: 'app-payment-official-receipt-list',
@@ -23,7 +25,8 @@ import { MatTooltip } from "@angular/material/tooltip";
     RouterModule,
     MatPaginatorModule,
     NgIf,
-    MatTooltip
+    MatTooltip,
+    FormsModule
 ],
   templateUrl: './payment-official-receipt-list.component.html',
   styleUrl: './payment-official-receipt-list.component.css'
@@ -35,7 +38,14 @@ export class PaymentOfficialReceiptListComponent implements OnInit {
     private commonService: CommonService,
     private paymentService: PaymentService,
     private dialog: MatDialog,
-  ) {}
+  ) {
+    this.subscription = this.subjectKeyword.pipe(
+      debounceTime(1000),
+      distinctUntilChanged()
+    ).subscribe(keyword => {
+        this.loadDataWithSearch(keyword, this.paginator.pageIndex, this.paginator.pageSize);
+    })
+  }
   @ViewChild(MatPaginator, {static: true}) paginator!: MatPaginator;
 
   dataSource = new MatTableDataSource([]);
@@ -57,11 +67,15 @@ export class PaymentOfficialReceiptListComponent implements OnInit {
   pageSize: number = 50;
   pageLength: number = 0;
   totalRecordCount: number = 0;
+  searchKeyword: string = '';
 
   getStatus = Utils.getStatusName;
   formatAmount = Utils.formatCurrency;
   formatDate = Utils.dateFormatter;
   buildCustName = Utils.buildCustomerName;
+  
+  private subjectKeyword = new Subject<string>();
+  private subscription: Subscription;
   
   ngOnInit(): void {
     this.loadORData(this.pageIdx,this.pageSize)
@@ -71,17 +85,24 @@ export class PaymentOfficialReceiptListComponent implements OnInit {
     this.router.navigateByUrl('/payment/official-receipt/create');
   }
 
-  handlePageChange(e: PageEvent) {
+  async handlePageChange(e: PageEvent) {
     this.paginator.pageIndex = e.pageIndex;
     this.paginator.pageSize = e.pageSize;
     this.paginator.length = e.length;
+
     this.pageIdx = e.pageIndex;
     this.pageSize = e.pageSize;
-    this.loadORData(e.pageIndex, e.pageSize);
+
+    if(this.searchKeyword.trim() === '') {
+      await this.loadORData(e.pageIndex, e.pageSize);
+    } else {
+      await this.loadDataWithSearch(this.searchKeyword, e.pageIndex, e.pageSize);
+    }
+
   }
 
-  loadORData(pageIdx: number, pageSize: number): void {
-    this.paymentService.getORAllWithCustomerInfo(pageIdx, pageSize).then((response: IAPIResponse) => {
+  async loadORData(pageIdx: number, pageSize: number): Promise<void> {
+    await this.paymentService.getORAllWithCustomerInfo(pageIdx, pageSize).then((response: IAPIResponse) => {
       if(response.result !== null) {
         const result: any = response.result;
         console.log('PAGINATOR: ', this.paginator);
@@ -97,6 +118,33 @@ export class PaymentOfficialReceiptListComponent implements OnInit {
     .finally(async () => {
      
     });
+  }
+
+  async loadDataWithSearch(keyword: string, pageIdx: number, pageSize: number) {
+    await this.paymentService.getORAllPaymentWithSearch(keyword, pageIdx, pageSize).then((response:IAPIResponse) => {
+      if(response.result !== null) {
+        const result: any = response.result;
+
+        this.dataSource.data = result.data;
+        this.paginator.pageIndex = result.paginator.pageNumber;
+        this.paginator.pageSize = result.paginator.pageSize;
+        this.paginator.length =  result.paginator.totalRecordCount;
+        this.pageIdx = result.paginator.pageNumber;
+        this.pageSize = result.paginator.pageSize;
+      }
+    })
+    .catch(async (error: Error) => {
+      console.error('Error fetching customer list with search:', error);
+      this.commonService.showSpinner(false);
+    })
+    .finally(async () => {
+      this.commonService.showSpinner(false);
+    });
+  }
+
+  onSearchInputChanged(keyword: string): void {
+    this.subjectKeyword.next(keyword);
+    this.paginator.pageIndex = 0;
   }
 
   openPrint(): void {
@@ -118,7 +166,14 @@ export class PaymentOfficialReceiptListComponent implements OnInit {
       // })
     }
 
-      async handleVoidRecord(orId: string) {
+/*************  ✨ Windsurf Command ⭐  *************/
+/**
+ * Handles voiding of a record
+ * @param orId - The Official Receipt Number of the record to be voided
+ * @returns {Promise<void>} - A promise that resolves when the record has been voided
+ */
+/*******  322c99b2-4bb0-4df9-bce6-650a8b36ab07  *******/
+  async handleVoidRecord(orId: string) {
 
     const isConfirm = confirm('Are you sure you want to VOID this record?');
     if(!isConfirm) return;

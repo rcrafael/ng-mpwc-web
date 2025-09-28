@@ -8,6 +8,8 @@ import { MatPaginator, MatPaginatorModule, PageEvent } from "@angular/material/p
 import { Utils } from '../../../../common/util';
 import { MatIconModule } from "@angular/material/icon";
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { debounceTime, distinctUntilChanged, Subject, Subscription } from 'rxjs';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-other-payment-list',
@@ -18,7 +20,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     NgIf,
     MatPaginatorModule,
     MatIconModule,
-    MatTooltipModule
+    MatTooltipModule,
+    FormsModule
 ],
   templateUrl: './other-payment-list.component.html',
   styleUrl: './other-payment-list.component.css'
@@ -29,7 +32,14 @@ export class OtherPaymentListComponent implements OnInit {
     private router: Router,
     private paymentService: PaymentService,
     private cdr: ChangeDetectorRef
-  ) {}
+  ) {
+    this.subscription = this.subjectKeyword.pipe(
+      debounceTime(1000),
+      distinctUntilChanged()
+    ).subscribe(keyword => {
+        this.getOtherPaymentListWithSearch(keyword, this.paginator.pageIndex, this.paginator.pageSize);
+    })
+  }
 
   @ViewChild(MatPaginator, {static: false}) paginator!: MatPaginator;
 
@@ -37,6 +47,7 @@ export class OtherPaymentListComponent implements OnInit {
   pageSize: number = 50;
   pageLength: number = 0;
   totalRecordCount: number = 0;
+  searchKeyword: string = '';
 
   dataSource = new MatTableDataSource([]);
   tableCols: string[] = [
@@ -55,6 +66,9 @@ export class OtherPaymentListComponent implements OnInit {
   formatCurrency = Utils.formatCurrency;
   formatDate = Utils.dateFormatter;
   
+  private subjectKeyword = new Subject<string>();
+  private subscription: Subscription;
+  
   async ngOnInit(): Promise<void> {
     await this.getOtherPaymentList(this.pageIdx, this.pageSize);
   }
@@ -63,14 +77,21 @@ export class OtherPaymentListComponent implements OnInit {
     this.router.navigateByUrl('/payment/other-receipt/create');
   }
 
-  handlePageChange(e: PageEvent) {
+  async handlePageChange(e: PageEvent) : Promise<void> {
     console.log('PAGINATOR: ', e)
     this.paginator.pageIndex = e.pageIndex;
     this.paginator.pageSize = e.pageSize;
     this.paginator.length = e.length;
+    
     this.pageIdx = e.pageIndex;
     this.pageSize = e.pageSize;
-    this.getOtherPaymentList(e.pageIndex, e.pageSize);
+
+    if(this.searchKeyword.trim() === '') {
+      await this.getOtherPaymentList(e.pageIndex, e.pageSize);
+    } else {
+      await this.getOtherPaymentListWithSearch(this.searchKeyword, e.pageIndex, e.pageSize);
+    }
+    
   }
 
   async getOtherPaymentList(pageIdx: number, pageSize: number): Promise<void> {
@@ -97,6 +118,33 @@ export class OtherPaymentListComponent implements OnInit {
     }
     
   }
+
+  async getOtherPaymentListWithSearch(keyword: string, pageIdx: number, pageSize: number) {
+    try {
+      const response = await this.paymentService.getAllOtherPaymentWithSearch(keyword, pageIdx, pageSize);
+      if(response.result === null) return;
+
+      const result = response.result as any
+      this.dataSource.data = result.data;
+      
+      this.paginator.pageIndex = result.paginator.pageNumber;
+      this.paginator.pageSize = result.paginator.pageSize;
+      this.paginator.length =  result.paginator.totalRecordCount;
+      this.pageIdx = result.paginator.pageNumber;
+      this.pageSize = result.paginator.pageSize;
+
+    } catch (err) {
+      console.error('ERROR FETCHING OTHER PAYMENT LIST: ', err);
+    } finally {
+      console.log('FINISHED FETCHING OTHER PAYMENT LIST');
+    }
+  }
+  
+  onSearchInputChanged(keyword: string): void {
+    this.subjectKeyword.next(keyword);
+    this.paginator.pageIndex = 0;
+  }
+
 
   async handleVoidRecord(orId: string) {
 

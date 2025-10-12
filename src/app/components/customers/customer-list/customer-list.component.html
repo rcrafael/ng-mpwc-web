@@ -1,4 +1,4 @@
-<div class="flex flex-col h-lvh">
+<div class="flex flex-col h-screen m-1">
      <div class="flex flex-row w-full mb-1 bg-slate-200 rounded-md p-1">
           <div class="grid grid-cols-12 w-full">
                <div class="grid col-span-6 col-start-1 w-full place-items-start items-center">
@@ -24,59 +24,64 @@
           
      </div>
      
-     <div *ngIf="dataSource.data.length > 0" class="overflow-y-scroll">
-          <table mat-table [dataSource]="dataSource">
-               <!-- <ng-container matColumnDef="Customer No">
-                    <th mat-header-cell *matHeaderCellDef>Customer No</th>
-                    <td mat-cell *matCellDef="let element"> </td>
-               </ng-container> -->
-               <ng-container matColumnDef="Account No">
-                    <th mat-header-cell *matHeaderCellDef>Account No</th>
-                    <td mat-cell *matCellDef="let element"> <a [routerLink]="['/customer',element.id]" ><span > {{element.accountNo}}</span></a> </td>
-               </ng-container>
-               <ng-container matColumnDef="Last Name">
-                    <th mat-header-cell *matHeaderCellDef>Last Name</th>
-                    <td mat-cell *matCellDef="let element"> <span>{{element.lastName}}</span> </td>
-               </ng-container>
-               <ng-container matColumnDef="First Name">
-                    <th mat-header-cell *matHeaderCellDef>First Name</th>
-                    <td mat-cell *matCellDef="let element"> <span>{{element.firstName}}</span> </td>
-               </ng-container>
-               <ng-container matColumnDef="Middle Name">
-                    <th mat-header-cell *matHeaderCellDef>Middle Name</th>
-                    <td mat-cell *matCellDef="let element"> <span>{{element.middleName}}</span> </td>
-               </ng-container>
-               <ng-container matColumnDef="Branch Code">
-                    <th mat-header-cell *matHeaderCellDef>Branch Code</th>
-                    <td mat-cell *matCellDef="let element"> <span>{{ getBranchCode(element.branchCode)}}</span> </td>
-               </ng-container>
-               <ng-container matColumnDef="Address">
-                    <th mat-header-cell *matHeaderCellDef>Address</th>
-                    <td mat-cell *matCellDef="let element"> <span>{{element.address}}</span> </td>
-               </ng-container>
-               <ng-container matColumnDef="Customer Type">
-                    <th mat-header-cell *matHeaderCellDef>Customer Type</th>
-                    <td mat-cell *matCellDef="let element"> <span>{{ getCustomerType(element.customerType)}}</span> </td>
-               </ng-container>
+     <div class="flex flex-col flex-1 min-h-0">
+          <div *ngIf="dataSource.data.length === 0">
+               <div>Please wait while loading...</div>
+          </div>
+          <div class="flex-1 overflow-auto min-h-0">
+               <div *ngIf="dataSource.data.length > 0"  class="h-full">
+                    <table mat-table [dataSource]="dataSource" class="w-full border-collapse">
+                         <!-- <ng-container matColumnDef="Customer No">
+                              <th mat-header-cell *matHeaderCellDef>Customer No</th>
+                              <td mat-cell *matCellDef="let element"> </td>
+                         </ng-container> -->
+                         <ng-container matColumnDef="Account No">
+                              <th mat-header-cell *matHeaderCellDef>Account No</th>
+                              <td mat-cell *matCellDef="let element"> <a [routerLink]="['/customer',element.id]" ><span > {{element.accountNo}}</span></a> </td>
+                         </ng-container>
+                         <ng-container matColumnDef="Last Name">
+                              <th mat-header-cell *matHeaderCellDef>Last Name</th>
+                              <td mat-cell *matCellDef="let element"> <span>{{element.lastName}}</span> </td>
+                         </ng-container>
+                         <ng-container matColumnDef="First Name">
+                              <th mat-header-cell *matHeaderCellDef>First Name</th>
+                              <td mat-cell *matCellDef="let element"> <span>{{element.firstName}}</span> </td>
+                         </ng-container>
+                         <ng-container matColumnDef="Middle Name">
+                              <th mat-header-cell *matHeaderCellDef>Middle Name</th>
+                              <td mat-cell *matCellDef="let element"> <span>{{element.middleName}}</span> </td>
+                         </ng-container>
+                         <ng-container matColumnDef="Branch Code">
+                              <th mat-header-cell *matHeaderCellDef>Branch Code</th>
+                              <td mat-cell *matCellDef="let element"> <span>{{ getBranchCode(element.branchCode)}}</span> </td>
+                         </ng-container>
+                         <ng-container matColumnDef="Address">
+                              <th mat-header-cell *matHeaderCellDef>Address</th>
+                              <td mat-cell *matCellDef="let element"> <span>{{element.address}}</span> </td>
+                         </ng-container>
+                         <ng-container matColumnDef="Customer Type">
+                              <th mat-header-cell *matHeaderCellDef>Customer Type</th>
+                              <td mat-cell *matCellDef="let element"> <span>{{ getCustomerType(element.customerType)}}</span> </td>
+                         </ng-container>
 
-               <tr mat-header-row *matHeaderRowDef="tableCols; sticky: true" ></tr>
-               <tr mat-row *matRowDef="let row; columns: tableCols;"></tr>
-          </table>
+                         <tr mat-header-row *matHeaderRowDef="tableCols; sticky: true" ></tr>
+                         <tr mat-row *matRowDef="let row; columns: tableCols;"></tr>
+                    </table>
+               </div>
+          </div>
+          
+          <mat-paginator
+               showFirstLastButtons
+               aria-label="Select page of customers"
+               [pageSizeOptions]="[50,100,200]"
+               (page)="handlePageChange($event)"
+               
+          >
+          </mat-paginator>
      </div>
      
-     <div *ngIf="dataSource.data.length === 0">
-          <div>Please wait while loading...</div>
-     </div>
-
-     <mat-paginator
-          showFirstLastButtons
-          aria-label="Select page of customers"
-          [pageSizeOptions]="[50,100,200]"
-          (page)="handlePageChange($event)"
-          
-     >
-     </mat-paginator>
-
+     
+     
 </div>
 
 

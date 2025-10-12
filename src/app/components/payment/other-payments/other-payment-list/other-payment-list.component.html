@@ -1,4 +1,4 @@
-<div class="flex flex-col h-lvh">
+<div class="flex flex-col h-screen m-1">
      <div class="flex flex-row w-full mb-1 bg-slate-200 rounded-md p-1">
           <div class="grid grid-col-12 w-full">
                <div class="grid col-span-6 col-start-1 w-full place-items-start items-center">
@@ -19,88 +19,88 @@
                <div class="grid col-span-2 col-start-11 w-full place-items-end items-center">
                     <button type="button" class="p-2 bg-green-300 font-bold border border-solid border-black rounded-md " (click)="onCreateNewClick()"> Create New</button>
                </div>
-          </div>
-          
+          </div>    
      </div>
      
 
-     <ng-container *ngIf="dataSource.data.length > 0">
-          <div class="max-h-[90vh] overflow-x-scroll">
-               <table mat-table [dataSource]="dataSource">
-                    <ng-container matColumnDef="Official Receipt No">
-                         <th mat-header-cell *matHeaderCellDef class="!text-center"><span>OR No</span></th>
-                         <td mat-cell *matCellDef="let element" class="!text-center"> <a [routerLink]="['/payment/other-receipt/',element.id]" ><span>{{element.orNo}}</span></a> </td>
-                    </ng-container>
-                    <ng-container matColumnDef="OR Date">
-                         <th mat-header-cell *matHeaderCellDef class="!text-center"><span>OR Date</span></th>
-                         <td mat-cell *matCellDef="let element" class="!text-center"><span>{{formatDate(element.orDate)}}</span></td>
-                    </ng-container>
-                    <ng-container matColumnDef="Account No">
-                         <th mat-header-cell *matHeaderCellDef class="!text-center"><span>Account No</span></th>
-                         <td mat-cell *matCellDef="let element" class="!text-center"><span>{{element.customer ? element.customer.accountNo : ''}}</span></td>
-                    </ng-container>
-                    <ng-container matColumnDef="Customer Name">
-                         <th mat-header-cell *matHeaderCellDef><span>Customer Name</span></th>
-                         <!-- <td mat-cell *matCellDef="let element"><span> {{element.customer ?  `${element.customer.lastName, element.customer.firstName element.customer.middleName}` : '' }}</span></td> -->
-                           <td mat-cell *matCellDef="let element"><span> {{element.customerId ? buildCustName(element.customer.firstName, element.customer.middleName, element.customer.lastName) : element.outsideCustomerName}}</span></td>
-                    </ng-container>
-                    <ng-container matColumnDef="Address">
-                         <th mat-header-cell *matHeaderCellDef><span>Address</span></th>
-                         <td mat-cell *matCellDef="let element"><span>{{element.customerId ? element.customer.address : element.outsideCustomerAddress}}</span></td>
-                    </ng-container>
-                    <ng-container matColumnDef="Total Amount To Pay">
-                         <th mat-header-cell *matHeaderCellDef class="!text-right"><span>Total Amount To Pay</span></th>
-                         <td mat-cell *matCellDef="let element"><span>{{formatCurrency(element.totalAmountPay)}}</span></td>
-                    </ng-container>
-                    <ng-container matColumnDef="Status">
-                         <th mat-header-cell *matHeaderCellDef class="!text-center"><span>Status</span></th>
-                         <td mat-cell *matCellDef="let element" class="!text-center"><span>{{getStatus(element.status)}}</span></td>
-                    </ng-container>
-                    <ng-container matColumnDef="Action">
-                         <th mat-header-cell *matHeaderCellDef class="!text-center"><span>Action</span></th>
-                         <td mat-cell *matCellDef="let element">
-                              <div class="flex flex-row gap-4 justify-center">
-                                   <mat-icon 
-                                        fontIcon="print" 
-                                        matTooltip="Print Receipt"
-                                        class="cursor-pointer text-blue-500 font"
-                                   ></mat-icon>
-                                   <mat-icon 
-                                        fontIcon="cancel" 
-                                        matTooltip="Void Receipt"
-                                        class="cursor-pointer text-black" 
-                                        (click)="handleVoidRecord(element.id)"
-                                   ></mat-icon>
-                                   <mat-icon 
-                                        fontIcon="delete_forever" 
-                                        matTooltip="Delete Receipt"
-                                        class="cursor-pointer text-red-500" 
-                                        (click)="handleDeleteRecord(element.id)"
-                                   ></mat-icon>
-                              </div>
-                         </td>
-                    </ng-container>
-
-                    <tr mat-header-row *matHeaderRowDef="tableCols; sticky: true" ></tr>
-                    <tr mat-row *matRowDef="let row; columns: tableCols;"></tr>
-               </table>
+     <div class="flex flex-col flex-1 min-h-0">
+          <div *ngIf="dataSource.data.length === 0">
+               <div>Please wait while loading...</div>
           </div>
-     </ng-container>
-     
+          <div class="flex-1 overflow-auto min-h-0">
+               <div *ngIf="dataSource.data.length > 0" class="h-full">
+                    <table mat-table [dataSource]="dataSource" class="w-full border-collapse">
+                         <ng-container matColumnDef="Official Receipt No">
+                              <th mat-header-cell *matHeaderCellDef class="!text-center"><span>OR No</span></th>
+                              <td mat-cell *matCellDef="let element" class="!text-center"> <a [routerLink]="['/payment/other-receipt/',element.id]" ><span>{{element.orNo}}</span></a> </td>
+                         </ng-container>
+                         <ng-container matColumnDef="OR Date">
+                              <th mat-header-cell *matHeaderCellDef class="!text-center"><span>OR Date</span></th>
+                              <td mat-cell *matCellDef="let element" class="!text-center"><span>{{formatDate(element.orDate)}}</span></td>
+                         </ng-container>
+                         <ng-container matColumnDef="Account No">
+                              <th mat-header-cell *matHeaderCellDef class="!text-center"><span>Account No</span></th>
+                              <td mat-cell *matCellDef="let element" class="!text-center"><span>{{element.customer ? element.customer.accountNo : ''}}</span></td>
+                         </ng-container>
+                         <ng-container matColumnDef="Customer Name">
+                              <th mat-header-cell *matHeaderCellDef><span>Customer Name</span></th>
+                              <!-- <td mat-cell *matCellDef="let element"><span> {{element.customer ?  `${element.customer.lastName, element.customer.firstName element.customer.middleName}` : '' }}</span></td> -->
+                              <td mat-cell *matCellDef="let element"><span> {{element.customerId ? buildCustName(element.customer.firstName, element.customer.middleName, element.customer.lastName) : element.outsideCustomerName}}</span></td>
+                         </ng-container>
+                         <ng-container matColumnDef="Address">
+                              <th mat-header-cell *matHeaderCellDef><span>Address</span></th>
+                              <td mat-cell *matCellDef="let element"><span>{{element.customerId ? element.customer.address : element.outsideCustomerAddress}}</span></td>
+                         </ng-container>
+                         <ng-container matColumnDef="Total Amount To Pay">
+                              <th mat-header-cell *matHeaderCellDef class="!text-right"><span>Total Amount To Pay</span></th>
+                              <td mat-cell *matCellDef="let element"><span>{{formatCurrency(element.totalAmountPay)}}</span></td>
+                         </ng-container>
+                         <ng-container matColumnDef="Status">
+                              <th mat-header-cell *matHeaderCellDef class="!text-center"><span>Status</span></th>
+                              <td mat-cell *matCellDef="let element" class="!text-center"><span>{{getStatus(element.status)}}</span></td>
+                         </ng-container>
+                         <ng-container matColumnDef="Action">
+                              <th mat-header-cell *matHeaderCellDef class="!text-center"><span>Action</span></th>
+                              <td mat-cell *matCellDef="let element">
+                                   <div class="flex flex-row gap-4 justify-center">
+                                        <mat-icon 
+                                             fontIcon="print" 
+                                             matTooltip="Print Receipt"
+                                             class="cursor-pointer text-blue-500 font"
+                                        ></mat-icon>
+                                        <mat-icon 
+                                             fontIcon="cancel" 
+                                             matTooltip="Void Receipt"
+                                             class="cursor-pointer text-black" 
+                                             (click)="handleVoidRecord(element.id)"
+                                        ></mat-icon>
+                                        <mat-icon 
+                                             fontIcon="delete_forever" 
+                                             matTooltip="Delete Receipt"
+                                             class="cursor-pointer text-red-500" 
+                                             (click)="handleDeleteRecord(element.id)"
+                                        ></mat-icon>
+                                   </div>
+                              </td>
+                         </ng-container>
 
-     <div *ngIf="dataSource.data.length === 0">
-          <div>Please wait while loading...</div>
+                         <tr mat-header-row *matHeaderRowDef="tableCols; sticky: true" ></tr>
+                         <tr mat-row *matRowDef="let row; columns: tableCols;"></tr>
+                    </table>
+               </div>
+          </div>
+          <mat-paginator
+               [hidden]="dataSource.data.length === 0"
+               showFirstLastButtons
+               aria-label="Select page of OR"
+               [pageSizeOptions]="[50,100,200]"
+               (page)="handlePageChange($event)"
+          >
+          </mat-paginator>   
+
      </div>
 
 
-     <mat-paginator
-          [hidden]="dataSource.data.length === 0"
-          showFirstLastButtons
-          aria-label="Select page of OR"
-          [pageSizeOptions]="[50,100,200]"
-          (page)="handlePageChange($event)"
-     >
-     </mat-paginator>   
 
 </div>
 

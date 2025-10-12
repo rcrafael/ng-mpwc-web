@@ -38,7 +38,12 @@ export class CustomerListComponent implements OnInit {
       debounceTime(1000),
       distinctUntilChanged()
     ).subscribe(keyword => {
+      if(keyword.trim() === '') {
+        this.loadData(this.paginator.pageIndex, this.paginator.pageSize);
+      } else {
         this.loadDataWithSearch(keyword, this.paginator.pageIndex, this.paginator.pageSize);
+      }
+      
     })
   }
 
@@ -121,14 +126,14 @@ export class CustomerListComponent implements OnInit {
         this.paginator.pageIndex = result.paginator.pageNumber;
         this.paginator.pageSize = result.paginator.pageSize;
         this.paginator.length =  result.paginator.totalRecordCount;
+        this.pageIdx = result.paginator.pageNumber;
+        this.pageSize = result.paginator.pageSize;
       }
     })
     .catch(async (error: Error) => {
       console.error('Error fetching customer list with search:', error);
-      this.commonService.showSpinner(false);
     })
     .finally(async () => {
-      this.commonService.showSpinner(false);
     });
   }
 

@@ -71,7 +71,7 @@ export class BillingCreateComponent implements OnInit {
     septageFee: new FormControl(0),
     totalAmount: new FormControl(this.totalBilingAmount ?? 0),
     status: new FormControl({value:'', disabled: true}),
-  })
+  });
 
 
   getBranchCode = Utils.getBranchCode;
@@ -145,9 +145,9 @@ export class BillingCreateComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(data => {
       if(data !== null) {
-        console.log('RECEIVED FROM Customer DIALOG: ', data)
-        this.selectedCustomerInfo = data
-        this.updateFormFromCustomer()
+        console.log('RECEIVED FROM Customer DIALOG: ', data);
+        this.selectedCustomerInfo = data;
+        this.updateFormFromCustomer();
       }
     })
   }
@@ -167,7 +167,7 @@ export class BillingCreateComponent implements OnInit {
           this.fg.patchValue({
             branchCode: this.getBranchCode(data.branchCode),
             alias: data.alias,
-          })
+          });
           console.log("CUSTOMER TYPE: ", this.selectedMeterNo.customerType);
         }
       })
@@ -195,12 +195,12 @@ export class BillingCreateComponent implements OnInit {
     if (customerType === 1) { // 1 - residential
       this.billingService.getActiveWaterRatesResidential().then((response) => {
         const resp = response.result as IWaterRates[];
-        this.waterRates = structuredClone(resp)
+        this.waterRates = structuredClone(resp);
       })
     } else { // 2 - commercial
       this.billingService.getActiveWaterRatesCommercial().then((response) => {
         const resp = response.result as IWaterRates[];
-        this.waterRates = structuredClone(resp)
+        this.waterRates = structuredClone(resp);
       })
     }
   } 
@@ -280,7 +280,7 @@ export class BillingCreateComponent implements OnInit {
   computerTotalBillingAmount(): void {
     const frm  = this.fg.value;
 
-    this.totalBilingAmount = (frm.readingAmount ?? 0) + (frm.parts ?? 0) + (frm.maintenanceFee ?? 0) + (frm.septageFee ?? 0) - (frm.lessAmount ?? 0)
+    this.totalBilingAmount = (frm.readingAmount ?? 0) + (frm.parts ?? 0) + (frm.maintenanceFee ?? 0) + (frm.septageFee ?? 0) - (frm.lessAmount ?? 0);
     this.fg.patchValue({
       totalAmount: this.totalBilingAmount,
     });
@@ -291,7 +291,7 @@ export class BillingCreateComponent implements OnInit {
       this.fg.patchValue({
         readingNo: response.result.toString()
       })
-    })
+    });
   }
 
   getSeptageFees(): void {
@@ -300,7 +300,7 @@ export class BillingCreateComponent implements OnInit {
     })
     .catch((err: Error) => {
       console.error('FAILED TO FETCH SEPTAGE FEES: ', err.message);
-    })
+    });
   }
 
   computeSeptageFee(m3Used: number): number {

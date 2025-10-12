@@ -43,7 +43,12 @@ export class PaymentOfficialReceiptListComponent implements OnInit {
       debounceTime(1000),
       distinctUntilChanged()
     ).subscribe(keyword => {
+      if(keyword.trim() === '') {
+        this.loadORData(this.paginator.pageIndex, this.paginator.pageSize);
+      } else {
         this.loadDataWithSearch(keyword, this.paginator.pageIndex, this.paginator.pageSize);
+      }
+      
     })
   }
   @ViewChild(MatPaginator, {static: true}) paginator!: MatPaginator;
@@ -166,13 +171,6 @@ export class PaymentOfficialReceiptListComponent implements OnInit {
       // })
     }
 
-/*************  ✨ Windsurf Command ⭐  *************/
-/**
- * Handles voiding of a record
- * @param orId - The Official Receipt Number of the record to be voided
- * @returns {Promise<void>} - A promise that resolves when the record has been voided
- */
-/*******  322c99b2-4bb0-4df9-bce6-650a8b36ab07  *******/
   async handleVoidRecord(orId: string) {
 
     const isConfirm = confirm('Are you sure you want to VOID this record?');

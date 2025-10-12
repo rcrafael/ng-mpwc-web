@@ -37,7 +37,11 @@ export class OtherPaymentListComponent implements OnInit {
       debounceTime(1000),
       distinctUntilChanged()
     ).subscribe(keyword => {
+      if(keyword.trim() === '') {
+        this.getOtherPaymentList(this.paginator.pageIndex, this.paginator.pageSize);
+      } else {
         this.getOtherPaymentListWithSearch(keyword, this.paginator.pageIndex, this.paginator.pageSize);
+      }
     })
   }
 

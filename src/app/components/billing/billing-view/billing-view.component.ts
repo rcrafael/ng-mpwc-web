@@ -11,6 +11,7 @@ import { IAPIResponse } from '../../../models/interfaces/IApiResponse';
 import { IBillingInfo, IUpdateBilling } from '../../../models/interfaces/IBilling';
 import { Utils } from '../../../common/util';
 import { IWaterRates } from '../../../models/interfaces/IWaterRates';
+import { transactionStatus } from '../../../common/enum';
 
 @Component({
   selector: 'app-billing-view',
@@ -36,6 +37,10 @@ export class BillingViewComponent implements OnInit {
     private decimalPipe: DecimalPipe
   ) {}
 
+  COMPLETE_STATUS: number = 1;
+  INCOMPLETE_STATUS: number = 2;
+  VOID_STATUS: number = 4;
+
   currentMonth = new Date().getMonth() + 1; //getMonth() is 0 to 11
   currentDate = formatDate(new Date(),'yyyy-MM-dd','en-PH');
   readingId: string = '';
@@ -43,6 +48,7 @@ export class BillingViewComponent implements OnInit {
   currentBiling!: IBillingInfo;
   waterRates: IWaterRates[] = [];
   maxRateUsed: number = 0;
+  transStatus:number = 0;
 
   public fg = new FormGroup({
     readingNo: new FormControl<string>({value: '', disabled: true}),
@@ -106,9 +112,10 @@ export class BillingViewComponent implements OnInit {
         lessAmount: this.numberFormat(billing.lessAmount),
         totalAmount: this.numberFormat(billing.readingAmount + billing.parts + billing.maintenanceFee + billing.septageFee - billing.lessAmount),
         status: this.getStatus(billing.status)
-      })
+      });
 
-     await this.getWaterRates(billing.meterInfo?.customerType!);
+      this.transStatus = billing.status;
+      await this.getWaterRates(billing.meterInfo?.customerType!);
     });
   }
 

@@ -9,6 +9,9 @@ import { CommonService } from '../../../services/common.service';
 import { IAPIResponse } from '../../../models/interfaces/IApiResponse';
 import { SpinnerComponent } from "../../common/spinner/spinner.component";
 import { Utils } from '../../../common/util';
+import { MatIconModule } from "@angular/material/icon";
+import { MatTooltip } from '@angular/material/tooltip';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-billing-list',
@@ -18,7 +21,9 @@ import { Utils } from '../../../common/util';
     MatButtonModule,
     MatPaginatorModule,
     RouterModule,
-    SpinnerComponent
+    MatTooltip,
+    MatIconModule,
+    NgIf
 ],
   templateUrl: './billing-list.component.html',
   styleUrl: './billing-list.component.css'
@@ -34,7 +39,21 @@ export class BillingListComponent implements OnInit {
   @ViewChild(MatPaginator, {static: true}) paginator!: MatPaginator;
 
   dataSource = new MatTableDataSource([]);
-  tableCols: string[] = ['Reading No', 'Account No', 'Meter No', 'Customer Name', 'Alias', 'Branch Code', 'Address', 'Month', 'Billing Period', 'Due Date', 'Amount', 'Status'];
+  tableCols: string[] = [
+    'Reading No', 
+    'Account No', 
+    'Meter No', 
+    'Customer Name', 
+    'Alias', 
+    'Branch Code', 
+    'Address', 
+    'Month', 
+    'Billing Period', 
+    'Due Date', 
+    'Amount', 
+    'Status', 
+    'Actions'
+  ];
   
   pageIdx:number = 0;
   pageSize: number = 50;
@@ -86,6 +105,37 @@ export class BillingListComponent implements OnInit {
     .finally(async () => {
       this.commonService.showSpinner(false);
     });
+  }
+
+    async handleVoidRecord(orId: string) {
+
+    const isConfirm = confirm('Are you sure you want to VOID this record?');
+    if(!isConfirm) return;
+
+    const VOID_STATUS_ID = 4;
+    try {
+      // const response = await this.paymentService.updateStatus(orId, VOID_STATUS_ID);
+      // console.log('RESPONSE: ', response);
+      // await this.loadORData(this.pageIdx, this.pageSize);
+    } catch (err) {
+      console.error('ERROR VOIDING OTHER PAYMENT RECORD: ', err);
+    }
+    
+
+  }
+
+  async handleDeleteRecord(orId: string) {
+
+    const isConfirm = confirm('Are you sure you want to DELETE this record?');
+    if(!isConfirm) return;
+    
+    try {
+      // const response = await this.paymentService.deleteRecord(orId);
+      // console.log('RESPONSE: ', response);
+      // await this.loadORData(this.pageIdx, this.pageSize);
+    } catch (err) {
+      console.error('ERROR DELETING OTHER PAYMENT RECORD: ', err);
+    }
   }
 
 }

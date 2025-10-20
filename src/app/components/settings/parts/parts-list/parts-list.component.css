@@ -1,0 +1,11 @@
+table.mat-mdc-table td.mat-column-Item-ID,
+table.mat-mdc-table th.mat-column-Item-ID {
+     text-align: center;
+}
+
+table.mat-mdc-table td.mat-column-Unit-Cost,
+table.mat-mdc-table th.mat-column-Unit-Cost,
+table.mat-mdc-table td.mat-column-Selling-Price,
+table.mat-mdc-table th.mat-column-Selling-Price {
+     text-align: right;
+}

@@ -212,7 +212,15 @@ export class ApiService {
 
 
   // SETTINGS APIs
-  getPartsListing(): Observable<IAPIResponse> {
+
+  //PARTS APIs
+
+  getParts(pageNo: number = 0, pageSize: number = 50): Observable<IAPIResponse> {
+    return this.httpClient.get<IAPIResponse>(`${this.env.apiHost}${PartsApi.GET_PARTS_ALL}`.replace('{pageNo}', pageNo.toString()).replace('{pageSize}', pageSize.toString()));
+  }
+
+  //used this api for dropdown
+  getPartsListing(): Observable<IAPIResponse> { 
     return this.httpClient.get<IAPIResponse>(`${this.env.apiHost}${PartsApi.GET_PARTS_LIST}`);
   }
 

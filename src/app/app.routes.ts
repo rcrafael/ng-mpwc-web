@@ -44,10 +44,11 @@ export const routes: Routes = [
                { path: 'payment/other-receipt/:orId', component: OtherPaymentViewComponent},
 
                { path: 'settings', component: SettingsComponent},
-               { path: 'settings/water-rates', component: WaterRatesComponent}
+               { path: 'settings/water-rates', component: WaterRatesComponent},
+               { path: 'settings/parts', loadComponent: () => import('./components/settings/parts/parts-list/parts-list.component').then(m => m.PartsListComponent)},
           ]
      },
-     {
+     { 
           path:'auth',
           component: AuthComponent,
           children: [

@@ -1,0 +1,80 @@
+import { CommonModule, NgClass } from '@angular/common';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatIcon } from '@angular/material/icon';
+import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatTooltip } from '@angular/material/tooltip';
+import { RouterModule } from '@angular/router';
+import { IPaginator } from '../../../../models/interfaces/IPaginator';
+import { PartsService } from '../../../../services/parts.service';
+import { IAPIResponse } from '../../../../models/interfaces/IApiResponse';
+import { Utils } from '../../../../common/util';
+
+@Component({
+  selector: 'app-parts-list',
+  standalone: true,
+  imports: [
+    MatTableModule,
+    CommonModule,
+    RouterModule,
+    MatIcon,
+    MatPaginatorModule,
+    MatTooltip
+  ],
+  templateUrl: './parts-list.component.html',
+  styleUrl: './parts-list.component.css'
+})
+export class PartsListComponent implements OnInit {
+
+  constructor(
+    private partService: PartsService
+  ) { }
+
+  @ViewChild(MatPaginator, {static: true}) paginator!: MatPaginator;
+  
+  tableCols = ['Item ID', 'Description','Measurement','Unit Cost', 'Selling Price', 'Actions'];
+  dataSource = new MatTableDataSource([]);
+
+  formatAmount = Utils.formatCurrency
+
+
+  async ngOnInit(): Promise<void> {
+      await this.loadData(0, 50);
+  }
+
+  onCreateNewClick() {
+    throw new Error('Method not implemented.');
+  }
+    handleVoidRecord(arg0: any) {
+  throw new Error('Method not implemented.');
+  }
+  handleDeleteRecord(arg0: any) {
+    throw new Error('Method not implemented.');
+  }
+
+  async handlePageChange(e: PageEvent): Promise<void> {
+    this.paginator.pageIndex = e.pageIndex;
+    this.paginator.pageSize = e.pageSize;
+    this.paginator.length = e.length;
+    await this.loadData(e.pageIndex, e.pageSize);
+  }
+
+  async loadData(pageIdx: number, pageSize: number) {
+    await this.partService.getParts(pageIdx, pageSize).then((response: IAPIResponse) => {
+      if(response.result !== null) {
+        const result: any = response.result;
+        this.dataSource.data = result.data;
+        this.paginator.pageIndex = result.paginator.pageNumber;
+        this.paginator.pageSize = result.paginator.pageSize;
+        this.paginator.length =  result.paginator.totalRecordCount;
+      }
+    })
+    .catch(async (error: Error) => {
+      console.error('Error fetching parts list:', error);
+    })
+    .finally(async () => {
+      
+    })
+  }
+
+}

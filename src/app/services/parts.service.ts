@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { ApiService } from './apis/api.service';
 import { IAPIResponse } from '../models/interfaces/IApiResponse';
 import { firstValueFrom } from 'rxjs';
+import { IPartDetails } from '../models/interfaces/IParts';
 
 @Injectable({
   providedIn: 'root'
@@ -18,4 +19,8 @@ export class PartsService {
     return firstValueFrom(this.http.getParts(pageNo, pageSize));
   }
   
+  createPart(params: IPartDetails): Promise<IAPIResponse> {
+    return firstValueFrom(this.http.createPart(params));
+  }
+
 }

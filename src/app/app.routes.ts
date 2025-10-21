@@ -46,6 +46,7 @@ export const routes: Routes = [
                { path: 'settings', component: SettingsComponent},
                { path: 'settings/water-rates', component: WaterRatesComponent},
                { path: 'settings/parts', loadComponent: () => import('./components/settings/parts/parts-list/parts-list.component').then(m => m.PartsListComponent)},
+               { path: 'settings/parts/create', loadComponent: () => import('./components/settings/parts/part-create/part-create.component').then(m => m.PartCreateComponent)},
           ]
      },
      { 

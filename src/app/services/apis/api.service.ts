@@ -10,6 +10,7 @@ import { IOfficialReceipt } from '../../models/interfaces/IOfficialReceipt';
 import { ILogin } from '../../models/interfaces/IUser';
 import { EnvService } from './env.service';
 import { IOtherPaymentPayload } from '../../models/interfaces/IOtherPayments';
+import { IPartDetails } from '../../models/interfaces/IParts';
 @Injectable({
   providedIn: 'root'
 })
@@ -222,6 +223,10 @@ export class ApiService {
   //used this api for dropdown
   getPartsListing(): Observable<IAPIResponse> { 
     return this.httpClient.get<IAPIResponse>(`${this.env.apiHost}${PartsApi.GET_PARTS_LIST}`);
+  }
+
+  createPart(params: IPartDetails): Observable<IAPIResponse> {
+    return this.httpClient.post<IAPIResponse>(`${this.env.apiHost}${PartsApi.CREATE_PARTS}`, params);
   }
 
 }

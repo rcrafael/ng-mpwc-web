@@ -1,14 +1,17 @@
 import { CommonModule, NgClass } from '@angular/common';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, inject, OnInit, ViewChild } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
 import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatTooltip } from '@angular/material/tooltip';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { IPaginator } from '../../../../models/interfaces/IPaginator';
 import { PartsService } from '../../../../services/parts.service';
 import { IAPIResponse } from '../../../../models/interfaces/IApiResponse';
 import { Utils } from '../../../../common/util';
+import { MatDialog } from '@angular/material/dialog';
+import { PartCreateComponent } from '../part-create/part-create.component';
+import { IPartDetails } from '../../../../models/interfaces/IParts';
 
 @Component({
   selector: 'app-parts-list',
@@ -27,13 +30,16 @@ import { Utils } from '../../../../common/util';
 export class PartsListComponent implements OnInit {
 
   constructor(
-    private partService: PartsService
+    private partService: PartsService,
+    private router: Router
   ) { }
 
   @ViewChild(MatPaginator, {static: true}) paginator!: MatPaginator;
   
-  tableCols = ['Item ID', 'Description','Measurement','Unit Cost', 'Selling Price', 'Actions'];
+  tableCols = ['Description','Measurement','Unit Cost', 'Selling Price', 'Actions'];
   dataSource = new MatTableDataSource([]);
+
+  dialog = inject(MatDialog);
 
   formatAmount = Utils.formatCurrency
 
@@ -43,7 +49,32 @@ export class PartsListComponent implements OnInit {
   }
 
   onCreateNewClick() {
-    throw new Error('Method not implemented.');
+
+    const dialogRef = this.dialog.open(PartCreateComponent, {
+      width: '50%',
+      height: '50%'
+    });
+
+    dialogRef.afterClosed().subscribe(async data => {
+      
+      if(data){
+        let params: IPartDetails = data;
+        await this.partService.createPart(params).then(async (response: IAPIResponse) => {
+          if(response.result !== null){
+            await this.loadData(0, 50);
+          }
+          alert('Save Successfully!');
+        })
+        .catch(async (error: Error) => {
+          console.error('Error creating part:', error);
+        })
+        .finally(async () => {
+          console.log('finally');
+        });
+      }
+
+    });
+
   }
     handleVoidRecord(arg0: any) {
   throw new Error('Method not implemented.');

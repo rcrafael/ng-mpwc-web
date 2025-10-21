@@ -17,16 +17,12 @@
           <div class="flex-1 overflow-auto min-h-0">
                <div *ngIf="dataSource.data.length > 0" class="h-full">
                     <table mat-table [dataSource]="dataSource" class="w-full border-collapse">
-                         <ng-container matColumnDef="Item ID">
-                              <th mat-header-cell *matHeaderCellDef>Item ID</th>
-                              <td mat-cell *matCellDef="let element"> <a [routerLink]="['/part',element.id]" ><span>{{element.id}}</span></a> </td>
-                         </ng-container>
                          <ng-container matColumnDef="Description">
                               <th mat-header-cell *matHeaderCellDef>Description</th>
                               <td mat-cell *matCellDef="let element"> <span>{{element.description}}</span> </td>
                          </ng-container>
                          <ng-container matColumnDef="Measurement">
-                              <th mat-header-cell *matHeaderCellDef>Measurement/th>
+                              <th mat-header-cell *matHeaderCellDef>Measurement</th>
                               <td mat-cell *matCellDef="let element"> <span>{{element.measurement}}</span> </td>
                          </ng-container>
                          <ng-container matColumnDef="Unit Cost">

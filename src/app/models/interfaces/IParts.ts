@@ -10,3 +10,10 @@ export interface IPartItem {
      amount: string,
      remarks: string,
 }
+
+export interface IPartDetails {
+     description: string,
+     measurement: string,
+     unitCost: number,
+     sellingPrice: number
+}

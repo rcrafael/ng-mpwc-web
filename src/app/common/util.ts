@@ -91,7 +91,15 @@ export class Utils {
      }
  
      public static formatNumber(number: number): string {
-          return new Intl.NumberFormat('en-PH',{style: 'decimal', minimumFractionDigits: 2, maximumFractionDigits: 2}).format(number);
+          try {
+               let num = new Intl.NumberFormat('en-PH',{style: 'decimal', minimumFractionDigits: 2, maximumFractionDigits: 2}).format(number);
+               if(isNaN(parseFloat(num))) {
+                    return '0.00';
+               }
+               return num;
+          } catch (error) {
+               return '0.00'          
+          }
      }
 
      public static buildCustomerName(firstName: string, middleName: string, lastName: string): string {

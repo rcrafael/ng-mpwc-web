@@ -12,6 +12,7 @@ export interface IPartItem {
 }
 
 export interface IPartDetails {
+     id?: string,
      description: string,
      measurement: string,
      unitCost: number,

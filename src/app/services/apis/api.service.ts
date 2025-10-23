@@ -229,4 +229,12 @@ export class ApiService {
     return this.httpClient.post<IAPIResponse>(`${this.env.apiHost}${PartsApi.CREATE_PARTS}`, params);
   }
 
+  updatePart(params: IPartDetails): Observable<IAPIResponse> {
+    return this.httpClient.put<IAPIResponse>(`${this.env.apiHost}${PartsApi.UPDATE_PARTS}`, params);
+  }
+
+  getPartByid(id: string): Observable<IAPIResponse> {
+    return this.httpClient.get<IAPIResponse>(`${this.env.apiHost}${PartsApi.GET_PARTS_BY_ID}`.replace('{id}', id));
+  }
+
 }

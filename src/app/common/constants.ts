@@ -72,4 +72,5 @@ export class PartsApi {
      public static GET_PARTS_ALL = '/settings/part/{pageNo}/{pageSize}';
      public static CREATE_PARTS = '/settings/part';
      public static GET_PARTS_BY_ID = '/settings/part/{id}';
+     public static UPDATE_PARTS = '/settings/part';
 }

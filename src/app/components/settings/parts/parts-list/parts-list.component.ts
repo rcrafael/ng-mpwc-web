@@ -12,6 +12,7 @@ import { Utils } from '../../../../common/util';
 import { MatDialog } from '@angular/material/dialog';
 import { PartCreateComponent } from '../part-create/part-create.component';
 import { IPartDetails } from '../../../../models/interfaces/IParts';
+import { PartsViewComponent } from '../parts-view/parts-view.component';
 
 @Component({
   selector: 'app-parts-list',
@@ -76,9 +77,36 @@ export class PartsListComponent implements OnInit {
     });
 
   }
-    handleVoidRecord(arg0: any) {
-  throw new Error('Method not implemented.');
+
+  handleEditRecord(id: string) {
+    const dialogRef = this.dialog.open(PartsViewComponent, {
+      width: '50%',
+      height: '55%',
+      data: id
+    });
+
+    dialogRef.afterClosed().subscribe(async data => {
+      if(data){
+        let params: IPartDetails = data;
+        params.id = id;
+        console.log('PARAMS FOR UPDATING PARTS: ' , params);
+        await this.partService.updatePart(params).then(async (response: IAPIResponse) => {
+          if(response.result !== null){
+            await this.loadData(0, 50);
+          }
+          alert('Save Successfully!');
+        })
+        .catch(async (error: Error) => {
+          console.error('Error updating part:', error);
+        })
+        .finally(async () => {
+          console.log('finally');
+        });
+      }
+    })
   }
+
+
   handleDeleteRecord(arg0: any) {
     throw new Error('Method not implemented.');
   }
@@ -105,7 +133,8 @@ export class PartsListComponent implements OnInit {
     })
     .finally(async () => {
       
-    })
+    });
+
   }
 
 }

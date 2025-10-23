@@ -18,6 +18,3 @@ table.mat-mdc-table th.mat-column-OR-Date {
      width: 120px;
 }
 
-table.mat-mdc-table tr:hover {
-     background-color: rgb(134, 194, 230) !important;
-}

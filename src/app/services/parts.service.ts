@@ -23,4 +23,12 @@ export class PartsService {
     return firstValueFrom(this.http.createPart(params));
   }
 
+  updatePart(params: IPartDetails): Promise<IAPIResponse> {
+    return firstValueFrom(this.http.updatePart(params));
+  }
+  
+  getPartByid(partId: string): Promise<IAPIResponse> {
+    return firstValueFrom(this.http.getPartByid(partId));
+  }
+
 }

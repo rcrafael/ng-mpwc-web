@@ -4,6 +4,14 @@ export interface ISideBarMenu {
      url: string,
      label: string,
      icon: string,
+     subItems?: ISideBarMenuSubItem[]
+}
+
+export interface ISideBarMenuSubItem {
+     id: number,
+     name: string,
+     url: string,
+     label: string
 }
 
 export interface IBranchCode {

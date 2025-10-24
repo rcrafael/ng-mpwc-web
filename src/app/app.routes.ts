@@ -1,63 +1,46 @@
 import { Routes } from '@angular/router';
-import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { AuthLoginComponent } from './components/auth/auth-login/auth-login.component';
 import { authGuard } from './guard/auth.guard';
-import { CustomerCreateComponent } from './components/customers/customer-create/customer-create.component';
-import { CustomerEditComponent } from './components/customers/customer-edit/customer-edit.component';
-import { CustomerListComponent } from './components/customers/customer-list/customer-list.component';
-import { NotFoundComponent } from './components/not-found/not-found.component';
-import { AppLayoutComponent } from './components/app-layout/app-layout.component';
 import { AuthComponent } from './components/auth/auth.component';
-import { BillingListComponent } from './components/billing/billing-list/billing-list.component';
-import { BillingCreateComponent } from './components/billing/billing-create/billing-create.component';
-import { BillingViewComponent } from './components/billing/billing-view/billing-view.component';
-import { OtherPaymentListComponent } from './components/payment/other-payments/other-payment-list/other-payment-list.component';
-import { OtherPaymentCreateComponent } from './components/payment/other-payments/other-payment-create/other-payment-create.component';
-import { OtherPaymentViewComponent } from './components/payment/other-payments/other-payment-view/other-payment-view.component';
-import { PaymentOfficialReceiptCreateComponent } from './components/payment/official-receipt/payment-official-receipt-create/payment-official-receipt-create.component';
-import { PaymentOfficialReceiptListComponent } from './components/payment/official-receipt/payment-official-receipt-list/payment-official-receipt-list.component';
-import { PaymentOfficialReceiptViewComponent } from './components/payment/official-receipt/payment-official-receipt-view/payment-official-receipt-view.component';
-import { SettingsComponent } from './components/settings/settings.component';
-import { WaterRatesComponent } from './components/settings/water-rates/water-rates.component';
+
 
 export const routes: Routes = [
 
      {
           path: '',
-          component: AppLayoutComponent,
+          loadComponent: () => import('./components/app-layout/app-layout.component').then(m => m.AppLayoutComponent),
           canActivate: [authGuard],
           children: [
                { path: '', redirectTo: 'dashboard', pathMatch: 'full'},
-               { path: 'dashboard', component: DashboardComponent,},
-               { path: 'customer', component: CustomerListComponent},
-               { path: 'customer/create', component: CustomerCreateComponent},
-               { path: 'customer/:customerId', component: CustomerEditComponent,},
-               { path: 'billing', component: BillingListComponent},
-               { path: 'billing/create', component: BillingCreateComponent},
-               { path: 'billing/:readingId', component: BillingViewComponent},
-               { path: 'payment/official-receipt', component: PaymentOfficialReceiptListComponent},
-               { path: 'payment/official-receipt/create', component: PaymentOfficialReceiptCreateComponent},
-               { path: 'payment/official-receipt/create/:customerId', component: PaymentOfficialReceiptCreateComponent},
-               { path: 'payment/official-receipt/:orId', component: PaymentOfficialReceiptViewComponent},
-               { path: 'payment/other-receipt', component: OtherPaymentListComponent},
-               { path: 'payment/other-receipt/create', component: OtherPaymentCreateComponent},
-               { path: 'payment/other-receipt/:orId', component: OtherPaymentViewComponent},
+               { path: 'dashboard', loadComponent: () => import('./components/dashboard/dashboard.component').then(m => m.DashboardComponent)},
+               { path: 'customer', loadComponent: () => import('./components/customers/customer-list/customer-list.component').then(m => m.CustomerListComponent)},
+               { path: 'customer/create', loadComponent: () => import('./components/customers/customer-create/customer-create.component').then(m => m.CustomerCreateComponent)},
+               { path: 'customer/:customerId', loadComponent: () => import('./components/customers/customer-edit/customer-edit.component').then(m => m.CustomerEditComponent)},
+               { path: 'billing', loadComponent: () => import('./components/billing/billing-list/billing-list.component').then(m => m.BillingListComponent)},
+               { path: 'billing/create', loadComponent: () => import('./components/billing/billing-create/billing-create.component').then(m => m.BillingCreateComponent)},
+               { path: 'billing/:readingId', loadComponent: () => import('./components/billing/billing-view/billing-view.component').then(m => m.BillingViewComponent)},
+               { path: 'payment/official-receipt', loadComponent: () => import('./components/payment/official-receipt/payment-official-receipt-list/payment-official-receipt-list.component').then(m => m.PaymentOfficialReceiptListComponent)},
+               { path: 'payment/official-receipt/create', loadComponent: () => import('./components/payment/official-receipt/payment-official-receipt-create/payment-official-receipt-create.component').then(m => m.PaymentOfficialReceiptCreateComponent)},
+               { path: 'payment/official-receipt/create/:customerId', loadComponent: () => import('./components/payment/official-receipt/payment-official-receipt-create/payment-official-receipt-create.component').then(m => m.PaymentOfficialReceiptCreateComponent)},
+               { path: 'payment/official-receipt/:orId', loadComponent: () => import('./components/payment/official-receipt/payment-official-receipt-view/payment-official-receipt-view.component').then(m => m.PaymentOfficialReceiptViewComponent)},
+               { path: 'payment/other-receipt', loadComponent: () => import('./components/payment/other-payments/other-payment-list/other-payment-list.component').then(m => m.OtherPaymentListComponent)},
+               { path: 'payment/other-receipt/create', loadComponent: () => import('./components/payment/other-payments/other-payment-create/other-payment-create.component').then(m => m.OtherPaymentCreateComponent)},
+               { path: 'payment/other-receipt/:orId', loadComponent: () => import('./components/payment/other-payments/other-payment-view/other-payment-view.component').then(m => m.OtherPaymentViewComponent)},
 
-               { path: 'settings', component: SettingsComponent},
-               { path: 'settings/water-rates', component: WaterRatesComponent},
+               { path: 'settings', loadComponent: () => import('./components/settings/settings.component').then(m => m.SettingsComponent)},
+               { path: 'settings/water-rates', loadComponent: () => import('./components/settings/water-rates/water-rates.component').then(m => m.WaterRatesComponent)},
                { path: 'settings/parts', loadComponent: () => import('./components/settings/parts/parts-list/parts-list.component').then(m => m.PartsListComponent)},
                // { path: 'settings/parts/create', loadComponent: () => import('./components/settings/parts/part-create/part-create.component').then(m => m.PartCreateComponent)},
           ]
      },
      { 
           path:'auth',
-          component: AuthComponent,
+          loadComponent: () => import('./components/auth/auth.component').then(m => m.AuthComponent),
           children: [
                { path: '', redirectTo: 'login', pathMatch: 'full' },
-               { path:'login', component: AuthLoginComponent,},
+               { path:'login', loadComponent: () => import('./components/auth/auth-login/auth-login.component').then(m => m.AuthLoginComponent)},
           ]
      },
-     { path: '**', component: NotFoundComponent },
+     { path: '**', loadComponent: () => import('./components/not-found/not-found.component').then(m => m.NotFoundComponent)},
     
 ];
  

@@ -13,8 +13,6 @@ input, select, textarea {
        font-size: 16px;
 }
 
-
-
 .mat-expansion-panel-header {
        background-color: #2381e0 !important;
        color: white !important;
@@ -50,9 +48,9 @@ input, select, textarea {
        border-top-width: 2px !important;
 }
 
-a span {
-       text-decoration: underline !important;
-       color: blue !important;
+table a span {
+       text-decoration: underline;
+       color: blue;
 }
 
 .dialog-container .mat-mdc-dialog-content {
@@ -89,6 +87,6 @@ table.mat-mdc-table td.mat-column-Meter-No {
        text-align: left !important;
 }
 
-table.mat-mdc-table tr:hover {
+table.mat-mdc-table tbody>tr:hover {
      background-color: rgb(134, 194, 230) !important;
 }

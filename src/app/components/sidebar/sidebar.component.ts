@@ -11,6 +11,9 @@ import { Router } from '@angular/router';
 })
 export class SidebarComponent {
 
+  //this component is no longer used
+  //please check components/nav/sidebar
+
   constructor(
     private router: Router
   ) {}

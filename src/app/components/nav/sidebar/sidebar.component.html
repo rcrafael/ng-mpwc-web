@@ -1,0 +1,68 @@
+<aside class="w-full bg-white shadow-lg h-screen overflow-y-auto">
+     <!-- Logo Section -->
+     <div class="p-6 border-b border-gray-200">
+          <div class="flex items-center space-x-3">
+               <div class="w-10 h-10 rounded-lg flex items-center justify-center">
+                    <img [src]="logo" [alt]="logo" class="w-10 h-10"/>
+               </div>
+               <div>
+                    <h2 class="text- font-bold text-gray-800">Mahabang Parang<br/>WaterWorks Cooperative</h2>
+                    <p class="text-sm text-gray-500">Billing System</p>
+               </div>
+          </div>
+     </div>
+
+     <!-- Navigation Menu -->
+     <nav class="mt-6">
+          <ul class="space-y-2 px-4">
+               @for(item of menuItems; track item.id) {
+                    <li>
+                         <div>
+                              @if(!item.subItems) { <!-- Menu item without subitems -->
+                                   <a [routerLink]="item.url"
+                                        routerLinkActive="bg-blue-50 text-blue-700 border-r-2 border-blue-700"
+                                        class="flex items-center space-x-3 px-4 py-3 !text-gray-700 rounded-lg hover:!bg-gray-100 transition-colors duration-200">
+                                        <!-- <span [innerHTML]="item.icon" class="w-5 h-5"></span> -->
+                                         <img [src]="item.icon" [alt]="item.label" class="w-[50px] h-[50px]"/>
+                                        <span class="font-medium">{{ item.label }}</span>
+                                   </a>
+                              } @else { <!-- Menu item with subitems -->
+                                   <button (click)="toggleSubmenu(item.label)"
+                                        class="w-full flex items-center justify-between px-4 py-3 !text-gray-700 rounded-lg hover:!bg-gray-100 transition-colors duration-200">
+                                        <div class="flex items-center space-x-3">
+                                             <!-- <span [innerHTML]="item.icon" class="w-5 h-5"></span> -->
+                                              <img [src]="item.icon" [alt]="item.label" class="w-[50px] h-[50px]"/>
+                                             <span class="font-medium">{{ item.label }}</span>
+                                        </div>
+                                        <svg class="w-4 h-4 transition-transform duration-200"
+                                             [class.rotate-180]="openSubmenus[item.label]" fill="none" stroke="currentColor"
+                                             viewBox="0 0 24 24">
+                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                  d="M19 9l-7 7-7-7"></path>
+                                        </svg>
+                                   </button>
+
+                              
+                                   <ul class="mt-2 space-y-1 overflow-hidden transition-all duration-300"
+                                        [class.max-h-0]="!openSubmenus[item.label]" [class.max-h-96]="openSubmenus[item.label]">
+                                        @for(subItem of item.subItems; track subItem.id) {
+                                             <li>
+                                                  <a [routerLink]="subItem.url" routerLinkActive="bg-blue-50 text-blue-700"
+                                                       class="flex items-center space-x-3 px-4 py-2 ml-8 text-sm text-gray-600 rounded-lg hover:bg-gray-50 transition-colors duration-200">
+                                                       <span class="w-4 h-4"></span>
+                                                       <span>{{ subItem.label }}</span>
+                                                  </a>
+                                             </li>
+                                        }
+                                        
+                                   </ul>
+                              }
+
+                         </div>
+                    </li>
+               }
+               
+          </ul>
+     </nav>
+
+</aside>

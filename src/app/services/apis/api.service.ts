@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { AuthApi, BillingApi, Constants, CustomerApi, PartsApi, PaymentApi, SeptageFeeApi, UserApi } from '../../common/constants';
+import { AuthApi, BillingApi, Constants, CustomerApi, PartsApi, PaymentApi, SeptageFeeApi, UserApi, WaterRatesApi } from '../../common/constants';
 import { firstValueFrom, Observable, ObservedValueOf } from 'rxjs';
 import { IAPIResponse } from '../../models/interfaces/IApiResponse';
 import { IBillingInfo, IUpdateBilling } from '../../models/interfaces/IBilling';
@@ -11,6 +11,7 @@ import { ILogin } from '../../models/interfaces/IUser';
 import { EnvService } from './env.service';
 import { IOtherPaymentPayload } from '../../models/interfaces/IOtherPayments';
 import { IPartDetails } from '../../models/interfaces/IParts';
+import { IWaterRates } from '../../models/interfaces/IWaterRates';
 @Injectable({
   providedIn: 'root'
 })
@@ -85,11 +86,19 @@ export class ApiService {
   // billing APIs
 
   getActiveWaterRatesResidential() {
-    return this.httpClient.get<IAPIResponse>(`${this.env.apiHost}${BillingApi.GET_ACTIVE_WATER_RATES_RESIDENTIAL}`);
+    return this.httpClient.get<IAPIResponse>(`${this.env.apiHost}${WaterRatesApi.GET_ACTIVE_WATER_RATES_RESIDENTIAL}`);
   }
 
   getActiveWaterRatesCommercial() {
-    return this.httpClient.get<IAPIResponse>(`${this.env.apiHost}${BillingApi.GET_ACTIVE_WATER_RATES_COMMERCIAL}`);
+    return this.httpClient.get<IAPIResponse>(`${this.env.apiHost}${WaterRatesApi.GET_ACTIVE_WATER_RATES_COMMERCIAL}`);
+  }
+
+   updateWaterRatesResidential(params: IWaterRates[]): Observable<IAPIResponse> {
+    return this.httpClient.put<IAPIResponse>(`${this.env.apiHost}${WaterRatesApi.UPDATE_RESIDENTIAL_RATES}`, params);
+  }
+
+  updateWaterRatesCommercial(params: IWaterRates[]): Observable<IAPIResponse> {
+    return this.httpClient.put<IAPIResponse>(`${this.env.apiHost}${WaterRatesApi.UPDATE_COMMERCIAL_RATES}`, params);
   }
 
   getBillings(pageNo: number, pageSize: number) {
@@ -236,5 +245,8 @@ export class ApiService {
   getPartByid(id: string): Observable<IAPIResponse> {
     return this.httpClient.get<IAPIResponse>(`${this.env.apiHost}${PartsApi.GET_PARTS_BY_ID}`.replace('{id}', id));
   }
+
+
+ 
 
 }

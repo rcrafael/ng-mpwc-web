@@ -90,3 +90,7 @@ table.mat-mdc-table td.mat-column-Meter-No {
 table.mat-mdc-table tbody>tr:hover {
      background-color: rgb(134, 194, 230) !important;
 }
+
+.mdc-tab__text-label {
+     font-weight: bold;
+}

@@ -19,8 +19,6 @@ export class CustomerApi {
 }
 
 export class BillingApi {
-     public static GET_ACTIVE_WATER_RATES_RESIDENTIAL = '/billing/rates/residential/active';
-     public static GET_ACTIVE_WATER_RATES_COMMERCIAL = '/billing/rates/commercial/active';
      public static CREATE_BILLING = '/billing';
      public static UPDATE_BILLING = '/billing';
      public static GET_BILLING_BY_ID = '/billing/id/{billingId}';
@@ -73,4 +71,11 @@ export class PartsApi {
      public static CREATE_PARTS = '/settings/part';
      public static GET_PARTS_BY_ID = '/settings/part/{id}';
      public static UPDATE_PARTS = '/settings/part';
+}
+
+export class WaterRatesApi {
+     public static GET_ACTIVE_WATER_RATES_RESIDENTIAL = '/billing/rates/residential/active';
+     public static GET_ACTIVE_WATER_RATES_COMMERCIAL = '/billing/rates/commercial/active';
+     public static UPDATE_RESIDENTIAL_RATES = '/billing/rates/residential';
+     public static UPDATE_COMMERCIAL_RATES = '/billing/rates/commercial';
 }

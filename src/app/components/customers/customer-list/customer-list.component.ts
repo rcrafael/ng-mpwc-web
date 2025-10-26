@@ -100,6 +100,7 @@ export class CustomerListComponent implements OnInit {
 
 
   async loadData(pageIdx: number, pageSize: number) {
+    this.commonService.showSpinner(true);
     await this.customerService.getCustomerList(pageIdx, pageSize).then((response: IAPIResponse) => {
       if(response.result !== null) {
         const result: any = response.result;
@@ -114,6 +115,7 @@ export class CustomerListComponent implements OnInit {
       console.error('Error fetching customer list:', error);
     })
     .finally(async () => {
+      this.commonService.showSpinner(false);
     });
   }
 

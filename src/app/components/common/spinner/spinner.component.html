@@ -1,3 +1,5 @@
-<div>
-     <mat-spinner></mat-spinner>
-</div>
+@if(isSpinnerVisible) {
+     <div class="w-full h-full z-50 flex items-center justify-center pointer-events-none bg-white">
+          <mat-spinner class="pointer-events-auto z-[100]"></mat-spinner>
+     </div>
+}

@@ -12,6 +12,7 @@ import { EnvService } from './env.service';
 import { IOtherPaymentPayload } from '../../models/interfaces/IOtherPayments';
 import { IPartDetails } from '../../models/interfaces/IParts';
 import { IWaterRates } from '../../models/interfaces/IWaterRates';
+import { ISeptageFeeRates } from '../../models/interfaces/ISeptageFeeRates';
 @Injectable({
   providedIn: 'root'
 })
@@ -144,6 +145,10 @@ export class ApiService {
   //septage fee APIs
   getSeptageFees(): Observable<IAPIResponse> {
     return this.httpClient.get<IAPIResponse>(`${this.env.apiHost}${SeptageFeeApi.GET_SEPTAGE_FEES}`);
+  }
+
+  updateSeptageFees(params: ISeptageFeeRates): Observable<IAPIResponse> {
+    return this.httpClient.put<IAPIResponse>(`${this.env.apiHost}${SeptageFeeApi.UPDATE_SEPTAGE_FEES}`, params);
   }
 
 

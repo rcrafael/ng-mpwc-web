@@ -59,6 +59,7 @@ export class CommercialComponent implements OnInit {
       this.commonService.showSpinner(true);
       await this.billingService.updateWaterRatesCommercial(this.waterRates).then((response) => {
         const resp = response.result as IWaterRates[];
+        this.oldWaterRates = structuredClone(resp);
         this.waterRates = structuredClone(resp);
         this.updateForm();
         alert('Water rates successfully updated.');

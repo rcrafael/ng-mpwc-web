@@ -87,6 +87,7 @@ export class ResidentialComponent implements OnInit {
     this.billingService.getActiveWaterRatesResidential().then((response) => {
       
       const resp = response.result as IWaterRates[];
+      this.oldWaterRates = structuredClone(resp);
       this.waterRates = structuredClone(resp);
       this.updateForm();
 

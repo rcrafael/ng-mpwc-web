@@ -6,13 +6,15 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AuthComponent } from "./components/auth/auth.component";
 import { NgIf } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { SpinnerComponent } from "./components/common/spinner/spinner.component";
 
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [
     RouterOutlet,
-  ],
+    SpinnerComponent
+],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })

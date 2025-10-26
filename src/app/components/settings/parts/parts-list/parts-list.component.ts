@@ -13,6 +13,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { PartCreateComponent } from '../part-create/part-create.component';
 import { IPartDetails } from '../../../../models/interfaces/IParts';
 import { PartsViewComponent } from '../parts-view/parts-view.component';
+import { CommonService } from '../../../../services/common.service';
 
 @Component({
   selector: 'app-parts-list',
@@ -32,7 +33,8 @@ export class PartsListComponent implements OnInit {
 
   constructor(
     private partService: PartsService,
-    private router: Router
+    private router: Router,
+    private commonService: CommonService
   ) { }
 
   @ViewChild(MatPaginator, {static: true}) paginator!: MatPaginator;
@@ -119,6 +121,7 @@ export class PartsListComponent implements OnInit {
   }
 
   async loadData(pageIdx: number, pageSize: number) {
+    this.commonService.showSpinner(true);
     await this.partService.getParts(pageIdx, pageSize).then((response: IAPIResponse) => {
       if(response.result !== null) {
         const result: any = response.result;
@@ -132,7 +135,7 @@ export class PartsListComponent implements OnInit {
       console.error('Error fetching parts list:', error);
     })
     .finally(async () => {
-      
+      this.commonService.showSpinner(false);
     });
 
   }

@@ -3,6 +3,7 @@ import { ApiService } from './apis/api.service';
 import { IAPIResponse } from '../models/interfaces/IApiResponse';
 import { firstValueFrom } from 'rxjs';
 import { IBillingInfo, IUpdateBilling } from '../models/interfaces/IBilling';
+import { IWaterRates } from '../models/interfaces/IWaterRates';
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +18,14 @@ export class BillingService {
 
   getActiveWaterRatesCommercial(): Promise<IAPIResponse> {
     return firstValueFrom(this.http.getActiveWaterRatesCommercial());
+  }
+
+  updateWaterRatesResidential(params: IWaterRates[]): Promise<IAPIResponse> {
+    return firstValueFrom(this.http.updateWaterRatesResidential(params));
+  }
+
+  updateWaterRatesCommercial(params: IWaterRates[]): Promise<IAPIResponse> {
+    return firstValueFrom(this.http.updateWaterRatesCommercial(params));
   }
 
   getBillings(pageNo: number = 0, pageSize: number = 50): Promise<IAPIResponse> {

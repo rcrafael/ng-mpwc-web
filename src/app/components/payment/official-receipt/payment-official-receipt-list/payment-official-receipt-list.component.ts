@@ -107,6 +107,7 @@ export class PaymentOfficialReceiptListComponent implements OnInit {
   }
 
   async loadORData(pageIdx: number, pageSize: number): Promise<void> {
+    this.commonService.showSpinner(true);
     await this.paymentService.getORAllWithCustomerInfo(pageIdx, pageSize).then((response: IAPIResponse) => {
       if(response.result !== null) {
         const result: any = response.result;
@@ -121,7 +122,7 @@ export class PaymentOfficialReceiptListComponent implements OnInit {
       console.error('Error fetching OR list:', error);
     })
     .finally(async () => {
-     
+     this.commonService.showSpinner(false);
     });
   }
 

@@ -10,6 +10,7 @@ import { MatIconModule } from "@angular/material/icon";
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { debounceTime, distinctUntilChanged, Subject, Subscription } from 'rxjs';
 import { FormsModule } from '@angular/forms';
+import { CommonService } from '../../../../services/common.service';
 
 @Component({
   selector: 'app-other-payment-list',
@@ -31,7 +32,8 @@ export class OtherPaymentListComponent implements OnInit {
   constructor(
     private router: Router,
     private paymentService: PaymentService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private commonService: CommonService
   ) {
     this.subscription = this.subjectKeyword.pipe(
       debounceTime(1000),
@@ -101,6 +103,7 @@ export class OtherPaymentListComponent implements OnInit {
   async getOtherPaymentList(pageIdx: number, pageSize: number): Promise<void> {
 
     try {
+      this.commonService.showSpinner(true);
       const response = await this.paymentService.getAllOtherPaymentsWithCustomerInfo(pageIdx, pageSize);
       if(response.result === null) return;
 
@@ -118,6 +121,7 @@ export class OtherPaymentListComponent implements OnInit {
     } catch (err) {
       console.error('ERROR FETCHING OTHER PAYMENT LIST: ', err);
     } finally {
+      this.commonService.showSpinner(false);
       console.log('FINISHED FETCHING OTHER PAYMENT LIST');
     }
     

@@ -1,5 +1,6 @@
 @if(isSpinnerVisible) {
-     <div class="w-full h-full z-50 flex items-center justify-center pointer-events-none bg-white bg-opacity-80">
-          <mat-spinner class="pointer-events-auto z-[100] opacity-100"></mat-spinner>
+     <!-- use z-index 105 and 110 because the mat-table sticky header is using 101 -->
+     <div class="absolute w-full h-full z-[105] flex items-center justify-center pointer-events-none bg-white bg-opacity-80"> 
+          <mat-spinner class="pointer-events-auto z-[110] opacity-100"></mat-spinner>
      </div>
 }

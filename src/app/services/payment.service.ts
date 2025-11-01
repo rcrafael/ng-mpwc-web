@@ -57,8 +57,12 @@ export class PaymentService {
     return firstValueFrom(this.http.updateStatus(orId, statusIs));
   }
 
-  async deleteRecord(orId: string): Promise<IAPIResponse> {
+  async deleteRecord(orId: string): Promise<any> {
     return firstValueFrom(this.http.deleteRecord(orId));
+  }
+
+  async printORPdf(id: string): Promise<any> {
+    return firstValueFrom(this.http.printORPdf(id));
   }
 
 }

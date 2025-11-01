@@ -194,4 +194,31 @@ export class OtherPaymentListComponent implements OnInit {
     }
   }
     
+  async handlePrintReceipt(orId: string) {
+    
+    this.commonService.showSpinner(true);
+    await this.paymentService.printORPdf(orId).then((response:ArrayBuffer) => {
+      if(response !== null) {
+        console.log('OR RECEIPT: ', response)
+        const blob = new Blob([response], { type: 'application/pdf' });
+        const blobUrl = URL.createObjectURL(blob);
+        const pdfWindow = window.open(blobUrl);
+        if (pdfWindow) {
+          pdfWindow.addEventListener('load', () => {
+            pdfWindow.focus();
+            pdfWindow.print();
+          });
+        }
+      }
+    })
+    .catch((err: Error) => {
+      console.error('ERROR PRINTING OR RECEIPT: ', err);
+      this.toast.error(`${ToastrMessage.ERROR_FETCHING_DATA}: ${err.message}`, this.toastTitlePrefix + ToastrTitle.ERROR);
+    })
+    .finally(() => {
+      this.commonService.showSpinner(false);
+    });
+
+  }
+
 }

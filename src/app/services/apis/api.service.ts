@@ -225,6 +225,14 @@ export class ApiService {
     return this.httpClient.delete<IAPIResponse>(`${this.env.apiHost}${PaymentApi.DELETE_RECORD}`.replace('{id}',id));
   }
 
+  printORPdf(id: string): Observable<any> {
+    return this.httpClient.get<IAPIResponse>(`${this.env.apiHost}${PaymentApi.PRINT_OR_PDF}`.replace('{id}',id), { responseType: 'arraybuffer' as 'json' });
+  }
+
+  printORExcel(id: string): Observable<any> {
+    return this.httpClient.get<IAPIResponse>(`${this.env.apiHost}${PaymentApi.PRINT_OR_EXCEL}`.replace('{id}',id));
+  }
+
 
   // SETTINGS APIs
 

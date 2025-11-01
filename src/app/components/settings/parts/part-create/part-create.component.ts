@@ -2,6 +2,8 @@ import { Component, inject } from '@angular/core';
 import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { Utils } from '../../../../common/util';
+import { ToastrService } from 'ngx-toastr';
+import { ToastrMessage, ToastrTitle } from '../../../../common/constants';
 
 @Component({
   selector: 'app-part-create',
@@ -15,12 +17,15 @@ import { Utils } from '../../../../common/util';
 })
 export class PartCreateComponent {
 
-  constructor() {
-
+  constructor(
+    private toast: ToastrService
+  ) {
   }
 
   readonly dialogRef = inject(MatDialogRef<PartCreateComponent>);
   
+  toastTitlePrefix = 'Part Create - ';
+
   formGroup = new FormGroup({
     description: new FormControl<string>('', Validators.required),
     measurement: new FormControl<string>('', Validators.required),
@@ -34,7 +39,7 @@ export class PartCreateComponent {
   handleSave():void {
     event?.preventDefault();
     if(!this.formGroup.valid) {
-      alert('Please provide valid inputs.');
+      this.toast.warning(ToastrMessage.INVALID_INPUT, this.toastTitlePrefix + ToastrTitle.ERROR);
       return;
     }
 

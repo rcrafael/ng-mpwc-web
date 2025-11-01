@@ -15,6 +15,8 @@ import { PaymentService } from '../../../../services/payment.service';
 import { IAPIResponse } from '../../../../models/interfaces/IApiResponse';
 import { Utils } from '../../../../common/util';
 import { AuthService } from '../../../../services/auth.service';
+import { ToastrService } from 'ngx-toastr';
+import { ToastrMessage, ToastrTitle } from '../../../../common/constants';
 
 
 @Component({
@@ -36,12 +38,15 @@ export class PaymentOfficialReceiptCreateComponent implements OnInit {
     private activeRoute: ActivatedRoute,
     private customerService: CustomerService,
     private paymentService: PaymentService,
-    private authService: AuthService
+    private authService: AuthService,
+    private toast: ToastrService
   ) {
     this.fg.patchValue({
       createdBy: this.authService.getUserName()
     })
   }
+
+  toastTitlePrefix = 'Official Receipt - ';
 
   dataSource!: MatTableDataSource<IOfficialReceiptDetail>;
   tableColumns: string[] = [
@@ -97,7 +102,7 @@ export class PaymentOfficialReceiptCreateComponent implements OnInit {
   })
 
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     this.activeRoute.paramMap.subscribe(params => {
       const customerId = params.get('customerId');
       if(customerId !== undefined && customerId !== null && customerId !== '') {
@@ -117,7 +122,7 @@ export class PaymentOfficialReceiptCreateComponent implements OnInit {
       }
     })
 
-   this.paymentService.generateNewORno().then((response: IAPIResponse) => {
+   await this.paymentService.generateNewORno().then((response: IAPIResponse) => {
       if(response.result) {
         this.fg.patchValue({
           orNo: response.result.toString()
@@ -126,16 +131,20 @@ export class PaymentOfficialReceiptCreateComponent implements OnInit {
     })
     .catch((error: Error) => {
       console.error('ERROR GENERATING NEW OR NUMBER: ', error);
-        this.fg.patchValue({
-          orNo: ''
-        })
+      this.fg.patchValue({
+        orNo: ''
+      })
+      this.toast.error('Error generating new OR Number', this.toastTitlePrefix + ToastrTitle.ERROR);
     })
+    .finally(() => {
+
+    });
 
   }
 
   onSubmit(): void {
     if(!this.fg.valid) {
-      alert('Invalid Inputs. Please try again.');
+      this.toast.warning(ToastrMessage.INVALID_INPUT, this.toastTitlePrefix + ToastrTitle.INVALID_INPUT);
       return;
     }
 
@@ -200,11 +209,11 @@ export class PaymentOfficialReceiptCreateComponent implements OnInit {
     console.log('OR PAYLOAD: ', paymentDetails);
 
     this.paymentService.createORPayment(paymentDetails).then((response: IAPIResponse) => {
-      alert('SUCCESS PAYMENT!');
       console.log('PAYMENT RESPONSE:', response);
+      this.toast.success(ToastrMessage.SUCCESS_CREATE, this.toastTitlePrefix + ToastrTitle.SUCCESS);
     })
     .catch((error: Error) => {
-      alert('EROR CREATING PAYMENT: ' + error.message);
+      this.toast.error(`${ToastrMessage.ERROR_CREATE}: ${error.message}`, this.toastTitlePrefix + ToastrTitle.ERROR);
       console.error("ERROR CREATING PAYMENT: ", error);
     })
     .finally(() => {

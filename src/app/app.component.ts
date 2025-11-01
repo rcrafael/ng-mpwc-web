@@ -13,7 +13,6 @@ import { SpinnerComponent } from "./components/common/spinner/spinner.component"
   standalone: true,
   imports: [
     RouterOutlet,
-    SpinnerComponent
 ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'

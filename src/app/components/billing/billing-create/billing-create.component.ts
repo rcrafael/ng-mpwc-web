@@ -16,6 +16,8 @@ import { IAPIResponse } from '../../../models/interfaces/IApiResponse';
 import { IWaterRates } from '../../../models/interfaces/IWaterRates';
 import { Utils } from '../../../common/util';
 import { SeptageFeeService } from '../../../services/septage-fee.service';
+import { ToastrService } from 'ngx-toastr';
+import { ToastrMessage, ToastrTitle } from '../../../common/constants';
 
 @Component({
   selector: 'app-billing-create',
@@ -36,8 +38,11 @@ export class BillingCreateComponent implements OnInit {
     private customerService: CustomerService,
     private billingService: BillingService,
     private septageService: SeptageFeeService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private toast: ToastrService
   ) {}
+
+  toastTitlePrefix = 'Billing - ';
 
   selectedCustomerInfo!: ICustomerProfile;
   selectedMeterNo! : IMeterDetails;
@@ -83,7 +88,7 @@ export class BillingCreateComponent implements OnInit {
   
   onSubmit() {
     if(!this.fg.valid) {
-      alert('Invalid input! Please try again.');
+      this.toast.warning(ToastrMessage.INVALID_INPUT, this.toastTitlePrefix + ToastrTitle.ERROR);
       return;
     }
 
@@ -119,15 +124,16 @@ export class BillingCreateComponent implements OnInit {
       params.present = frm.present ?? 0;
 
       this.customerService.updateMeterNo(params).then(response => {
-        alert('SUCCESS!');
+        this.toast.success(ToastrMessage.SUCCESS_CREATE, this.toastTitlePrefix + ToastrTitle.SUCCESS);
       })
       .catch((err: Error) => {
-        alert('ERROR IN UPDATING METER: ' + err.name);
+        this.toast.error(ToastrMessage.ERROR_CREATE + ': ' + err.message, this.toastTitlePrefix + ToastrTitle.ERROR);
         console.log('Error:', err);
+        throw err;
       })
     })
     .catch((err: Error) => {
-      alert('ERROR IN CREATING READING: ' + err.name);
+      this.toast.error(ToastrMessage.ERROR_CREATE + ': ' + err.message, this.toastTitlePrefix + ToastrTitle.ERROR);
       console.log('Error:', err);
     })
     .finally(() => {
@@ -299,6 +305,7 @@ export class BillingCreateComponent implements OnInit {
       this.septageFees = response.result;
     })
     .catch((err: Error) => {
+      this.toast.error(ToastrMessage.ERROR_FETCHING_DATA + ': ' + 'Septage Fees', this.toastTitlePrefix + ToastrTitle.ERROR);
       console.error('FAILED TO FETCH SEPTAGE FEES: ', err.message);
     });
   }

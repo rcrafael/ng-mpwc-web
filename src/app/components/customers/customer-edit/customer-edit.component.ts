@@ -14,6 +14,8 @@ import { CustomerMeterComponent } from "../customer-meter/customer-meter.compone
 import { fromIterable } from 'rxjs/internal/observable/innerFrom';
 import { AuthService } from '../../../services/auth.service';
 import { branchCodeData, genderData, customerTypeData, phaseData } from '../../../common/enum';
+import { ToastrService } from 'ngx-toastr';
+import { ToastrMessage, ToastrTitle } from '../../../common/constants';
 
 
 @Component({
@@ -35,8 +37,11 @@ export class CustomerEditComponent implements OnInit {
   constructor(
     private customerService: CustomerService,
     private activeRoute: ActivatedRoute,
-    private authService: AuthService
+    private authService: AuthService,
+    private toast: ToastrService
   ) { }
+
+  toastTitlePrefix = 'Customer Edit - ';
 
   isEdit: boolean = false;
 
@@ -103,7 +108,6 @@ loadCustomerInfo(): void {
       religion: c.religion,
       annualIncome: c.annualIncome,
       dateAccepted: c.dateAccepted,
-      // customerType: c.customerType,
       phase: c.phase,
       tin: c.tin
     })
@@ -116,7 +120,7 @@ onSubmit(): void {
   const frm = this.fg.value;
 
   if(!this.fg.valid) {
-    alert('Please enter a valid info');
+    this.toast.error(ToastrMessage.INVALID_INPUT, this.toastTitlePrefix + ToastrTitle.ERROR);
     return;
   }
 
@@ -136,7 +140,6 @@ onSubmit(): void {
     religion: frm.religion?? '',
     annualIncome: frm.annualIncome?? 0,
     dateAccepted: frm.dateAccepted?? '',
-    // customerType: frm.customerType?? -1,
     phase: frm.phase?? -1,
     dateUpdated: this.currentDate,
     updatedBy: this.authService.getUserId(),
@@ -147,11 +150,11 @@ onSubmit(): void {
 
   this.customerService.updateCustomer(params).then((response: IAPIResponse) => {
     console.log('response: ', response);
-    alert('Customer updated successfully');
+    this.toast.success(ToastrMessage.SUCCESS_UPDATE, this.toastTitlePrefix + ToastrTitle.SUCCESS);
   })
   .catch((error: any) => {
+    this.toast.error(ToastrMessage.ERROR_UPDATE + ': ' + error.message, this.toastTitlePrefix + ToastrTitle.ERROR);
     console.log('error: ', error);
-    alert('Failed to update customer');
   })
   .finally(() => {
     this.isEdit = false

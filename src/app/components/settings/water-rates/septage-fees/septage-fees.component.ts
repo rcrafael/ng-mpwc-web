@@ -5,6 +5,8 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { ISeptageFeeRates } from '../../../../models/interfaces/ISeptageFeeRates';
 import { Utils } from '../../../../common/util';
 import { SeptageFeeService } from '../../../../services/septage-fee.service';
+import { ToastrService } from 'ngx-toastr';
+import { ToastrMessage, ToastrTitle } from '../../../../common/constants';
 
 @Component({
   selector: 'app-rate-septage-fees',
@@ -18,8 +20,11 @@ import { SeptageFeeService } from '../../../../services/septage-fee.service';
 export class SeptageFeesComponent implements OnInit {
 constructor(
     private septageFeeService: SeptageFeeService,
-    private commonService: CommonService
+    private commonService: CommonService,
+    private toast: ToastrService
   ) {}
+
+  toastTitlePrefix = 'Septage Fee Update - ';
 
   fg = new FormGroup({
     minimumZeroTo10: new FormControl<string>('0.00', Validators.required),
@@ -59,7 +64,7 @@ constructor(
     const formData = this.fg.value;
     console.log('form', this.fg);
     if(!this.fg.valid) {
-      alert('Please provide valid inputs.');
+      this.toast.warning(ToastrMessage.INVALID_INPUT, this.toastTitlePrefix + ToastrTitle.INVALID_INPUT);
       return;
     }
 
@@ -78,11 +83,11 @@ constructor(
       this.oldSeptageFees = structuredClone(resp);
       this.septageFees = structuredClone(resp);
       this.updateForm();
-      alert('Septage fee rates successfully updated.');
+      this.toast.success(ToastrMessage.SUCCESS_UPDATE, this.toastTitlePrefix + ToastrTitle.SUCCESS);
     })
-    .catch((error) => {
+    .catch((error: Error) => {
       console.log(error);
-      alert('Failed to update septage fee rates.');
+      this.toast.error(`${ToastrMessage.ERROR_UPDATE}: ${error.message}`, this.toastTitlePrefix + ToastrTitle.ERROR);
     })
     .finally(() => {
       this.commonService.showSpinner(false);
@@ -100,8 +105,9 @@ constructor(
       this.updateForm();
 
     })
-    .catch((error) => {
+    .catch((error: Error) => {
       console.log(error);
+      this.toast.error(`${ToastrMessage.ERROR_FETCHING_DATA}: ${error.message}`, this.toastTitlePrefix + ToastrTitle.ERROR);
     })
     .finally(() => {
       this.commonService.showSpinner(false);

@@ -12,6 +12,8 @@ import { Utils } from '../../../common/util';
 import { FormsModule, NgModel } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, Subject, Subscription } from 'rxjs';
 import { NgIf } from '@angular/common';
+import { ToastrService } from 'ngx-toastr';
+import { ToastrMessage, ToastrTitle } from '../../../common/constants';
 
 @Component({
   selector: 'app-customer-list',
@@ -32,7 +34,8 @@ export class CustomerListComponent implements OnInit {
   constructor(
     private router: Router,
     private customerService: CustomerService,
-    private commonService: CommonService
+    private commonService: CommonService,
+    private toast: ToastrService
   ) {
     this.subscription = this.subjectKeyword.pipe(
       debounceTime(1000),
@@ -48,6 +51,8 @@ export class CustomerListComponent implements OnInit {
   }
 
   @ViewChild(MatPaginator, {static: true}) paginator!: MatPaginator;
+
+  toastTitlePrefix = 'Customer List - ';
 
   dataSource = new MatTableDataSource([]);
   tableCols: string[] = [
@@ -112,6 +117,7 @@ export class CustomerListComponent implements OnInit {
       }
     })
     .catch(async (error: Error) => {
+      this.toast.error(ToastrMessage.ERROR_FETCHING_DATA + ': ' + error.message, this.toastTitlePrefix + ToastrTitle.ERROR);
       console.error('Error fetching customer list:', error);
     })
     .finally(async () => {
@@ -133,6 +139,7 @@ export class CustomerListComponent implements OnInit {
       }
     })
     .catch(async (error: Error) => {
+      this.toast.error(ToastrMessage.ERROR_FETCHING_DATA + ': ' + error.message, this.toastTitlePrefix + ToastrTitle.ERROR);
       console.error('Error fetching customer list with search:', error);
     })
     .finally(async () => {

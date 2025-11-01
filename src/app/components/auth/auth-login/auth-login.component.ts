@@ -4,6 +4,8 @@ import { ILogin } from '../../../models/interfaces/IUser';
 import { Router } from '@angular/router'; 
 import { AuthService } from '../../../services/auth.service';
 import { IAPIResponse } from '../../../models/interfaces/IApiResponse';
+import { ToastrService } from 'ngx-toastr';
+import { ToastrMessage, ToastrTitle } from '../../../common/constants';
 @Component({
   selector: 'app-auth-login',
   standalone: true,
@@ -19,10 +21,12 @@ export class AuthLoginComponent implements OnInit {
 
   constructor( 
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private toast: ToastrService
   ) { }
 
   private login!: ILogin;
+  toastTitlePrefix = 'Login - ';
 
   ngOnInit(): void {
     
@@ -55,7 +59,8 @@ export class AuthLoginComponent implements OnInit {
       .catch((error: Error) => {
         console.error('ERROR LOGIN: ', error);
         localStorage.removeItem('accessToken');
-        alert('Invalid email or password.');
+        // alert('Invalid email or password.');
+        this.toast.error(ToastrMessage.ERROR_LOGIN, this.toastTitlePrefix + ToastrTitle.LOGIN_FAILED);
       })
 
 

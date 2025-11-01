@@ -14,6 +14,8 @@ import { BrowseCustomersComponent } from '../../../modals/browse-customers/brows
 import { AddDetailsModalComponent } from '../payment-official-receipt-create/add-details-modal/add-details-modal.component';
 import { MatDivider } from '@angular/material/divider';
 import { AuthService } from '../../../../services/auth.service';
+import { ToastrService } from 'ngx-toastr';
+import { ToastrMessage, ToastrTitle } from '../../../../common/constants';
 
 @Component({
   selector: 'app-payment-official-receipt-view',
@@ -33,8 +35,11 @@ constructor(
     private activeRoute: ActivatedRoute,
     private customerService: CustomerService,
     private paymentService: PaymentService,
-    private authService: AuthService
+    private authService: AuthService,
+    private toast: ToastrService
   ) {}
+
+  toastTitlePrefix = 'Official Receipt - '
 
   branchCodes: IBranchCode[] = [
     {
@@ -125,6 +130,7 @@ constructor(
               })
             } catch(err) {
               console.error('ERROR FETCHING USERNAME BY ID: ', err);
+              this.toast.error(`${ToastrMessage.ERROR_FETCHING_DATA}: ${err}`, this.toastTitlePrefix + ToastrTitle.ERROR);
             }
             
             this.fg.patchValue({
@@ -159,6 +165,7 @@ constructor(
   onSubmit(): void {
     if(!this.fg.valid) {
       alert('Invalid Inputs. Please try again.');
+      this.toast.warning(ToastrMessage.INVALID_INPUT, this.toastTitlePrefix + ToastrTitle.INVALID_INPUT);
       return;
     }
 
@@ -224,12 +231,12 @@ constructor(
     console.log('OR PAYLOAD: ', paymentDetails);
 
     this.paymentService.createORPayment(paymentDetails).then((response: IAPIResponse) => {
-      alert('SUCCESS PAYMENT!');
       console.log('PAYMENT RESPONSE:', response);
+      this.toast.success(ToastrMessage.SUCCESS_CREATE, this.toastTitlePrefix + ToastrTitle.SUCCESS);
     })
     .catch((error: Error) => {
-      alert('EROR CREATING PAYMENT: ' + error.message);
       console.error("ERROR CREATING PAYMENT: ", error);
+      this.toast.error(`${ToastrMessage.ERROR_CREATE} - ${error.message}`, this.toastTitlePrefix + ToastrTitle.ERROR);
     })
     .finally(() => {
       

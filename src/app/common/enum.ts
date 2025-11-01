@@ -70,18 +70,6 @@ import { IBranchCode, IGender, ICustomerType, IPhase, ITransactionStatus, ISideB
           url: '/settings/parts',
           label:'Parts Master List'
         },
-        {
-          id: 3,
-          name: 'parts',
-          url: '/settings/parts',
-          label:'Parts Master List'
-        },
-        {
-          id: 4,
-          name: 'parts',
-          url: '/settings/parts',
-          label:'Parts Master List'
-        }
       ]
     } 
   ]

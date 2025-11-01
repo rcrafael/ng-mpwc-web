@@ -14,6 +14,8 @@ import { IMeterDetails } from '../../../../models/interfaces/IMeter';
 import { AuthService } from '../../../../services/auth.service';
 import { PaymentService } from '../../../../services/payment.service';
 import { IAPIResponse } from '../../../../models/interfaces/IApiResponse';
+import { ToastrService } from 'ngx-toastr';
+import { ToastrMessage, ToastrTitle } from '../../../../common/constants';
 
 @Component({
   selector: 'app-other-payment-create',
@@ -31,12 +33,15 @@ export class OtherPaymentCreateComponent implements OnInit {
   
   constructor(
     private authService: AuthService,
-    private paymentService: PaymentService
+    private paymentService: PaymentService,
+    private toast: ToastrService
   ) {
     this.fg.patchValue({
       createdBy: this.authService.getUserName()
     })
   }
+
+  toastTitlePrefix = 'Other Payment - ';
 
   dialog = inject(MatDialog)
 
@@ -89,10 +94,11 @@ export class OtherPaymentCreateComponent implements OnInit {
       }
     })
     .catch((error: Error) => {
+      this.fg.patchValue({
+        orNo: ''
+      });
       console.error('ERROR GENERATING NEW OR NUMBER: ', error);
-        this.fg.patchValue({
-          orNo: ''
-        });
+      this.toast.error(ToastrMessage.ERROR_FETCHING_DATA + ': ' + error.message, this.toastTitlePrefix + ToastrTitle.ERROR);
     });
 
     this.fg.get('isOutsideCollection')?.valueChanges.subscribe((value) => {
@@ -115,7 +121,7 @@ export class OtherPaymentCreateComponent implements OnInit {
 
     if(!this.fg.valid) {
       console.log('INVALID INPUT',this.fg);
-      alert('Invalid Input. Please try again.');
+      this.toast.error(ToastrMessage.INVALID_INPUT, this.toastTitlePrefix + ToastrTitle.ERROR);
       return;
     }
     
@@ -159,10 +165,11 @@ export class OtherPaymentCreateComponent implements OnInit {
 
     await this.paymentService.createOtherPayment(params).then((response: IAPIResponse) => {
       console.log('API RESPONSE: ', response);
-      alert('OTHER PAYMENT SUCCESSFULLY CREATED!');
+      this.toast.success(ToastrMessage.SUCCESS_CREATE, this.toastTitlePrefix + ToastrTitle.SUCCESS);
     })
     .catch((error: Error) => {
       console.error('ERROR CREATING OTHER PAYMENT: ', error);
+      this.toast.error(ToastrMessage.ERROR_CREATE + ': ' + error.message, this.toastTitlePrefix + ToastrTitle.ERROR);
     })
     .finally(() => {
       this.fg.reset();

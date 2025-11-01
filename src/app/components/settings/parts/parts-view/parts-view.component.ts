@@ -4,6 +4,8 @@ import { MatDialogRef, MatDialogModule, MAT_DIALOG_DATA, MatDialog } from '@angu
 import { Utils } from '../../../../common/util';
 import { PartsService } from '../../../../services/parts.service';
 import { IAPIResponse } from '../../../../models/interfaces/IApiResponse';
+import { ToastrService } from 'ngx-toastr';
+import { ToastrMessage, ToastrTitle } from '../../../../common/constants';
 
 @Component({
   selector: 'app-parts-view',
@@ -17,12 +19,14 @@ import { IAPIResponse } from '../../../../models/interfaces/IApiResponse';
 export class PartsViewComponent implements OnInit {
 
   constructor(
-    private partsService: PartsService
+    private partsService: PartsService,
+    private toast: ToastrService
   ) {
     
   }
 
-  
+  toastTitlePrefix = 'Parts Update - ';
+
   readonly dialogRef = inject(MatDialogRef<PartsViewComponent>);
   readonly modalData = inject<MatDialog>(MAT_DIALOG_DATA);
   
@@ -60,7 +64,7 @@ export class PartsViewComponent implements OnInit {
   handleSave():void {
     event?.preventDefault();
     if(!this.formGroup.valid) {
-      alert('Please provide valid inputs.');
+      this.toast.warning(ToastrMessage.INVALID_INPUT, this.toastTitlePrefix + ToastrTitle.ERROR);
       return;
     }
 

@@ -14,6 +14,8 @@ import { PartCreateComponent } from '../part-create/part-create.component';
 import { IPartDetails } from '../../../../models/interfaces/IParts';
 import { PartsViewComponent } from '../parts-view/parts-view.component';
 import { CommonService } from '../../../../services/common.service';
+import { ToastrService } from 'ngx-toastr';
+import { ToastrMessage, ToastrTitle } from '../../../../common/constants';
 
 @Component({
   selector: 'app-parts-list',
@@ -34,11 +36,14 @@ export class PartsListComponent implements OnInit {
   constructor(
     private partService: PartsService,
     private router: Router,
-    private commonService: CommonService
+    private commonService: CommonService,
+    private toast: ToastrService
   ) { }
 
   @ViewChild(MatPaginator, {static: true}) paginator!: MatPaginator;
   
+  toastTitlePrefix = 'Parts List - '
+
   tableCols = ['Description','Measurement','Unit Cost', 'Selling Price', 'Actions'];
   dataSource = new MatTableDataSource([]);
 
@@ -66,9 +71,10 @@ export class PartsListComponent implements OnInit {
           if(response.result !== null){
             await this.loadData(0, 50);
           }
-          alert('Save Successfully!');
+          this.toast.success(`${ToastrMessage.SUCCESS_CREATE} : ${params.description}`, this.toastTitlePrefix + ToastrTitle.SUCCESS);
         })
         .catch(async (error: Error) => {
+          this.toast.error(`${ToastrMessage.ERROR_CREATE} : ${params.description} - ${error.message}`, this.toastTitlePrefix + ToastrTitle.ERROR);
           console.error('Error creating part:', error);
         })
         .finally(async () => {
@@ -91,14 +97,14 @@ export class PartsListComponent implements OnInit {
       if(data){
         let params: IPartDetails = data;
         params.id = id;
-        console.log('PARAMS FOR UPDATING PARTS: ' , params);
         await this.partService.updatePart(params).then(async (response: IAPIResponse) => {
           if(response.result !== null){
             await this.loadData(0, 50);
           }
-          alert('Save Successfully!');
+          this.toast.success(`${ToastrMessage.SUCCESS_UPDATE} : ${params.description}`, this.toastTitlePrefix + ToastrTitle.SUCCESS);
         })
         .catch(async (error: Error) => {
+          this.toast.error(`${ToastrMessage.ERROR_UPDATE} : ${params.description} - ${error.message}`, this.toastTitlePrefix + ToastrTitle.ERROR);
           console.error('Error updating part:', error);
         })
         .finally(async () => {
@@ -132,6 +138,7 @@ export class PartsListComponent implements OnInit {
       }
     })
     .catch(async (error: Error) => {
+      this.toast.error(ToastrMessage.ERROR_FETCHING_DATA + ': ' + error.message, this.toastTitlePrefix + ToastrTitle.ERROR);
       console.error('Error fetching parts list:', error);
     })
     .finally(async () => {

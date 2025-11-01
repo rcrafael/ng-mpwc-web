@@ -15,6 +15,8 @@ import { NgIf } from '@angular/common';
 import { MatTooltip } from "@angular/material/tooltip";
 import { debounceTime, distinctUntilChanged, Subject, Subscription } from 'rxjs';
 import { FormsModule, NgModel } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
+import { ToastrMessage, ToastrTitle } from '../../../../common/constants';
 
 @Component({
   selector: 'app-payment-official-receipt-list',
@@ -38,6 +40,7 @@ export class PaymentOfficialReceiptListComponent implements OnInit {
     private commonService: CommonService,
     private paymentService: PaymentService,
     private dialog: MatDialog,
+    private toast: ToastrService
   ) {
     this.subscription = this.subjectKeyword.pipe(
       debounceTime(1000),
@@ -52,6 +55,8 @@ export class PaymentOfficialReceiptListComponent implements OnInit {
     })
   }
   @ViewChild(MatPaginator, {static: true}) paginator!: MatPaginator;
+
+  toastTitlePrefix = 'Official Receipt List - ';
 
   dataSource = new MatTableDataSource([]);
 
@@ -120,9 +125,10 @@ export class PaymentOfficialReceiptListComponent implements OnInit {
     })
     .catch(async (error: Error) => {
       console.error('Error fetching OR list:', error);
+      this.toast.error(`${ToastrMessage.ERROR_FETCHING_DATA}: ${error.message}`, this.toastTitlePrefix + ToastrTitle.ERROR);
     })
     .finally(async () => {
-     this.commonService.showSpinner(false);
+      this.commonService.showSpinner(false);
     });
   }
 
@@ -141,7 +147,7 @@ export class PaymentOfficialReceiptListComponent implements OnInit {
     })
     .catch(async (error: Error) => {
       console.error('Error fetching customer list with search:', error);
-      this.commonService.showSpinner(false);
+      this.toast.error(`${ToastrMessage.ERROR_FETCHING_DATA}: ${error.message}`, this.toastTitlePrefix + ToastrTitle.ERROR);
     })
     .finally(async () => {
       this.commonService.showSpinner(false);
@@ -181,9 +187,11 @@ export class PaymentOfficialReceiptListComponent implements OnInit {
     try {
       const response = await this.paymentService.updateStatus(orId, VOID_STATUS_ID);
       console.log('RESPONSE: ', response);
+      this.toast.success(`${ToastrMessage.SUCCESS_UPDATE}`, this.toastTitlePrefix + ToastrTitle.SUCCESS);
       await this.loadORData(this.pageIdx, this.pageSize);
     } catch (err) {
       console.error('ERROR VOIDING OTHER PAYMENT RECORD: ', err);
+      this.toast.error(`${ToastrMessage.ERROR_UPDATE}: ${err}`, this.toastTitlePrefix + ToastrTitle.ERROR);
     }
     
 
@@ -197,10 +205,40 @@ export class PaymentOfficialReceiptListComponent implements OnInit {
     try {
       const response = await this.paymentService.deleteRecord(orId);
       console.log('RESPONSE: ', response);
+      this.toast.success(`${ToastrMessage.SUCCESS_DELETE}`, this.toastTitlePrefix + ToastrTitle.SUCCESS);
       await this.loadORData(this.pageIdx, this.pageSize);
     } catch (err) {
       console.error('ERROR DELETING OTHER PAYMENT RECORD: ', err);
+      this.toast.error(`${ToastrMessage.ERROR_DELETE}: ${err}`, this.toastTitlePrefix + ToastrTitle.ERROR);
     }
+  }
+
+  async handlePrintReceipt(orId: string) {
+    
+    this.commonService.showSpinner(true);
+    await this.paymentService.printORPdf(orId).then((response:ArrayBuffer) => {
+      if(response !== null) {
+        console.log('OR RECEIPT: ', response)
+        const blob = new Blob([response], { type: 'application/pdf' });
+        const blobUrl = URL.createObjectURL(blob);
+        const pdfWindow = window.open(blobUrl);
+        if (pdfWindow) {
+          pdfWindow.addEventListener('load', () => {
+            pdfWindow.focus();
+            pdfWindow.print();
+          });
+        }
+      }
+    })
+    .catch((err: Error) => {
+      console.error('ERROR PRINTING OR RECEIPT: ', err);
+      this.toast.error(`${ToastrMessage.ERROR_FETCHING_DATA}: ${err.message}`, this.toastTitlePrefix + ToastrTitle.ERROR);
+    })
+    .finally(() => {
+      this.commonService.showSpinner(false);
+    });
+    
+
   }
 
 }

@@ -50,6 +50,8 @@ export class PaymentApi {
      public static UPDATE_STATUS = '/payment/official-receipt/update-status';
      public static DELETE_RECORD = '/payment/official-receipt/{id}';
      
+     public static PRINT_OR_PDF = '/payment/official-receipt/receipt/pdf/{id}';
+     public static PRINT_OR_EXCEL = '/payment/official-receipt/receipt/excel/{id}';
 }
 
 export class AuthApi {

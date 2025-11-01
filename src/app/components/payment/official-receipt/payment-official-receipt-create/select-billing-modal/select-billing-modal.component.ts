@@ -5,6 +5,8 @@ import { IBillingInfo } from '../../../../../models/interfaces/IBilling';
 import { BillingService } from '../../../../../services/billing.service';
 import { IAPIResponse } from '../../../../../models/interfaces/IApiResponse';
 import { Utils } from '../../../../../common/util';
+import { ToastrService } from 'ngx-toastr';
+import { ToastrMessage, ToastrTitle } from '../../../../../common/constants';
 
 @Component({
   selector: 'app-select-billing-modal',
@@ -19,8 +21,11 @@ import { Utils } from '../../../../../common/util';
 export class SelectBillingModalComponent implements OnInit {
 
   constructor (
-    private billingService: BillingService
+    private billingService: BillingService,
+    private toast: ToastrService
   ) {}
+
+  toastTitlePrefix = 'Select Billing - '
 
   readonly dialogRef = inject(MatDialogRef<SelectBillingModalComponent>);
   readonly modalData:any = inject<MatDialog>(MAT_DIALOG_DATA);
@@ -50,12 +55,19 @@ export class SelectBillingModalComponent implements OnInit {
   getMonth = Utils.getMonth;
   formatAmount = Utils.formatCurrency;
   
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     this.customerId = this.modalData.customerId;
-    this.billingService.getUnpaidBillsByCustomerId(this.customerId).then((response:IAPIResponse) => {
+    await this.billingService.getUnpaidBillsByCustomerId(this.customerId).then((response:IAPIResponse) => {
       const result: any = response.result;
       this.dataSource = result;
     })
+    .catch(async (error: Error) => {
+      console.log('Error fetching billing list:', error);
+      this.toast.error(`${ToastrMessage.ERROR_FETCHING_DATA}: ${error.message}`, this.toastTitlePrefix + ToastrTitle.ERROR);
+    })
+    .finally(async () => {
+    
+    });
   }
 
   onSelectRow(e: Event): void {

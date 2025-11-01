@@ -1,5 +1,5 @@
 export class Constants {
-     public static HOST = 'http://localhost:8080/api';
+     public static HOST = 'https://api-gateway-a6z0.onrender.com/api';
 }
 
 export class CustomerApi {
@@ -78,4 +78,27 @@ export class WaterRatesApi {
      public static GET_ACTIVE_WATER_RATES_COMMERCIAL = '/billing/rates/commercial/active';
      public static UPDATE_RESIDENTIAL_RATES = '/billing/rates/residential';
      public static UPDATE_COMMERCIAL_RATES = '/billing/rates/commercial';
+}
+
+export class ToastrTitle {
+     public static INVALID_INPUT = 'Invalid Input';
+     public static LOGIN_FAILED = 'Login Failed';
+     public static SUCCESS = 'Success';
+     public static ERROR = 'Error';
+     public static WARNING = 'Warning';
+}
+
+export class ToastrMessage {     
+     public static SUCCESS_CREATE = 'Successfully created!';
+     public static SUCCESS_UPDATE = 'Successfully updated!';
+     public static SUCCESS_DELETE = 'Successfully deleted!';
+
+     public static INVALID_INPUT = 'Invalid input! Please try again.';
+
+     public static ERROR_LOGIN = 'Invalid email or password.';
+     public static ERROR_CREATE = 'Failed creating';
+     public static ERROR_UPDATE = 'Failed updating';
+     public static ERROR_DELETE = 'Failed deleting';
+     public static ERROR_FETCHING_DATA = 'Failed fetching data';
+
 }

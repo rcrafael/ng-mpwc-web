@@ -6,6 +6,8 @@ import { IOfficialReceiptDetail } from '../../../../../models/interfaces/IOffici
 import { MatCheckbox, MatCheckboxChange, MatCheckboxModule } from '@angular/material/checkbox';
 import { SelectBillingModalComponent } from '../select-billing-modal/select-billing-modal.component';
 import { Utils } from '../../../../../common/util';
+import { ToastrService } from 'ngx-toastr';
+import { ToastrMessage, ToastrTitle } from '../../../../../common/constants';
 
 @Component({
   selector: 'app-add-details-modal',
@@ -20,6 +22,14 @@ import { Utils } from '../../../../../common/util';
   styleUrl: './add-details-modal.component.css',
 })
 export class AddDetailsModalComponent implements OnInit {
+
+  constructor(
+    private toast: ToastrService
+  ) {
+
+  }  
+  
+  toastTitlePrefix = 'OR Add Details - ';
 
   readonly dialogRef = inject(MatDialogRef<AddDetailsModalComponent>);
   readonly modalData:any = inject<MatDialog>(MAT_DIALOG_DATA);
@@ -88,7 +98,7 @@ export class AddDetailsModalComponent implements OnInit {
   handleSubmit() {
 
     if(!this.fg.valid) {
-      alert("Invalid Input. Please try again.");
+      this.toast.warning(ToastrMessage.INVALID_INPUT, this.toastTitlePrefix + ToastrTitle.INVALID_INPUT);
       return;
     }
 

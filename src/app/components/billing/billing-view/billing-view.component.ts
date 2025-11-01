@@ -12,6 +12,8 @@ import { IBillingInfo, IUpdateBilling } from '../../../models/interfaces/IBillin
 import { Utils } from '../../../common/util';
 import { IWaterRates } from '../../../models/interfaces/IWaterRates';
 import { transactionStatus } from '../../../common/enum';
+import { ToastrService } from 'ngx-toastr';
+import { ToastrMessage, ToastrTitle } from '../../../common/constants';
 
 @Component({
   selector: 'app-billing-view',
@@ -34,8 +36,10 @@ export class BillingViewComponent implements OnInit {
     private commonService: CommonService,
     private billingService: BillingService,
     private activeRoute: ActivatedRoute,
-    private decimalPipe: DecimalPipe
+    private toast: ToastrService
   ) {}
+
+  toastTitlePrefix = 'Billing - ';
 
   COMPLETE_STATUS: number = 1;
   INCOMPLETE_STATUS: number = 2;
@@ -138,7 +142,8 @@ export class BillingViewComponent implements OnInit {
     console.log('FORM: ', this.fg);
 
     if(!this.fg.valid) {
-      alert('Invalid Inputs!');
+      this.toast.error(ToastrMessage.INVALID_INPUT, this.toastTitlePrefix + ToastrTitle.ERROR);
+      return;
     }
     
     this.updateBilling();
@@ -167,12 +172,12 @@ export class BillingViewComponent implements OnInit {
     }
 
     this.billingService.updateBilling(params).then((response: IAPIResponse) => {
+      this.toast.success(ToastrMessage.SUCCESS_UPDATE, this.toastTitlePrefix + ToastrTitle.SUCCESS);
       console.log('updateBilling() SUCCESS!', response); 
-      alert('UPDATE SAVED!');
     }) 
     .catch((err:Error) => {
+      this.toast.error(ToastrMessage.ERROR_UPDATE + ': ' + err.message, this.toastTitlePrefix + ToastrTitle.ERROR);
       console.error('ERROR UPDATING BILLING RECORD OCCURED: ', err.message);
-      alert('ERROR: ' + err.message);
     })
     .finally(() => {
       console.log('updateBilling() finished')

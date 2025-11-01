@@ -10,6 +10,8 @@ import { formatDate } from '@angular/common';
 import { PaymentService } from '../../../../services/payment.service';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../../../services/auth.service';
+import { ToastrService } from 'ngx-toastr';
+import { ToastrMessage, ToastrTitle } from '../../../../common/constants';
 
 @Component({
   selector: 'app-other-payment-view',
@@ -28,8 +30,11 @@ export class OtherPaymentViewComponent implements OnInit {
   constructor(
     private paymentService: PaymentService,
     private authService: AuthService,
-    private activedRoute: ActivatedRoute
+    private activedRoute: ActivatedRoute,
+    private toast: ToastrService
   ) { }
+
+  toastTitlePrefix = 'Other Payment - ';
 
   branchCodes:IBranchCode[] = branchCodeData;
   dataSource!: MatTableDataSource<IOtherPaymentTableDetails>;
@@ -83,6 +88,7 @@ export class OtherPaymentViewComponent implements OnInit {
             })
           } catch(err) {
             console.error('ERROR FETCHING USERNAME BY ID: ', err);
+            this.toast.error(`${ToastrMessage.ERROR_FETCHING_DATA}(Username): ${err}`, this.toastTitlePrefix + ToastrTitle.ERROR);
           }
           
 
@@ -117,6 +123,7 @@ export class OtherPaymentViewComponent implements OnInit {
         })
         .catch(err => {
           console.log(err);
+          this.toast.error(`${ToastrMessage.ERROR_FETCHING_DATA}: ${err}`, this.toastTitlePrefix + ToastrTitle.ERROR);
         })
         .finally(() => {
           

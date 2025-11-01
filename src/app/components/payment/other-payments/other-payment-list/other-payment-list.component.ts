@@ -11,6 +11,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { debounceTime, distinctUntilChanged, Subject, Subscription } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { CommonService } from '../../../../services/common.service';
+import { ToastrService } from 'ngx-toastr';
+import { ToastrMessage, ToastrTitle } from '../../../../common/constants';
 
 @Component({
   selector: 'app-other-payment-list',
@@ -33,7 +35,8 @@ export class OtherPaymentListComponent implements OnInit {
     private router: Router,
     private paymentService: PaymentService,
     private cdr: ChangeDetectorRef,
-    private commonService: CommonService
+    private commonService: CommonService,
+    private toast: ToastrService
   ) {
     this.subscription = this.subjectKeyword.pipe(
       debounceTime(1000),
@@ -48,6 +51,8 @@ export class OtherPaymentListComponent implements OnInit {
   }
 
   @ViewChild(MatPaginator, {static: false}) paginator!: MatPaginator;
+
+  toastTitlePrefix = 'Other Payment List - ';
 
   pageIdx:number = 0;
   pageSize: number = 50;
@@ -120,6 +125,7 @@ export class OtherPaymentListComponent implements OnInit {
       
     } catch (err) {
       console.error('ERROR FETCHING OTHER PAYMENT LIST: ', err);
+      this.toast.error(`${ToastrMessage.ERROR_FETCHING_DATA}: ${err}`, this.toastTitlePrefix + ToastrTitle.ERROR);
     } finally {
       this.commonService.showSpinner(false);
       console.log('FINISHED FETCHING OTHER PAYMENT LIST');
@@ -143,6 +149,7 @@ export class OtherPaymentListComponent implements OnInit {
 
     } catch (err) {
       console.error('ERROR FETCHING OTHER PAYMENT LIST: ', err);
+      this.toast.error(`${ToastrMessage.ERROR_FETCHING_DATA}: ${err}`, this.toastTitlePrefix + ToastrTitle.ERROR);
     } finally {
       console.log('FINISHED FETCHING OTHER PAYMENT LIST');
     }
@@ -166,6 +173,7 @@ export class OtherPaymentListComponent implements OnInit {
       await this.getOtherPaymentList(this.pageIdx, this.pageSize);
     } catch (err) {
       console.error('ERROR VOIDING OTHER PAYMENT RECORD: ', err);
+      this.toast.error(`${ToastrMessage.ERROR_UPDATE}: ${err}`, this.toastTitlePrefix + ToastrTitle.ERROR);
     }
     
 
@@ -182,6 +190,7 @@ export class OtherPaymentListComponent implements OnInit {
       await this.getOtherPaymentList(this.pageIdx, this.pageSize);
     } catch (err) {
       console.error('ERROR DELETING OTHER PAYMENT RECORD: ', err);
+      this.toast.error(`${ToastrMessage.ERROR_DELETE}: ${err}`, this.toastTitlePrefix + ToastrTitle.ERROR);
     }
   }
     

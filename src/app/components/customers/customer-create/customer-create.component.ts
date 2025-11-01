@@ -8,6 +8,9 @@ import { formatDate } from '@angular/common';
 import { CustomerService } from '../../../services/customer.service';
 import { IAPIResponse } from '../../../models/interfaces/IApiResponse';
 import { branchCodeData, genderData, customerTypeData, phaseData } from '../../../common/enum';
+import { ToastrService } from 'ngx-toastr';
+import { ToastrMessage, ToastrTitle } from '../../../common/constants';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-customer-create',
@@ -23,8 +26,12 @@ import { branchCodeData, genderData, customerTypeData, phaseData } from '../../.
 export class CustomerCreateComponent implements OnInit {
 
   constructor(
-    private customerService: CustomerService
+    private customerService: CustomerService,
+    private toast: ToastrService,
+    private router: Router
   ) {}
+
+  toastTitlePrefix = 'Customer - '
 
   branchCode: IBranchCode[] = branchCodeData;
   gender: IGender[] = genderData;
@@ -60,10 +67,9 @@ export class CustomerCreateComponent implements OnInit {
     })
   }
 
-  onSubmit() : void {
+  async onSubmit() : Promise<void> {
     if(!this.fg.valid) {
-      alert("Invalid inputs! Please try again.");
-      console.log('FORM: ', this.fg);
+      this.toast.success(ToastrMessage.INVALID_INPUT, this.toastTitlePrefix + ToastrTitle.ERROR);
       return;
     }
 
@@ -89,11 +95,13 @@ export class CustomerCreateComponent implements OnInit {
       tin: frm.tin ?? ''
     }
 
-    this.customerService.createCustomer(cust).then((response: IAPIResponse)=> {
-      alert("CUSTOMER CREATED");
+    await this.customerService.createCustomer(cust).then((response: IAPIResponse)=> {
+      this.toast.success(ToastrMessage.SUCCESS_CREATE, this.toastTitlePrefix + ToastrTitle.SUCCESS);
       console.log('CUSTOMER CREATED',response);
+      this.router.navigateByUrl('customer');
     })
     .catch((error: Error) => {
+      this.toast.error(ToastrMessage.ERROR_CREATE, this.toastTitlePrefix + ToastrTitle.ERROR);
       console.error('Error creating customer:', error);
     });
 

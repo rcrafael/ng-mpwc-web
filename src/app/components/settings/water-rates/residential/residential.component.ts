@@ -4,6 +4,8 @@ import { IWaterRates } from '../../../../models/interfaces/IWaterRates';
 import { Utils } from '../../../../common/util';
 import { BillingService } from '../../../../services/billing.service';
 import { CommonService } from '../../../../services/common.service';
+import { ToastrService } from 'ngx-toastr';
+import { ToastrMessage, ToastrTitle } from '../../../../common/constants';
 
 @Component({
   selector: 'app-rate-residential',
@@ -18,8 +20,11 @@ export class ResidentialComponent implements OnInit {
 
   constructor(
     private billingService: BillingService,
-    private commonService: CommonService
+    private commonService: CommonService,
+    private toast: ToastrService
   ) {}
+
+  toastTitlePrefix = 'Water Rates Update - '
 
   fg = new FormGroup({
     lessEqualToFive: new FormControl<string>('0.00', Validators.required),
@@ -47,7 +52,7 @@ export class ResidentialComponent implements OnInit {
     const formDate = this.fg.value;
     console.log('form', this.fg);
     if(!this.fg.valid) {
-      alert('Please provide valid inputs.');
+      this.toast.warning(ToastrMessage.INVALID_INPUT, this.toastTitlePrefix + ToastrTitle.INVALID_INPUT);
       return;
     }
 
@@ -70,11 +75,12 @@ export class ResidentialComponent implements OnInit {
       this.oldWaterRates = structuredClone(resp);
       this.waterRates = structuredClone(resp);
       this.updateForm();
-      alert('Water rates successfully updated.');
+      // alert('Water rates successfully updated.');
+      this.toast.success(ToastrMessage.SUCCESS_UPDATE, this.toastTitlePrefix + ToastrTitle.SUCCESS);
     })
     .catch((error) => {
       console.log(error);
-      alert('Failed to update water rates.');
+      this.toast.error(ToastrMessage.ERROR_UPDATE, this.toastTitlePrefix + ToastrTitle.ERROR);
     })
     .finally(() => {
       this.commonService.showSpinner(false);
@@ -84,7 +90,7 @@ export class ResidentialComponent implements OnInit {
 
   async loadRates(): Promise<void> {
     this.commonService.showSpinner(true);
-    this.billingService.getActiveWaterRatesResidential().then((response) => {
+    await this.billingService.getActiveWaterRatesResidential().then((response) => {
       
       const resp = response.result as IWaterRates[];
       this.oldWaterRates = structuredClone(resp);
@@ -92,8 +98,9 @@ export class ResidentialComponent implements OnInit {
       this.updateForm();
 
     })
-    .catch((error) => {
+    .catch((error : Error) => {
       console.log(error);
+      this.toast.error(`${ToastrMessage.ERROR_FETCHING_DATA}: ${error.message}`, this.toastTitlePrefix + ToastrTitle.ERROR);
     })
     .finally(() => {
       this.commonService.showSpinner(false);

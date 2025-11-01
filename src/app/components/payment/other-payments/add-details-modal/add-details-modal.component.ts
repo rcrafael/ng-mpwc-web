@@ -10,6 +10,8 @@ import { IAPIResponse } from '../../../../models/interfaces/IApiResponse';
 import { Utils } from '../../../../common/util';
 import { A11yModule } from "@angular/cdk/a11y";
 import { MatIcon } from "@angular/material/icon";
+import { ToastrService } from 'ngx-toastr';
+import { ToastrMessage, ToastrTitle } from '../../../../common/constants';
 
 @Component({
   selector: 'app-add-details-modal',
@@ -29,8 +31,11 @@ import { MatIcon } from "@angular/material/icon";
 export class AddDetailsModalComponent implements OnInit {
 
   constructor(
-    private partsSvc: PartsService
+    private partsSvc: PartsService,
+    private toast: ToastrService
   ) { }
+
+  toastTitlePrefix = 'Add Details - ';
 
   readonly dialogRef = inject(MatDialogRef<AddDetailsModalComponent>);
   readonly modalData = inject<MatDialog>(MAT_DIALOG_DATA);
@@ -73,7 +78,8 @@ export class AddDetailsModalComponent implements OnInit {
     const data = this.fg.value;
 
     if(!this.fg.valid) {
-      alert('Invalid Input. Please try again.');
+      this.toast.warning(ToastrMessage.INVALID_INPUT, this.toastTitlePrefix + ToastrTitle.INVALID_INPUT);
+      return;
     }
 
     const part: IPartItem = {
@@ -94,10 +100,11 @@ export class AddDetailsModalComponent implements OnInit {
       this.partsList = response.result as IPartsList[];
     })
     .catch((err: Error) => {
-      
+      console.log('ERROR FETCHING PARTS LIST: ', err.message);
+      this.toast.error(ToastrMessage.ERROR_FETCHING_DATA + ': ' + err.message, this.toastTitlePrefix + ToastrTitle.ERROR);  
     })
     .finally(() => {
-
+      
     });
   } 
 

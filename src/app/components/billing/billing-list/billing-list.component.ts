@@ -12,6 +12,8 @@ import { Utils } from '../../../common/util';
 import { MatIconModule } from "@angular/material/icon";
 import { MatTooltip } from '@angular/material/tooltip';
 import { NgIf } from '@angular/common';
+import { ToastrService } from 'ngx-toastr';
+import { ToastrMessage, ToastrTitle } from '../../../common/constants';
 
 @Component({
   selector: 'app-billing-list',
@@ -33,10 +35,13 @@ export class BillingListComponent implements OnInit {
   constructor(
     private router: Router,
     private billingService: BillingService,
-    private commonService: CommonService
+    private commonService: CommonService,
+    private toast: ToastrService
   ) {}
 
   @ViewChild(MatPaginator, {static: true}) paginator!: MatPaginator;
+
+  toastTitlePrefix = 'Billing List - ';
 
   dataSource = new MatTableDataSource([]);
   tableCols: string[] = [
@@ -100,6 +105,7 @@ export class BillingListComponent implements OnInit {
     })
     .catch(async (error: Error) => {
       console.error('Error fetching billing list:', error);
+      this.toast.error(ToastrMessage.ERROR_FETCHING_DATA, this.toastTitlePrefix + ToastrTitle.ERROR);
       this.commonService.showSpinner(false);
     })
     .finally(async () => {

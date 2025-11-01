@@ -11,6 +11,8 @@ import { NgIf } from '@angular/common';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { IBranchCode, ICustomerType } from '../../../models/interfaces/ICommon';
 import { branchCodeData, customerTypeData } from '../../../common/enum';
+import { ToastrService } from 'ngx-toastr';
+import { ToastrMessage, ToastrTitle } from '../../../common/constants';
 
 @Component({
   selector: 'app-customer-meter',
@@ -29,10 +31,13 @@ export class CustomerMeterComponent implements OnInit {
 
   constructor(
     private commonService: CommonService,
-    private customerService: CustomerService
+    private customerService: CustomerService,
+    private toast: ToastrService
   ) {}
 
   @Input() customerId: string = '';
+
+  toastTitlePrefix: string = 'Customer Meter List - ';
 
   tableCols: string[] = ['Meter No', 'Alias', 'Branch Code', 'Location', 'Previous', 'Present', 'Status'];
   dataSource: MatTableDataSource<IMeterDetails> = new MatTableDataSource<IMeterDetails>();
@@ -57,7 +62,7 @@ export class CustomerMeterComponent implements OnInit {
   })
 
   ngOnInit(): void {
-      this.loadData();
+    this.loadData();
   }
 
   loadData(): void {
@@ -76,7 +81,7 @@ export class CustomerMeterComponent implements OnInit {
     this.isFieldsVisible = false;
 
     if(!this.fg.valid) {
-      alert('Invalid input! Please try again.');
+      this.toast.error(ToastrMessage.INVALID_INPUT, this.toastTitlePrefix + ToastrTitle.ERROR);
       return;
     }
 
@@ -106,11 +111,11 @@ export class CustomerMeterComponent implements OnInit {
     }
 
     this.customerService.createMeterNo(params).then(() => {
-      alert(`METER ${params.meterNo} CREATED.`);
+      this.toast.success(`${ToastrMessage.SUCCESS_CREATE} : ${params.meterNo}`, this.toastTitlePrefix + ToastrTitle.SUCCESS);
       this.loadData();
     })
     .catch((err: Error) => {
-      alert(`ERROR IN CREATING METER: ${params.meterNo}`);
+      this.toast.error(`${ToastrMessage.ERROR_CREATE} : ${params.meterNo}`, this.toastTitlePrefix + ToastrTitle.ERROR);
       console.log('Error:', err);
     });
 

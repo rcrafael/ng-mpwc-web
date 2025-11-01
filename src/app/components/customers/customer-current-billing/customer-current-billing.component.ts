@@ -7,6 +7,8 @@ import { IAPIResponse } from '../../../models/interfaces/IApiResponse';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { Utils } from '../../../common/util';
+import { ToastrService } from 'ngx-toastr';
+import { ToastrMessage, ToastrTitle } from '../../../common/constants';
 
 @Component({
   selector: 'app-customer-current-billing',
@@ -24,10 +26,13 @@ export class CustomerCurrentBillingComponent implements OnInit {
 
   constructor(
     private billingService: BillingService,
-    private router: Router
+    private router: Router,
+    private toast: ToastrService
   ) {}
 
   @Input() customerId: string = '-1';
+
+  toastTitlePrefix: string = 'Customer Billing List - ';
 
   tableCols: string[] = [
     'Reading No',
@@ -55,12 +60,16 @@ export class CustomerCurrentBillingComponent implements OnInit {
   getTransactionStatus = Utils.getStatusName;
   getMonth = Utils.getMonth;
   
-  ngOnInit():void {
+  async ngOnInit(): Promise<void> {
     this.billingService.getRecentBillingByCustomerId(this.customerId).then((response:IAPIResponse) => {
       const result: any = response.result;
       this.dataSource.data = result;
     
       this.isPaymentBtnVisible = result.some((e:any) => e.status === 2); //check if there's incomplete status
+    })
+    .catch(async (error: Error) => {
+      this.toast.error(ToastrMessage.ERROR_FETCHING_DATA + ': ' + error.message, this.toastTitlePrefix + ToastrTitle.ERROR);
+      console.error('Error fetching billing list:', error);
     })
   }
 

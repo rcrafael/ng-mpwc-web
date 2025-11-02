@@ -6,6 +6,7 @@ import { BrowserAnimationsModule, provideAnimations } from '@angular/platform-br
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { httpInterceptor } from './interceptor/http.interceptor';
 import { EnvService } from './services/apis/env.service';
+import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 
 export function initConfig(envService: EnvService) {
   return () => envService.loadConfig();
@@ -18,6 +19,7 @@ export const appConfig: ApplicationConfig = {
     importProvidersFrom([BrowserAnimationsModule]),
     provideHttpClient(withInterceptors([httpInterceptor])),
     provideAnimations(),
+    provideCharts(withDefaultRegisterables()),
     provideToastr({
       timeOut: 10000,
       extendedTimeOut: 5000,
@@ -39,3 +41,4 @@ export const appConfig: ApplicationConfig = {
     }
   ]
 };
+

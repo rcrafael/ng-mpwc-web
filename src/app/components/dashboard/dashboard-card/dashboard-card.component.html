@@ -1,0 +1,15 @@
+<div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+     <div class="flex items-center justify-between">
+          <div>
+               <p class="text-sm font-medium text-gray-600">{{title}}</p>
+               <p class="text-2xl font-bold text-gray-900">{{value}}</p>
+          </div>
+          <div [ngClass]="cardClasses" >
+               <div [ngClass]="classes" [ngStyle]="{
+                                                       mask: 'url(' + icon + ') center / 1.5rem no-repeat',
+                                                       WebkitMask: 'url(' + icon + ') center / 1.5rem no-repeat'
+                                                  }">
+               </div>
+          </div>
+     </div>
+</div>

@@ -1,4 +1,45 @@
-<p>dashboard works!</p>
-<button (click)="openToast()" class="bg-blue-300">
-     test
-</button>
+<div class="h-screen flex flex-col m-1">
+     <div class="flex flex-row w-full mb-1 bg-slate-200 rounded-md p-1">
+          <div class="flex flex-col-12 w-full">
+               <div class="flex col-span-6 col-start-1 w-full  place-items-center ">
+                    <span class="p-2 font-bold">DASHBOARD</span>
+               </div>
+          </div>
+     </div>
+
+     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 m-10">
+          <app-dashboard-card [title]="'Total Customers'" [value]="totalCustomers" [icon]="'assets/icons/group.svg'"
+               [iconColor]="'bg-slate-500'" [iconBackgroundColor]="'bg-slate-200'"></app-dashboard-card>
+          <app-dashboard-card [title]="'Billings'" [value]="totalBillings" [icon]="'assets/icons/newspaper.svg'"
+               [iconColor]="'bg-violet-500'" [iconBackgroundColor]="'bg-violet-200'"></app-dashboard-card>
+          <app-dashboard-card [title]="'Offical Receipt'" [value]="'12,345.00'" [icon]="'assets/icons/payments.svg'"
+               [iconColor]="'bg-green-500'" [iconBackgroundColor]="'bg-green-200'"></app-dashboard-card>
+          <app-dashboard-card [title]="'Other Collection'" [value]="totalBillings" [icon]="'assets/icons/bank-notes.svg'"
+               [iconColor]="'bg-blue-500'" [iconBackgroundColor]="'bg-blue-200'"></app-dashboard-card>
+          
+          <app-dashboard-card [title]="'Sample 1'" [value]="totalCustomers" [icon]="'assets/icons/group.svg'"
+               [iconColor]="'bg-blue-500'" [iconBackgroundColor]="'bg-blue-200'"></app-dashboard-card>
+          <app-dashboard-card [title]="'Sample 2'" [value]="totalBillings" [icon]="'assets/icons/newspaper.svg'"
+               [iconColor]="'bg-green-500'" [iconBackgroundColor]="'bg-green-200'"></app-dashboard-card>
+          <app-dashboard-card [title]="'Sample 3'" [value]="'12,345.00'" [icon]="'assets/icons/payments.svg'"
+               [iconColor]="'bg-violet-500'" [iconBackgroundColor]="'bg-violet-200'"></app-dashboard-card>
+          <app-dashboard-card [title]="'Sample 4'" [value]="totalBillings" [icon]="'assets/icons/bank-notes.svg'"
+               [iconColor]="'bg-yellow-500'" [iconBackgroundColor]="'bg-yellow-200'"></app-dashboard-card>
+     </div>
+
+     <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6 m-10">
+          <div class="col-span-2 md:col-span-2 lg:col-span-3">
+               <h3>Monthly Collection(PHP)</h3>
+               <canvas baseChart [type]="barChartType" [data]="barChartData" [options]="barChartOptions">
+
+               </canvas>
+          </div>
+          <div class="col-span-2 md:col-span-2 lg:col-span-3">
+               <h3>Monthly Usage(cubic meter)</h3>
+               <canvas baseChart [type]="barChartType" [data]="barChartData" [options]="barChartOptions">
+
+               </canvas>
+          </div>
+     </div>
+     
+</div>

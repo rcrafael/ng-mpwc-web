@@ -3,14 +3,14 @@ import { ToastrService } from 'ngx-toastr';
 import { DashboardCardComponent } from "./dashboard-card/dashboard-card.component";
 import { BaseChartDirective } from "ng2-charts";
 import { ChartConfiguration, ChartType } from 'chart.js';
-
+import 'chart.js/auto';
 @Component({
   selector: 'app-dashboard',
   standalone: true,
   imports: [
     DashboardCardComponent,
     BaseChartDirective
-],
+  ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })
@@ -25,12 +25,15 @@ export class DashboardComponent {
   totalBillings: string = '56,789.00';
 
 
-   barChartOptions: ChartConfiguration['options'] = {
+  barChartOptions: ChartConfiguration['options'] = {
     responsive: true,
+    animation: {
+      duration: 1500,
+      easing: 'easeOutBounce',
+    },
     scales: {
-      x: {},
-      y: { beginAtZero: true }
-    }
+      y: { beginAtZero: true },
+    },
   };
 
   barChartLabels = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];

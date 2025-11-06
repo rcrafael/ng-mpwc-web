@@ -140,6 +140,12 @@ export class ApiService {
     return this.httpClient.get<IAPIResponse>(`${this.env.apiHost}${BillingApi.GET_UNPAID_BILLING_BY_CUSTOMER_ID}`, {params});
   }
 
+  getBillingSearch(keyword: string, pageNo: number = 0, pageSize:number = 50): Observable<IAPIResponse> {
+    let params = {
+      keyword: keyword
+    }
+    return this.httpClient.get<IAPIResponse>(`${this.env.apiHost}${BillingApi.GET_BILLING_SEARCH.replace('{pageNo}',pageNo.toString()).replace('{pageSize}', pageSize.toString())}`, {params});
+  }
 
 
   //septage fee APIs

@@ -11,7 +11,7 @@
                               type="text" 
                               [(ngModel)]="searchKeyword" 
                               (ngModelChange)="onSearchInputChanged($event)"
-                              placeholder="Please search using OR No. or Account No." 
+                              placeholder="Please search using OR No. / Account No. / Customer Name" 
                               class="w-full rounded-md" 
                          />
                     </div>
@@ -39,15 +39,15 @@
                          </ng-container>
                          <ng-container matColumnDef="Account No" [sticky]="true">
                               <th mat-header-cell *matHeaderCellDef class="!text-center"><span>Account No</span></th>
-                              <td mat-cell *matCellDef="let element" class="!text-center"><span>{{element.customer ? element.customer.accountNo : ''}}</span></td>
+                              <td mat-cell *matCellDef="let element" class="!text-center"><span>{{element.accountNo}}</span></td>
                          </ng-container>
                          <ng-container matColumnDef="Customer Name" [sticky]="true">
                               <th mat-header-cell *matHeaderCellDef><span>Customer Name</span></th>
-                              <td mat-cell *matCellDef="let element"><span>{{element.customer ? buildCustName(element.customer.firstName, element.customer.middleName, element.customer.lastName) : ''}}</span></td>
+                              <td mat-cell *matCellDef="let element"><span>{{buildCustName(element.firstName, element.middleName, element.lastName)}}</span></td>
                          </ng-container>
                          <ng-container matColumnDef="Address">
                               <th mat-header-cell *matHeaderCellDef><span>Address</span></th>
-                              <td mat-cell *matCellDef="let element"><span>{{element.customerId ? element.customer.address : element.outsideCustomerAddress}}</span></td>
+                              <td mat-cell *matCellDef="let element"><span>{{element.customerId ? element.address : element.outsideCustomerAddress}}</span></td>
                          </ng-container>
                          <ng-container matColumnDef="Total Billing Amount">
                               <th mat-header-cell *matHeaderCellDef><span>Total Billing Amount</span></th>

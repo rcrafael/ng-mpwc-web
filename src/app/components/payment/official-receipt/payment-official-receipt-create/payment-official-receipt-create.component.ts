@@ -199,6 +199,7 @@ export class PaymentOfficialReceiptCreateComponent implements OnInit {
         checkBank: frm.checkBank ?? '', 
         checkDate: frm.checkDate ?? '',
         status: 1, //1 = complete
+        isDeleted: false
       },
       details: this.orDetails,
       shareCapital: shareCap,

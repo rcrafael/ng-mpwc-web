@@ -14,6 +14,8 @@ import { MatTooltip } from '@angular/material/tooltip';
 import { NgIf } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
 import { ToastrMessage, ToastrTitle } from '../../../common/constants';
+import { debounceTime, distinctUntilChanged, Subject, Subscription } from 'rxjs';
+import { FormsModule, NgModel } from '@angular/forms';
 
 @Component({
   selector: 'app-billing-list',
@@ -25,7 +27,8 @@ import { ToastrMessage, ToastrTitle } from '../../../common/constants';
     RouterModule,
     MatTooltip,
     MatIconModule,
-    NgIf
+    NgIf,
+    FormsModule
 ],
   templateUrl: './billing-list.component.html',
   styleUrl: './billing-list.component.css'
@@ -37,7 +40,19 @@ export class BillingListComponent implements OnInit {
     private billingService: BillingService,
     private commonService: CommonService,
     private toast: ToastrService
-  ) {}
+  ) {
+    this.subscription = this.subjectKeyword.pipe(
+      debounceTime(1000),
+      distinctUntilChanged()
+    ).subscribe(keyword => {
+      if(keyword.trim() === '') {
+        this.loadData(this.paginator.pageIndex, this.paginator.pageSize);
+      } else {
+        this.loadDataWithSearch(keyword, this.paginator.pageIndex, this.paginator.pageSize);
+      }
+      
+    })
+  }
 
   @ViewChild(MatPaginator, {static: true}) paginator!: MatPaginator;
 
@@ -65,13 +80,18 @@ export class BillingListComponent implements OnInit {
   pageLength: number = 0;
   totalRecordCount: number = 0;
   isSpinnerVisible!: boolean;
+  searchKeyword: string = '';
+
+  private subjectKeyword = new Subject<string>();
+  private subscription: Subscription;
 
   getBranchCode = Utils.getBranchCode;
   getStatus = Utils.getStatusName;
   getMonth = Utils.getMonth;
   formatAmount = Utils.formatCurrency;
   formatDate = Utils.dateFormatter;
-  
+  buildCustName = Utils.buildCustomerName;
+
   ngOnInit(): void {
     this.commonService.getShowSpinnerVisibility().subscribe(spinnerVisibility => {
       this.isSpinnerVisible = spinnerVisibility
@@ -79,11 +99,15 @@ export class BillingListComponent implements OnInit {
     this.loadData(this.pageIdx,this.pageSize)
   }
 
-  handlePageChange(e: PageEvent) {
+  async handlePageChange(e: PageEvent) {
     this.paginator.pageIndex = e.pageIndex;
     this.paginator.pageSize = e.pageSize;
     this.paginator.length = e.length;
-    this.loadData(e.pageIndex, e.pageSize);
+    if(this.searchKeyword.trim() === '') {
+      await this.loadData(e.pageIndex, e.pageSize);
+    } else {
+      await this.loadDataWithSearch(this.searchKeyword, e.pageIndex, e.pageSize);
+    }
   }
   
 
@@ -91,9 +115,9 @@ export class BillingListComponent implements OnInit {
     this.router.navigateByUrl('/billing/create');
   }
 
-  loadData(pageIdx: number, pageSize: number) {
+  async loadData(pageIdx: number, pageSize: number) {
     this.commonService.showSpinner(true);
-    this.billingService.getBillings(pageIdx, pageSize).then((response: IAPIResponse) => {
+    await this.billingService.getBillings(pageIdx, pageSize).then((response: IAPIResponse) => {
       if(response.result !== null) {
         const result: any = response.result;
 
@@ -113,7 +137,29 @@ export class BillingListComponent implements OnInit {
     });
   }
 
-    async handleVoidRecord(orId: string) {
+  async loadDataWithSearch(keyword: string, pageIdx: number, pageSize: number) {
+    this.commonService.showSpinner(true);
+    await this.billingService.getBillingSearch(keyword, pageIdx, pageSize).then((response: IAPIResponse) => {
+      if(response.result !== null) {
+        const result: any = response.result;
+
+        this.dataSource.data = result.data;
+        this.paginator.pageIndex = result.paginator.pageNumber;
+        this.paginator.pageSize = result.paginator.pageSize;
+        this.paginator.length =  result.paginator.totalRecordCount;
+      }
+    })
+    .catch(async (error: Error) => {
+      console.error('Error fetching billing list:', error);
+      this.toast.error(ToastrMessage.ERROR_FETCHING_DATA, this.toastTitlePrefix + ToastrTitle.ERROR);
+      this.commonService.showSpinner(false);
+    })
+    .finally(async () => {
+      this.commonService.showSpinner(false);
+    });
+  }
+
+  async handleVoidRecord(orId: string) {
 
     const isConfirm = confirm('Are you sure you want to VOID this record?');
     if(!isConfirm) return;
@@ -142,6 +188,11 @@ export class BillingListComponent implements OnInit {
     } catch (err) {
       console.error('ERROR DELETING OTHER PAYMENT RECORD: ', err);
     }
+  }
+
+  onSearchInputChanged(keyword: string): void {
+    this.subjectKeyword.next(keyword);
+    this.paginator.pageIndex = 0;
   }
 
 }

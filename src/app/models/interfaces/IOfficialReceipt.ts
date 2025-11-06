@@ -30,6 +30,7 @@ export interface IOfficialReceiptHeader {
      isPartSale?: boolean;
      isOutsideCollection?: boolean;
      outsideCustomerName?: string;
+     isDeleted: boolean;
 }
 
 export interface IOfficialReceiptHeaderWithCustomer {

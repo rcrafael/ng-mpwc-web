@@ -27,6 +27,7 @@ export class BillingApi {
      public static GET_NEW_READING_NUMBER = '/billing/new-reading-number';
      public static GET_RECENT_BILLING_BY_CUSTOMER_ID = '/billing/get-recent-billings';
      public static GET_UNPAID_BILLING_BY_CUSTOMER_ID = '/billing/get-unpaid-bills';
+     public static GET_BILLING_SEARCH = '/billing/search/{pageNo}/{pageSize}';
 }
 
 export class PaymentApi {

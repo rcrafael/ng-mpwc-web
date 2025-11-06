@@ -135,6 +135,7 @@ export class OtherPaymentListComponent implements OnInit {
 
   async getOtherPaymentListWithSearch(keyword: string, pageIdx: number, pageSize: number) {
     try {
+      this.commonService.showSpinner(true);
       const response = await this.paymentService.getAllOtherPaymentWithSearch(keyword, pageIdx, pageSize);
       if(response.result === null) return;
 
@@ -151,6 +152,7 @@ export class OtherPaymentListComponent implements OnInit {
       console.error('ERROR FETCHING OTHER PAYMENT LIST: ', err);
       this.toast.error(`${ToastrMessage.ERROR_FETCHING_DATA}: ${err}`, this.toastTitlePrefix + ToastrTitle.ERROR);
     } finally {
+      this.commonService.showSpinner(false);
       console.log('FINISHED FETCHING OTHER PAYMENT LIST');
     }
   }

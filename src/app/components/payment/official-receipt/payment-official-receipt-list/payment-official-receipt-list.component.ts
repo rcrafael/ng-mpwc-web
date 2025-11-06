@@ -133,6 +133,7 @@ export class PaymentOfficialReceiptListComponent implements OnInit {
   }
 
   async loadDataWithSearch(keyword: string, pageIdx: number, pageSize: number) {
+    this.commonService.showSpinner(true);
     await this.paymentService.getORAllPaymentWithSearch(keyword, pageIdx, pageSize).then((response:IAPIResponse) => {
       if(response.result !== null) {
         const result: any = response.result;

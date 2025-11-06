@@ -220,7 +220,7 @@ constructor(
         checkBank: frm.checkBank ?? '', 
         checkDate: frm.checkDate ?? '',
         status: 1, //1 = complete
-        isPartSale: false,
+        isDeleted: false,
       },
       details: this.orDetails,
       shareCapital: shareCap,

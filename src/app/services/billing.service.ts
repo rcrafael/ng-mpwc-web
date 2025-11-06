@@ -60,5 +60,8 @@ export class BillingService {
     return firstValueFrom(this.http.getUnpaidBillsByCustomerId(customerId));
   }
 
+  getBillingSearch(keyword: string, pageNo: number = 0 , pageSize: number = 50): Promise<IAPIResponse> {
+    return firstValueFrom(this.http.getBillingSearch(keyword, pageNo, pageSize));
+  }
 
 }

@@ -48,7 +48,7 @@ export class CustomerEditComponent implements OnInit {
   branchCode: IBranchCode[] = branchCodeData;
   gender: IGender[] = genderData;
   customerType: ICustomerType[] = customerTypeData;
-  phase: IPhase[] = phaseData;
+  
   step = signal(0);
   customerProfile!: ICustomerProfile;
   customerId!: string;
@@ -71,8 +71,6 @@ export class CustomerEditComponent implements OnInit {
     religion: new FormControl<string>(''),
     annualIncome: new FormControl<number | null>(0),
     dateAccepted: new FormControl<string>({value: this.currentDate, disabled: true},Validators.required),
-    // customerType: new FormControl<number>(-1,Validators.required),
-    phase: new FormControl<number>(-1,Validators.required),
     tin: new FormControl<string>('')
   });
 
@@ -108,7 +106,6 @@ loadCustomerInfo(): void {
       religion: c.religion,
       annualIncome: c.annualIncome,
       dateAccepted: c.dateAccepted,
-      phase: c.phase,
       tin: c.tin
     })
   });
@@ -140,7 +137,6 @@ onSubmit(): void {
     religion: frm.religion?? '',
     annualIncome: frm.annualIncome?? 0,
     dateAccepted: frm.dateAccepted?? '',
-    phase: frm.phase?? -1,
     dateUpdated: this.currentDate,
     updatedBy: this.authService.getUserId(),
     accountNo: frm.accountNo ?? '',

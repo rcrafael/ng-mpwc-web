@@ -8,7 +8,7 @@ import { Utils } from '../../../../common/util';
 import { IAPIResponse } from '../../../../models/interfaces/IApiResponse';
 import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { SpinnerComponent } from '../../../common/spinner/spinner.component';
-import { MatIcon } from '@angular/material/icon';
+import { MatIcon, MatIconRegistry } from '@angular/material/icon';
 import { ReceiptComponent } from '../../../receipt/receipt.component';
 import { MatDialog } from '@angular/material/dialog';
 import { NgIf } from '@angular/common';
@@ -17,6 +17,7 @@ import { debounceTime, distinctUntilChanged, Subject, Subscription } from 'rxjs'
 import { FormsModule, NgModel } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { ToastrMessage, ToastrTitle } from '../../../../common/constants';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-payment-official-receipt-list',
@@ -40,7 +41,9 @@ export class PaymentOfficialReceiptListComponent implements OnInit {
     private commonService: CommonService,
     private paymentService: PaymentService,
     private dialog: MatDialog,
-    private toast: ToastrService
+    private toast: ToastrService,
+    private iconRegistry: MatIconRegistry,
+    private domSanitizer: DomSanitizer
   ) {
     this.subscription = this.subjectKeyword.pipe(
       debounceTime(1000),
@@ -52,7 +55,10 @@ export class PaymentOfficialReceiptListComponent implements OnInit {
         this.loadDataWithSearch(keyword, this.paginator.pageIndex, this.paginator.pageSize);
       }
       
-    })
+    });
+
+    this.iconRegistry.addSvgIcon('excel-icon', this.domSanitizer.bypassSecurityTrustResourceUrl('/assets/icons/excel-icon.svg'));
+
   }
   @ViewChild(MatPaginator, {static: true}) paginator!: MatPaginator;
 
@@ -216,10 +222,20 @@ export class PaymentOfficialReceiptListComponent implements OnInit {
 
   async handlePrintReceipt(orId: string) {
     
+    await this.printPdf(orId);
+
+  }
+
+  async handleDownloadExcel(orId: string) {
+
+    await this.printExcel(orId);
+  }
+
+  async printPdf(orId: string) {
+
     this.commonService.showSpinner(true);
     await this.paymentService.printORPdf(orId).then((response:ArrayBuffer) => {
       if(response !== null) {
-        console.log('OR RECEIPT: ', response)
         const blob = new Blob([response], { type: 'application/pdf' });
         const blobUrl = URL.createObjectURL(blob);
         const pdfWindow = window.open(blobUrl);
@@ -239,7 +255,32 @@ export class PaymentOfficialReceiptListComponent implements OnInit {
       this.commonService.showSpinner(false);
     });
     
+  }
 
+  async printExcel(orId: string) {
+    this.commonService.showSpinner(true);
+    await this.paymentService.printORExcel(orId).then((response:ArrayBuffer) => {
+      
+      if(response !== null) {
+
+        const blob = new Blob([response], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+        const blobUrl = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = blobUrl;
+        a.download = `OfficialReceipt_${orId}.xlsx`;   // filename
+        a.click();
+        event?.preventDefault();
+
+        window.URL.revokeObjectURL(blobUrl);
+      }
+    })
+    .catch((err: Error) => {
+      console.error('ERROR PRINTING OR RECEIPT: ', err);
+      this.toast.error(`${ToastrMessage.ERROR_FETCHING_DATA}: ${err.message}`, this.toastTitlePrefix + ToastrTitle.ERROR);
+    })
+    .finally(() => {
+      this.commonService.showSpinner(false);
+    });
   }
 
 }

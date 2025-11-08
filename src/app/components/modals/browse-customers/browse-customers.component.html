@@ -4,55 +4,47 @@
                <div class="mb-[10px] font-bold text-lg">
                     <span>Select Customer</span>
                </div>
-               <div class="search-bar-container flex flex-row gap-2">
+               <div class="search-bar-container flex flex-row gap-2 items-center">
                     <div>
-                         <label for="searchBar" class="text-black">Search Account No.</label>
+                         <label for="searchBar" class="text-black">Search Customer</label>
                     </div>
                     <div>
-                         <input type="text" id="searchBar" placeholder="Search" class="border border-solid border-black rounded-md sm:w-full md:w-80" />
+                         <input 
+                              type="text"
+                              id="searchBar" 
+                              placeholder="Search" 
+                              class="border border-solid border-black rounded-md sm:w-full md:w-80" 
+                              [(ngModel)]="searchKeyword" 
+                              (ngModelChange)="onSearchInputChanged($event)"
+                         />
                     </div>
                </div>
      
-               <div class="table-container"> 
-                    <table mat-table [dataSource]="dataSource" class="block border border-solid border-slate-400 rounded-md">
+               <div class="table-container  min-h-[450px] max-h-[550px] overflow-auto"> 
+                    <table mat-table [dataSource]="dataSource" class="border border-solid border-slate-400 rounded-md w-full">
                          <ng-container matColumnDef="Account No">
-                              <th mat-header-cell *matHeaderCellDef class="min-w-[120px]"><span>Account No</span></th>
+                              <th mat-header-cell *matHeaderCellDef><span>Account No</span></th>
                               <td mat-cell *matCellDef="let element" class="text-center"><span class="underline text-blue-500 cursor-pointer" (click)="selectRow(element)">{{element.accountNo}}</span></td>
                          </ng-container>
 
                          <ng-container matColumnDef="First Name">
-                              <th mat-header-cell *matHeaderCellDef class="min-w-[120px]"><span>First Name</span></th>
+                              <th mat-header-cell *matHeaderCellDef><span>First Name</span></th>
                               <td mat-cell *matCellDef="let element"><span>{{element.firstName}}</span></td>
                          </ng-container>
 
                          <ng-container matColumnDef="Middle Name">
-                              <th mat-header-cell *matHeaderCellDef class="min-w-[120px]"><span>Middle Name</span></th>
+                              <th mat-header-cell *matHeaderCellDef><span>Middle Name</span></th>
                               <td mat-cell *matCellDef="let element"><span>{{element.middleName}}</span></td>
                          </ng-container>
 
                          <ng-container matColumnDef="Last Name">
-                              <th mat-header-cell *matHeaderCellDef class="min-w-[120px]"><span>Last Name</span></th>
+                              <th mat-header-cell *matHeaderCellDef><span>Last Name</span></th>
                               <td mat-cell *matCellDef="let element"><span>{{element.lastName}}</span></td>
                          </ng-container>
                          
-                         <ng-container matColumnDef="Branch Code">
-                              <th mat-header-cell *matHeaderCellDef class="min-w-[120px]"><span>Branch Code</span></th>
-                              <td mat-cell *matCellDef="let element"><span>{{getBranch(element.branchCode)}}</span></td>
-                         </ng-container>
-                         
                          <ng-container matColumnDef="Address">
-                              <th mat-header-cell *matHeaderCellDef class="min-w-[120px]"><span>Address</span></th>
+                              <th mat-header-cell *matHeaderCellDef><span>Address</span></th>
                               <td mat-cell *matCellDef="let element"><span>{{element.address}}</span></td>
-                         </ng-container>
-
-                         <ng-container matColumnDef="Phase">
-                              <th mat-header-cell *matHeaderCellDef class="min-w-[120px]"><span>Phase</span></th>
-                              <td mat-cell *matCellDef="let element"><span>{{getPhase(element.phase)}}</span></td>
-                         </ng-container>
-
-                         <ng-container matColumnDef="Customer Type">
-                              <th mat-header-cell *matHeaderCellDef class="min-w-[120px]"><span>Customer Type</span></th>
-                              <td mat-cell *matCellDef="let element"><span>{{getCustomerType(element.customerType)}}</span></td>
                          </ng-container>
 
                          <tr mat-header-row *matHeaderRowDef="tableCols; sticky: true" ></tr>
@@ -60,6 +52,14 @@
                     </table>
                </div>
           </div>
+          <mat-paginator
+               showFirstLastButtons
+               aria-label="Select page of customers"
+               [pageSizeOptions]="[50,100,200]"
+               (page)="handlePageChange($event)"
+               
+          >
+          </mat-paginator>
      </mat-dialog-content>
 
      <mat-dialog-actions>

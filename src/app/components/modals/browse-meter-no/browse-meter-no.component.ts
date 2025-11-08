@@ -30,6 +30,7 @@ export class BrowseMeterNoComponent implements OnInit {
     'Serial No',
     'Alias',
     'Branch Code',
+    'Phase',
     'Meter Type',
     'Location',
     'Status',
@@ -41,7 +42,8 @@ export class BrowseMeterNoComponent implements OnInit {
   getStatus = Utils.getStatusName;
   getCustomerType = Utils.getCustomerType;
   getBranchCode = Utils.getBranchCode;
-
+  getPhase = Utils.getPhase;
+  
   ngOnInit(): void {
     this.customerService.getMeterNoByCustomerId(this.customerId).then((response:any) => {
       console.log('METERS: ', response);

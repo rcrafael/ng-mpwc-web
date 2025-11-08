@@ -14,6 +14,7 @@ import { debounceTime, distinctUntilChanged, Subject, Subscription } from 'rxjs'
 import { NgIf } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
 import { ToastrMessage, ToastrTitle } from '../../../common/constants';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-customer-list',
@@ -24,7 +25,8 @@ import { ToastrMessage, ToastrTitle } from '../../../common/constants';
     MatPaginatorModule,
     RouterModule,
     FormsModule,
-    NgIf
+    NgIf,
+    MatIconModule
 ],
   templateUrl: './customer-list.component.html',
   styleUrl: './customer-list.component.css'
@@ -60,9 +62,10 @@ export class CustomerListComponent implements OnInit {
     'Last Name', 
     'First Name', 
     'Middle Name', 
-    'Branch Code', 
     'Address', 
-    'Customer Type'
+    'Birth Date',
+    'Gender',
+    'Actions',
   ];
 
   pageIdx:number = 0;
@@ -74,13 +77,13 @@ export class CustomerListComponent implements OnInit {
 
   getCustomerType = Utils.getCustomerType;
   getBranchCode = Utils.getBranchCode;
-
+  getGender = Utils.getGender;
 
   private subjectKeyword = new Subject<string>();
   private subscription: Subscription;
 
   async ngOnInit(): Promise<void> {
-    this.loadData(this.pageIdx,this.pageSize)
+    await this.loadData(this.pageIdx,this.pageSize)
   }
 
   onCreateNewClick(): void {
@@ -126,6 +129,7 @@ export class CustomerListComponent implements OnInit {
   }
 
   async loadDataWithSearch(keyword: string, pageIdx: number, pageSize: number) {
+    this.commonService.showSpinner(true);
     await this.customerService.getCustomerWithSearch(keyword, pageIdx, pageSize).then((response:IAPIResponse) => {
       if(response.result !== null) {
         const result: any = response.result;
@@ -143,6 +147,7 @@ export class CustomerListComponent implements OnInit {
       console.error('Error fetching customer list with search:', error);
     })
     .finally(async () => {
+      this.commonService.showSpinner(false);
     });
   }
 

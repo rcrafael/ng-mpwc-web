@@ -61,6 +61,8 @@ export class BillingCreateComponent implements OnInit {
     alias: new FormControl<string>(''),
     customerName: new FormControl<string>(''),
     branchCode: new FormControl<string>(''),
+    phase: new FormControl<string>(''),
+    customerType: new FormControl<string>(''),
     address: new FormControl<string>(''),
     monthOf: new FormControl<number>(this.currentMonth),
     dateFrom: new FormControl<string>(this.currentDate),
@@ -80,6 +82,8 @@ export class BillingCreateComponent implements OnInit {
 
 
   getBranchCode = Utils.getBranchCode;
+  getPhase = Utils.getPhase;
+  getCustomerType = Utils.getCustomerType;
 
   ngOnInit(): void {
     this.generateReadingNo();
@@ -173,6 +177,8 @@ export class BillingCreateComponent implements OnInit {
           this.fg.patchValue({
             branchCode: this.getBranchCode(data.branchCode),
             alias: data.alias,
+            phase: this.getPhase(data.phase),
+            customerType: this.getCustomerType(data.customerType)
           });
           console.log("CUSTOMER TYPE: ", this.selectedMeterNo.customerType);
         }

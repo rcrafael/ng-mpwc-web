@@ -106,5 +106,15 @@ export class Utils {
           return `${lastName}, ${firstName} ${middleName}`;
      }
 
+     public static getGender(gender: number): string {
+          switch(gender) {
+               case 1:
+                    return 'Male';
+               case 2:
+                    return 'Female';
+               default:
+                    return 'Unknown';
+          }
+     }
 
 }

@@ -61,7 +61,7 @@ export class ApiService {
   }
 
   updateMeterNo(params: IMeterDetails): Observable<IAPIResponse> {
-    return this.httpClient.post<IAPIResponse>(`${this.env.apiHost}${CustomerApi.UPDATE_METER_NO}`, params);
+    return this.httpClient.put<IAPIResponse>(`${this.env.apiHost}${CustomerApi.UPDATE_METER_NO}`, params);
   }
 
   getMeterNoByCustomerId(customerId: string): Observable<IAPIResponse> {
@@ -236,7 +236,7 @@ export class ApiService {
   }
 
   printORExcel(id: string): Observable<any> {
-    return this.httpClient.get<IAPIResponse>(`${this.env.apiHost}${PaymentApi.PRINT_OR_EXCEL}`.replace('{id}',id));
+    return this.httpClient.get<IAPIResponse>(`${this.env.apiHost}${PaymentApi.PRINT_OR_EXCEL}`.replace('{id}',id), { responseType: 'arraybuffer' as 'json' }) ;
   }
 
 

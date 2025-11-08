@@ -65,4 +65,8 @@ export class PaymentService {
     return firstValueFrom(this.http.printORPdf(id));
   }
 
+  async printORExcel(id: string): Promise<any> {
+    return firstValueFrom(this.http.printORExcel(id));
+  }
+
 }

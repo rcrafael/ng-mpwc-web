@@ -11,7 +11,7 @@
                               type="text" 
                               [(ngModel)]="searchKeyword" 
                               (ngModelChange)="onSearchInputChanged($event)"
-                              placeholder="Please search using Account No. / Customer Name / Address" 
+                              placeholder="Please search Customer Name / Account No. / Address" 
                               class="w-full rounded-md" 
                          />
                     </div>
@@ -51,18 +51,41 @@
                               <th mat-header-cell *matHeaderCellDef>Middle Name</th>
                               <td mat-cell *matCellDef="let element"> <span>{{element.middleName}}</span> </td>
                          </ng-container>
-                         <ng-container matColumnDef="Branch Code">
-                              <th mat-header-cell *matHeaderCellDef>Branch Code</th>
-                              <td mat-cell *matCellDef="let element"> <span>{{ getBranchCode(element.branchCode)}}</span> </td>
-                         </ng-container>
                          <ng-container matColumnDef="Address">
                               <th mat-header-cell *matHeaderCellDef>Address</th>
                               <td mat-cell *matCellDef="let element"> <span>{{element.address}}</span> </td>
                          </ng-container>
-                         <ng-container matColumnDef="Customer Type">
-                              <th mat-header-cell *matHeaderCellDef>Customer Type</th>
-                              <td mat-cell *matCellDef="let element"> <span>{{ getCustomerType(element.customerType)}}</span> </td>
+                         <ng-container matColumnDef="Birth Date">
+                              <th mat-header-cell *matHeaderCellDef>Birth Date</th>
+                              <td mat-cell *matCellDef="let element"> <span>{{element.dateOfBirth}}</span> </td>
                          </ng-container>
+                         <ng-container matColumnDef="Gender">
+                              <th mat-header-cell *matHeaderCellDef>Gender</th>
+                              <td mat-cell *matCellDef="let element"> <span>{{getGender(element.gender)}}</span> </td>
+                         </ng-container>
+                         <ng-container matColumnDef="Actions">
+                              <th mat-header-cell *matHeaderCellDef class="!text-center"><span>Actions</span></th>
+                              <td mat-cell *matCellDef="let element">
+                                   <div class="flex flex-row gap-4 justify-center">
+                                        <mat-icon 
+                                             fontIcon="print" 
+                                             class="cursor-pointer text-blue-500 font"
+                                             matTooltip="Print Billing Receipt"
+                                        ></mat-icon>
+                                        <mat-icon 
+                                             fontIcon="cancel"
+                                             matTooltip="Void Billing"
+                                             class="cursor-pointer text-black" 
+                                        ></mat-icon>
+                                        <mat-icon 
+                                             fontIcon="delete_forever"
+                                             matTooltip="Delete Billing"
+                                             class="cursor-pointer text-red-500" 
+                                        ></mat-icon>
+                                   </div>
+                              </td>
+                         </ng-container>
+
 
                          <tr mat-header-row *matHeaderRowDef="tableCols; sticky: true" ></tr>
                          <tr mat-row *matRowDef="let row; columns: tableCols;"></tr>

@@ -105,5 +105,6 @@ export const transactionStatus: ITransactionStatus[] = [
   { id: 5, name: 'Rejected'},
   { id: 6, name: 'Active'},
   { id: 7, name: 'Inactive'},
-  { id: 8, name: 'Disposed'}
+  { id: 8, name: 'Disposed'},
+  { id: 9, name: 'Deleted'},
 ]

@@ -1,21 +1,19 @@
 import { formatDate } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
+import { FormGroup, FormControl, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Utils } from '../../../../common/util';
 import { IBranchCode } from '../../../../models/interfaces/ICommon';
-import { IOfficialReceipt, IOfficialReceiptDetail, IOfficialReceiptWithDetails, IShareCapital, IShareCbu, IShareSavings } from '../../../../models/interfaces/IOfficialReceipt';
-import { CustomerService } from '../../../../services/customer.service';
+import {  IOfficialReceiptDetail, IOfficialReceiptWithDetails } from '../../../../models/interfaces/IOfficialReceipt';
 import { PaymentService } from '../../../../services/payment.service';
 import { IAPIResponse } from '../../../../models/interfaces/IApiResponse';
-import { BrowseCustomersComponent } from '../../../modals/browse-customers/browse-customers.component';
-import { AddDetailsModalComponent } from '../payment-official-receipt-create/add-details-modal/add-details-modal.component';
 import { MatDivider } from '@angular/material/divider';
 import { AuthService } from '../../../../services/auth.service';
 import { ToastrService } from 'ngx-toastr';
 import { ToastrMessage, ToastrTitle } from '../../../../common/constants';
+import { CommonService } from '../../../../services/common.service';
+import { utils } from 'xlsx';
 
 @Component({
   selector: 'app-payment-official-receipt-view',
@@ -24,20 +22,23 @@ import { ToastrMessage, ToastrTitle } from '../../../../common/constants';
     ReactiveFormsModule,
     MatDivider,
     MatTableModule,
+    FormsModule
   ],
   templateUrl: './payment-official-receipt-view.component.html',
   styleUrl: './payment-official-receipt-view.component.css'
 })
 export class PaymentOfficialReceiptViewComponent implements OnInit {
 
-constructor(
-    private dialog: MatDialog,
+  constructor(
     private activeRoute: ActivatedRoute,
-    private customerService: CustomerService,
     private paymentService: PaymentService,
     private authService: AuthService,
-    private toast: ToastrService
+    private toast: ToastrService,
+    private commonService: CommonService,
+    private router: Router
   ) {}
+
+  COMPLETE_STATUS: number = 1;
 
   toastTitlePrefix = 'Official Receipt - '
 
@@ -83,10 +84,13 @@ constructor(
   currentDate = formatDate(new Date(), 'yyyy-MM-dd', 'en-PH');
   selectedCustomerInfo!: any;
   orDetails: IOfficialReceiptDetail[] = []; 
+  orId: string|null = '';
+  transStatus!: number;
 
   formatAmount = Utils.formatCurrency;
   formatNumber = Utils.formatNumber;
   sanitizeAmount = Utils.sanitizeAmount;
+  getStatus = Utils.getStatusName;
 
   public fg = new FormGroup({
     accountNo: new FormControl<string>('', Validators.required),
@@ -102,19 +106,19 @@ constructor(
     savings: new FormControl<string>('0.00'),
     totalBillingAmount: new FormControl<string>('0.00'),
     totalShareAmount: new FormControl<string>('0.00'),
-    // shareAsPayment: new FormControl<string>('0.00'),
     seniorDiscount: new FormControl<string>('0.00'),
     totalAmountPay: new FormControl<string>('0.00'),
     checkNo: new FormControl<string>(''),
     checkBank: new FormControl<string>(''),
     checkDate: new FormControl<string|null>(null),
+    orStatus: new FormControl<string>(''),
   })
 
-  ngOnInit(): void {
-    this.activeRoute.paramMap.subscribe(params => {
-      const orId = params.get('orId');
-      if(orId !== undefined && orId !== null && orId !== '') {
-        this.paymentService.getORWithCustomerInfoById(orId).then(async (response: IAPIResponse) => {
+  async ngOnInit(): Promise<void> {
+    await this.activeRoute.paramMap.subscribe(async params => {
+      this.orId = params.get('orId');
+      if(this.orId !== undefined && this.orId !== null && this.orId !== '') {
+        await this.paymentService.getORWithCustomerInfoById(this.orId).then(async (response: IAPIResponse) => {
           
           if(response.result) {
             const result = response.result as IOfficialReceiptWithDetails;
@@ -122,6 +126,8 @@ constructor(
             this.orDetails = result.details;
             this.dataSource = new MatTableDataSource<IOfficialReceiptDetail>(this.orDetails);
             
+            this.transStatus = result.header.status;
+
             let username = '';
             try {
               await this.authService.getUsernameById(result.header.createdBy).then((res) => {
@@ -147,12 +153,12 @@ constructor(
               savings: this.formatNumber(result.shareSavings?.amount ?? 0),
               totalBillingAmount: this.formatNumber(result.header.totalBillingAmount ?? 0),
               totalShareAmount: this.formatNumber(result.header.totalShareAmount ?? 0),
-              // shareAsPayment: this.formatNumber(result.header.totalShareAmount ?? 0), 
               seniorDiscount: this.formatNumber(result.header.seniorDiscount ?? 0),
               totalAmountPay: this.formatNumber(result.header.totalAmountPay ?? 0),
               checkNo: result.header.checkNo,
               checkBank: result.header.checkBank,
-              checkDate: result.header.checkDate
+              checkDate: result.header.checkDate,
+              orStatus: this.getStatus(result.header.status)
             })
           }
           
@@ -162,122 +168,87 @@ constructor(
 
   }
 
-  onSubmit(): void {
-    if(!this.fg.valid) {
-      alert('Invalid Inputs. Please try again.');
-      this.toast.warning(ToastrMessage.INVALID_INPUT, this.toastTitlePrefix + ToastrTitle.INVALID_INPUT);
-      return;
-    }
-
-    const frm = this.fg.value;
-
-    let shareCap!: IShareCapital
-    let cbu!: IShareCbu
-    let savings!: IShareSavings
-
-    if(frm.cbu !== null && frm.cbu !== undefined && this.sanitizeAmount(frm.cbu ?? '0') > 0) {
-      cbu = {
-        orNo: frm.orNo!,
-        customerId: this.selectedCustomerInfo.id,
-        amount: this.sanitizeAmount(frm.cbu ?? '0'),
-        entryDate: frm.entryDate!,
-        transactionType: 1
+  async handlePrintPdf(): Promise<void> {
+    this.commonService.showSpinner(true);
+    await this.paymentService.printORPdf(this.orId!).then((response:ArrayBuffer) => {
+      if(response !== null) {
+        const blob = new Blob([response], { type: 'application/pdf' });
+        const blobUrl = URL.createObjectURL(blob);
+        const pdfWindow = window.open(blobUrl);
+        if (pdfWindow) {
+          pdfWindow.addEventListener('load', () => {
+            pdfWindow.focus();
+            pdfWindow.print();
+          });
+        }
       }
-    }
-
-    if(frm.shareCapital !== null && frm.shareCapital !== undefined && this.sanitizeAmount(frm.shareCapital ??'0') > 0) {
-      shareCap = {
-        orNo: frm.orNo!,
-        customerId: this.selectedCustomerInfo.id,
-        amount: this.sanitizeAmount(frm.shareCapital ?? '0'),
-        entryDate: frm.entryDate!,
-        transactionType: 1
-      }
-    }
-
-    if(frm.savings !== null && frm.savings !== undefined && this.sanitizeAmount(frm.savings ?? '0') > 0) {
-      savings = {
-        orNo: frm.orNo!,
-        customerId: this.selectedCustomerInfo.id,
-        amount: this.sanitizeAmount(frm.savings ?? '0'),
-        entryDate: frm.entryDate!,
-        transactionType: 1
-      }
-    }
-
-    const paymentDetails: IOfficialReceipt = {
-      header: {
-        orNo: frm.orNo!,
-        customerId: this.selectedCustomerInfo.id,
-        orDate: frm.orDate!,
-        totalBillingAmount: this.sanitizeAmount(frm.totalBillingAmount ?? '0'),
-        totalShareAmount: this.sanitizeAmount(frm.totalShareAmount ?? '0'),
-        totalAmountPay: this.sanitizeAmount(frm.totalAmountPay ?? '0'),
-        seniorDiscount: this.sanitizeAmount(frm.seniorDiscount ?? '0'),
-        entryDate: frm.entryDate!,
-        createdBy: this.authService.getUserId(),
-        checkNo: frm.checkNo ?? '',
-        checkBank: frm.checkBank ?? '', 
-        checkDate: frm.checkDate ?? '',
-        status: 1, //1 = complete
-        isDeleted: false,
-      },
-      details: this.orDetails,
-      shareCapital: shareCap,
-      cbu: cbu,
-      savings: savings
-    }
-
-    console.log('OR PAYLOAD: ', paymentDetails);
-
-    this.paymentService.createORPayment(paymentDetails).then((response: IAPIResponse) => {
-      console.log('PAYMENT RESPONSE:', response);
-      this.toast.success(ToastrMessage.SUCCESS_CREATE, this.toastTitlePrefix + ToastrTitle.SUCCESS);
     })
-    .catch((error: Error) => {
-      console.error("ERROR CREATING PAYMENT: ", error);
-      this.toast.error(`${ToastrMessage.ERROR_CREATE} - ${error.message}`, this.toastTitlePrefix + ToastrTitle.ERROR);
+    .catch((err: Error) => {
+      console.error('ERROR PRINTING OR RECEIPT: ', err);
+      this.toast.error(`${ToastrMessage.ERROR_FETCHING_DATA}: ${err.message}`, this.toastTitlePrefix + ToastrTitle.ERROR);
     })
     .finally(() => {
+      this.commonService.showSpinner(false);
+    });
+  }
+
+  async handleDownloadXls(): Promise<void> {
+    this.commonService.showSpinner(true);
+    await this.paymentService.printORExcel(this.orId!).then((response:ArrayBuffer) => {
       
-    });
+      if(response !== null) {
 
+        const blob = new Blob([response], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+        const blobUrl = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = blobUrl;
+        a.download = `OfficialReceipt_${this.orId}.xlsx`;   // filename
+        a.click();
+        event?.preventDefault();
 
-  }
-
-  openDetailFormDialog(): void {
-    const dialogRef = this.dialog.open(AddDetailsModalComponent, {
-      data: {customerId: this.selectedCustomerInfo.id},
-      width: '90%',
-      height: '90%'
-    });
-
-
-    dialogRef.afterClosed().subscribe(data => {
-      if(data!== null) {
-        this.orDetails = data;
-        this.dataSource = new MatTableDataSource<IOfficialReceiptDetail>(this.orDetails);
+        window.URL.revokeObjectURL(blobUrl);
       }
     })
-  }
-
-  openCustomerDialog(): void {
-    const dialogRef = this.dialog.open(BrowseCustomersComponent, {
-      width: '90%',
-      height: '90%'
-    });
-
-    dialogRef.afterClosed().subscribe(data => {
-      if(data !== null) {
-        this.selectedCustomerInfo = data
-        this.fg.patchValue({
-          accountNo: this.selectedCustomerInfo.accountNo,
-          customerName: `${this.selectedCustomerInfo.lastName}, ${this.selectedCustomerInfo.firstName} ${this.selectedCustomerInfo.middleName}` ,
-          branchCode: this.selectedCustomerInfo.branchCode,
-          address: this.selectedCustomerInfo.address
-        })
-      }
+    .catch((err: Error) => {
+      console.error('ERROR PRINTING OR RECEIPT: ', err);
+      this.toast.error(`${ToastrMessage.ERROR_FETCHING_DATA}: ${err.message}`, this.toastTitlePrefix + ToastrTitle.ERROR);
     })
+    .finally(() => {
+      this.commonService.showSpinner(false);
+    });
   }
+
+  async handleVoid(): Promise<void> {
+    const isConfirm = confirm('Are you sure you want to VOID this record?');
+    if(!isConfirm) return;
+
+    const VOID_STATUS_ID = 4;
+    try {
+      const response = await this.paymentService.updateStatus(this.orId!, VOID_STATUS_ID);
+      console.log('RESPONSE: ', response);
+      this.fg.patchValue({
+        orStatus: this.getStatus(VOID_STATUS_ID)
+      })
+      this.toast.success(`${ToastrMessage.SUCCESS_UPDATE}`, this.toastTitlePrefix + ToastrTitle.SUCCESS);
+    } catch (err) {
+      console.error('ERROR VOIDING OTHER PAYMENT RECORD: ', err);
+      this.toast.error(`${ToastrMessage.ERROR_UPDATE}: ${err}`, this.toastTitlePrefix + ToastrTitle.ERROR);
+    }
+  }
+
+  async handleDelete(): Promise<void> {
+    const isConfirm = confirm('Are you sure you want to DELETE this record?');
+    if(!isConfirm) return;
     
+    try {
+      const response = await this.paymentService.deleteRecord(this.orId!);
+      console.log('RESPONSE: ', response);
+      this.toast.success(`${ToastrMessage.SUCCESS_DELETE}`, this.toastTitlePrefix + ToastrTitle.SUCCESS);
+      this.router.navigate(['payment/official-receipt']);
+    } catch (err) {
+      console.error('ERROR DELETING OTHER PAYMENT RECORD: ', err);
+      this.toast.error(`${ToastrMessage.ERROR_DELETE}: ${err}`, this.toastTitlePrefix + ToastrTitle.ERROR);
+    }
+  }
+
 }

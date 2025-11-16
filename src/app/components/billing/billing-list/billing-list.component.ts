@@ -159,35 +159,55 @@ export class BillingListComponent implements OnInit {
     });
   }
 
-  async handleVoidRecord(orId: string) {
+  async handleVoidRecord(billing:any) {
 
-    const isConfirm = confirm('Are you sure you want to VOID this record?');
-    if(!isConfirm) return;
+    if(billing.status === 2) { //2 = INCOMPLETE
+      const isConfirm = confirm('Are you sure you want to VOID this record?');
+      if(!isConfirm) return;
 
-    const VOID_STATUS_ID = 4;
-    try {
-      // const response = await this.paymentService.updateStatus(orId, VOID_STATUS_ID);
-      // console.log('RESPONSE: ', response);
-      // await this.loadORData(this.pageIdx, this.pageSize);
-    } catch (err) {
-      console.error('ERROR VOIDING OTHER PAYMENT RECORD: ', err);
+      try {
+        this.commonService.showSpinner(true);
+        const response = await this.billingService.voidBilling(billing.id);
+        console.log('RESPONSE: ', response);
+        this.toast.success(`${ToastrMessage.SUCCESS_VOID}`, this.toastTitlePrefix + ToastrTitle.SUCCESS);
+
+        await this.loadData(this.pageIdx, this.pageSize);
+
+      } catch (err) {
+        console.error('ERROR VOIDING BILLING RECORD: ', err);
+      } finally {
+        this.commonService.showSpinner(false);
+        this.toast.error(ToastrMessage.ERROR_VOID + ' : ' + billing.readingNo, this.toastTitlePrefix + ToastrTitle.ERROR);
+      }
+    } else {
+      this.toast.warning(`${ToastrMessage.ERROR_VOID} : Cannot be voided.`, this.toastTitlePrefix + ToastrTitle.WARNING);
     }
-    
 
   }
 
-  async handleDeleteRecord(orId: string) {
+  async handleDeleteRecord(billing: any) {
 
-    const isConfirm = confirm('Are you sure you want to DELETE this record?');
-    if(!isConfirm) return;
-    
-    try {
-      // const response = await this.paymentService.deleteRecord(orId);
-      // console.log('RESPONSE: ', response);
-      // await this.loadORData(this.pageIdx, this.pageSize);
-    } catch (err) {
-      console.error('ERROR DELETING OTHER PAYMENT RECORD: ', err);
+    if(billing.status === 2) { //2 = INCOMPLETE
+      const isConfirm = confirm('Are you sure you want to DELETE this record?');
+      if(!isConfirm) return;
+      
+      try {
+        this.commonService.showSpinner(true);
+        const response = await this.billingService.deleteBilling(billing.id);
+        console.log('RESPONSE: ', response);
+        this.toast.success(`${ToastrMessage.SUCCESS_DELETE}`, this.toastTitlePrefix + ToastrTitle.SUCCESS);
+        await this.loadData(this.pageIdx, this.pageSize);
+      } catch (err) {
+        console.error('ERROR DELETING BILLING RECORD: ', err);
+      } finally {
+        this.commonService.showSpinner(false);
+        this.toast.error(ToastrMessage.ERROR_DELETE + ' : ' + billing.readingNo, this.toastTitlePrefix + ToastrTitle.ERROR);
+      }
+    } else {
+      this.toast.warning(`${ToastrMessage.ERROR_DELETE} : Cannot be deleted.`, this.toastTitlePrefix + ToastrTitle.WARNING);
     }
+
+    
   }
 
   onSearchInputChanged(keyword: string): void {

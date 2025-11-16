@@ -4,10 +4,19 @@
                <div class="flex col-span-6 col-start-1 w-full  place-items-center ">
                     <span class="font-bold">VIEW OTHER COLLECTION</span>
                </div>
-               <!-- <div class="flex col-span-6 col-start-7 w-full place-content-end">
-                    <button type="button" class="p-2 bg-red-300 font-bold border border-solid border-black rounded-md px-3 mr-3" >Reset</button>
-                    <button type="submit" class="p-2 bg-green-300 font-bold border border-solid border-black rounded-md px-3" >Save</button>
-               </div> -->
+               <div class="flex col-span-6 col-start-7 w-full place-content-end">
+                    <button type="button" (click)="handlePrintPdf()"
+                         class="p-2 bg-blue-300 font-bold border border-solid border-black rounded-md px-3 mr-3" >Print</button>
+                    <button type="button" (click)="handleDownloadXls()"
+                         class="p-2 bg-green-300 font-bold border border-solid border-black rounded-md px-3 mr-3" >Download XLS</button>
+                    @if(transStatus === COMPLETE_STATUS) {
+                         <button type="button" (click)="handleVoid()"
+                              class="p-2 bg-red-300 font-bold border border-solid border-black rounded-md px-3 mr-3" >Void</button>
+                    }
+                    
+                    <!-- <button type="button" (click)="handleDelete()"
+                         class="p-2 bg-gray-300 font-bold border border-solid border-black rounded-md px-3" >Delete</button> -->
+               </div>
           </div>
 
           <div class="grid grid-col grid-cols-12 w-full ">
@@ -42,19 +51,6 @@
                               </div>
                          </div>
 
-                         <!-- <div class="grid grid-cols-12 gap-2">
-                              <div class="col-span-3">
-                                   <label for="branchCode">Branch Code</label>
-                              </div>
-                              <div class="xs:col-span-12 md:col-span-9">
-                                   <select id="branchCode" formControlName="branchCode" class="border border-gray-400 rounded-md w-full">
-                                        @for (br of branchCodes; track br) {
-                                             <option [value]="br.id">{{br.name}}</option>
-                                        }
-                                   </select>
-                              </div>
-                         </div> -->
-
                          <div class="grid grid-cols-12 gap-2">
                               <div class="col-span-3">
                                    <label for="address">Address</label>
@@ -84,7 +80,7 @@
                                    <label for="orDate">OR Date</label>
                               </div>
                               <div class="xs:col-span-10 md:col-span-6">
-                                   <input type="date" id="orDate" formControlName="orDate" class="border border-gray-400 rounded-md w-full">
+                                   <input type="date" id="orDate" formControlName="orDate" class="border border-gray-400 rounded-md w-full" readonly>
                               </div>
                          </div>
 
@@ -135,7 +131,7 @@
                                    <label for="checkNo" class="md:text-sm">Check No</label>
                               </div>
                               <div class="xs:col-span-10 md:col-span-6">
-                                   <input type="text" id="checkNo" formControlName="checkNo" class="border border-gray-400 rounded-md w-full">
+                                   <input type="text" id="checkNo" formControlName="checkNo" class="border border-gray-400 rounded-md w-full" readonly>
                               </div>
                          </div>
 
@@ -144,7 +140,7 @@
                                    <label for="checkBank" class="md:text-sm">Bank Name</label>
                               </div>
                               <div class="xs:col-span-10 md:col-span-6">
-                                   <input type="text" id="checkBank" formControlName="checkBank" class="border border-gray-400 rounded-md w-full">
+                                   <input type="text" id="checkBank" formControlName="checkBank" class="border border-gray-400 rounded-md w-full" readonly>
                               </div>
                          </div>
 
@@ -153,7 +149,16 @@
                                    <label for="checkDate" class="md:text-sm">Check Date</label>
                               </div>
                               <div class="xs:col-span-10 md:col-span-6">
-                                   <input type="date" id="checkDate" formControlName="checkDate" class="border border-gray-400 rounded-md w-full">
+                                   <input type="date" id="checkDate" formControlName="checkDate" class="border border-gray-400 rounded-md w-full" readonly>
+                              </div>
+                         </div>
+
+                         <div class="grid grid-cols-12 gap-2">
+                              <div class="xs:col-span-12 md:col-span-5">
+                                   <label for="orStatus" class="md:text-sm">Status</label>
+                              </div>
+                              <div class="xs:col-span-10 md:col-span-6">
+                                   <input type="text" id="orStatus" formControlName="orStatus" class="border border-gray-400 rounded-md w-full" readonly>
                               </div>
                          </div>
 

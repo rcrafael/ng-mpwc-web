@@ -1,13 +1,22 @@
 <div class="p-5 shadow-xl h-auto border rounded-md border-slate-200">
 
-     <form [formGroup]="fg" (ngSubmit)="onSubmit()">
+     <form [formGroup]="fg">
           <div class="flex flex-col-12 w-full pb-5 ">
                <div class="flex col-span-6 col-start-1 w-full  place-items-center ">
                     <span class="font-bold">OFFICIAL RECEIPT</span>
                </div>
                <div class="flex col-span-6 col-start-7 w-full place-content-end">
-                    <button type="button" class="p-2 bg-red-300 font-bold border border-solid border-black rounded-md px-3 mr-3" >Reset</button>
-                    <button type="submit" class="p-2 bg-green-300 font-bold border border-solid border-black rounded-md px-3" >Save</button>
+                    <button type="button" (click)="handlePrintPdf()"
+                         class="p-2 bg-blue-300 font-bold border border-solid border-black rounded-md px-3 mr-3" >Print</button>
+                    <button type="button" (click)="handleDownloadXls()"
+                         class="p-2 bg-green-300 font-bold border border-solid border-black rounded-md px-3 mr-3" >Download XLS</button>
+                    @if(transStatus === COMPLETE_STATUS) {
+                         <button type="button" (click)="handleVoid()"
+                              class="p-2 bg-red-300 font-bold border border-solid border-black rounded-md px-3 mr-3" >Void</button>
+                    }
+                    
+                    <!-- <button type="button" (click)="handleDelete()"
+                         class="p-2 bg-gray-300 font-bold border border-solid border-black rounded-md px-3" >Delete</button> -->
                </div>
           </div>
 
@@ -24,9 +33,6 @@
                               <div class="xs:col-span-10 md:col-span-6">
                                    <input type="text" id="accountNo" formControlName="accountNo" class="border border-gray-400 rounded-md w-full" readonly>
                               </div>
-                              <div class="xs:col-span-2 md:col-span-1">
-                                   <button type="button" (click)="openCustomerDialog()" class="bg-gray-300 w-fit px-[10px] rounded-md border border-black border-solid"><span>...</span></button>
-                              </div>
                          </div>
 
 
@@ -38,19 +44,6 @@
                                    <input type="text" id="customerName" formControlName="customerName"  class="border border-gray-400 rounded-md w-full" readonly>
                               </div>
                          </div>
-
-                         <!-- <div class="grid grid-cols-12 gap-2">
-                              <div class="col-span-3">
-                                   <label for="branchCode">Branch Code</label>
-                              </div>
-                              <div class="xs:col-span-12 md:col-span-9">
-                                   <select id="branchCode" formControlName="branchCode" class="border border-gray-400 rounded-md w-full">
-                                        @for (br of branchCodes; track br) {
-                                             <option [value]="br.id">{{br.name}}</option>
-                                        }
-                                   </select>
-                              </div>
-                         </div> -->
 
                          <div class="grid grid-cols-12 gap-2">
                               <div class="col-span-3">
@@ -214,23 +207,14 @@
                               </div>
                          </div>
 
-                         <!-- <div class="grid grid-cols-12 gap-2">
-                              <div class="xs:col-span-12 md:col-span-5">
-                                   <label for="amountReceived" class="md:text-sm">Amount Received</label>
-                              </div>
-                              <div class="xs:col-span-10 md:col-span-6">
-                                   <input type="text" id="amountReceived" class="border border-gray-400 rounded-md w-full">
-                              </div>
-                         </div>
-
                          <div class="grid grid-cols-12 gap-2">
                               <div class="xs:col-span-12 md:col-span-5">
-                                   <label for="changeAmt" class="md:text-sm">Change</label>
+                                   <label for="status" class="md:text-sm">Status</label>
                               </div>
                               <div class="xs:col-span-10 md:col-span-6">
-                                   <input type="text" disabled id="changeAmt" class="border border-gray-400 rounded-md w-full">
+                                   <input type="text" formControlName="orStatus" readonly id="status" class="border border-gray-400 rounded-md w-full">
                               </div>
-                         </div> -->
+                         </div> 
 
                     </div>
                </div>
@@ -240,11 +224,11 @@
 
           <mat-divider  class="!my-5"/>
 
-          <div class="flex flex-col-12 w-full pb-5 ">
+          <!-- <div class="flex flex-col-12 w-full pb-5 ">
                <div class="flex flex-col-6">
                     <button type="button" (click)="openDetailFormDialog()" class="p-2 bg-blue-300 font-bold border border-solid border-black rounded-md px-3" >Add</button>
                </div>
-          </div>
+          </div> -->
           <div class="overflow-x-scroll overflow-y-hidden">
                <table mat-table [dataSource]="dataSource">
                     <ng-container matColumnDef="Reading No">

@@ -192,6 +192,7 @@ export class PaymentOfficialReceiptListComponent implements OnInit {
 
     const VOID_STATUS_ID = 4;
     try {
+      this.commonService.showSpinner(true);
       const response = await this.paymentService.updateStatus(orId, VOID_STATUS_ID);
       console.log('RESPONSE: ', response);
       this.toast.success(`${ToastrMessage.SUCCESS_UPDATE}`, this.toastTitlePrefix + ToastrTitle.SUCCESS);
@@ -199,6 +200,8 @@ export class PaymentOfficialReceiptListComponent implements OnInit {
     } catch (err) {
       console.error('ERROR VOIDING OTHER PAYMENT RECORD: ', err);
       this.toast.error(`${ToastrMessage.ERROR_UPDATE}: ${err}`, this.toastTitlePrefix + ToastrTitle.ERROR);
+    } finally {
+      this.commonService.showSpinner(false);
     }
     
 

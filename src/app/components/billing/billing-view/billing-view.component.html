@@ -7,11 +7,9 @@
                </div>
 
                <div class="flex col-span-6 col-start-7 w-full place-content-end gap-3">
-                    @if(transStatus === INCOMPLETE_STATUS || transStatus === VOID_STATUS) {
-                         <button type="submit" class="p-2 bg-green-300 font-bold border border-solid border-black rounded-md px-3" >Update</button>   
-                    }
-                    @if(transStatus !== COMPLETE_STATUS || transStatus !== VOID_STATUS) {
-                         <button type="button" class="p-2 bg-red-300 font-bold border border-solid border-black rounded-md px-3" >Void</button>  
+                    @if(transStatus === INCOMPLETE_STATUS) {
+                         <button type="submit" class="p-2 bg-green-300 font-bold border border-solid border-black rounded-md px-3" >Update</button>
+                         <button type="button" class="p-2 bg-red-300 font-bold border border-solid border-black rounded-md px-3" >Void</button> 
                     }
                     <button type="button" class="p-2 bg-blue-500 font-bold border border-solid border-black rounded-md px-3" >Print</button> 
                </div>
@@ -39,11 +37,8 @@
                               </div>
                               <div class="col-start-4 col-span-6">
                                    <input type="text" id="accountNo" formControlName="accountNo"
-                                        class="border border-gray-400 rounded-md">
+                                        class="border border-gray-400 rounded-md" readonly>
                               </div>
-                              <!-- <div class="col-start-10 col-span-1">
-                                   <button type="button" class="bg-gray-300 w-full rounded-md border border-black border-solid"><span>...</span></button>
-                              </div> -->
                          </div>
 
                          <div class="grid grid-cols-12">
@@ -52,11 +47,8 @@
                               </div>
                               <div class="col-start-4 col-span-6">
                                    <input type="text" id="meterNo" formControlName="meterNo"
-                                        class="border border-gray-400 rounded-md">
+                                        class="border border-gray-400 rounded-md" readonly>
                               </div>
-                              <!-- <div class="col-start-10 col-span-1">
-                                   <button type="button" class="bg-gray-300 w-full rounded-md border border-black border-solid"><span>...</span></button>
-                              </div> -->
                          </div>
 
                          <div class="grid grid-cols-12">
@@ -65,7 +57,7 @@
                               </div>
                               <div class="col-start-4 col-span-9">
                                    <input type="text" id="alias" formControlName="alias"
-                                        class="border border-gray-400 rounded-md">
+                                        class="border border-gray-400 rounded-md" readonly>
                               </div>
                          </div>
 
@@ -75,7 +67,7 @@
                               </div>
                               <div class="col-start-4 col-span-9">
                                    <input type="text" id="customerName" formControlName="customerName"
-                                        class="border border-gray-400 rounded-md w-full">
+                                        class="border border-gray-400 rounded-md w-full" readonly>
                               </div>
                          </div>
 
@@ -85,7 +77,7 @@
                               </div>
                               <div class="col-start-4 col-span-9">
                                    <input type="text" id="branchCode" formControlName="branchCode"
-                                        class="border border-gray-400 rounded-md w-full">
+                                        class="border border-gray-400 rounded-md w-full" readonly>
                               </div>
                          </div>
 
@@ -95,7 +87,7 @@
                               </div>
                               <div class="col-start-4 col-span-9">
                                    <input type="text" id="address" formControlName="address"
-                                        class="border border-gray-400 rounded-md w-full">
+                                        class="border border-gray-400 rounded-md w-full" readonly>
                               </div>
                          </div>
                     </div>
@@ -108,7 +100,7 @@
                                    <label for="monthOf"> Month </label>
                               </div>
                               <div class="col-start-4 col-span-6">
-                                   <select id="monthOf" class="border border-gray-400 rounded-md w-full" formControlName="monthOf">
+                                   <select id="monthOf" class="border border-gray-400 rounded-md w-full" formControlName="monthOf" [disabled]="true">
                                         <option value=1>January</option>
                                         <option value=2>February</option>
                                         <option value=3>March</option>
@@ -131,7 +123,7 @@
                               </div>
                               <div class="col-start-4 col-span-6">
                                    <input type="date" id="dateFrom" formControlName="dateFrom"
-                                        class="border border-gray-400 rounded-md w-full">
+                                        class="border border-gray-400 rounded-md w-full" readonly>
                               </div>
                          </div>
 
@@ -141,7 +133,7 @@
                               </div>
                               <div class="col-start-4 col-span-6">
                                    <input type="date" id="dateTo" formControlName="dateTo"
-                                        class="border border-gray-400 rounded-md w-full">
+                                        class="border border-gray-400 rounded-md w-full" readonly>
                               </div>
                          </div>
 
@@ -151,7 +143,7 @@
                               </div>
                               <div class="col-start-4 col-span-6">
                                    <input type="date" id="dueDate" formControlName="dueDate"
-                                        class="border border-gray-400 rounded-md w-full">
+                                        class="border border-gray-400 rounded-md w-full" readonly>
                               </div>
                          </div>
 
@@ -161,7 +153,7 @@
                               </div>
                               <div class="col-start-7 col-span-6">
                                    <input type="checkbox" id="rememberSettings"
-                                        class="border border-gray-400 rounded-md">
+                                        class="border border-gray-400 rounded-md" readonly>
                               </div>
                          </div>
 
@@ -173,7 +165,7 @@
                               </div>
                               <div class="col-start-4 col-span-9">
                                    <input type="number" id="previous" formControlName="previous"
-                                        class="border border-gray-400 rounded-md" (blur)="onBlurUsage()"/>
+                                        class="border border-gray-400 rounded-md" readonly/>
                               </div>
                          </div>
 
@@ -183,7 +175,7 @@
                               </div>
                               <div class="col-start-4 col-span-9">
                                    <input type="number" id="present" formControlName="present"
-                                        class="border border-gray-400 rounded-md" (blur)="onBlurUsage()"/>
+                                        class="border border-gray-400 rounded-md" readonly/>
                               </div>
                          </div>
 
@@ -193,7 +185,7 @@
                               </div>
                               <div class="col-start-4 col-span-9">
                                    <input type="number" id="m3Used" formControlName="m3Used"
-                                        class="border border-gray-400 rounded-md" />
+                                        class="border border-gray-400 rounded-md" readonly />
                               </div>
                          </div>
 
@@ -207,8 +199,8 @@
                                    <label for="readingAmount"> Amount </label>
                               </div>
                               <div class="col-start-5 col-span-8">
-                                   <input type="text" id="readingAmount" formControlName="readingAmount" (change)="computeTotalBillingAmount()"
-                                        class="border border-gray-400 rounded-md text-right" />
+                                   <input type="text" id="readingAmount" formControlName="readingAmount"
+                                        class="border border-gray-400 rounded-md text-right" readonly />
                               </div>
                          </div>
 
@@ -217,8 +209,8 @@
                                    <label for="parts"> Parts </label>
                               </div>
                               <div class="col-start-5 col-span-8">
-                                   <input type="text" id="parts" formControlName="parts" (blur)="onBlurAmounts($event,'parts')"
-                                        class="border border-gray-400 rounded-md text-right" />
+                                   <input type="text" id="parts" formControlName="parts"
+                                        class="border border-gray-400 rounded-md text-right" readonly />
                               </div>
                          </div>
 
@@ -227,8 +219,8 @@
                                    <label for="maintenanceFee"> Maintenance Fee </label>
                               </div>
                               <div class="col-start-5 col-span-8">
-                                   <input type="text" id="maintenanceFee" formControlName="maintenanceFee" (blur)="onBlurAmounts($event,'maintenanceFee')"
-                                        class="border border-gray-400 rounded-md text-right" />
+                                   <input type="text" id="maintenanceFee" formControlName="maintenanceFee"
+                                        class="border border-gray-400 rounded-md text-right" readonly />
                               </div>
                          </div>
 
@@ -237,8 +229,8 @@
                                    <label for="septageFee"> Septage Fee </label>
                               </div>
                               <div class="col-start-5 col-span-8">
-                                   <input type="text" id="septageFee" formControlName="septageFee" (blur)="onBlurAmounts($event,'septageFee')"
-                                        class="border border-gray-400 rounded-md text-right" />
+                                   <input type="text" id="septageFee" formControlName="septageFee"
+                                        class="border border-gray-400 rounded-md text-right" readonly />
                               </div>
                          </div>
 
@@ -247,8 +239,8 @@
                                    <label for="lessAmount"> Less </label>
                               </div>
                               <div class="col-start-5 col-span-8">
-                                   <input type="text" id="lessAmount" formControlName="lessAmount" (blur)="onBlurAmounts($event,'lessAmount')"
-                                        class="border border-gray-400 rounded-md text-right" />
+                                   <input type="text" id="lessAmount" formControlName="lessAmount"
+                                        class="border border-gray-400 rounded-md text-right" readonly />
                               </div>
                          </div>
 
@@ -258,7 +250,7 @@
                               </div>
                               <div class="col-start-5 col-span-8">
                                    <input type="text" id="totalAmount" formControlName="totalAmount"
-                                        class="border border-gray-400 rounded-md text-right" />
+                                        class="border border-gray-400 rounded-md text-right" readonly />
                               </div>
                          </div>
 
@@ -268,7 +260,7 @@
                               </div>
                               <div class="col-start-5 col-span-8">
                                    <input type="text" id="status" formControlName="status"
-                                        class="border border-gray-400 rounded-md" />
+                                        class="border border-gray-400 rounded-md" readonly />
                               </div>
                          </div>
                     </div>

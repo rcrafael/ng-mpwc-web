@@ -147,6 +147,14 @@ export class ApiService {
     return this.httpClient.get<IAPIResponse>(`${this.env.apiHost}${BillingApi.GET_BILLING_SEARCH.replace('{pageNo}',pageNo.toString()).replace('{pageSize}', pageSize.toString())}`, {params});
   }
 
+  voidBilling(id: string): Observable<IAPIResponse> {
+    return this.httpClient.delete<IAPIResponse>(`${this.env.apiHost}${BillingApi.VOID_BILLING.replace('{id}',id)}`);
+  }
+
+  deleteBilling(id: string): Observable<IAPIResponse> {
+    return this.httpClient.delete<IAPIResponse>(`${this.env.apiHost}${BillingApi.DELETE_BILLING.replace('{id}',id)}`);
+  }
+
 
   //septage fee APIs
   getSeptageFees(): Observable<IAPIResponse> {

@@ -9,7 +9,7 @@ import { BrowseCustomersComponent } from '../../../modals/browse-customers/brows
 import { BrowseMeterNoComponent } from '../../../modals/browse-meter-no/browse-meter-no.component';
 import { AddDetailsModalComponent } from './add-details-modal/add-details-modal.component';
 import { formatDate } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CustomerService } from '../../../../services/customer.service';
 import { PaymentService } from '../../../../services/payment.service';
 import { IAPIResponse } from '../../../../models/interfaces/IApiResponse';
@@ -39,7 +39,8 @@ export class PaymentOfficialReceiptCreateComponent implements OnInit {
     private customerService: CustomerService,
     private paymentService: PaymentService,
     private authService: AuthService,
-    private toast: ToastrService
+    private toast: ToastrService,
+    private router: Router
   ) {
     this.fg.patchValue({
       createdBy: this.authService.getUserName()
@@ -93,7 +94,6 @@ export class PaymentOfficialReceiptCreateComponent implements OnInit {
     savings: new FormControl<string>('0.00'),
     totalBillingAmount: new FormControl<string>('0.00'),
     totalShareAmount: new FormControl<string>('0.00'),
-    shareAsPayment: new FormControl<string>('0.00'),
     seniorDiscount: new FormControl<string>('0.00'),
     totalAmountPay: new FormControl<string>('0.00'),
     checkNo: new FormControl<string>(''),
@@ -212,6 +212,7 @@ export class PaymentOfficialReceiptCreateComponent implements OnInit {
     this.paymentService.createORPayment(paymentDetails).then((response: IAPIResponse) => {
       console.log('PAYMENT RESPONSE:', response);
       this.toast.success(ToastrMessage.SUCCESS_CREATE, this.toastTitlePrefix + ToastrTitle.SUCCESS);
+      this.router.navigate(['payment/official-receipt']);
     })
     .catch((error: Error) => {
       this.toast.error(`${ToastrMessage.ERROR_CREATE}: ${error.message}`, this.toastTitlePrefix + ToastrTitle.ERROR);

@@ -28,6 +28,8 @@ export class BillingApi {
      public static GET_RECENT_BILLING_BY_CUSTOMER_ID = '/billing/get-recent-billings';
      public static GET_UNPAID_BILLING_BY_CUSTOMER_ID = '/billing/get-unpaid-bills';
      public static GET_BILLING_SEARCH = '/billing/search/{pageNo}/{pageSize}';
+     public static VOID_BILLING = '/billing/void/{id}';
+     public static DELETE_BILLING = '/billing/{id}';
 }
 
 export class PaymentApi {
@@ -95,6 +97,7 @@ export class ToastrMessage {
      public static SUCCESS_CREATE = 'Successfully created!';
      public static SUCCESS_UPDATE = 'Successfully updated!';
      public static SUCCESS_DELETE = 'Successfully deleted!';
+     public static SUCCESS_VOID = 'Successfully voided!';
 
      public static INVALID_INPUT = 'Invalid input! Please try again.';
 
@@ -103,5 +106,6 @@ export class ToastrMessage {
      public static ERROR_UPDATE = 'Failed updating';
      public static ERROR_DELETE = 'Failed deleting';
      public static ERROR_FETCHING_DATA = 'Failed fetching data';
+     public static ERROR_VOID = 'Failed voiding';
 
 }

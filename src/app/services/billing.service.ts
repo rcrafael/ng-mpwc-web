@@ -64,4 +64,12 @@ export class BillingService {
     return firstValueFrom(this.http.getBillingSearch(keyword, pageNo, pageSize));
   }
 
+  voidBilling(readingId: string): Promise<IAPIResponse> {
+    return firstValueFrom(this.http.voidBilling(readingId));
+  }
+
+  deleteBilling(readingId: string): Promise<IAPIResponse> {
+    return firstValueFrom(this.http.deleteBilling(readingId));
+  }
+
 }

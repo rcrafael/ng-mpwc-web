@@ -16,6 +16,7 @@ import { ToastrService } from 'ngx-toastr';
 import { ToastrMessage, ToastrTitle } from '../../../common/constants';
 import { debounceTime, distinctUntilChanged, Subject, Subscription } from 'rxjs';
 import { FormsModule, NgModel } from '@angular/forms';
+import { NoDataToDisplayComponent } from "../../common/no-data-to-display/no-data-to-display.component";
 
 @Component({
   selector: 'app-billing-list',
@@ -28,7 +29,8 @@ import { FormsModule, NgModel } from '@angular/forms';
     MatTooltip,
     MatIconModule,
     NgIf,
-    FormsModule
+    FormsModule,
+    NoDataToDisplayComponent
 ],
   templateUrl: './billing-list.component.html',
   styleUrl: './billing-list.component.css'

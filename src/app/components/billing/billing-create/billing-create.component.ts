@@ -18,6 +18,7 @@ import { Utils } from '../../../common/util';
 import { SeptageFeeService } from '../../../services/septage-fee.service';
 import { ToastrService } from 'ngx-toastr';
 import { ToastrMessage, ToastrTitle } from '../../../common/constants';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-billing-create',
@@ -39,7 +40,8 @@ export class BillingCreateComponent implements OnInit {
     private billingService: BillingService,
     private septageService: SeptageFeeService,
     private dialog: MatDialog,
-    private toast: ToastrService
+    private toast: ToastrService,
+    private router: Router,
   ) {}
 
   toastTitlePrefix = 'Billing - ';
@@ -129,6 +131,7 @@ export class BillingCreateComponent implements OnInit {
 
       this.customerService.updateMeterNo(params).then(response => {
         this.toast.success(ToastrMessage.SUCCESS_CREATE, this.toastTitlePrefix + ToastrTitle.SUCCESS);
+        this.router.navigateByUrl('billing');
       })
       .catch((err: Error) => {
         this.toast.error(ToastrMessage.ERROR_CREATE + ': ' + err.message, this.toastTitlePrefix + ToastrTitle.ERROR);
@@ -251,18 +254,21 @@ export class BillingCreateComponent implements OnInit {
     let idx: number = 0;
 
     for (let r of this.waterRates) {
-      
+
       if(r.to !== null) {
-      
         if(r.isBaseAmount) {
           baseAmount = r.ratingValue;
           currentAmount = baseAmount;
+          if(useM3 < r.to) {
+            break;
+          }
         } else {
           if (useM3 >= r.to) {
             previousCeiling = this.waterRates[idx-1].to ? this.waterRates[idx-1].to : 0 ;
             currentCeiling = r.to ? r.to : 0;
             currentAmount = ((currentCeiling - (previousCeiling ? previousCeiling : 0)) * r.ratingValue) + baseAmount;
             baseAmount = currentAmount;
+            
           } else {
             previousCeiling = this.waterRates[idx-1].to ? this.waterRates[idx-1].to : 0 ;
             currentAmount = ((useM3 - (previousCeiling ? previousCeiling : 0)) * r.ratingValue) + baseAmount;
@@ -281,8 +287,10 @@ export class BillingCreateComponent implements OnInit {
       }
       // console.log('from: ', r.from , 'to: ', r.to, 'rate: ', r.ratingValue, 'baseAmount: ', baseAmount, 'reading Amount: ', currentAmount);
       idx += 1;
-    };
-    
+    }
+
+    console.log('currentAmount: ', currentAmount);
+    console.log('baseAmount: ', baseAmount);
     this.fg.patchValue({
       readingAmount: currentAmount,
     });

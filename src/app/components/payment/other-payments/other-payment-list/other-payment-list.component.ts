@@ -13,6 +13,7 @@ import { FormsModule } from '@angular/forms';
 import { CommonService } from '../../../../services/common.service';
 import { ToastrService } from 'ngx-toastr';
 import { ToastrMessage, ToastrTitle } from '../../../../common/constants';
+import { NoDataToDisplayComponent } from "../../../common/no-data-to-display/no-data-to-display.component";
 
 @Component({
   selector: 'app-other-payment-list',
@@ -24,7 +25,8 @@ import { ToastrMessage, ToastrTitle } from '../../../../common/constants';
     MatPaginatorModule,
     MatIconModule,
     MatTooltipModule,
-    FormsModule
+    FormsModule,
+    NoDataToDisplayComponent
 ],
   templateUrl: './other-payment-list.component.html',
   styleUrl: './other-payment-list.component.css'

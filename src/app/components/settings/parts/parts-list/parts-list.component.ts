@@ -16,6 +16,7 @@ import { PartsViewComponent } from '../parts-view/parts-view.component';
 import { CommonService } from '../../../../services/common.service';
 import { ToastrService } from 'ngx-toastr';
 import { ToastrMessage, ToastrTitle } from '../../../../common/constants';
+import { NoDataToDisplayComponent } from "../../../common/no-data-to-display/no-data-to-display.component";
 
 @Component({
   selector: 'app-parts-list',
@@ -26,8 +27,9 @@ import { ToastrMessage, ToastrTitle } from '../../../../common/constants';
     RouterModule,
     MatIcon,
     MatPaginatorModule,
-    MatTooltip
-  ],
+    MatTooltip,
+    NoDataToDisplayComponent
+],
   templateUrl: './parts-list.component.html',
   styleUrl: './parts-list.component.css'
 })

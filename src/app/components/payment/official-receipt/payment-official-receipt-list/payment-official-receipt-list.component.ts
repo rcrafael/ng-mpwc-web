@@ -18,6 +18,7 @@ import { FormsModule, NgModel } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { ToastrMessage, ToastrTitle } from '../../../../common/constants';
 import { DomSanitizer } from '@angular/platform-browser';
+import { NoDataToDisplayComponent } from "../../../common/no-data-to-display/no-data-to-display.component";
 
 @Component({
   selector: 'app-payment-official-receipt-list',
@@ -29,7 +30,8 @@ import { DomSanitizer } from '@angular/platform-browser';
     MatPaginatorModule,
     NgIf,
     MatTooltip,
-    FormsModule
+    FormsModule,
+    NoDataToDisplayComponent
 ],
   templateUrl: './payment-official-receipt-list.component.html',
   styleUrl: './payment-official-receipt-list.component.css'

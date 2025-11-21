@@ -15,6 +15,7 @@ import { NgIf } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
 import { ToastrMessage, ToastrTitle } from '../../../common/constants';
 import { MatIconModule } from '@angular/material/icon';
+import { NoDataToDisplayComponent } from "../../common/no-data-to-display/no-data-to-display.component";
 
 @Component({
   selector: 'app-customer-list',
@@ -26,7 +27,8 @@ import { MatIconModule } from '@angular/material/icon';
     RouterModule,
     FormsModule,
     NgIf,
-    MatIconModule
+    MatIconModule,
+    NoDataToDisplayComponent
 ],
   templateUrl: './customer-list.component.html',
   styleUrl: './customer-list.component.css'

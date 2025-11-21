@@ -23,90 +23,95 @@
      </div>
 
      <div class="flex flex-col flex-1 min-h-0">
-          <div *ngIf="dataSource.data.length === 0">
-               <div>Please wait while loading...</div>
-          </div> 
-          <div class="flex-1 overflow-auto min-h-0">
-               <div *ngIf="dataSource.data.length > 0" class="h-full">
-                    <table mat-table [dataSource]="dataSource" class="w-full border-collapse">
-                         <ng-container matColumnDef="Reading No">
-                              <th mat-header-cell *matHeaderCellDef>Reading No</th>
-                              <td mat-cell *matCellDef="let element"> <a [routerLink]="['/billing',element.id]" ><span>{{element.readingNo}}</span></a> </td>
-                         </ng-container>
-                         <ng-container matColumnDef="Account No">
-                              <th mat-header-cell *matHeaderCellDef>Account No</th>
-                              <td mat-cell *matCellDef="let element" class="!text-center"> <span>{{element.accountNo}}</span> </td>
-                         </ng-container>
-                         <ng-container matColumnDef="Meter No">
-                              <th mat-header-cell *matHeaderCellDef>Meter No</th>
-                              <td mat-cell *matCellDef="let element" class="!text-center"> <span>{{element.meterNo}}</span> </td>
-                         </ng-container>
-                         <ng-container matColumnDef="Customer Name">
-                              <th mat-header-cell *matHeaderCellDef class="!text-left">Customer Name</th>
-                              <td mat-cell *matCellDef="let element"> <span>{{buildCustName(element.firstName,element.middleName,element.lastName)}}</span> </td>
-                         </ng-container>
-                         <ng-container matColumnDef="Alias">
-                              <th mat-header-cell *matHeaderCellDef class="!text-left">Alias</th>
-                              <td mat-cell *matCellDef="let element"> <span>{{element.alias}}</span> </td>
-                         </ng-container>
-                         <ng-container matColumnDef="Branch Code">
-                              <th mat-header-cell *matHeaderCellDef>Branch Code</th>
-                              <td mat-cell *matCellDef="let element"> <span>{{getBranchCode(element.branchCode)}}</span> </td>
-                         </ng-container>
-                         <ng-container matColumnDef="Address">
-                              <th mat-header-cell *matHeaderCellDef class="!text-left">Address</th>
-                              <td mat-cell *matCellDef="let element"> <span>{{element.address}}</span> </td>
-                         </ng-container>
-                         <ng-container matColumnDef="Month">
-                              <th mat-header-cell *matHeaderCellDef>Month</th>
-                              <td mat-cell *matCellDef="let element"> <span>{{getMonth(element.monthOf)}}</span> </td>
-                         </ng-container>
-                         <ng-container matColumnDef="Billing Period">
-                              <th mat-header-cell *matHeaderCellDef>Billing Period</th>
-                              <td mat-cell *matCellDef="let element"> <span>{{formatDate(element.dateFrom)}} - {{formatDate(element.dateTo)}}</span> </td>
-                         </ng-container>
-                         <ng-container matColumnDef="Due Date">
-                              <th mat-header-cell *matHeaderCellDef>Due Date</th>
-                              <td mat-cell *matCellDef="let element"> <span>{{formatDate(element.dueDate)}}</span> </td>
-                         </ng-container>
-                         <ng-container matColumnDef="Amount">
-                              <th mat-header-cell *matHeaderCellDef class="!text-right">Amount</th>
-                              <td mat-cell *matCellDef="let element" class="!text-right"> <span>{{formatAmount(element.totalAmount)}}</span> </td>
-                         </ng-container>
-                         <ng-container matColumnDef="Status">
-                              <th mat-header-cell *matHeaderCellDef>Status</th>
-                              <td mat-cell *matCellDef="let element"> <span>{{getStatus(element.status)}}</span> </td>
-                         </ng-container>
-                         <ng-container matColumnDef="Actions">
-                              <th mat-header-cell *matHeaderCellDef class="!text-center"><span>Actions</span></th>
-                              <td mat-cell *matCellDef="let element">
-                                   <div class="flex flex-row gap-4 justify-center">
-                                        <mat-icon 
-                                             fontIcon="print" 
-                                             class="cursor-pointer text-blue-500 font"
-                                             matTooltip="Print Billing Receipt"
-                                        ></mat-icon>
-                                        <mat-icon 
-                                             fontIcon="cancel"
-                                             matTooltip="Void Billing"
-                                             class="cursor-pointer text-black" 
-                                             (click)="handleVoidRecord(element)"
-                                        ></mat-icon>
-                                        <!-- <mat-icon 
-                                             fontIcon="delete_forever"
-                                             matTooltip="Delete Billing"
-                                             class="cursor-pointer text-red-500" 
-                                             (click)="handleDeleteRecord(element)"
-                                        ></mat-icon> -->
-                                   </div>
-                              </td>
-                         </ng-container>
+          @if(dataSource.data.length === 0) {
+               <!-- <div>Please wait while loading...</div> -->
+                <div class="flex-1 flex items-center justify-center">
+                    <app-no-data-to-display></app-no-data-to-display>
+                </div>
+               
+          } @else { 
+               <div class="flex-1 overflow-auto min-h-0">
+                    <div *ngIf="dataSource.data.length > 0" class="h-full">
+                         <table mat-table [dataSource]="dataSource" class="w-full border-collapse">
+                              <ng-container matColumnDef="Reading No">
+                                   <th mat-header-cell *matHeaderCellDef>Reading No</th>
+                                   <td mat-cell *matCellDef="let element"> <a [routerLink]="['/billing',element.id]" ><span>{{element.readingNo}}</span></a> </td>
+                              </ng-container>
+                              <ng-container matColumnDef="Account No">
+                                   <th mat-header-cell *matHeaderCellDef>Account No</th>
+                                   <td mat-cell *matCellDef="let element" class="!text-center"> <span>{{element.accountNo}}</span> </td>
+                              </ng-container>
+                              <ng-container matColumnDef="Meter No">
+                                   <th mat-header-cell *matHeaderCellDef>Meter No</th>
+                                   <td mat-cell *matCellDef="let element" class="!text-center"> <span>{{element.meterNo}}</span> </td>
+                              </ng-container>
+                              <ng-container matColumnDef="Customer Name">
+                                   <th mat-header-cell *matHeaderCellDef class="!text-left">Customer Name</th>
+                                   <td mat-cell *matCellDef="let element"> <span>{{buildCustName(element.firstName,element.middleName,element.lastName)}}</span> </td>
+                              </ng-container>
+                              <ng-container matColumnDef="Alias">
+                                   <th mat-header-cell *matHeaderCellDef class="!text-left">Alias</th>
+                                   <td mat-cell *matCellDef="let element"> <span>{{element.alias}}</span> </td>
+                              </ng-container>
+                              <ng-container matColumnDef="Branch Code">
+                                   <th mat-header-cell *matHeaderCellDef>Branch Code</th>
+                                   <td mat-cell *matCellDef="let element"> <span>{{getBranchCode(element.branchCode)}}</span> </td>
+                              </ng-container>
+                              <ng-container matColumnDef="Address">
+                                   <th mat-header-cell *matHeaderCellDef class="!text-left">Address</th>
+                                   <td mat-cell *matCellDef="let element"> <span>{{element.address}}</span> </td>
+                              </ng-container>
+                              <ng-container matColumnDef="Month">
+                                   <th mat-header-cell *matHeaderCellDef>Month</th>
+                                   <td mat-cell *matCellDef="let element"> <span>{{getMonth(element.monthOf)}}</span> </td>
+                              </ng-container>
+                              <ng-container matColumnDef="Billing Period">
+                                   <th mat-header-cell *matHeaderCellDef>Billing Period</th>
+                                   <td mat-cell *matCellDef="let element"> <span>{{formatDate(element.dateFrom)}} - {{formatDate(element.dateTo)}}</span> </td>
+                              </ng-container>
+                              <ng-container matColumnDef="Due Date">
+                                   <th mat-header-cell *matHeaderCellDef>Due Date</th>
+                                   <td mat-cell *matCellDef="let element"> <span>{{formatDate(element.dueDate)}}</span> </td>
+                              </ng-container>
+                              <ng-container matColumnDef="Amount">
+                                   <th mat-header-cell *matHeaderCellDef class="!text-right">Amount</th>
+                                   <td mat-cell *matCellDef="let element" class="!text-right"> <span>{{formatAmount(element.totalAmount)}}</span> </td>
+                              </ng-container>
+                              <ng-container matColumnDef="Status">
+                                   <th mat-header-cell *matHeaderCellDef>Status</th>
+                                   <td mat-cell *matCellDef="let element"> <span>{{getStatus(element.status)}}</span> </td>
+                              </ng-container>
+                              <ng-container matColumnDef="Actions">
+                                   <th mat-header-cell *matHeaderCellDef class="!text-center"><span>Actions</span></th>
+                                   <td mat-cell *matCellDef="let element">
+                                        <div class="flex flex-row gap-4 justify-center">
+                                             <mat-icon 
+                                                  fontIcon="print" 
+                                                  class="cursor-pointer text-blue-500 font"
+                                                  matTooltip="Print Billing Receipt"
+                                             ></mat-icon>
+                                             <mat-icon 
+                                                  fontIcon="cancel"
+                                                  matTooltip="Void Billing"
+                                                  class="cursor-pointer text-black" 
+                                                  (click)="handleVoidRecord(element)"
+                                             ></mat-icon>
+                                             <!-- <mat-icon 
+                                                  fontIcon="delete_forever"
+                                                  matTooltip="Delete Billing"
+                                                  class="cursor-pointer text-red-500" 
+                                                  (click)="handleDeleteRecord(element)"
+                                             ></mat-icon> -->
+                                        </div>
+                                   </td>
+                              </ng-container>
 
-                         <tr mat-header-row *matHeaderRowDef="tableCols; sticky: true" ></tr>
-                         <tr mat-row *matRowDef="let row; columns: tableCols;"></tr>
-                    </table>
+                              <tr mat-header-row *matHeaderRowDef="tableCols; sticky: true" ></tr>
+                              <tr mat-row *matRowDef="let row; columns: tableCols;"></tr>
+                         </table>
+                    </div>
                </div>
-          </div>
+          }
           <mat-paginator
                showFirstLastButtons
                aria-label="Select page of billings"

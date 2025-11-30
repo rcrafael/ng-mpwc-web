@@ -19,6 +19,7 @@ import { SeptageFeeService } from '../../../services/septage-fee.service';
 import { ToastrService } from 'ngx-toastr';
 import { ToastrMessage, ToastrTitle } from '../../../common/constants';
 import { Router } from '@angular/router';
+import { CommonService } from '../../../services/common.service';
 
 @Component({
   selector: 'app-billing-create',
@@ -39,6 +40,7 @@ export class BillingCreateComponent implements OnInit {
     private customerService: CustomerService,
     private billingService: BillingService,
     private septageService: SeptageFeeService,
+    private commonService: CommonService,
     private dialog: MatDialog,
     private toast: ToastrService,
     private router: Router,
@@ -87,12 +89,17 @@ export class BillingCreateComponent implements OnInit {
   getPhase = Utils.getPhase;
   getCustomerType = Utils.getCustomerType;
 
-  ngOnInit(): void {
-    this.generateReadingNo();
-    this.getSeptageFees();
+  async ngOnInit(): Promise<void> {
+    try {
+      this.commonService.showSpinner(true);
+      await this.generateReadingNo();
+      await this.getSeptageFees();
+    } catch (error) {
+      this.commonService.showSpinner(false);
+    }
   }
   
-  onSubmit() {
+  async onSubmit(): Promise<void> {
     if(!this.fg.valid) {
       this.toast.warning(ToastrMessage.INVALID_INPUT, this.toastTitlePrefix + ToastrTitle.ERROR);
       return;
@@ -122,14 +129,14 @@ export class BillingCreateComponent implements OnInit {
       status: 2 //2 = incomplete; by default
     }
 
-    this.billingService.createBilling(params).then(response => {
-      
+    this.commonService.showSpinner(true);
+    await this.billingService.createBilling(params).then(async mainResponse => {
 
       let params: IMeterDetails = this.selectedMeterNo;
       params.previous = this.selectedMeterNo.present;
       params.present = frm.present ?? 0;
 
-      this.customerService.updateMeterNo(params).then(response => {
+      await this.customerService.updateMeterNo(params).then( secondResponse => {
         this.toast.success(ToastrMessage.SUCCESS_CREATE, this.toastTitlePrefix + ToastrTitle.SUCCESS);
         this.router.navigateByUrl('billing');
       })
@@ -144,9 +151,8 @@ export class BillingCreateComponent implements OnInit {
       console.log('Error:', err);
     })
     .finally(() => {
-
+      this.commonService.showSpinner(false);
     });
-
 
   }
 
@@ -172,18 +178,25 @@ export class BillingCreateComponent implements OnInit {
         height: '50%'
       });
   
-      dialogRef.afterClosed().subscribe(data => {
+      dialogRef.afterClosed().subscribe(async data => {
         if(data !== null) {
           this.selectedMeterNo = data;
-          this.getMeterInfo(this.selectedMeterNo.meterNo);
-          this.getWaterRates(this.selectedMeterNo.customerType);
-          this.fg.patchValue({
-            branchCode: this.getBranchCode(data.branchCode),
-            alias: data.alias,
-            phase: this.getPhase(data.phase),
-            customerType: this.getCustomerType(data.customerType)
-          });
-          console.log("CUSTOMER TYPE: ", this.selectedMeterNo.customerType);
+          try {
+            this.commonService.showSpinner(true);
+            await this.getMeterInfo(this.selectedMeterNo.meterNo);
+            await this.getWaterRates(this.selectedMeterNo.customerType);
+            this.fg.patchValue({
+              branchCode: this.getBranchCode(data.branchCode),
+              alias: data.alias,
+              phase: this.getPhase(data.phase),
+              customerType: this.getCustomerType(data.customerType)
+            });
+            console.log("CUSTOMER TYPE: ", this.selectedMeterNo.customerType);
+          } catch (error) {
+            console.log('Error: ', error);
+          } finally {
+            this.commonService.showSpinner(false);
+          }
         }
       })
     }
@@ -205,25 +218,25 @@ export class BillingCreateComponent implements OnInit {
     });
   }
 
-  getWaterRates(customerType: number) {
+  async getWaterRates(customerType: number): Promise<void> {
 
     if (customerType === 1) { // 1 - residential
-      this.billingService.getActiveWaterRatesResidential().then((response) => {
+      await this.billingService.getActiveWaterRatesResidential().then((response) => {
         const resp = response.result as IWaterRates[];
         this.waterRates = structuredClone(resp);
-      })
+      });
     } else { // 2 - commercial
-      this.billingService.getActiveWaterRatesCommercial().then((response) => {
+      await this.billingService.getActiveWaterRatesCommercial().then((response) => {
         const resp = response.result as IWaterRates[];
         this.waterRates = structuredClone(resp);
-      })
+      });
     }
   } 
 
-  getMeterInfo(meterNo: string) {
-    this.customerService.getMeterbyMeterNo(meterNo).then(response => {
+  async getMeterInfo(meterNo: string): Promise<void> {
+    await this.customerService.getMeterbyMeterNo(meterNo).then(response => {
       this.updateFormFromMeterNo(response.result);
-    })
+    });
   }
 
   onBlurUsage(): void {
@@ -306,16 +319,18 @@ export class BillingCreateComponent implements OnInit {
     });
   }
 
-  generateReadingNo():void {
-    this.billingService.generateReadingNo().then((response: IAPIResponse) => {
+  async generateReadingNo(): Promise<void> {
+    this.commonService.showSpinner(true);
+    await this.billingService.generateReadingNo().then((response: IAPIResponse) => {
       this.fg.patchValue({
         readingNo: response.result.toString()
       })
     });
+    this.commonService.showSpinner(false);
   }
 
-  getSeptageFees(): void {
-    this.septageService.getSeptageFees().then((response: IAPIResponse) => {
+  async getSeptageFees(): Promise<void> {
+    await this.septageService.getSeptageFees().then((response: IAPIResponse) => {
       this.septageFees = response.result;
     })
     .catch((err: Error) => {

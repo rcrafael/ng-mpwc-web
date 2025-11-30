@@ -83,11 +83,32 @@
 
                          <div class="grid grid-cols-12">
                               <div class="col-start-1 col-span-3">
+                                   <label for="phase"> Phase </label>
+                              </div>
+                              <div class="col-start-4 col-span-9">
+                                   <input type="text" id="phase" formControlName="phase"
+                                        class="border border-gray-400 rounded-md w-full" readonly>
+                              </div>
+                         </div>
+
+                         <div class="grid grid-cols-12">
+                              <div class="col-start-1 col-span-3">
+                                   <label for="customerType"> Meter Type </label>
+                              </div>
+                              <div class="col-start-4 col-span-9">
+                                   <input type="text" id="customerType" formControlName="customerType"
+                                        class="border border-gray-400 rounded-md w-full" readonly>
+                              </div>
+                         </div>
+
+                         <div class="grid grid-cols-12">
+                              <div class="col-start-1 col-span-3">
                                    <label for="address"> Address </label>
                               </div>
                               <div class="col-start-4 col-span-9">
-                                   <input type="text" id="address" formControlName="address"
+                                   <textarea rows="3" id="address" formControlName="address"
                                         class="border border-gray-400 rounded-md w-full" readonly>
+                                   </textarea>
                               </div>
                          </div>
                     </div>
@@ -146,7 +167,7 @@
                                         class="border border-gray-400 rounded-md w-full" readonly>
                               </div>
                          </div>
-
+<!-- 
                          <div class="grid grid-cols-12">
                               <div class="col-start-1 col-span-6">
                                    <label for="rememberSettings"> Remember Date Settings </label>
@@ -155,7 +176,7 @@
                                    <input type="checkbox" id="rememberSettings"
                                         class="border border-gray-400 rounded-md" readonly>
                               </div>
-                         </div>
+                         </div> -->
 
                          <mat-divider />
 
@@ -165,7 +186,7 @@
                               </div>
                               <div class="col-start-4 col-span-9">
                                    <input type="number" id="previous" formControlName="previous"
-                                        class="border border-gray-400 rounded-md" readonly/>
+                                        class="border border-gray-400 rounded-md" (blur)="onBlurUsage()" [readonly]="transStatus !== 2"/>
                               </div>
                          </div>
 
@@ -175,7 +196,7 @@
                               </div>
                               <div class="col-start-4 col-span-9">
                                    <input type="number" id="present" formControlName="present"
-                                        class="border border-gray-400 rounded-md" readonly/>
+                                        class="border border-gray-400 rounded-md" (blur)="onBlurUsage()" [readonly]="transStatus !== 2"/>
                               </div>
                          </div>
 
@@ -209,8 +230,8 @@
                                    <label for="parts"> Parts </label>
                               </div>
                               <div class="col-start-5 col-span-8">
-                                   <input type="text" id="parts" formControlName="parts"
-                                        class="border border-gray-400 rounded-md text-right" readonly />
+                                   <input type="text" id="parts" formControlName="parts" (blur)="onBlurAmounts($event,'parts')"
+                                        class="border border-gray-400 rounded-md text-right" [readonly]="transStatus !== 2" />
                               </div>
                          </div>
 
@@ -219,8 +240,8 @@
                                    <label for="maintenanceFee"> Maintenance Fee </label>
                               </div>
                               <div class="col-start-5 col-span-8">
-                                   <input type="text" id="maintenanceFee" formControlName="maintenanceFee"
-                                        class="border border-gray-400 rounded-md text-right" readonly />
+                                   <input type="text" id="maintenanceFee" formControlName="maintenanceFee" (blur)="onBlurAmounts($event,'maintenanceFee')"
+                                        class="border border-gray-400 rounded-md text-right" [readonly]="transStatus !== 2" />
                               </div>
                          </div>
 

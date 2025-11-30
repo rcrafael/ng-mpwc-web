@@ -11,9 +11,9 @@ import { IAPIResponse } from '../../../models/interfaces/IApiResponse';
 import { IBillingInfo, IUpdateBilling } from '../../../models/interfaces/IBilling';
 import { Utils } from '../../../common/util';
 import { IWaterRates } from '../../../models/interfaces/IWaterRates';
-import { transactionStatus } from '../../../common/enum';
 import { ToastrService } from 'ngx-toastr';
 import { ToastrMessage, ToastrTitle } from '../../../common/constants';
+import { SeptageFeeService } from '../../../services/septage-fee.service';
 
 @Component({
   selector: 'app-billing-view',
@@ -35,6 +35,7 @@ export class BillingViewComponent implements OnInit {
   constructor(
     private commonService: CommonService,
     private billingService: BillingService,
+    private septageService: SeptageFeeService,
     private activeRoute: ActivatedRoute,
     private toast: ToastrService
   ) {}
@@ -53,14 +54,18 @@ export class BillingViewComponent implements OnInit {
   waterRates: IWaterRates[] = [];
   maxRateUsed: number = 0;
   transStatus:number = 0;
+  septageFees!: any;
 
-  public fg = new FormGroup({
+
+  fg = new FormGroup({
     readingNo: new FormControl<string>({value: '', disabled: true}),
     meterNo: new FormControl<string>({value: '', disabled: true}),
     accountNo: new FormControl<string>({value: '', disabled: true}),
     alias: new FormControl<string>({value: '', disabled: true}),
     customerName: new FormControl<string>({value: '', disabled: true}),
     branchCode: new FormControl<string>({value: '', disabled: true}),
+    phase: new FormControl<string>(''),
+    customerType: new FormControl<string>(''),
     address: new FormControl<string>({value: '', disabled: true}),
     monthOf: new FormControl<number>(this.currentMonth),
     dateFrom: new FormControl<string>(this.currentDate),
@@ -82,14 +87,27 @@ export class BillingViewComponent implements OnInit {
   getStatus = Utils.getStatusName;
   numberFormat = Utils.formatNumber;
   sanitizeAmount = Utils.sanitizeAmount;
+  getPhase = Utils.getPhase;
+  getMeterType = Utils.getCustomerType;
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
       this.readingId = this.activeRoute.snapshot.paramMap.get('readingId') || '';
-      this.loadBillingData();
+ 
+      try {
+        await this.loadBillingData();
+        await this.getSeptageFees();
+        await this.getWaterRates(this.currentBiling.meterInfo?.customerType || 1);
+      } catch (error) {
+        this.commonService.showSpinner(false);
+      } finally {
+        this.commonService.showSpinner(false);
+      }
+      
   }
 
   async loadBillingData(): Promise<void> {
-    this.billingService.getBillingById(this.readingId).then(async (response: IAPIResponse) => {
+    this.commonService.showSpinner(true);
+    await this.billingService.getBillingById(this.readingId).then(async (response: IAPIResponse) => {
       
       const billing: IBillingInfo = response.result as IBillingInfo;
       this.currentBiling = billing;
@@ -101,6 +119,8 @@ export class BillingViewComponent implements OnInit {
         customerName: `${billing.customer?.lastName}, ${billing.customer?.firstName} ${billing.customer?.middleName}`,
         alias: billing.meterInfo?.alias,
         branchCode: this.getBranchCode(billing.meterInfo?.branchCode || -1),
+        phase: this.getPhase(billing.meterInfo?.phase || -1),
+        customerType: this.getMeterType(billing.meterInfo?.customerType || -1),
         address: billing.customer?.address,
         monthOf: billing.monthOf,
         dateFrom: billing.dateFrom,
@@ -116,22 +136,41 @@ export class BillingViewComponent implements OnInit {
         lessAmount: this.numberFormat(billing.lessAmount),
         totalAmount: this.numberFormat(billing.readingAmount + billing.parts + billing.maintenanceFee + billing.septageFee - billing.lessAmount),
         status: this.getStatus(billing.status)
-      });
+      }, {emitEvent: false});
+
+
+      this.fg.controls.m3Used.valueChanges.subscribe(() => this.computeTotalBillingAmount());
+      this.fg.controls.readingAmount.valueChanges.subscribe(() => this.computeTotalBillingAmount());
+      this.fg.controls.parts.valueChanges.subscribe(() => this.computeTotalBillingAmount());
+      this.fg.controls.maintenanceFee.valueChanges.subscribe(() => this.computeTotalBillingAmount());
+      this.fg.controls.septageFee.valueChanges.subscribe(() => this.computeTotalBillingAmount());
+      this.fg.controls.lessAmount.valueChanges.subscribe(() => this.computeTotalBillingAmount());
+
+      this
 
       this.transStatus = billing.status;
       await this.getWaterRates(billing.meterInfo?.customerType!);
+    }).catch((error) => {
+      this.toast.error(ToastrMessage.ERROR_FETCHING_DATA + ': ' + error.message, this.toastTitlePrefix + ToastrTitle.ERROR);
+    }).finally(() => {
+      this.commonService.showSpinner(false);
     });
   }
 
   computeTotalBillingAmount(): void {
-    const frm  = this.fg.value;
-    const readingAmount: number = this.sanitizeAmount(frm.readingAmount ?? '0');
-    const parts: number = this.sanitizeAmount(frm.parts ?? '0');
-    const maintenanceFee: number = this.sanitizeAmount(frm.maintenanceFee ?? '0');
-    const septageFee: number = this.sanitizeAmount(frm.septageFee ?? '0');
-    const lessAmount: number = this.sanitizeAmount(frm.lessAmount?? '0');
+    const frm  = this.fg.getRawValue();
+    
+    if(frm.maintenanceFee === null) console.log('MAINTENANCE FEE IS NULL');
+    if(frm.maintenanceFee === '') console.log('MAINTENANCE FEE IS EMPTY');
 
-    this.totalBilingAmount = readingAmount + parts + maintenanceFee + septageFee - lessAmount
+    const readingAmount: number = this.sanitizeAmount(frm.readingAmount || '0');
+    const parts: number = this.sanitizeAmount(frm.parts || '0');
+    const maintenanceFee: number = this.sanitizeAmount(frm.maintenanceFee || '0');
+    const septageFee: number = this.sanitizeAmount(frm.septageFee || '0');
+    const lessAmount: number = this.sanitizeAmount(frm.lessAmount || '0');
+
+    this.totalBilingAmount = (readingAmount + parts + maintenanceFee + septageFee) - lessAmount
+
     this.fg.patchValue({
       totalAmount: this.numberFormat(this.totalBilingAmount),
     });
@@ -185,29 +224,14 @@ export class BillingViewComponent implements OnInit {
 
   }
 
-  async getWaterRates(customerType: number) {
-
-    if (customerType === 1) { // 1 - residential
-      this.billingService.getActiveWaterRatesResidential().then((response) => {
-        const resp = response.result as IWaterRates[];
-        this.waterRates = structuredClone(resp)
-      })
-    } else { // 2 - commercial
-      this.billingService.getActiveWaterRatesCommercial().then((response) => {
-        const resp = response.result as IWaterRates[];
-        this.waterRates = structuredClone(resp)
-      })
-    }
-  } 
-
   onBlurUsage(): void {
     this.computeUsageAmount();
   }
 
   onBlurAmounts(e: Event, formControlName: string): void {
     const input = e.target as HTMLInputElement;
-    this.computerTotalBillingAmount();
-    this.fg.get(formControlName)?.setValue(this.numberFormat(this.sanitizeAmount(input.value) ?? 0))
+    this.fg.get(formControlName)?.setValue(this.numberFormat(this.sanitizeAmount(input.value) ?? 0));
+    this.computeTotalBillingAmount();
   }
 
   computeUsageAmount() {
@@ -215,7 +239,8 @@ export class BillingViewComponent implements OnInit {
     const present: number = this.fg.get('present')?.value ? this.fg.get('present')?.value! : 0;
     const useM3: number = present - prev;
     this.fg.patchValue({
-      m3Used: useM3
+      m3Used: useM3,
+      septageFee: this.numberFormat(this.computeSeptageFee(useM3)) 
     })
 
     let billingAmount: number = 0;
@@ -234,6 +259,9 @@ export class BillingViewComponent implements OnInit {
         if(r.isBaseAmount) {
           baseAmount = r.ratingValue;
           currentAmount = baseAmount;
+          if(useM3 < r.to) {
+            break;
+          }
         } else {
           if (useM3 >= r.to) {
             previousCeiling = this.waterRates[idx-1].to ? this.waterRates[idx-1].to : 0 ;
@@ -263,16 +291,82 @@ export class BillingViewComponent implements OnInit {
     this.fg.patchValue({
       readingAmount: this.numberFormat(currentAmount),
     });
-    this.computerTotalBillingAmount();
+    this.computeTotalBillingAmount();
   }
 
-  computerTotalBillingAmount(): void {
-    console.log('FORM FROM COMPUTE: ', this.fg.getRawValue());
-    const frm  = this.fg.getRawValue();
-    this.totalBilingAmount = (this.sanitizeAmount(frm.readingAmount ?? '0')) + (this.sanitizeAmount(frm.parts ?? '0')) + (this.sanitizeAmount(frm.maintenanceFee! ?? '0')) + (this.sanitizeAmount(frm.septageFee ?? '0')) - (this.sanitizeAmount(frm.lessAmount ?? '0'))
-    this.fg.patchValue({
-      totalAmount: this.numberFormat(this.totalBilingAmount),
+  async getSeptageFees(): Promise<void> {
+    await this.septageService.getSeptageFees().then((response: IAPIResponse) => {
+      this.septageFees = response.result;
+    })
+    .catch((err: Error) => {
+      this.toast.error(ToastrMessage.ERROR_FETCHING_DATA + ': ' + 'Septage Fees', this.toastTitlePrefix + ToastrTitle.ERROR);
+      console.error('FAILED TO FETCH SEPTAGE FEES: ', err.message);
     });
+  }
+
+  async getWaterRates(customerType: number): Promise<void> {
+
+    if (customerType === 1) { // 1 - residential
+      await this.billingService.getActiveWaterRatesResidential().then((response) => {
+        const resp = response.result as IWaterRates[];
+        this.waterRates = structuredClone(resp);
+      });
+    } else { // 2 - commercial
+      await this.billingService.getActiveWaterRatesCommercial().then((response) => {
+        const resp = response.result as IWaterRates[];
+        this.waterRates = structuredClone(resp);
+      });
+    }
+  } 
+
+  computeSeptageFee(m3Used: number): number {
+    
+    if(m3Used <= 10) {
+      return this.septageFees.minimumZeroTo10;
+    } else if(m3Used === 11) {
+      return this.septageFees.m3To11;
+    } else if(m3Used === 12) {
+      return this.septageFees.m3To12;
+    } else if(m3Used === 13) {
+      return this.septageFees.m3To13;
+    } else if(m3Used === 14) {
+      return this.septageFees.m3To14;
+    } else if(m3Used === 15) {
+      return this.septageFees.m3To15;
+    } else if(m3Used === 16) {
+      return this.septageFees.m3To16;
+    } else if(m3Used === 17) {
+      return this.septageFees.m3To17;
+    } else if(m3Used === 18) {
+      return this.septageFees.m3To18;
+    } else if(m3Used === 19) {
+      return this.septageFees.m3To19;
+    } else if(m3Used === 20) {
+      return this.septageFees.m3To20;
+    } else if(m3Used === 21) {
+      return this.septageFees.m3To21;
+    } else if(m3Used === 22) {
+      return this.septageFees.m3To22;
+    } else if(m3Used === 23) {
+      return this.septageFees.m3To23;
+    } else if(m3Used === 24) {
+      return this.septageFees.m3To24;
+    } else if(m3Used === 25) {
+      return this.septageFees.m3To25;
+    } else if(m3Used === 26) {
+      return this.septageFees.m3To26;
+    } else if(m3Used === 27) {
+      return this.septageFees.m3To27;
+    } else if(m3Used === 28) {
+      return this.septageFees.m3To28;
+    } else if(m3Used === 29) {
+      return this.septageFees.m3To29;
+    } else if(m3Used >= 30) {
+      return this.septageFees.m3To30;
+    } else {
+      return 0;
+    }
+
   }
 
 }

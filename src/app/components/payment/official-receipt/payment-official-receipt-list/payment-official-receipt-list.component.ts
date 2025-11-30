@@ -168,25 +168,6 @@ export class PaymentOfficialReceiptListComponent implements OnInit {
     this.paginator.pageIndex = 0;
   }
 
-  openPrint(): void {
-      const dialogRef = this.dialog.open(ReceiptComponent, {
-        width: '30%',
-        height: '90%'
-      });
-  
-      // dialogRef.afterClosed().subscribe(data => {
-      //   if(data !== null) {
-      //     this.selectedCustomerInfo = data
-      //     this.fg.patchValue({
-      //       accountNo: this.selectedCustomerInfo.accountNo,
-      //       customerName: `${this.selectedCustomerInfo.lastName}, ${this.selectedCustomerInfo.firstName} ${this.selectedCustomerInfo.middleName}` ,
-      //       branchCode: this.selectedCustomerInfo.branchCode,
-      //       address: this.selectedCustomerInfo.address
-      //     })
-      //   }
-      // })
-    }
-
   async handleVoidRecord(orId: string) {
 
     const isConfirm = confirm('Are you sure you want to VOID this record?');

@@ -11,6 +11,7 @@ import { branchCodeData, genderData, customerTypeData, phaseData } from '../../.
 import { ToastrService } from 'ngx-toastr';
 import { ToastrMessage, ToastrTitle } from '../../../common/constants';
 import { Router } from '@angular/router';
+import { CommonService } from '../../../services/common.service';
 
 @Component({
   selector: 'app-customer-create',
@@ -27,6 +28,7 @@ export class CustomerCreateComponent implements OnInit {
 
   constructor(
     private customerService: CustomerService,
+    private commonService: CommonService,
     private toast: ToastrService,
     private router: Router
   ) {}
@@ -58,15 +60,19 @@ export class CustomerCreateComponent implements OnInit {
     tin: new FormControl<string>(''),
   });
   
-  ngOnInit(): void {
-    this.customerService.generateAccountNumber().then((response: IAPIResponse) => { 
+  async ngOnInit(): Promise<void> {
+    this.commonService.showSpinner(true);
+    await this.customerService.generateAccountNumber().then((response: IAPIResponse) => { 
       this.fg.patchValue({ accountNo: response.result.toString() });
     })
+    .finally(() => {
+      this.commonService.showSpinner(false);
+    }); 
   }
 
   async onSubmit() : Promise<void> {
     if(!this.fg.valid) {
-      this.toast.success(ToastrMessage.INVALID_INPUT, this.toastTitlePrefix + ToastrTitle.ERROR);
+      this.toast.warning(ToastrMessage.INVALID_INPUT, this.toastTitlePrefix + ToastrTitle.ERROR);
       return;
     }
 
@@ -90,6 +96,7 @@ export class CustomerCreateComponent implements OnInit {
       tin: frm.tin ?? ''
     }
 
+    this.commonService.showSpinner(true);
     await this.customerService.createCustomer(cust).then((response: IAPIResponse)=> {
       this.toast.success(ToastrMessage.SUCCESS_CREATE, this.toastTitlePrefix + ToastrTitle.SUCCESS);
       console.log('CUSTOMER CREATED',response);
@@ -98,6 +105,9 @@ export class CustomerCreateComponent implements OnInit {
     .catch((error: Error) => {
       this.toast.error(ToastrMessage.ERROR_CREATE, this.toastTitlePrefix + ToastrTitle.ERROR);
       console.error('Error creating customer:', error);
+    })
+    .finally(() => {
+      this.commonService.showSpinner(false);
     });
 
 

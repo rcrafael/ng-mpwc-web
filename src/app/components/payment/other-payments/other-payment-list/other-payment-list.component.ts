@@ -172,12 +172,15 @@ export class OtherPaymentListComponent implements OnInit {
 
     const VOID_STATUS_ID = 4;
     try {
+      this.commonService.showSpinner(true);
       const response = await this.paymentService.updateStatus(orId, VOID_STATUS_ID);
       console.log('RESPONSE: ', response);
       await this.getOtherPaymentList(this.pageIdx, this.pageSize);
     } catch (err) {
       console.error('ERROR VOIDING OTHER PAYMENT RECORD: ', err);
       this.toast.error(`${ToastrMessage.ERROR_UPDATE}: ${err}`, this.toastTitlePrefix + ToastrTitle.ERROR);
+    } finally {
+      this.commonService.showSpinner(false);
     }
     
 
@@ -189,12 +192,15 @@ export class OtherPaymentListComponent implements OnInit {
     if(!isConfirm) return;
     
     try {
+      this.commonService.showSpinner(true);
       const response = await this.paymentService.deleteRecord(orId);
       console.log('RESPONSE: ', response);
       await this.getOtherPaymentList(this.pageIdx, this.pageSize);
     } catch (err) {
       console.error('ERROR DELETING OTHER PAYMENT RECORD: ', err);
       this.toast.error(`${ToastrMessage.ERROR_DELETE}: ${err}`, this.toastTitlePrefix + ToastrTitle.ERROR);
+    } finally {
+      this.commonService.showSpinner(false);
     }
   }
     

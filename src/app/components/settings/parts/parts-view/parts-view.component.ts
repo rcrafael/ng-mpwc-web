@@ -6,6 +6,7 @@ import { PartsService } from '../../../../services/parts.service';
 import { IAPIResponse } from '../../../../models/interfaces/IApiResponse';
 import { ToastrService } from 'ngx-toastr';
 import { ToastrMessage, ToastrTitle } from '../../../../common/constants';
+import { CommonService } from '../../../../services/common.service';
 
 @Component({
   selector: 'app-parts-view',
@@ -20,7 +21,8 @@ export class PartsViewComponent implements OnInit {
 
   constructor(
     private partsService: PartsService,
-    private toast: ToastrService
+    private toast: ToastrService,
+    private commonService: CommonService
   ) {
     
   }
@@ -46,7 +48,8 @@ export class PartsViewComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     this.itemId = this.modalData.toString();
-
+    
+    this.commonService.showSpinner(true);
     await this.partsService.getPartByid(this.itemId).then((response: IAPIResponse) => {
       if(response.result !== null){
         this.resp = response.result;
@@ -57,7 +60,12 @@ export class PartsViewComponent implements OnInit {
           sellingPrice: this.formatNumber(this.sanitizeAmount(this.resp.sellingPrice?.toString() ?? '0.00'))
         });
       }
-    })
+    }).catch((error: Error) => {
+      this.toast.error(`${ToastrMessage.ERROR_FETCHING_DATA}: ${error.message}`, this.toastTitlePrefix + ToastrTitle.ERROR);
+      console.log('ERROR FETCHING PARTS: ', error.message);
+    }).finally(() => {
+      this.commonService.showSpinner(false);
+    });
 
   }  
     

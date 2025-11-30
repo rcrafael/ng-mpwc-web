@@ -68,6 +68,7 @@ export class PartsListComponent implements OnInit {
     dialogRef.afterClosed().subscribe(async data => {
       
       if(data){
+        this.commonService.showSpinner(true);
         let params: IPartDetails = data;
         await this.partService.createPart(params).then(async (response: IAPIResponse) => {
           if(response.result !== null){
@@ -81,6 +82,7 @@ export class PartsListComponent implements OnInit {
         })
         .finally(async () => {
           console.log('finally');
+          this.commonService.showSpinner(false);
         });
       }
 
@@ -97,6 +99,7 @@ export class PartsListComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(async data => {
       if(data){
+        this
         let params: IPartDetails = data;
         params.id = id;
         await this.partService.updatePart(params).then(async (response: IAPIResponse) => {
@@ -111,6 +114,7 @@ export class PartsListComponent implements OnInit {
         })
         .finally(async () => {
           console.log('finally');
+          this.commonService.showSpinner(false);
         });
       }
     })

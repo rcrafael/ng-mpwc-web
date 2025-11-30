@@ -16,6 +16,7 @@ import { AuthService } from '../../../services/auth.service';
 import { branchCodeData, genderData, customerTypeData, phaseData } from '../../../common/enum';
 import { ToastrService } from 'ngx-toastr';
 import { ToastrMessage, ToastrTitle } from '../../../common/constants';
+import { CommonService } from '../../../services/common.service';
 
 
 @Component({
@@ -36,6 +37,7 @@ export class CustomerEditComponent implements OnInit {
 
   constructor(
     private customerService: CustomerService,
+    private commonService: CommonService,
     private activeRoute: ActivatedRoute,
     private authService: AuthService,
     private toast: ToastrService
@@ -74,9 +76,9 @@ export class CustomerEditComponent implements OnInit {
     tin: new FormControl<string>('')
   });
 
-ngOnInit(): void {
+async ngOnInit():  Promise<void> {
   this.customerId = this.activeRoute.snapshot.paramMap.get('customerId') || '';
-  this.loadCustomerInfo();
+  await this.loadCustomerInfo();
 }
 
 setStep(index: number) {
@@ -87,8 +89,9 @@ nextStep() {
   this.step.update(i => i + 1);
 }
 
-loadCustomerInfo(): void {
-  this.customerService.getCustomerById(this.customerId).then((response: IAPIResponse) => {
+async loadCustomerInfo(): Promise<void> {
+  this.commonService.showSpinner(true);
+  await this.customerService.getCustomerById(this.customerId).then((response: IAPIResponse) => {
     const c:ICustomerProfile = response.result as ICustomerProfile;
     this.fg.patchValue({
       accountNo:  c.accountNo,
@@ -108,10 +111,14 @@ loadCustomerInfo(): void {
       dateAccepted: c.dateAccepted,
       tin: c.tin
     })
+  }).catch((error: any) => {
+    this.toast.error(ToastrMessage.ERROR_FETCHING_DATA + ': ' + error.message, this.toastTitlePrefix + ToastrTitle.ERROR);
+  }).finally(() => {
+    this.commonService.showSpinner(false);
   });
 }
 
-onSubmit(): void {
+async onSubmit(): Promise<void> {
   console.log('fg: ' ,this.fg.getRawValue());
 
   const frm = this.fg.value;
@@ -144,7 +151,8 @@ onSubmit(): void {
     tin: frm.tin ?? ''
   }
 
-  this.customerService.updateCustomer(params).then((response: IAPIResponse) => {
+  this.commonService.showSpinner(true);
+  await this.customerService.updateCustomer(params).then((response: IAPIResponse) => {
     console.log('response: ', response);
     this.toast.success(ToastrMessage.SUCCESS_UPDATE, this.toastTitlePrefix + ToastrTitle.SUCCESS);
   })
@@ -154,6 +162,7 @@ onSubmit(): void {
   })
   .finally(() => {
     this.isEdit = false
+    this.commonService.showSpinner(false);
   });
 
   

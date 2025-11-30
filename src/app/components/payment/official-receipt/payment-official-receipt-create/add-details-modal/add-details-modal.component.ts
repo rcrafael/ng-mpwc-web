@@ -147,6 +147,7 @@ export class AddDetailsModalComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(data => {
       if(data) {
+        console.log('SELECTED BILLING DATA: ', data);
         this.billingAmount = data.readingAmount;
         this.fg.patchValue({
           readingNo: data.readingNo ,
@@ -156,7 +157,8 @@ export class AddDetailsModalComponent implements OnInit {
           maintenanceFee: this.formatNumber(data.maintenanceFee ?? 0),
           septageFee: this.formatNumber(data.septageFee ?? 0),
           totalAmount: this.formatNumber(data.totalAmount ?? 0),
-        })
+        }, {emitEvent: false});
+        this.computeTotalAmount();
       }
     });
   }

@@ -16,6 +16,7 @@ import { PaymentService } from '../../../../services/payment.service';
 import { IAPIResponse } from '../../../../models/interfaces/IApiResponse';
 import { ToastrService } from 'ngx-toastr';
 import { ToastrMessage, ToastrTitle } from '../../../../common/constants';
+import { CommonService } from '../../../../services/common.service';
 
 @Component({
   selector: 'app-other-payment-create',
@@ -34,7 +35,8 @@ export class OtherPaymentCreateComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private paymentService: PaymentService,
-    private toast: ToastrService
+    private toast: ToastrService,
+    private commonService: CommonService
   ) {
     this.fg.patchValue({
       createdBy: this.authService.getUserName()
@@ -84,9 +86,10 @@ export class OtherPaymentCreateComponent implements OnInit {
     checkDate: new FormControl<string | null>(null),
   })
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
 
-    this.paymentService.generateNewORno().then((response: IAPIResponse) => {
+    this.commonService.showSpinner(true);
+    await this.paymentService.generateNewORno().then((response: IAPIResponse) => {
       if(response.result) {
         this.fg.patchValue({
           orNo: response.result.toString()
@@ -99,6 +102,9 @@ export class OtherPaymentCreateComponent implements OnInit {
       });
       console.error('ERROR GENERATING NEW OR NUMBER: ', error);
       this.toast.error(ToastrMessage.ERROR_FETCHING_DATA + ': ' + error.message, this.toastTitlePrefix + ToastrTitle.ERROR);
+    })
+    .finally(() => {
+      this.commonService.showSpinner(false);
     });
 
     this.fg.get('isOutsideCollection')?.valueChanges.subscribe((value) => {
@@ -162,7 +168,7 @@ export class OtherPaymentCreateComponent implements OnInit {
       details: details,
     };
     
-
+    this.commonService.showSpinner(true);
     await this.paymentService.createOtherPayment(params).then((response: IAPIResponse) => {
       console.log('API RESPONSE: ', response);
       this.toast.success(ToastrMessage.SUCCESS_CREATE, this.toastTitlePrefix + ToastrTitle.SUCCESS);
@@ -174,6 +180,7 @@ export class OtherPaymentCreateComponent implements OnInit {
     .finally(() => {
       this.fg.reset();
       this.dataSource = new MatTableDataSource<IOtherPaymentTableDetails>([]);
+      this.commonService.showSpinner(false);
     });
 
 

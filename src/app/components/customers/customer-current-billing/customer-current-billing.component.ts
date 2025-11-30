@@ -61,7 +61,7 @@ export class CustomerCurrentBillingComponent implements OnInit {
   getMonth = Utils.getMonth;
   
   async ngOnInit(): Promise<void> {
-    this.billingService.getRecentBillingByCustomerId(this.customerId).then((response:IAPIResponse) => {
+    await this.billingService.getRecentBillingByCustomerId(this.customerId).then((response:IAPIResponse) => {
       const result: any = response.result;
       this.dataSource.data = result;
     
@@ -70,7 +70,7 @@ export class CustomerCurrentBillingComponent implements OnInit {
     .catch(async (error: Error) => {
       this.toast.error(ToastrMessage.ERROR_FETCHING_DATA + ': ' + error.message, this.toastTitlePrefix + ToastrTitle.ERROR);
       console.error('Error fetching billing list:', error);
-    })
+    });
   }
 
   onPaymentBtnClick(): void {

@@ -17,6 +17,7 @@ import { Utils } from '../../../../common/util';
 import { AuthService } from '../../../../services/auth.service';
 import { ToastrService } from 'ngx-toastr';
 import { ToastrMessage, ToastrTitle } from '../../../../common/constants';
+import { CommonService } from '../../../../services/common.service';
 
 
 @Component({
@@ -39,6 +40,7 @@ export class PaymentOfficialReceiptCreateComponent implements OnInit {
     private customerService: CustomerService,
     private paymentService: PaymentService,
     private authService: AuthService,
+    private commonService: CommonService,
     private toast: ToastrService,
     private router: Router
   ) {
@@ -101,7 +103,6 @@ export class PaymentOfficialReceiptCreateComponent implements OnInit {
     checkDate: new FormControl<string|null>(null),
   })
 
-
   async ngOnInit(): Promise<void> {
     this.activeRoute.paramMap.subscribe(params => {
       const customerId = params.get('customerId');
@@ -122,7 +123,8 @@ export class PaymentOfficialReceiptCreateComponent implements OnInit {
       }
     })
 
-   await this.paymentService.generateNewORno().then((response: IAPIResponse) => {
+    this.commonService.showSpinner(true);
+    await this.paymentService.generateNewORno().then((response: IAPIResponse) => {
       if(response.result) {
         this.fg.patchValue({
           orNo: response.result.toString()
@@ -137,12 +139,12 @@ export class PaymentOfficialReceiptCreateComponent implements OnInit {
       this.toast.error('Error generating new OR Number', this.toastTitlePrefix + ToastrTitle.ERROR);
     })
     .finally(() => {
-
+      this.commonService.showSpinner(false);
     });
 
   }
 
-  onSubmit(): void {
+  async onSubmit(): Promise<void> {
     if(!this.fg.valid) {
       this.toast.warning(ToastrMessage.INVALID_INPUT, this.toastTitlePrefix + ToastrTitle.INVALID_INPUT);
       return;
@@ -209,7 +211,8 @@ export class PaymentOfficialReceiptCreateComponent implements OnInit {
 
     console.log('OR PAYLOAD: ', paymentDetails);
 
-    this.paymentService.createORPayment(paymentDetails).then((response: IAPIResponse) => {
+    this.commonService.showSpinner(true);
+    await this.paymentService.createORPayment(paymentDetails).then((response: IAPIResponse) => {
       console.log('PAYMENT RESPONSE:', response);
       this.toast.success(ToastrMessage.SUCCESS_CREATE, this.toastTitlePrefix + ToastrTitle.SUCCESS);
       this.router.navigate(['payment/official-receipt']);
@@ -219,9 +222,8 @@ export class PaymentOfficialReceiptCreateComponent implements OnInit {
       console.error("ERROR CREATING PAYMENT: ", error);
     })
     .finally(() => {
-      
+      this.commonService.showSpinner(false);
     });
-
 
   }
 
@@ -245,7 +247,7 @@ export class PaymentOfficialReceiptCreateComponent implements OnInit {
         this.orDetails.map((or: IOfficialReceiptDetail) => {
           totalBillingAmountPay += or.totalAmount
           totalDiscount += or.seniorDiscount
-        })
+        });
 
         console.log('totalBillingAmountPay',this.numberFormat(totalBillingAmountPay ?? '0'));
 
@@ -276,7 +278,7 @@ export class PaymentOfficialReceiptCreateComponent implements OnInit {
           address: this.selectedCustomerInfo.address
         })
       }
-    })
+    });
   }
 
   computeShares(): void {
@@ -295,7 +297,6 @@ export class PaymentOfficialReceiptCreateComponent implements OnInit {
     this.computeTotalAmountToPay()
 
   }
-
 
   computeTotalAmountToPay() : void {
 

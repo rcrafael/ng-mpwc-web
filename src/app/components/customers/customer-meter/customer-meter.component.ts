@@ -14,6 +14,7 @@ import { branchCodeData, customerTypeData, phaseData } from '../../../common/enu
 import { ToastrService } from 'ngx-toastr';
 import { ToastrMessage, ToastrTitle } from '../../../common/constants';
 import { MatTooltip } from '@angular/material/tooltip';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-customer-meter',
@@ -75,7 +76,7 @@ export class CustomerMeterComponent implements OnInit {
     await this.customerService.getMeterNoByCustomerId(this.customerId).then((response: IAPIResponse) => {
       const data: IMeterDetails[] = response.result as IMeterDetails[];
       this.dataSource = new MatTableDataSource<IMeterDetails>(data);;
-    })
+    });
   }
 
   onAddNewClick(): void {
@@ -118,13 +119,29 @@ export class CustomerMeterComponent implements OnInit {
       createdBy: ''
     }
 
-    await this.customerService.createMeterNo(params).then(async () => {
+    this.commonService.showSpinner(true);
+    await this.customerService.createMeterNo(params).then(async (response) => {
+      console.log('respose', response);
+      if(!response.result) {
+        this.toast.error(`${ToastrMessage.ERROR_CREATE} : ${params.meterNo}`, this.toastTitlePrefix + ToastrTitle.ERROR);
+        return;
+      }
+
       this.toast.success(`${ToastrMessage.SUCCESS_CREATE} : ${params.meterNo}`, this.toastTitlePrefix + ToastrTitle.SUCCESS);
       await this.loadData();
     })
-    .catch((err: Error) => {
-      this.toast.error(`${ToastrMessage.ERROR_CREATE} : ${params.meterNo}`, this.toastTitlePrefix + ToastrTitle.ERROR);
-      console.log('Error:', err);
+    .catch(err => {
+
+      if(err instanceof HttpErrorResponse) {
+        this.toast.error(`${ToastrMessage.ERROR_CREATE} : ${err.error.message}`, this.toastTitlePrefix + ToastrTitle.ERROR);
+      } else {
+        this.toast.error(`${ToastrMessage.ERROR_CREATE} : ${params.meterNo}`, this.toastTitlePrefix + ToastrTitle.ERROR);
+        console.log('Error:', err);
+      }
+
+    })
+    .finally(() => {
+      this.commonService.showSpinner(false);
     });
 
   }

@@ -224,7 +224,7 @@ export class PaymentOfficialReceiptViewComponent implements OnInit {
 
     const VOID_STATUS_ID = 4;
     try {
-      const response = await this.paymentService.updateStatus(this.orId!, VOID_STATUS_ID);
+      const response = await this.paymentService.voidRecord(this.orId!);
       console.log('RESPONSE: ', response);
       this.fg.patchValue({
         orStatus: this.getStatus(VOID_STATUS_ID)

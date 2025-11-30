@@ -173,10 +173,9 @@ export class PaymentOfficialReceiptListComponent implements OnInit {
     const isConfirm = confirm('Are you sure you want to VOID this record?');
     if(!isConfirm) return;
 
-    const VOID_STATUS_ID = 4;
     try {
       this.commonService.showSpinner(true);
-      const response = await this.paymentService.updateStatus(orId, VOID_STATUS_ID);
+      const response = await this.paymentService.voidRecord(orId);
       console.log('RESPONSE: ', response);
       this.toast.success(`${ToastrMessage.SUCCESS_UPDATE}`, this.toastTitlePrefix + ToastrTitle.SUCCESS);
       await this.loadORData(this.pageIdx, this.pageSize);

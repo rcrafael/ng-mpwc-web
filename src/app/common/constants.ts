@@ -40,6 +40,7 @@ export class PaymentApi {
      public static GET_OR_ALL_PAYMENTS_WITH_CUSTOMER_INFO = '/payment/official-receipt/with-cust-info/{pageNo}/{pageSize}';
      public static GET_OR_ALL_PAYMENTS_WITH_CUSTOMER_INFO_BY_ID = '/payment/official-receipt/with-cust-info/{id}';
      public static GET_OR_ALL_WITH_SEARCH = '/payment/official-receipt/search/{pageNo}/{pageSize}';
+     public static VOID_OR_RECORD = '/payment/official-receipt/void/{id}';
 
      //Others
      public static CREATE_OTHER_PAYMENT = '/payment/others';

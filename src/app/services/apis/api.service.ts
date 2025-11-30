@@ -200,6 +200,10 @@ export class ApiService {
     return this.httpClient.post<IAPIResponse>(`${this.env.apiHost}${PaymentApi.CREATE_OR_PAYMENT}`, params);
   }
 
+  voidOR(id: string): Observable<IAPIResponse> {
+    return this.httpClient.delete<IAPIResponse>(`${this.env.apiHost}${PaymentApi.VOID_OR_RECORD.replace('{id}',id)}`);
+  }
+
   //OTHER PAYMENTS APIs
 
   createOtherPayment(params: IOtherPaymentPayload): Observable<IAPIResponse> {

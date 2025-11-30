@@ -32,6 +32,10 @@ export class PaymentService {
     return firstValueFrom(this.http.getORAllPaymentsWithSearch(keyword, pageNo, pageSize));
   }
 
+  async voidRecord(orId: string): Promise<IAPIResponse> {
+    return firstValueFrom(this.http.voidOR(orId));
+  }
+
   //OTHERS
   async createOtherPayment(params: IOtherPaymentPayload): Promise<IAPIResponse> {
     return firstValueFrom(this.http.createOtherPayment(params));

@@ -229,6 +229,7 @@ export class PaymentOfficialReceiptCreateComponent implements OnInit {
 
   openDetailFormDialog(): void {
     const dialogRef = this.dialog.open(AddDetailsModalComponent, {
+      disableClose: true,
       data: {customerId: this.selectedCustomerInfo.id},
       width: '90%',
       height: '90%'

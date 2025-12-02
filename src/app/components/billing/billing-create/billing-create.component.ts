@@ -20,6 +20,8 @@ import { ToastrService } from 'ngx-toastr';
 import { ToastrMessage, ToastrTitle } from '../../../common/constants';
 import { Router } from '@angular/router';
 import { CommonService } from '../../../services/common.service';
+import { IDefaultValues } from '../../../models/interfaces/IDefaultValues';
+import { DefaultValuesService } from '../../../services/default-values.service';
 
 @Component({
   selector: 'app-billing-create',
@@ -40,6 +42,7 @@ export class BillingCreateComponent implements OnInit {
     private customerService: CustomerService,
     private billingService: BillingService,
     private septageService: SeptageFeeService,
+    private defaultValuesService: DefaultValuesService,
     private commonService: CommonService,
     private dialog: MatDialog,
     private toast: ToastrService,
@@ -57,6 +60,8 @@ export class BillingCreateComponent implements OnInit {
 
   currentMonth = new Date().getMonth() + 1; //getMonth() is 0 to 11
   currentDate = formatDate(new Date(),'yyyy-MM-dd','en-PH');
+
+  defaultValues!: IDefaultValues;
 
   public fg = new FormGroup({
     readingNo: new FormControl<string>({value: '', disabled: true}, Validators.required),
@@ -88,12 +93,17 @@ export class BillingCreateComponent implements OnInit {
   getBranchCode = Utils.getBranchCode;
   getPhase = Utils.getPhase;
   getCustomerType = Utils.getCustomerType;
+  formatNumber = Utils.formatNumber;
+  sanitizeAmount = Utils.sanitizeAmount;
 
   async ngOnInit(): Promise<void> {
     try {
       this.commonService.showSpinner(true);
       await this.generateReadingNo();
       await this.getSeptageFees();
+
+      this.defaultValues = await this.defaultValuesService.getDefaultValuesFromSession() as IDefaultValues;
+
     } catch (error) {
       this.commonService.showSpinner(false);
     }
@@ -189,7 +199,8 @@ export class BillingCreateComponent implements OnInit {
               branchCode: this.getBranchCode(data.branchCode),
               alias: data.alias,
               phase: this.getPhase(data.phase),
-              customerType: this.getCustomerType(data.customerType)
+              customerType: this.getCustomerType(data.customerType),
+              maintenanceFee: this.sanitizeAmount(this.defaultValues.maintenanceFee.toString()),
             });
             console.log("CUSTOMER TYPE: ", this.selectedMeterNo.customerType);
           } catch (error) {

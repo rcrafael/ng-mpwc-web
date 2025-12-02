@@ -245,7 +245,7 @@
 
                                    <div class="grid grid-cols-12 gap-2">
                                         <div class="xs:col-span-12 md:col-span-4">
-                                             <label for="penalty">10% Penalty</label>
+                                             <label for="penalty">{{defaultValues.penaltyPercentage.toString()}}% Penalty</label>
                                         </div>
                                         <div class="xs:col-span-12 md:col-span-4">
                                              <input id="penalty" type="text" formControlName="penalty" (change)="computeTotalAmount()" (blur)="handleOnBlur($event,'penalty')" class="border border-gray-400 rounded-md w-full"/>

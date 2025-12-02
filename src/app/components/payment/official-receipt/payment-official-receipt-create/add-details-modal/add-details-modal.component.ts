@@ -8,6 +8,8 @@ import { SelectBillingModalComponent } from '../select-billing-modal/select-bill
 import { Utils } from '../../../../../common/util';
 import { ToastrService } from 'ngx-toastr';
 import { ToastrMessage, ToastrTitle } from '../../../../../common/constants';
+import { IDefaultValues } from '../../../../../models/interfaces/IDefaultValues';
+import { DefaultValuesService } from '../../../../../services/default-values.service';
 
 @Component({
   selector: 'app-add-details-modal',
@@ -24,6 +26,7 @@ import { ToastrMessage, ToastrTitle } from '../../../../../common/constants';
 export class AddDetailsModalComponent implements OnInit {
 
   constructor(
+    private defaultValuesService: DefaultValuesService,
     private toast: ToastrService
   ) {
 
@@ -59,6 +62,9 @@ export class AddDetailsModalComponent implements OnInit {
   customerId: string = '';
   billingAmount: number = 0;
 
+  defaultValues!: IDefaultValues;
+  penaltyPercentage: number = 0;
+
   formatAmount = Utils.formatCurrency;
   formatNumber = Utils.formatNumber;
   sanitizeAmount = Utils.sanitizeAmount;
@@ -85,6 +91,10 @@ export class AddDetailsModalComponent implements OnInit {
 
   ngOnInit(): void {
     this.customerId = this.modalData.customerId;
+    this.defaultValues = this.defaultValuesService.getDefaultValuesFromSession() as IDefaultValues;
+    if(this.defaultValues) {
+      this.penaltyPercentage = this.defaultValues.penaltyPercentage ?? 10;
+    }
   }
 
   onClose(): void {
@@ -92,6 +102,10 @@ export class AddDetailsModalComponent implements OnInit {
   }
 
   onDoneClick(): void {
+    if(this.datasource.data.length == 0) {
+      this.toast.warning('No billing details added', this.toastTitlePrefix + ToastrTitle.INVALID_INPUT);
+      return;
+    }
     this.dialogRef.close(this.billingList);
   }
 
@@ -149,6 +163,9 @@ export class AddDetailsModalComponent implements OnInit {
       if(data) {
         console.log('SELECTED BILLING DATA: ', data);
         this.billingAmount = data.readingAmount;
+
+
+
         this.fg.patchValue({
           readingNo: data.readingNo ,
           meterNo: data.meterNo,
@@ -158,6 +175,10 @@ export class AddDetailsModalComponent implements OnInit {
           septageFee: this.formatNumber(data.septageFee ?? 0),
           totalAmount: this.formatNumber(data.totalAmount ?? 0),
         }, {emitEvent: false});
+       
+        if(this.isDueDateExceed(data.dueDate)) {
+          this.autoProcessPenalty();
+        }
         this.computeTotalAmount();
       }
     });
@@ -188,19 +209,23 @@ export class AddDetailsModalComponent implements OnInit {
 
   }
 
+  computePenalty(): void {
+    const billAmount = this.sanitizeAmount(this.fg.get('readingAmount')?.value ?? '0');
+    // const penalty = billAmount * 0.1
+    const penalty = billAmount * (this.penaltyPercentage / 100);
+
+    this.fg.patchValue({
+      penalty: this.formatNumber(penalty ?? 0)
+    })
+  }
+
   addPenalty(e:any): void {
 
     if(e.target.checked) {
-      const billAmount = this.sanitizeAmount(this.fg.get('readingAmount')?.value ?? '0');
-      const penalty = billAmount * 0.1
-
-      this.fg.patchValue({
-        penalty: this.formatNumber(penalty ?? 0)
-      })
-
+      this.computePenalty();
     } else {
       this.fg.patchValue({
-        penalty: this.formatNumber(0)
+        penalty: this.formatNumber(0) 
       })
     }
 
@@ -212,6 +237,25 @@ export class AddDetailsModalComponent implements OnInit {
     
     this.fg.get(fieldName)?.setValue(e);
 
+  }
+
+  isDueDateExceed(dueDate: string): boolean {
+    const currentDate = new Date().toISOString().split('T')[0];
+    console.log('CURRENT DATE: ', currentDate);
+
+    return dueDate < currentDate;
+  }
+
+  autoProcessPenalty(): void {
+    
+    const conf = confirm('Due Date already passed. Are you sure you want to add penalty?');
+    console.log('CONFIRM PENALTY? ', conf);
+    if(!conf) return;
+
+    const chk = document.getElementById('isPenalty') as HTMLInputElement;
+    chk.checked = true;
+
+    this.computePenalty();
   }
 
 }

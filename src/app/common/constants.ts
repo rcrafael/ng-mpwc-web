@@ -86,6 +86,12 @@ export class WaterRatesApi {
      public static UPDATE_COMMERCIAL_RATES = '/billing/rates/commercial';
 }
 
+export class DefaultValuesApi {
+     public static GET_DEFAULT_VALUES = '/settings/default-values';
+     public static UPDATE_DEFAULT_VALUES = '/settings/default-values';
+}    
+
+
 export class ToastrTitle {
      public static INVALID_INPUT = 'Invalid Input';
      public static LOGIN_FAILED = 'Login Failed';

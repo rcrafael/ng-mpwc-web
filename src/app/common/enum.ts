@@ -70,6 +70,12 @@ import { IBranchCode, IGender, ICustomerType, IPhase, ITransactionStatus, ISideB
           url: '/settings/parts',
           label:'Parts Master List'
         },
+        {
+          id: 3,
+          name: 'default-values',
+          url: '/settings/default-values',
+          label:'Default Values'
+        },
       ]
     } 
   ]

@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { AuthApi, BillingApi, Constants, CustomerApi, PartsApi, PaymentApi, SeptageFeeApi, UserApi, WaterRatesApi } from '../../common/constants';
+import { AuthApi, BillingApi, Constants, CustomerApi, DefaultValuesApi, PartsApi, PaymentApi, SeptageFeeApi, UserApi, WaterRatesApi } from '../../common/constants';
 import { firstValueFrom, Observable, ObservedValueOf } from 'rxjs';
 import { IAPIResponse } from '../../models/interfaces/IApiResponse';
 import { IBillingInfo, IUpdateBilling } from '../../models/interfaces/IBilling';
@@ -13,6 +13,8 @@ import { IOtherPaymentPayload } from '../../models/interfaces/IOtherPayments';
 import { IPartDetails } from '../../models/interfaces/IParts';
 import { IWaterRates } from '../../models/interfaces/IWaterRates';
 import { ISeptageFeeRates } from '../../models/interfaces/ISeptageFeeRates';
+import { IDefaultValues } from '../../models/interfaces/IDefaultValues';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -277,7 +279,13 @@ export class ApiService {
     return this.httpClient.get<IAPIResponse>(`${this.env.apiHost}${PartsApi.GET_PARTS_BY_ID}`.replace('{id}', id));
   }
 
-
- 
+  //Default Values APIs
+  getDefaultValues(): Observable<IAPIResponse> {
+    return this.httpClient.get<IAPIResponse>(`${this.env.apiHost}${DefaultValuesApi.GET_DEFAULT_VALUES}`);
+  }
+  
+  updateDefaultValues(params: IDefaultValues): Observable<IAPIResponse> {
+    return this.httpClient.post<IAPIResponse>(`${this.env.apiHost}${DefaultValuesApi.UPDATE_DEFAULT_VALUES}`, params);
+  }
 
 }

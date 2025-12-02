@@ -1,7 +1,5 @@
 import { Routes } from '@angular/router';
 import { authGuard } from './guard/auth.guard';
-import { AuthComponent } from './components/auth/auth.component';
-
 
 export const routes: Routes = [
 
@@ -29,7 +27,7 @@ export const routes: Routes = [
                { path: 'settings', loadComponent: () => import('./components/settings/settings.component').then(m => m.SettingsComponent)},
                { path: 'settings/water-rates', loadComponent: () => import('./components/settings/water-rates/water-rates.component').then(m => m.WaterRatesComponent)},
                { path: 'settings/parts', loadComponent: () => import('./components/settings/parts/parts-list/parts-list.component').then(m => m.PartsListComponent)},
-               // { path: 'settings/parts/create', loadComponent: () => import('./components/settings/parts/part-create/part-create.component').then(m => m.PartCreateComponent)},
+               { path: 'settings/default-values', loadComponent: () => import('./components/settings/default-values/default-values.component').then(m => m.DefaultValuesComponent)},
           ]
      },
      { 

@@ -7,6 +7,11 @@ import { AuthComponent } from "./components/auth/auth.component";
 import { NgIf } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SpinnerComponent } from "./components/common/spinner/spinner.component";
+import { DefaultValuesService } from './services/default-values.service';
+import { IDefaultValues } from './models/interfaces/IDefaultValues';
+import { CommonService } from './services/common.service';
+import { ToastrService } from 'ngx-toastr';
+import { ToastrMessage, ToastrTitle } from './common/constants';
 
 @Component({
   selector: 'app-root',
@@ -19,17 +24,35 @@ import { SpinnerComponent } from "./components/common/spinner/spinner.component"
 })
 export class AppComponent implements OnInit {
 
-  constructor(private router: Router) {}
+  constructor(
+    private defaultValuesService: DefaultValuesService,
+    private commonService: CommonService,
+    private toast: ToastrService
+  ) {}
 
   token: any = '';
 
-  ngOnInit(): void {
-    // Check if token is present in localStorage
-    // this.token = localStorage.getItem('accessToken')
-    // if(!this.token && this.token?.toString() !== '') {
-    //   console.log('has token: ', this.token);
-    //   this.router.navigateByUrl('auth/login');
-    // }
+  toastTitlePrefix = 'App - '
+
+  async ngOnInit(): Promise<void> {
+    
+    try {
+      
+      this.commonService.showSpinner(true);
+      const response = await this.defaultValuesService.getDefaultValues();
+
+      if(response) {
+        const data = response.result as IDefaultValues;
+        this.defaultValuesService.setDefaultValuesToSession(data);
+      }
+
+    } catch (error) {
+      this.toast.error(`${ToastrMessage.ERROR_FETCHING_DATA}: ${error}`, this.toastTitlePrefix + ToastrTitle.ERROR);
+      console.error('ERROR FETCHING DEFAULT VALUES: ',error);
+    } finally {
+      this.commonService.showSpinner(false);
+    }
+    
   }
 
 }

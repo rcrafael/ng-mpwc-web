@@ -4,6 +4,10 @@ import { DashboardCardComponent } from "./dashboard-card/dashboard-card.componen
 import { BaseChartDirective } from "ng2-charts";
 import { ChartConfiguration, ChartType } from 'chart.js';
 import 'chart.js/auto';
+import { DefaultValuesService } from '../../services/default-values.service';
+import { CommonService } from '../../services/common.service';
+import { ToastrMessage, ToastrTitle } from '../../common/constants';
+import { IDefaultValues } from '../../models/interfaces/IDefaultValues';
 @Component({
   selector: 'app-dashboard',
   standalone: true,
@@ -16,8 +20,36 @@ import 'chart.js/auto';
 })
 export class DashboardComponent {
   constructor(
-    private toast: ToastrService
+    private defaultValuesService: DefaultValuesService,
+    private toast: ToastrService,
+    private commonService: CommonService
   ) {
+
+  }
+
+  toastTitlePrefix = 'Dashboard - ';
+
+  async ngOnInit(): Promise<void> {
+
+    try {
+      
+      const defaultVal = this.defaultValuesService.getDefaultValuesFromSession();
+      if(defaultVal) return;
+      
+      this.commonService.showSpinner(true);
+      const response = await this.defaultValuesService.getDefaultValues();
+
+      if(response) {
+        const data = response.result as IDefaultValues;
+        this.defaultValuesService.setDefaultValuesToSession(data);
+      }
+
+    } catch (error) {
+      this.toast.error(`${ToastrMessage.ERROR_FETCHING_DATA}: ${error}`, this.toastTitlePrefix + ToastrTitle.ERROR);
+      console.error('ERROR FETCHING DEFAULT VALUES: ',error);
+    } finally {
+      this.commonService.showSpinner(false);
+    }
 
   }
 

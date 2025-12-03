@@ -17,8 +17,19 @@ export class EnvService {
   }
 
   get apiHost(): string {
-    return this.config?.apiHost;
+
+    const isLocal =
+      window.location.hostname === 'localhost' ||
+      window.location.hostname === '127.0.0.1';
+
+    // If running locally → use env.json value
+    if (isLocal) {
+      return this.config.apiHost;  // "http://localhost:8080/api"
+    }
+
+    // If accessed from LAN / other host → use machine hostname
+    return `http://${window.location.hostname}:8080/api`;
+
   }
 
-  // Add getters for other keys as needed
 }

@@ -36,22 +36,7 @@ export class AppComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     
-    try {
-      
-      this.commonService.showSpinner(true);
-      const response = await this.defaultValuesService.getDefaultValues();
-
-      if(response) {
-        const data = response.result as IDefaultValues;
-        this.defaultValuesService.setDefaultValuesToSession(data);
-      }
-
-    } catch (error) {
-      this.toast.error(`${ToastrMessage.ERROR_FETCHING_DATA}: ${error}`, this.toastTitlePrefix + ToastrTitle.ERROR);
-      console.error('ERROR FETCHING DEFAULT VALUES: ',error);
-    } finally {
-      this.commonService.showSpinner(false);
-    }
+    
     
   }
 

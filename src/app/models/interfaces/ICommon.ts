@@ -4,7 +4,8 @@ export interface ISideBarMenu {
      url: string,
      label: string,
      icon: string,
-     subItems?: ISideBarMenuSubItem[]
+     subItems?: ISideBarMenuSubItem[],
+     visible: boolean
 }
 
 export interface ISideBarMenuSubItem {

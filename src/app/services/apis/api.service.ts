@@ -14,6 +14,7 @@ import { IPartDetails } from '../../models/interfaces/IParts';
 import { IWaterRates } from '../../models/interfaces/IWaterRates';
 import { ISeptageFeeRates } from '../../models/interfaces/ISeptageFeeRates';
 import { IDefaultValues } from '../../models/interfaces/IDefaultValues';
+import { IShareSummary } from '../../models/interfaces/IShareSummary';
 
 @Injectable({
   providedIn: 'root'
@@ -251,6 +252,14 @@ export class ApiService {
 
   printORExcel(id: string): Observable<any> {
     return this.httpClient.get<IAPIResponse>(`${this.env.apiHost}${PaymentApi.PRINT_OR_EXCEL}`.replace('{id}',id), { responseType: 'arraybuffer' as 'json' }) ;
+  }
+
+  getShareSummaryByCustomerId(id: string): Observable<IAPIResponse> {
+    return this.httpClient.get<IAPIResponse>(`${this.env.apiHost}${PaymentApi.GET_SHARE_SUMMARY_BY_CUSTOMER_ID}`.replace('{customerId}',id));
+  }
+
+  updateShareSummary(params: IShareSummary): Observable<IAPIResponse> {
+    return this.httpClient.post<IAPIResponse>(`${this.env.apiHost}${PaymentApi.UPDATE_SHARE_SUMMARY}`, params);
   }
 
 

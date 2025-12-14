@@ -56,6 +56,10 @@ export class PaymentApi {
      
      public static PRINT_OR_PDF = '/payment/official-receipt/receipt/pdf/{id}';
      public static PRINT_OR_EXCEL = '/payment/official-receipt/receipt/excel/{id}';
+
+     public static GET_SHARE_SUMMARY_BY_CUSTOMER_ID = '/payment/share-summary/{customerId}';
+     public static UPDATE_SHARE_SUMMARY = '/payment/share-summary/update';
+     
 }
 
 export class AuthApi {

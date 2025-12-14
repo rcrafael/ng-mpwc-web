@@ -59,8 +59,8 @@ export interface IOfficialReceiptWithDetails {
      header: IOfficialReceiptHeaderWithCustomer;
      details: IOfficialReceiptDetail[];
      shareCapital: IShareCapital;
-     shareCbu: IShareCbu;
-     shareSavings: IShareSavings;
+     cbu: IShareCbu;
+     savings: IShareSavings;
 }
 
 export interface IOfficialReceiptDetail {

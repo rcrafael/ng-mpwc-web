@@ -4,6 +4,7 @@ import { IOfficialReceipt } from '../models/interfaces/IOfficialReceipt';
 import { IAPIResponse } from '../models/interfaces/IApiResponse';
 import { firstValueFrom } from 'rxjs';
 import { IOtherPaymentPayload } from '../models/interfaces/IOtherPayments';
+import { IShareSummary } from '../models/interfaces/IShareSummary';
 
 @Injectable({
   providedIn: 'root'
@@ -71,6 +72,14 @@ export class PaymentService {
 
   async printORExcel(id: string): Promise<any> {
     return firstValueFrom(this.http.printORExcel(id));
+  }
+
+  async getShareSummaryById(customerId: string): Promise<IAPIResponse> {
+    return firstValueFrom(this.http.getShareSummaryByCustomerId(customerId));
+  }
+
+  async updateShareSummary(params: IShareSummary): Promise<IAPIResponse> {
+    return firstValueFrom(this.http.updateShareSummary(params));
   }
 
 }

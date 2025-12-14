@@ -4,65 +4,88 @@
           <mat-icon fontIcon="account_balance" class="m-3"></mat-icon>
      </mat-expansion-panel-header>
 
-     <div class="grid grid-col grid-cols-12 w-full gap-12" >
-          <div class="col-span-6 col-start-1">
-               <div class="grid grid-row gap-3">
-                    <div class="grid grid-cols-12">
-                         <div class="col-start-1 col-span-4">
-                              <label for="shareCapBeginning"> Share Capital Beginning: </label>
+     <form [formGroup]="fg">
+          <div class="grid grid-col grid-cols-12 w-full gap-12" >
+               <div class="col-span-6 col-start-1">
+                    <div class="grid grid-row gap-3">
+                         <div class="grid grid-cols-12">
+                              <div class="col-start-1 col-span-4">
+                                   <label for="shareCapBeginning"> Share Capital Beginning: </label>
+                              </div>
+                              <div class="col-start-5 col-span-4">
+                                   <input type="text" id="shareCapBeginning" formControlName="totalShareCapBeginning" (blur)="handleBlur('totalShareCapBeginning')"
+                                        class="border border-gray-400 rounded-md text-right" [readOnly]="!isUpdate"/>
+                              </div>
+                              <div class="col-start-9 col-span-4">
+                                   <button type="button" (click)="handleUpdateClick()" [ngClass]="{'bg-green-300': isUpdate}"
+                                        class="bg-blue-300 font-bold border border-solid border-black rounded-md py-2 px-3 w-[80px]">
+                                             {{btnText}}
+                                   </button>
+                              </div>
                          </div>
-                         <div class="col-start-5 col-span-8">
-                              <input type="text" id="shareCapBeginning" class="border border-gray-400 rounded-md" disabled/>
-                         </div>
-                    </div>
 
-                    <div class="grid grid-cols-12">
-                         <div class="col-start-1 col-span-4">
-                              <label for="cbu"> CBU: </label>
+                         <div class="grid grid-cols-12">
+                              <div class="col-start-1 col-span-4">
+                                   <label for="cbu"> CBU: </label>
+                              </div>
+                              <div class="col-start-5 col-span-4">
+                                   <input type="text" id="cbu" formControlName="totalCbu" (blur)="handleBlur('totalCbu')" 
+                                        class="border border-gray-400 rounded-md text-right" [readOnly]="!isUpdate" />
+                              </div>
                          </div>
-                         <div class="col-start-5 col-span-8">
-                              <input type="text" id="cbu" class="border border-gray-400 rounded-md" disabled/>
-                         </div>
-                    </div>
 
-                    <div class="grid grid-cols-12">
-                         <div class="col-start-1 col-span-4">
-                              <label for="divident"> Divident: </label>
+                         <div class="grid grid-cols-12">
+                              <div class="col-start-1 col-span-4">
+                                   <label for="dividend"> Dividend: </label>
+                              </div>
+                              <div class="col-start-5 col-span-4">
+                                   <input type="text" id="dividend" formControlName="totalDividend" (blur)="handleBlur('totalDividend')"
+                                        class="border border-gray-400 rounded-md text-right" [readOnly]="!isUpdate" />
+                              </div>
                          </div>
-                         <div class="col-start-5 col-span-8">
-                              <input type="text" id="divident" class="border border-gray-400 rounded-md" disabled/>
-                         </div>
-                    </div>
 
-                    <div class="grid grid-cols-12">
-                         <div class="col-start-1 col-span-4">
-                              <label for="rate"> Rate: </label>
+                         <div class="grid grid-cols-12">
+                              <div class="col-start-1 col-span-4">
+                                   <label for="savings"> Savings: </label>
+                              </div>
+                              <div class="col-start-5 col-span-4">
+                                   <input type="text" id="savings" formControlName="totalSavings" (blur)="handleBlur('totalSavings')"
+                                        class="border border-gray-400 rounded-md text-right" [readOnly]="!isUpdate" />
+                              </div>
                          </div>
-                         <div class="col-start-5 col-span-8">
-                              <input type="text" id="rate" class="border border-gray-400 rounded-md" disabled/>
-                         </div>
-                    </div>
 
-                    <div class="grid grid-cols-12">
-                         <div class="col-start-1 col-span-4">
-                              <label for="patronageRefundWater"> Patronage Refund Water: </label>
+                         <div class="grid grid-cols-12">
+                              <div class="col-start-1 col-span-4">
+                                   <label for="rate"> Rate: </label>
+                              </div>
+                              <div class="col-start-5 col-span-4">
+                                   <input type="text" id="rate" formControlName="rate" (blur)="handleBlur('rate')"
+                                        class="border border-gray-400 rounded-md text-right" [readOnly]="!isUpdate" />
+                              </div>
                          </div>
-                         <div class="col-start-5 col-span-8">
-                              <input type="text" id="patronageRefundWater" class="border border-gray-400 rounded-md" disabled/>
-                         </div>
-                    </div>
 
-                    <div class="grid grid-cols-12">
-                         <div class="col-start-1 col-span-4">
-                              <label for="patronageRefundRefilling"> Patronage Refund Refilling: </label>
+                         <div class="grid grid-cols-12">
+                              <div class="col-start-1 col-span-4">
+                                   <label for="patronageRefundWater"> Patronage Refund Water: </label>
+                              </div>
+                              <div class="col-start-5 col-span-4">
+                                   <input type="text" id="patronageRefundWater" formControlName="totalPatronageRefundWater" (blur)="handleBlur('totalPatronageRefundWater')"
+                                        class="border border-gray-400 rounded-md text-right" [readOnly]="!isUpdate" />
+                              </div>
                          </div>
-                         <div class="col-start-5 col-span-8">
-                              <input type="text" id="patronageRefundRefilling" class="border border-gray-400 rounded-md" disabled/>
+
+                         <div class="grid grid-cols-12">
+                              <div class="col-start-1 col-span-4">
+                                   <label for="patronageRefundRefilling"> Patronage Refund Refilling: </label>
+                              </div>
+                              <div class="col-start-5 col-span-4">
+                                   <input type="text" id="patronageRefundRefilling" formControlName="totalPatronageRefundRefilling" (blur)="handleBlur('totalPatronageRefundRefilling')"
+                                        class="border border-gray-400 rounded-md text-right" [readOnly]="!isUpdate" />
+                              </div>
                          </div>
                     </div>
                </div>
           </div>
-
-     </div>
+     </form>
 
 </mat-expansion-panel>

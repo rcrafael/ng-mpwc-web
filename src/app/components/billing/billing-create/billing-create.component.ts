@@ -63,6 +63,9 @@ export class BillingCreateComponent implements OnInit {
 
   defaultValues!: IDefaultValues;
 
+  formatNumber = Utils.formatNumber;
+  sanitizeAmount = Utils.sanitizeAmount;
+
   public fg = new FormGroup({
     readingNo: new FormControl<string>({value: '', disabled: true}, Validators.required),
     meterNo: new FormControl<string>('', Validators.required),
@@ -80,12 +83,12 @@ export class BillingCreateComponent implements OnInit {
     previous: new FormControl<number>(0),
     present: new FormControl<number>(0),
     m3Used: new FormControl(0),
-    readingAmount: new FormControl(0),
-    parts: new FormControl(0),
-    maintenanceFee: new FormControl(0),
-    lessAmount: new FormControl(0),
-    septageFee: new FormControl(0),
-    totalAmount: new FormControl(this.totalBilingAmount ?? 0),
+    readingAmount: new FormControl<string>('0.00'),
+    parts: new FormControl<string>('0.00'),
+    maintenanceFee: new FormControl<string>('0.00'),
+    lessAmount: new FormControl<string>('0.00'),
+    septageFee: new FormControl<string>('0.00'),
+    totalAmount: new FormControl<string>(this.formatNumber(this.totalBilingAmount) ?? '0.00'),
     status: new FormControl({value:'', disabled: true}),
   });
 
@@ -93,8 +96,6 @@ export class BillingCreateComponent implements OnInit {
   getBranchCode = Utils.getBranchCode;
   getPhase = Utils.getPhase;
   getCustomerType = Utils.getCustomerType;
-  formatNumber = Utils.formatNumber;
-  sanitizeAmount = Utils.sanitizeAmount;
 
   async ngOnInit(): Promise<void> {
     try {
@@ -129,12 +130,12 @@ export class BillingCreateComponent implements OnInit {
       present: frm.present!,
       m3Used: frm.m3Used!,
       rating: this.maxRateUsed,
-      readingAmount: frm.readingAmount!,
-      parts: frm.parts ? frm.parts : 0,
-      maintenanceFee: frm.maintenanceFee ? frm.maintenanceFee : 0,
-      lessAmount: frm.lessAmount ? frm.lessAmount : 0,
-      totalAmount: frm.totalAmount ? frm.totalAmount : 0,
-      septageFee: frm.septageFee ? frm.septageFee : 0,
+      readingAmount: this.sanitizeAmount(frm.readingAmount || '0'),
+      parts: this.sanitizeAmount(frm.parts || '0'),
+      maintenanceFee: this.sanitizeAmount(frm.maintenanceFee || '0'),
+      lessAmount: this.sanitizeAmount(frm.lessAmount || '0'),
+      totalAmount: this.sanitizeAmount(frm.totalAmount || '0'),
+      septageFee:this.sanitizeAmount(frm.septageFee || '0'),
       remarks: '',
       status: 2 //2 = incomplete; by default
     }
@@ -200,7 +201,7 @@ export class BillingCreateComponent implements OnInit {
               alias: data.alias,
               phase: this.getPhase(data.phase),
               customerType: this.getCustomerType(data.customerType),
-              maintenanceFee: this.sanitizeAmount(this.defaultValues.maintenanceFee.toString()),
+              maintenanceFee: this.formatNumber(this.sanitizeAmount(this.defaultValues.maintenanceFee.toString())) ,
             });
             console.log("CUSTOMER TYPE: ", this.selectedMeterNo.customerType);
           } catch (error) {
@@ -254,7 +255,14 @@ export class BillingCreateComponent implements OnInit {
     this.computeUsageAmount();
   }
 
-  onBlurAmounts(): void {
+
+  onBlurAmounts(ctrlName: string): void {
+
+    const ctrl = this.fg.get(ctrlName);
+    if(ctrl) {
+      ctrl.setValue(this.formatNumber(this.sanitizeAmount(ctrl.value)));
+    } 
+
     this.computerTotalBillingAmount();
   }
 
@@ -265,7 +273,7 @@ export class BillingCreateComponent implements OnInit {
 
     this.fg.patchValue({
       m3Used: useM3,
-      septageFee: this.computeSeptageFee(useM3)
+      septageFee: this.formatNumber(this.computeSeptageFee(useM3))
     })
 
     let billingAmount: number = 0;
@@ -316,7 +324,7 @@ export class BillingCreateComponent implements OnInit {
     console.log('currentAmount: ', currentAmount);
     console.log('baseAmount: ', baseAmount);
     this.fg.patchValue({
-      readingAmount: currentAmount,
+      readingAmount: this.formatNumber(currentAmount),
     });
     this.computerTotalBillingAmount();
   }
@@ -324,9 +332,9 @@ export class BillingCreateComponent implements OnInit {
   computerTotalBillingAmount(): void {
     const frm  = this.fg.value;
 
-    this.totalBilingAmount = (frm.readingAmount ?? 0) + (frm.parts ?? 0) + (frm.maintenanceFee ?? 0) + (frm.septageFee ?? 0) - (frm.lessAmount ?? 0);
+    this.totalBilingAmount = (this.sanitizeAmount(frm.readingAmount ?? '0')) + (this.sanitizeAmount(frm.parts ?? '0')) + (this.sanitizeAmount(frm.maintenanceFee ?? '0')) + (this.sanitizeAmount(frm.septageFee ?? '0')) - (this.sanitizeAmount(frm.lessAmount ?? '0'));
     this.fg.patchValue({
-      totalAmount: this.totalBilingAmount,
+      totalAmount: this.formatNumber(this.totalBilingAmount),
     });
   }
 
@@ -397,6 +405,16 @@ export class BillingCreateComponent implements OnInit {
     } else {
       return 0;
     }
+
+  }
+
+  handleBlur(ctrlName: string) {
+    
+    const ctrl = this.fg.get(ctrlName);
+
+    if(ctrl) {
+      ctrl.setValue(this.formatNumber(this.sanitizeAmount(ctrl.value)));
+    } 
 
   }
 

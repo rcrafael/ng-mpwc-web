@@ -220,8 +220,8 @@
                                    <label for="waterAmount"> Amount </label>
                               </div>
                               <div class="col-start-5 col-span-8">
-                                   <input type="number" id="waterAmount" formControlName="readingAmount"
-                                        class="border border-gray-400 rounded-md" />
+                                   <input type="text" id="waterAmount" formControlName="readingAmount"
+                                        class="border border-gray-400 rounded-md" readonly/>
                               </div>
                          </div>
 
@@ -230,7 +230,7 @@
                                    <label for="partsAmount"> Parts </label>
                               </div>
                               <div class="col-start-5 col-span-8">
-                                   <input type="number" id="partsAmount" formControlName="parts" (blur)="onBlurAmounts()"
+                                   <input type="text" id="partsAmount" formControlName="parts" (blur)="onBlurAmounts('parts')"
                                         class="border border-gray-400 rounded-md" />
                               </div>
                          </div>
@@ -240,7 +240,7 @@
                                    <label for="maintenanceFee"> Maintenance Fee </label>
                               </div>
                               <div class="col-start-5 col-span-8">
-                                   <input type="number" id="maintenanceFee" formControlName="maintenanceFee" (blur)="onBlurAmounts()"
+                                   <input type="text" id="maintenanceFee" formControlName="maintenanceFee" (blur)="onBlurAmounts('maintenanceFee')"
                                         class="border border-gray-400 rounded-md" />
                               </div>
                          </div>
@@ -250,7 +250,7 @@
                                    <label for="septageFee"> Septage Fee </label>
                               </div>
                               <div class="col-start-5 col-span-8">
-                                   <input type="number" id="septageFee" formControlName="septageFee" (blur)="onBlurAmounts()"
+                                   <input type="text" id="septageFee" formControlName="septageFee" (blur)="onBlurAmounts('septageFee')"
                                         class="border border-gray-400 rounded-md" />
                               </div>
                          </div>
@@ -260,7 +260,7 @@
                                    <label for="lessAmount"> Less </label>
                               </div>
                               <div class="col-start-5 col-span-8">
-                                   <input type="number" id="lessAmount" formControlName="lessAmount" (blur)="onBlurAmounts()"
+                                   <input type="text" id="lessAmount" formControlName="lessAmount" (blur)="onBlurAmounts('lessAmount')"
                                         class="border border-gray-400 rounded-md" />
                               </div>
                          </div>
@@ -270,8 +270,8 @@
                                    <label for="totalAmount"> Total Amount </label>
                               </div>
                               <div class="col-start-5 col-span-8">
-                                   <input type="number" id="totalAmount" formControlName="totalAmount"
-                                        class="border border-gray-400 rounded-md" />
+                                   <input type="text" id="totalAmount" formControlName="totalAmount"
+                                        class="border border-gray-400 rounded-md" readonly />
                               </div>
                          </div>
 
@@ -280,7 +280,7 @@
                                    <label for="status"> Status </label>
                               </div>
                               <div class="col-start-5 col-span-8">
-                                   <input type="number" id="status" formControlName="status"
+                                   <input type="text" id="status" formControlName="status"
                                         class="border border-gray-400 rounded-md" />
                               </div>
                          </div>

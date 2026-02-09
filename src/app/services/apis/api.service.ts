@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { AuthApi, BillingApi, Constants, CustomerApi, DefaultValuesApi, PartsApi, PaymentApi, SeptageFeeApi, UserApi, WaterRatesApi } from '../../common/constants';
+import { AuthApi, BillingApi, Constants, CustomerApi, DefaultValuesApi, PartsApi, PaymentApi, ReportsApi, SeptageFeeApi, UserApi, WaterRatesApi } from '../../common/constants';
 import { firstValueFrom, Observable, ObservedValueOf } from 'rxjs';
 import { IAPIResponse } from '../../models/interfaces/IApiResponse';
 import { IBillingInfo, IUpdateBilling } from '../../models/interfaces/IBilling';
@@ -287,6 +287,16 @@ export class ApiService {
   getPartByid(id: string): Observable<IAPIResponse> {
     return this.httpClient.get<IAPIResponse>(`${this.env.apiHost}${PartsApi.GET_PARTS_BY_ID}`.replace('{id}', id));
   }
+
+
+  
+  //Reports APIs
+  getDashboardData(startDate: string, endDate: string): Observable<IAPIResponse> {
+    return this.httpClient.get<IAPIResponse>(`${this.env.apiHost}${ReportsApi.GET_DASHBOARD_DATA}`.replace('{startDate}', startDate).replace('{endDate}', endDate));  
+  }
+
+
+
 
   //Default Values APIs
   getDefaultValues(): Observable<IAPIResponse> {

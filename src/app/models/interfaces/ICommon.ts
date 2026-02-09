@@ -1,3 +1,5 @@
+import { IAPIResponse } from "./IApiResponse"
+
 export interface ISideBarMenu {
      id: number,
      name: string,
@@ -38,4 +40,9 @@ export interface IPhase {
 export interface ITransactionStatus {
      id: number,
      name: string
+}
+
+export interface IApiCall {
+     name: string,
+     apiCall: Promise<IAPIResponse>
 }

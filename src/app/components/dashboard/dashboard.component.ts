@@ -8,6 +8,11 @@ import { DefaultValuesService } from '../../services/default-values.service';
 import { CommonService } from '../../services/common.service';
 import { ToastrMessage, ToastrTitle } from '../../common/constants';
 import { IDefaultValues } from '../../models/interfaces/IDefaultValues';
+import { ReportsService } from '../../services/reports.service';
+import { IApiCall } from '../../models/interfaces/ICommon';
+import { IDashboardDataCards } from '../../models/interfaces/ireports';
+import { Utils } from '../../common/util';
+
 @Component({
   selector: 'app-dashboard',
   standalone: true,
@@ -22,40 +27,27 @@ export class DashboardComponent {
   constructor(
     private defaultValuesService: DefaultValuesService,
     private toast: ToastrService,
-    private commonService: CommonService
+    private commonService: CommonService,
+    private reportsService: ReportsService
   ) {
 
   }
 
   toastTitlePrefix = 'Dashboard - ';
 
-  async ngOnInit(): Promise<void> {
+  totalCustomers: number = 0;
+  totalUnpaiadBillingAmount: number = 0;
+  totalActiveMeters: number = 0;
+  totalPreviousCubicMeterUsage: number = 0;
+  totalOfficialReceiptAmount: number = 0;
+  totalOtherCollectionAmount: number = 0;
+  totalShareCapAmount: number = 0;
+  totalCbuAmount: number = 0;
+  // startDate = Utils.dateFormatter(new Date().toISOString().split('T')[0], 'yyyy-MM-dd');
+  // endDate = Utils.dateFormatter(new Date().toISOString().split('T')[0], 'yyyy-MM-dd');
 
-    try {
-      
-      const defaultVal = this.defaultValuesService.getDefaultValuesFromSession();
-      if(defaultVal) return;
-      
-      this.commonService.showSpinner(true);
-      const response = await this.defaultValuesService.getDefaultValues();
-
-      if(response) {
-        const data = response.result as IDefaultValues;
-        this.defaultValuesService.setDefaultValuesToSession(data);
-      }
-
-    } catch (error) {
-      this.toast.error(`${ToastrMessage.ERROR_FETCHING_DATA}: ${error}`, this.toastTitlePrefix + ToastrTitle.ERROR);
-      console.error('ERROR FETCHING DEFAULT VALUES: ',error);
-    } finally {
-      this.commonService.showSpinner(false);
-    }
-
-  }
-
-  totalCustomers: string = '1,234';
-  totalBillings: string = '56,789.00';
-
+  startDate = Utils.dateFormatter('2025-01-01', 'yyyy-MM-dd');
+  endDate = Utils.dateFormatter('2025-12-31', 'yyyy-MM-dd');
 
   barChartOptions: ChartConfiguration['options'] = {
     responsive: true,
@@ -78,5 +70,64 @@ export class DashboardComponent {
   };
   barChartType: ChartType = 'bar';
 
+  amountFormatter = Utils.formatCurrency;
+  numberFormatter = Utils.formatNumber;
+
+  async ngOnInit(): Promise<void> {
+    console.log('DASHBOARD INITIALIZED');
+    try {
+      
+      const apiCalls: IApiCall[] = [];
+      const defaultVal = this.defaultValuesService.getDefaultValuesFromSession();
+      if(!defaultVal) {
+        apiCalls.push({
+          name: 'getDefaultValues', 
+          apiCall: this.defaultValuesService.getDefaultValues()
+        });
+      }
+
+      apiCalls.push({
+        name: 'getDashboardData', 
+        apiCall: this.reportsService.getDashboardData(this.startDate, this.endDate)
+      });
+
+      this.commonService.showSpinner(true);
+
+      for(let api of apiCalls) {
+        console.log('API CALLED: ', api.name);
+        if(api.name === 'getDefaultValues') {
+          const response = await api.apiCall;
+          if(response) {
+            const data = response.result as IDefaultValues;
+            this.defaultValuesService.setDefaultValuesToSession(data);
+          }
+        }
+
+        if(api.name === 'getDashboardData') {
+          const response = await api.apiCall;
+          if(response) {
+            const data = response.result as IDashboardDataCards;
+            this.totalCustomers = data.userCount;
+            this.totalUnpaiadBillingAmount = data.totalUnpaidBillingAmount;
+            this.totalActiveMeters = data.activeMeterCount;
+            this.totalPreviousCubicMeterUsage = data.totalPreviousCubicMeterUsage;
+            this.totalOfficialReceiptAmount = data.totalOfficialReceiptAmount;
+            this.totalOtherCollectionAmount = data.totalOtherCollectionAmount;
+            this.totalShareCapAmount = data.totalShareCapAmount;
+            this.totalCbuAmount = data.totalCbuAmount;
+          }
+        }
+        console.log('DONE PROCESSING API: ', api.name);
+      }
+      
+
+    } catch (error) {
+      this.toast.error(`${ToastrMessage.ERROR_FETCHING_DATA}: ${error}`, this.toastTitlePrefix + ToastrTitle.ERROR);
+      console.error('ERROR DATA: ',error);
+    } finally {
+      this.commonService.showSpinner(false);
+    }
+
+  }
 }
 

@@ -90,15 +90,29 @@ export class Utils {
           return formatDate(d, format, 'en-PH');
      }
  
-     public static formatNumber(number: number): string {
+     public static formatNumber(number: number, decimals: number = 2): string {
           try {
-               let num = new Intl.NumberFormat('en-PH',{style: 'decimal', minimumFractionDigits: 2, maximumFractionDigits: 2}).format(number);
+               let num = new Intl.NumberFormat('en-PH',{style: 'decimal', minimumFractionDigits: decimals, maximumFractionDigits: decimals}).format(number);
                if(isNaN(parseFloat(num))) {
-                    return '0.00';
+                    let zeroStr = '0';
+                    for(let i = 0; i < decimals; i++) {
+                         if(!zeroStr.includes('.')) {
+                              zeroStr += '.';
+                         }
+                         zeroStr += '0';
+                    }
+                    return zeroStr;
                }
                return num;
           } catch (error) {
-               return '0.00'          
+                let zeroStr = '0';
+               for(let i = 0; i < decimals; i++) {
+                    if(!zeroStr.includes('.')) {
+                         zeroStr += '.';
+                    }
+                    zeroStr += '0';
+               }
+               return zeroStr;          
           }
      }
 

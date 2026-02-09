@@ -90,6 +90,10 @@ export class WaterRatesApi {
      public static UPDATE_COMMERCIAL_RATES = '/billing/rates/commercial';
 }
 
+export class ReportsApi {
+     public static GET_DASHBOARD_DATA = '/reports/getDashboardData/{startDate}/{endDate}';
+}
+
 export class DefaultValuesApi {
      public static GET_DEFAULT_VALUES = '/settings/default-values';
      public static UPDATE_DEFAULT_VALUES = '/settings/default-values';

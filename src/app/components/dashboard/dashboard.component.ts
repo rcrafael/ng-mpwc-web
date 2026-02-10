@@ -10,15 +10,17 @@ import { ToastrMessage, ToastrTitle } from '../../common/constants';
 import { IDefaultValues } from '../../models/interfaces/IDefaultValues';
 import { ReportsService } from '../../services/reports.service';
 import { IApiCall } from '../../models/interfaces/ICommon';
-import { IDashboardDataCards } from '../../models/interfaces/ireports';
+import { IDashboardDataCards } from '../../models/interfaces/IReports';
 import { Utils } from '../../common/util';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
   imports: [
     DashboardCardComponent,
-    BaseChartDirective
+    BaseChartDirective,
+    FormsModule
   ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
@@ -43,11 +45,8 @@ export class DashboardComponent {
   totalOtherCollectionAmount: number = 0;
   totalShareCapAmount: number = 0;
   totalCbuAmount: number = 0;
-  // startDate = Utils.dateFormatter(new Date().toISOString().split('T')[0], 'yyyy-MM-dd');
-  // endDate = Utils.dateFormatter(new Date().toISOString().split('T')[0], 'yyyy-MM-dd');
-
-  startDate = Utils.dateFormatter('2025-01-01', 'yyyy-MM-dd');
-  endDate = Utils.dateFormatter('2025-12-31', 'yyyy-MM-dd');
+  startDate = Utils.dateFormatter(new Date().toISOString().split('T')[0], 'yyyy-MM-dd');
+  endDate = Utils.dateFormatter(new Date().toISOString().split('T')[0], 'yyyy-MM-dd');
 
   barChartOptions: ChartConfiguration['options'] = {
     responsive: true,
@@ -129,5 +128,29 @@ export class DashboardComponent {
     }
 
   }
+
+  async onApplyHandleClicked() {
+    try {
+      this.commonService.showSpinner(true);
+      const response = await this.reportsService.getDashboardData(this.startDate, this.endDate);
+      if(response) {
+        const data = response.result as IDashboardDataCards;
+        this.totalCustomers = data.userCount;
+        this.totalUnpaiadBillingAmount = data.totalUnpaidBillingAmount;
+        this.totalActiveMeters = data.activeMeterCount;
+        this.totalCubicMeterUsage = data.totalCubicMeterUsage;
+        this.totalOfficialReceiptAmount = data.totalOfficialReceiptAmount;
+        this.totalOtherCollectionAmount = data.totalOtherCollectionAmount;
+        this.totalShareCapAmount = data.totalShareCapAmount;
+        this.totalCbuAmount = data.totalCbuAmount;
+      }
+    } catch (error) {
+      this.toast.error(`${ToastrMessage.ERROR_FETCHING_DATA}: ${error}`, this.toastTitlePrefix + ToastrTitle.ERROR);
+      console.error('ERROR DATA: ',error);
+    } finally {
+      this.commonService.showSpinner(false);
+    }
+  }
+
 }
 

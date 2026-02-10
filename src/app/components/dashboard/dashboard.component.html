@@ -7,7 +7,25 @@
           </div>
      </div>
 
-     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 m-10">
+     <div class="datepicker-container flex flex-row gap-2 my-5 mx-10 place-items-center">
+          <div class="datepicker-from">
+                <input type="date" [(ngModel)]="startDate" name="startDate" class="w-full border border-gray-400 rounded-md" />
+          </div>
+          <div class="datepicker-divider">
+               <span class="font-bold">to</span>
+          </div>
+          <div class="datepicker-to">
+                <input type="date" [(ngModel)]="endDate" name="endDate" class="w-full border border-gray-400 rounded-md" />
+          </div>
+          <div class="apply-btn">
+               <button type="button" (click)="onApplyHandleClicked()"
+                    class="p-1 bg-blue-300 font-bold border border-solid border-black rounded-md px-2">
+                    Apply
+               </button>
+          </div>
+     </div>
+
+     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 m-10 mt-0">
           <app-dashboard-card [title]="'Total Customers'" [value]="numberFormatter(totalCustomers, 0)" [icon]="'assets/icons/group.svg'"
                [iconColor]="'bg-slate-500'" [iconBackgroundColor]="'bg-slate-200'"></app-dashboard-card>
           <app-dashboard-card [title]="'Active Meters'" [value]="numberFormatter(totalActiveMeters, 0)" [icon]="'assets/icons/water-pump.svg'"

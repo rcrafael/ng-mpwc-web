@@ -32,7 +32,7 @@ export class DashboardComponent {
     private commonService: CommonService,
     private reportsService: ReportsService
   ) {
-
+    this.startDate = this.getFirstDateOfMonth();
   }
 
   toastTitlePrefix = 'Dashboard - ';
@@ -45,8 +45,8 @@ export class DashboardComponent {
   totalOtherCollectionAmount: number = 0;
   totalShareCapAmount: number = 0;
   totalCbuAmount: number = 0;
-  startDate = Utils.dateFormatter(new Date().toISOString().split('T')[0], 'yyyy-MM-dd');
-  endDate = Utils.dateFormatter(new Date().toISOString().split('T')[0], 'yyyy-MM-dd');
+  startDate = Utils.dateFormatter(new Date().toString(), 'yyyy-MM-dd');
+  endDate = Utils.dateFormatter(new Date().toString(), 'yyyy-MM-dd');
 
   barChartOptions: ChartConfiguration['options'] = {
     responsive: true,
@@ -74,6 +74,7 @@ export class DashboardComponent {
 
   async ngOnInit(): Promise<void> {
     console.log('DASHBOARD INITIALIZED');
+
     try {
       
       const apiCalls: IApiCall[] = [];
@@ -150,6 +151,13 @@ export class DashboardComponent {
     } finally {
       this.commonService.showSpinner(false);
     }
+  }
+
+  getFirstDateOfMonth(): string {
+    const date = new Date();
+    const firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
+    console.log('FIRST DAY: ', firstDay.toString());
+    return Utils.dateFormatter(firstDay.toString(), 'yyyy-MM-dd');
   }
 
 }

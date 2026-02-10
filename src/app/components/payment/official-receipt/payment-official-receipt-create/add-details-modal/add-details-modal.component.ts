@@ -240,10 +240,13 @@ export class AddDetailsModalComponent implements OnInit {
   }
 
   isDueDateExceed(dueDate: string): boolean {
-    const currentDate = new Date().toISOString().split('T')[0];
-    console.log('CURRENT DATE: ', currentDate);
+    
+    const due = new Date(dueDate);
+    due.setHours(0,0,0,0);
+    const currentDate = new Date();
+    currentDate.setHours(0,0,0,0);
 
-    return dueDate < currentDate;
+    return due < currentDate;
   }
 
   autoProcessPenalty(): void {

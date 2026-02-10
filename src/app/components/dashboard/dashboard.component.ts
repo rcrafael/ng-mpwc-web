@@ -38,7 +38,7 @@ export class DashboardComponent {
   totalCustomers: number = 0;
   totalUnpaiadBillingAmount: number = 0;
   totalActiveMeters: number = 0;
-  totalPreviousCubicMeterUsage: number = 0;
+  totalCubicMeterUsage: number = 0;
   totalOfficialReceiptAmount: number = 0;
   totalOtherCollectionAmount: number = 0;
   totalShareCapAmount: number = 0;
@@ -110,7 +110,7 @@ export class DashboardComponent {
             this.totalCustomers = data.userCount;
             this.totalUnpaiadBillingAmount = data.totalUnpaidBillingAmount;
             this.totalActiveMeters = data.activeMeterCount;
-            this.totalPreviousCubicMeterUsage = data.totalPreviousCubicMeterUsage;
+            this.totalCubicMeterUsage = data.totalCubicMeterUsage;
             this.totalOfficialReceiptAmount = data.totalOfficialReceiptAmount;
             this.totalOtherCollectionAmount = data.totalOtherCollectionAmount;
             this.totalShareCapAmount = data.totalShareCapAmount;

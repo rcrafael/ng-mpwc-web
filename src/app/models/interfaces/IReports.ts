@@ -1,7 +1,7 @@
 export interface IDashboardDataCards {
      userCount: number;
      activeMeterCount: number;
-     totalPreviousCubicMeterUsage: number;
+     totalCubicMeterUsage: number;
      totalUnpaidBillingAmount: number;
      totalOfficialReceiptAmount: number;
      totalOtherCollectionAmount: number;

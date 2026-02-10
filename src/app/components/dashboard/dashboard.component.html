@@ -12,7 +12,7 @@
                [iconColor]="'bg-slate-500'" [iconBackgroundColor]="'bg-slate-200'"></app-dashboard-card>
           <app-dashboard-card [title]="'Active Meters'" [value]="numberFormatter(totalActiveMeters, 0)" [icon]="'assets/icons/water-pump.svg'"
                [iconColor]="'bg-green-500'" [iconBackgroundColor]="'bg-green-200'"></app-dashboard-card>
-          <app-dashboard-card [title]="'Cubic Meter Usage'" [value]="numberFormatter(totalPreviousCubicMeterUsage, 0)" [icon]="'assets/icons/pin.svg'"
+          <app-dashboard-card [title]="'Cubic Meter Usage'" [value]="numberFormatter(totalCubicMeterUsage, 0)" [icon]="'assets/icons/pin.svg'"
                [iconColor]="'bg-violet-500'" [iconBackgroundColor]="'bg-violet-200'"></app-dashboard-card>
           <app-dashboard-card [title]="'Unpaid Billings'" [value]="amountFormatter(totalUnpaiadBillingAmount)" [icon]="'assets/icons/money-off.svg'"
                [iconColor]="'bg-red-500'" [iconBackgroundColor]="'bg-red-200'"></app-dashboard-card>
@@ -20,9 +20,9 @@
           <app-dashboard-card [title]="'OR Collected'" [value]="amountFormatter(totalOfficialReceiptAmount)" [icon]="'assets/icons/payments.svg'"
                [iconColor]="'bg-blue-500'" [iconBackgroundColor]="'bg-blue-200'"></app-dashboard-card>
           <app-dashboard-card [title]="'Other Collection'" [value]="amountFormatter(totalOtherCollectionAmount)" [icon]="'assets/icons/account-balance.svg'"
-               [iconColor]="'bg-green-500'" [iconBackgroundColor]="'bg-green-200'"></app-dashboard-card>
+               [iconColor]="'bg-rose-500'" [iconBackgroundColor]="'bg-rose-200'"></app-dashboard-card>
           <app-dashboard-card [title]="'Share Capital Collected'" [value]="amountFormatter(totalShareCapAmount)" [icon]="'assets/icons/money-bag.svg'"
-               [iconColor]="'bg-violet-500'" [iconBackgroundColor]="'bg-violet-200'"></app-dashboard-card>
+               [iconColor]="'bg-teal-500'" [iconBackgroundColor]="'bg-teal-200'"></app-dashboard-card>
           <app-dashboard-card [title]="'CBU Collected'" [value]="amountFormatter(totalCbuAmount)" [icon]="'assets/icons/bank-notes.svg'"
                [iconColor]="'bg-yellow-600'" [iconBackgroundColor]="'bg-yellow-200'"></app-dashboard-card>
      </div>

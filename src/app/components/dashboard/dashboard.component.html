@@ -7,15 +7,17 @@
           </div>
      </div>
 
-     <div class="datepicker-container flex flex-row gap-2 my-5 mx-10 place-items-center">
+     <div class="datepicker-container flex flex-col md:flex-row gap-2 my-5 mx-4 md:mx-10 items-start md:items-center">
           <div class="datepicker-from">
-                <input type="date" [(ngModel)]="startDate" name="startDate" class="w-full border border-gray-400 rounded-md" />
+               <input type="date" [(ngModel)]="startDate" name="startDate"
+                    class="w-full border border-gray-400 rounded-md" />
           </div>
           <div class="datepicker-divider">
                <span class="font-bold">to</span>
           </div>
           <div class="datepicker-to">
-                <input type="date" [(ngModel)]="endDate" name="endDate" class="w-full border border-gray-400 rounded-md" />
+               <input type="date" [(ngModel)]="endDate" name="endDate"
+                    class="w-full border border-gray-400 rounded-md" />
           </div>
           <div class="apply-btn">
                <button type="button" (click)="onApplyHandleClicked()"
@@ -26,23 +28,31 @@
      </div>
 
      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 m-10 mt-0">
-          <app-dashboard-card [title]="'Total Customers'" [value]="numberFormatter(totalCustomers, 0)" [icon]="'assets/icons/group.svg'"
-               [iconColor]="'bg-slate-500'" [iconBackgroundColor]="'bg-slate-200'"></app-dashboard-card>
-          <app-dashboard-card [title]="'Active Meters'" [value]="numberFormatter(totalActiveMeters, 0)" [icon]="'assets/icons/water-pump.svg'"
-               [iconColor]="'bg-green-500'" [iconBackgroundColor]="'bg-green-200'"></app-dashboard-card>
-          <app-dashboard-card [title]="'Cubic Meter Usage'" [value]="numberFormatter(totalCubicMeterUsage, 0)" [icon]="'assets/icons/pin.svg'"
-               [iconColor]="'bg-violet-500'" [iconBackgroundColor]="'bg-violet-200'"></app-dashboard-card>
-          <app-dashboard-card [title]="'Unpaid Billings'" [value]="amountFormatter(totalUnpaiadBillingAmount)" [icon]="'assets/icons/money-off.svg'"
-               [iconColor]="'bg-red-500'" [iconBackgroundColor]="'bg-red-200'"></app-dashboard-card>
-          
-          <app-dashboard-card [title]="'OR Collected'" [value]="amountFormatter(totalOfficialReceiptAmount)" [icon]="'assets/icons/payments.svg'"
-               [iconColor]="'bg-blue-500'" [iconBackgroundColor]="'bg-blue-200'"></app-dashboard-card>
-          <app-dashboard-card [title]="'Other Collection'" [value]="amountFormatter(totalOtherCollectionAmount)" [icon]="'assets/icons/account-balance.svg'"
-               [iconColor]="'bg-rose-500'" [iconBackgroundColor]="'bg-rose-200'"></app-dashboard-card>
-          <app-dashboard-card [title]="'Share Capital Collected'" [value]="amountFormatter(totalShareCapAmount)" [icon]="'assets/icons/money-bag.svg'"
-               [iconColor]="'bg-teal-500'" [iconBackgroundColor]="'bg-teal-200'"></app-dashboard-card>
-          <app-dashboard-card [title]="'CBU Collected'" [value]="amountFormatter(totalCbuAmount)" [icon]="'assets/icons/bank-notes.svg'"
-               [iconColor]="'bg-yellow-600'" [iconBackgroundColor]="'bg-yellow-200'"></app-dashboard-card>
+          <app-dashboard-card [title]="'Total Customers'" [value]="numberFormatter(totalCustomers, 0)"
+               [icon]="'assets/icons/group.svg'" [iconColor]="'bg-slate-500'"
+               [iconBackgroundColor]="'bg-slate-200'"></app-dashboard-card>
+          <app-dashboard-card [title]="'Active Meters'" [value]="numberFormatter(totalActiveMeters, 0)"
+               [icon]="'assets/icons/water-pump.svg'" [iconColor]="'bg-green-500'"
+               [iconBackgroundColor]="'bg-green-200'"></app-dashboard-card>
+          <app-dashboard-card [title]="'Cubic Meter Usage'" [value]="numberFormatter(totalCubicMeterUsage, 0)"
+               [icon]="'assets/icons/pin.svg'" [iconColor]="'bg-violet-500'"
+               [iconBackgroundColor]="'bg-violet-200'"></app-dashboard-card>
+          <app-dashboard-card [title]="'Unpaid Billings'" [value]="amountFormatter(totalUnpaiadBillingAmount)"
+               [icon]="'assets/icons/money-off.svg'" [iconColor]="'bg-red-500'"
+               [iconBackgroundColor]="'bg-red-200'"></app-dashboard-card>
+
+          <app-dashboard-card [title]="'OR Collected'" [value]="amountFormatter(totalOfficialReceiptAmount)"
+               [icon]="'assets/icons/payments.svg'" [iconColor]="'bg-blue-500'"
+               [iconBackgroundColor]="'bg-blue-200'"></app-dashboard-card>
+          <app-dashboard-card [title]="'Other Collection'" [value]="amountFormatter(totalOtherCollectionAmount)"
+               [icon]="'assets/icons/account-balance.svg'" [iconColor]="'bg-rose-500'"
+               [iconBackgroundColor]="'bg-rose-200'"></app-dashboard-card>
+          <app-dashboard-card [title]="'Share Capital Collected'" [value]="amountFormatter(totalShareCapAmount)"
+               [icon]="'assets/icons/money-bag.svg'" [iconColor]="'bg-teal-500'"
+               [iconBackgroundColor]="'bg-teal-200'"></app-dashboard-card>
+          <app-dashboard-card [title]="'CBU Collected'" [value]="amountFormatter(totalCbuAmount)"
+               [icon]="'assets/icons/bank-notes.svg'" [iconColor]="'bg-yellow-600'"
+               [iconBackgroundColor]="'bg-yellow-200'"></app-dashboard-card>
      </div>
 
      <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6 m-10">
@@ -59,5 +69,5 @@
                </canvas>
           </div>
      </div>
-     
+
 </div>

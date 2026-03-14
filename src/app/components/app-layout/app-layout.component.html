@@ -1,10 +1,17 @@
-<div class="grid grid-flow-col grid-cols-12 max-h-full">
-     <div class="col-span-2 border border-solid border-r-gray-200">
-          <app-sidebar />
+<div class="flex h-screen overflow-hidden">
+     <!-- Sidebar -->
+     <div class="transition-all duration-300 ease-in-out border-r border-gray-200 z-10"
+          [class.w-72]="!isSidebarCollapsed || !isMobile" [class.w-20]="isSidebarCollapsed && isMobile"
+          [class.absolute]="isMobile && !isSidebarCollapsed" [class.h-full]="isMobile && !isSidebarCollapsed">
+          <app-sidebar [collapsed]="isSidebarCollapsed && isMobile" (toggleCollapsed)="toggleSidebar()"></app-sidebar>
      </div>
-     
-     <div class="col-span-10 border border-solid relative overflow-hidden">
+
+     <!-- Main Content -->
+     <div class="flex-1 relative overflow-hidden flex flex-col min-w-0"
+          [class.hidden]="isMobile && !isSidebarCollapsed">
           <app-loading-spinner></app-loading-spinner>
-          <router-outlet />
+          <div class="flex-1 overflow-auto">
+               <router-outlet />
+          </div>
      </div>
 </div>

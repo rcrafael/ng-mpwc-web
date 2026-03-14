@@ -1,68 +1,151 @@
-<aside class="w-full bg-white shadow-lg h-screen overflow-y-auto">
-     <!-- Logo Section -->
-     <div class="p-6 border-b border-gray-200">
-          <div class="flex items-center space-x-3">
-               <div class="w-10 h-10 rounded-lg flex items-center justify-center">
-                    <img [src]="logo" [alt]="logo" class="w-10 h-10"/>
-               </div>
-               <div>
-                    <h2 class="text- font-bold text-gray-800">Mahabang Parang<br/>WaterWorks Cooperative</h2>
-                    <p class="text-sm text-gray-500">Billing System</p>
-               </div>
-          </div>
-     </div>
+<aside class="w-full bg-white h-full flex flex-col transition-all duration-300">
 
-     <!-- Navigation Menu -->
-     <nav class="mt-6">
-          <ul class="space-y-2 px-4">
-               @for(item of menuItems; track item.id) {
+     <!-- Scrollable Content -->
+     <div class="flex-1 overflow-y-auto overflow-x-hidden custom-scrollbar">
+          <!-- Logo Section -->
+          <div class="p-4 border-b border-gray-200 flex items-center justify-between" [class.flex-col]="collapsed"
+               [class.gap-4]="collapsed">
+               <div class="flex items-center space-x-3 w-full" [class.justify-center]="collapsed">
+                    <div class="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0">
+                         <img [src]="logo" [alt]="logo" class="w-10 h-10" />
+                    </div>
+                    @if(!collapsed) {
+                    <div class="min-w-0 transition-opacity duration-300">
+                         <h2 class="text- font-bold text-gray-800 leading-tight">Mahabang Parang<br />WaterWorks
+                              Cooperative</h2>
+                         <p class="text-xs text-gray-500 mt-1">Billing System</p>
+                    </div>
+                    }
+               </div>
+
+               <!-- Hamburger Button -->
+               <button (click)="toggleCollapsed.emit()"
+                    class="p-1 rounded-md hover:bg-gray-100 text-gray-500 focus:outline-none transition-colors lg:hidden"
+                    [class.mt-2]="collapsed">
+                    <span class="material-icons text-xl">menu</span>
+               </button>
+          </div>
+
+          <!-- Navigation Menu -->
+          <nav class="mt-6">
+               <ul class="space-y-2 px-2" [class.px-4]="!collapsed">
+                    @for(item of menuItems; track item.id) {
                     <li [hidden]="!item.visible">
                          <div>
                               @if(!item.subItems) { <!-- Menu item without subitems -->
-                                   <a [routerLink]="item.url" 
-                                        routerLinkActive="bg-blue-50 text-blue-700 border-r-2 border-blue-700"
-                                        class="flex items-center space-x-3 px-4 py-3 !text-gray-700 rounded-lg hover:!bg-gray-100 transition-colors duration-200">
-                                        <!-- <span [innerHTML]="item.icon" class="w-5 h-5"></span> -->
-                                         <img [src]="item.icon" [alt]="item.label" class="w-[50px] h-[50px]"/>
-                                        <span class="font-medium">{{ item.label }}</span>
-                                   </a>
+                              <a [routerLink]="item.url" routerLinkActive="bg-blue-50 text-blue-700 border-blue-700"
+                                   [class.border-r-2]="!collapsed"
+                                   class="flex items-center space-x-3 px-3 py-3 !text-gray-700 rounded-lg hover:!bg-gray-100 transition-colors duration-200 group"
+                                   [class.justify-center]="collapsed" [title]="collapsed ? item.label : ''">
+                                   <div class="flex-shrink-0 w-[30px] h-[30px] flex items-center justify-center">
+                                        <img [src]="item.icon" [alt]="item.label"
+                                             class="w-full h-full object-contain" />
+                                   </div>
+                                   @if(!collapsed) {
+                                   <span class="font-medium whitespace-nowrap overflow-hidden text-ellipsis">{{
+                                        item.label }}</span>
+                                   }
+                              </a>
                               } @else { <!-- Menu item with subitems -->
-                                   <button (click)="toggleSubmenu(item.label)"
-                                        class="w-full flex items-center justify-between px-4 py-3 !text-gray-700 rounded-lg hover:!bg-gray-100 transition-colors duration-200">
-                                        <div class="flex items-center space-x-3">
-                                             <!-- <span [innerHTML]="item.icon" class="w-5 h-5"></span> -->
-                                              <img [src]="item.icon" [alt]="item.label" class="w-[50px] h-[50px]"/>
-                                             <span class="font-medium">{{ item.label }}</span>
+                              <button (click)="toggleSubmenu(item, $event)"
+                                   class="w-full flex items-center justify-between px-3 py-3 !text-gray-700 rounded-lg hover:!bg-gray-100 transition-colors duration-200 group"
+                                   [class.justify-center]="collapsed" [title]="collapsed ? item.label : ''">
+                                   <div class="flex items-center space-x-3 min-w-0">
+                                        <div class="flex-shrink-0 w-[30px] h-[30px] flex items-center justify-center">
+                                             <img [src]="item.icon" [alt]="item.label"
+                                                  class="w-full h-full object-contain" />
                                         </div>
-                                        <svg class="w-4 h-4 transition-transform duration-200"
-                                             [class.rotate-180]="openSubmenus[item.label]" fill="none" stroke="currentColor"
-                                             viewBox="0 0 24 24">
-                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                  d="M19 9l-7 7-7-7"></path>
-                                        </svg>
-                                   </button>
-
-                              
-                                   <ul class="mt-2 space-y-1 overflow-hidden transition-all duration-300"
-                                        [class.max-h-0]="!openSubmenus[item.label]" [class.max-h-96]="openSubmenus[item.label]">
-                                        @for(subItem of item.subItems; track subItem.id) {
-                                             <li>
-                                                  <a [routerLink]="subItem.url" routerLinkActive="bg-blue-50 text-blue-700"
-                                                       class="flex items-center space-x-3 px-4 py-2 ml-8 text-sm text-gray-600 rounded-lg hover:bg-gray-50 transition-colors duration-200">
-                                                       <span class="w-4 h-4"></span>
-                                                       <span>{{ subItem.label }}</span>
-                                                  </a>
-                                             </li>
+                                        @if(!collapsed) {
+                                        <span class="font-medium whitespace-nowrap overflow-hidden text-ellipsis">{{
+                                             item.label }}</span>
                                         }
-                                        
-                                   </ul>
-                              }
+                                   </div>
+                                   @if(!collapsed) {
+                                   <svg class="w-4 h-4 transition-transform duration-200 flex-shrink-0 ml-2"
+                                        [class.rotate-180]="openSubmenus[item.label]" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                             d="M19 9l-7 7-7-7"></path>
+                                   </svg>
+                                   }
+                              </button>
 
+                              <!-- Submenu -->
+                              <ul class="mt-2 space-y-1 overflow-hidden transition-all duration-300"
+                                   [class.max-h-0]="!openSubmenus[item.label] || collapsed"
+                                   [class.max-h-96]="openSubmenus[item.label] && !collapsed">
+                                   @for(subItem of item.subItems; track subItem.id) {
+                                   <li>
+                                        <a [routerLink]="subItem.url" routerLinkActive="bg-blue-50 text-blue-700"
+                                             class="flex items-center space-x-3 px-4 py-2 ml-8 text-sm text-gray-600 rounded-lg hover:bg-gray-50 transition-colors duration-200 whitespace-nowrap">
+                                             <span class="w-1.5 h-1.5 bg-gray-400 rounded-full"></span>
+                                             <span>{{ subItem.label }}</span>
+                                        </a>
+                                   </li>
+                                   }
+                              </ul>
+                              }
                          </div>
                     </li>
+                    }
+               </ul>
+          </nav>
+     </div>
+
+     <!-- Backdrop for Popup -->
+     @if(activePopupItem && collapsed) {
+     <div class="fixed inset-0 z-30 bg-transparent" (click)="closePopup()"></div>
+     }
+
+     <!-- Popup Submenu -->
+     @if(activePopupItem && collapsed) {
+     <div class="fixed left-20 z-40 bg-white shadow-xl rounded-r-lg border border-gray-200 py-2 min-w-[200px]"
+          [style.top.px]="popupTop">
+          <div class="px-4 py-2 border-b border-gray-100 mb-2">
+               <span class="font-bold text-gray-800">{{ activePopupItem.label }}</span>
+          </div>
+          @for(subItem of activePopupItem.subItems; track subItem.id) {
+          <a [routerLink]="subItem.url" (click)="closePopup()" routerLinkActive="bg-blue-50 text-blue-700"
+               class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors mx-2 rounded-md">
+               {{ subItem.label }}
+          </a>
+          }
+     </div>
+     }
+
+     <!-- User Profile Footer -->
+     <div class="border-t border-gray-200 p-4 relative bg-gray-50">
+          <div class="relative flex justify-center">
+               <!-- Popup Menu -->
+               @if(showProfileMenu) {
+               <div class="absolute bottom-full mb-2 bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden z-20 min-w-[200px]"
+                    [class.left-0]="!collapsed" [class.left-full]="collapsed" [class.ml-2]="collapsed"
+                    [class.mb-0]="collapsed" [class.bottom-0]="collapsed">
+                    <a routerLink="/settings"
+                         class="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center space-x-2 whitespace-nowrap">
+                         <span class="material-icons text-gray-500 text-sm">settings</span>
+                         <span>Profile Settings</span>
+                    </a>
+                    <button (click)="logout()"
+                         class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100 flex items-center space-x-2 whitespace-nowrap">
+                         <span class="material-icons text-red-500 text-sm">logout</span>
+                         <span>Logout</span>
+                    </button>
+               </div>
                }
-               
-          </ul>
-     </nav>
+
+               <button (click)="toggleProfileMenu()"
+                    class="flex items-center w-full hover:bg-gray-200 p-2 rounded-lg transition-colors duration-200 outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+                    [class.justify-center]="collapsed" [class.space-x-3]="!collapsed">
+                    <img [src]="user.avatar" alt="User Avatar"
+                         class="w-10 h-10 rounded-full bg-gray-300 flex-shrink-0" />
+                    @if(!collapsed) {
+                    <div class="text-left overflow-hidden min-w-0">
+                         <p class="text-sm font-medium text-gray-700 truncate">{{ user.name || 'User' }}</p>
+                    </div>
+                    }
+               </button>
+          </div>
+     </div>
 
 </aside>

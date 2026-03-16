@@ -51,7 +51,7 @@ export class AuthLoginComponent implements OnInit {
       }
 
       this.authService.login(params).then((response: IAPIResponse) => {
-        console.log('login:', response);
+        console.log('login successful!');
         this.router.navigateByUrl('dashboard')
 
         const result = response.result as any;

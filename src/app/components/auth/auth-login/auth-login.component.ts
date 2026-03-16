@@ -51,10 +51,10 @@ export class AuthLoginComponent implements OnInit {
       }
 
       this.authService.login(params).then((response: IAPIResponse) => {
+        console.log('login:', response);
         this.router.navigateByUrl('dashboard')
 
         const result = response.result as any;
-        console.log('RESULT: ', result);
         localStorage.setItem('accessToken', result.access_token);
       })
         .catch((error: Error) => {

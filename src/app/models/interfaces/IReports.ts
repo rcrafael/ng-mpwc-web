@@ -1,3 +1,9 @@
+export interface IReportNav {
+     title: string;
+     icon: string;
+     route: string;
+}
+
 export interface IDashboardDataCards {
      userCount: number;
      activeMeterCount: number;

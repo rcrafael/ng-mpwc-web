@@ -1,14 +1,16 @@
 <div class="shadow-sm shadow-black min-h-screen h-screen">
-     @for(menu of menus; track menu.id) { 
-          <div class="flex flex-col items-center border-2 text-black bg-slate-100 m-1 hover:bg-slate-300"
-               (click)="navigateTo(menu.url)">
-               <div className='flex justify-center'>
-                    <img [src]="menu.icon" [alt]="menu.label" class="w-[50px] h-[50px]"/>
-               </div>
-               
-               <div class="overflow-hidden text-clip text-center">
-                    <p className='font-semibold '>{{menu.label}}</p>
-               </div>
+     @for(menu of menus; track menu.id) {
+     @if(menu.visible) {
+     <div class="flex flex-col items-center border-2 text-black bg-slate-100 m-1 hover:bg-slate-300"
+          (click)="navigateTo(menu.url)">
+          <div className='flex justify-center'>
+               <img [src]="menu.icon" [alt]="menu.label" class="w-[50px] h-[50px]" />
           </div>
+
+          <div class="overflow-hidden text-clip text-center">
+               <p className='font-semibold '>{{menu.label}}</p>
+          </div>
+     </div>
+     }
      }
 </div>

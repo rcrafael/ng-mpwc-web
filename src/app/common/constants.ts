@@ -3,7 +3,7 @@ export class Constants {
 }
 
 export class CustomerApi {
-     
+
      public static GET_CUSTOMER_LIST = '/customer/get/{pageNo}/{pageSize}';
      public static GET_CUSTOMER_BY_ID = '/customer/{id}';
      public static GET_CUSTOMER_SEARCH = '/customer/search/{pageNo}/{pageSize}';
@@ -15,7 +15,7 @@ export class CustomerApi {
      public static GET_METER_BY_METER_NO = '/customer/meter/{meterNo}';
      public static UPDATE_METER_NO = '/customer/meter/single-update';
      public static CREATE_METER_NO = '/customer/meter';
-     
+
 }
 
 export class BillingApi {
@@ -49,17 +49,17 @@ export class PaymentApi {
      public static GET_ALL_OTHER_PAYMENTS_BY_CUSTOMER_ID = '/payment/others/customer/{customerId}/{pageNo}/{pageSize}';
      public static GET_ALL_OTHER_PAYMENTS_WITH_CUSTOMER_INFO_BY_ID = '/payment/others/with-cust-info/{id}';
      public static GET_ALL_OTHER_PAYMENTS_WITH_SEARCH = '/payment/others/search/{pageNo}/{pageSize}';
-     
+
      //Generics
      public static UPDATE_STATUS = '/payment/official-receipt/update-status';
      public static DELETE_RECORD = '/payment/official-receipt/{id}';
-     
+
      public static PRINT_OR_PDF = '/payment/official-receipt/receipt/pdf/{id}';
      public static PRINT_OR_EXCEL = '/payment/official-receipt/receipt/excel/{id}';
 
      public static GET_SHARE_SUMMARY_BY_CUSTOMER_ID = '/payment/share-summary/{customerId}';
      public static UPDATE_SHARE_SUMMARY = '/payment/share-summary/update';
-     
+
 }
 
 export class AuthApi {
@@ -97,8 +97,11 @@ export class ReportsApi {
 export class DefaultValuesApi {
      public static GET_DEFAULT_VALUES = '/settings/default-values';
      public static UPDATE_DEFAULT_VALUES = '/settings/default-values';
-}    
+}
 
+export class CollectionApi {
+     public static GET_COLLECTION_REPORT_SUMMARY = '/reports/generateCollectionReportSummary/{startDate}/{endDate}';
+}
 
 export class ToastrTitle {
      public static INVALID_INPUT = 'Invalid Input';
@@ -108,7 +111,7 @@ export class ToastrTitle {
      public static WARNING = 'Warning';
 }
 
-export class ToastrMessage {     
+export class ToastrMessage {
      public static SUCCESS_CREATE = 'Successfully created!';
      public static SUCCESS_UPDATE = 'Successfully updated!';
      public static SUCCESS_DELETE = 'Successfully deleted!';
@@ -124,3 +127,4 @@ export class ToastrMessage {
      public static ERROR_VOID = 'Failed voiding';
 
 }
+

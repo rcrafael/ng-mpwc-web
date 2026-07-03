@@ -15,6 +15,7 @@ import { IWaterRates } from '../../models/interfaces/IWaterRates';
 import { ISeptageFeeRates } from '../../models/interfaces/ISeptageFeeRates';
 import { IDefaultValues } from '../../models/interfaces/IDefaultValues';
 import { IShareSummary } from '../../models/interfaces/IShareSummary';
+import { IReportFilters } from '../../models/interfaces/IReports';
 
 @Injectable({
   providedIn: 'root'
@@ -29,9 +30,9 @@ export class ApiService {
 
   // Auth APIs
   login(params: ILogin): Observable<IAPIResponse> {
-    return this.httpClient.post<IAPIResponse>(`${this.env.apiHost}${AuthApi.LOGIN}`, params );
+    return this.httpClient.post<IAPIResponse>(`${this.env.apiHost}${AuthApi.LOGIN}`, params);
   }
- 
+
   // Users APIs
   getUsername(id: string): Observable<IAPIResponse> {
     return this.httpClient.get<IAPIResponse>(`${this.env.apiHost}${UserApi.GET_USERNAME.replace('{id}', id)}`);
@@ -71,19 +72,19 @@ export class ApiService {
     let params = {
       customerId: customerId,
     }
-    return this.httpClient.get<IAPIResponse>(`${this.env.apiHost}${CustomerApi.GET_METER_BY_CUSTOMER_ID}`, {params});
+    return this.httpClient.get<IAPIResponse>(`${this.env.apiHost}${CustomerApi.GET_METER_BY_CUSTOMER_ID}`, { params });
   }
 
   createMeterNo(params: any): Observable<IAPIResponse> {
-      return this.httpClient.post<IAPIResponse>(`${this.env.apiHost}${CustomerApi.CREATE_METER_NO}`, params)
+    return this.httpClient.post<IAPIResponse>(`${this.env.apiHost}${CustomerApi.CREATE_METER_NO}`, params)
   }
-  
 
-  getCustomerWithSearch(keyword: string, pageNo: number = 0, pageSize:number = 50): Observable<IAPIResponse> {
+
+  getCustomerWithSearch(keyword: string, pageNo: number = 0, pageSize: number = 50): Observable<IAPIResponse> {
     let params = {
       searchKeyword: keyword
     }
-    return this.httpClient.get<IAPIResponse>(`${this.env.apiHost}${CustomerApi.GET_CUSTOMER_SEARCH.replace('{pageNo}',pageNo.toString()).replace('{pageSize}', pageSize.toString())}`, {params});
+    return this.httpClient.get<IAPIResponse>(`${this.env.apiHost}${CustomerApi.GET_CUSTOMER_SEARCH.replace('{pageNo}', pageNo.toString()).replace('{pageSize}', pageSize.toString())}`, { params });
   }
 
 
@@ -97,7 +98,7 @@ export class ApiService {
     return this.httpClient.get<IAPIResponse>(`${this.env.apiHost}${WaterRatesApi.GET_ACTIVE_WATER_RATES_COMMERCIAL}`);
   }
 
-   updateWaterRatesResidential(params: IWaterRates[]): Observable<IAPIResponse> {
+  updateWaterRatesResidential(params: IWaterRates[]): Observable<IAPIResponse> {
     return this.httpClient.put<IAPIResponse>(`${this.env.apiHost}${WaterRatesApi.UPDATE_RESIDENTIAL_RATES}`, params);
   }
 
@@ -110,10 +111,10 @@ export class ApiService {
   }
 
   getBillingById(readingId: string) {
-    return this.httpClient.get<IAPIResponse>(`${this.env.apiHost}${BillingApi.GET_BILLING_BY_ID.replace('{billingId}',readingId)}`);
+    return this.httpClient.get<IAPIResponse>(`${this.env.apiHost}${BillingApi.GET_BILLING_BY_ID.replace('{billingId}', readingId)}`);
   }
 
-  createBilling(params:IBillingInfo) {
+  createBilling(params: IBillingInfo) {
     return this.httpClient.post<IAPIResponse>(`${this.env.apiHost}${BillingApi.CREATE_BILLING}`, params);
   }
 
@@ -121,11 +122,11 @@ export class ApiService {
     return this.httpClient.put<IAPIResponse>(`${this.env.apiHost}${BillingApi.CREATE_BILLING}`, params);
   }
 
-  getBillingByCustomerId(customerId: string, pageNo: number = 0 , pageSize: number = 50): Observable<IAPIResponse> {
-    return this.httpClient.get<IAPIResponse>(`${this.env.apiHost}${BillingApi.GET_BILLING_BY_CUSTOMER_ID.replace('{customerId}',customerId).replace('{pageNo}',pageNo.toString()).replace('{pageSize}',pageSize.toString())}`);
+  getBillingByCustomerId(customerId: string, pageNo: number = 0, pageSize: number = 50): Observable<IAPIResponse> {
+    return this.httpClient.get<IAPIResponse>(`${this.env.apiHost}${BillingApi.GET_BILLING_BY_CUSTOMER_ID.replace('{customerId}', customerId).replace('{pageNo}', pageNo.toString()).replace('{pageSize}', pageSize.toString())}`);
   }
 
-  geneateReadingNo() : Observable<IAPIResponse> {
+  geneateReadingNo(): Observable<IAPIResponse> {
     return this.httpClient.get<IAPIResponse>(`${this.env.apiHost}${BillingApi.GET_NEW_READING_NUMBER}`);
   }
 
@@ -133,29 +134,29 @@ export class ApiService {
     let params = {
       customerId: customerId,
     }
-    return this.httpClient.get<IAPIResponse>(`${this.env.apiHost}${BillingApi.GET_RECENT_BILLING_BY_CUSTOMER_ID}`, {params});
+    return this.httpClient.get<IAPIResponse>(`${this.env.apiHost}${BillingApi.GET_RECENT_BILLING_BY_CUSTOMER_ID}`, { params });
   }
 
   getUnpaidBillsByCustomerId(customerId: string): Observable<IAPIResponse> {
     let params = {
       customerId: customerId,
     }
-    return this.httpClient.get<IAPIResponse>(`${this.env.apiHost}${BillingApi.GET_UNPAID_BILLING_BY_CUSTOMER_ID}`, {params});
+    return this.httpClient.get<IAPIResponse>(`${this.env.apiHost}${BillingApi.GET_UNPAID_BILLING_BY_CUSTOMER_ID}`, { params });
   }
 
-  getBillingSearch(keyword: string, pageNo: number = 0, pageSize:number = 50): Observable<IAPIResponse> {
+  getBillingSearch(keyword: string, pageNo: number = 0, pageSize: number = 50): Observable<IAPIResponse> {
     let params = {
       keyword: keyword
     }
-    return this.httpClient.get<IAPIResponse>(`${this.env.apiHost}${BillingApi.GET_BILLING_SEARCH.replace('{pageNo}',pageNo.toString()).replace('{pageSize}', pageSize.toString())}`, {params});
+    return this.httpClient.get<IAPIResponse>(`${this.env.apiHost}${BillingApi.GET_BILLING_SEARCH.replace('{pageNo}', pageNo.toString()).replace('{pageSize}', pageSize.toString())}`, { params });
   }
 
   voidBilling(id: string): Observable<IAPIResponse> {
-    return this.httpClient.delete<IAPIResponse>(`${this.env.apiHost}${BillingApi.VOID_BILLING.replace('{id}',id)}`);
+    return this.httpClient.delete<IAPIResponse>(`${this.env.apiHost}${BillingApi.VOID_BILLING.replace('{id}', id)}`);
   }
 
   deleteBilling(id: string): Observable<IAPIResponse> {
-    return this.httpClient.delete<IAPIResponse>(`${this.env.apiHost}${BillingApi.DELETE_BILLING.replace('{id}',id)}`);
+    return this.httpClient.delete<IAPIResponse>(`${this.env.apiHost}${BillingApi.DELETE_BILLING.replace('{id}', id)}`);
   }
 
 
@@ -174,11 +175,11 @@ export class ApiService {
 
   getORAllPayments(pageNo: number = 0, pageSize: number = 50): Observable<IAPIResponse> {
     return this.httpClient.get<IAPIResponse>(`${this.env.apiHost}${PaymentApi.GET_OR_ALL_PAYMENTS.replace('{pageNo}', pageNo.toString()).replace('{pageSize}', pageSize.toString())}`);
-  } 
+  }
 
   getORPaymentsByCustomerId(customerId: string, pageNo: number = 0, pageSize: number = 50): Observable<IAPIResponse> {
-    return this.httpClient.get<IAPIResponse>(`${this.env.apiHost}${PaymentApi.GET_OR_ALL_PAYMENTS_BY_CUSTOMER_ID.replace('{customerId}',customerId).replace('{pageNo}', pageNo.toString()).replace('{pageSize}', pageSize.toString())}`);
-  } 
+    return this.httpClient.get<IAPIResponse>(`${this.env.apiHost}${PaymentApi.GET_OR_ALL_PAYMENTS_BY_CUSTOMER_ID.replace('{customerId}', customerId).replace('{pageNo}', pageNo.toString()).replace('{pageSize}', pageSize.toString())}`);
+  }
 
   getORAllPaymentsWithCustomerInfo(pageNo: number = 0, pageSize: number = 50): Observable<IAPIResponse> {
     return this.httpClient.get<IAPIResponse>(`${this.env.apiHost}${PaymentApi.GET_OR_ALL_PAYMENTS_WITH_CUSTOMER_INFO.replace('{pageNo}', pageNo.toString()).replace('{pageSize}', pageSize.toString())}`);
@@ -188,11 +189,11 @@ export class ApiService {
     return this.httpClient.get<IAPIResponse>(`${this.env.apiHost}${PaymentApi.GET_OR_ALL_PAYMENTS_WITH_CUSTOMER_INFO_BY_ID.replace('{id}', orId.toString())}`);
   }
 
-  getORAllPaymentsWithSearch(keyword: string, pageNo: number = 0, pageSize:number = 50): Observable<IAPIResponse> {
+  getORAllPaymentsWithSearch(keyword: string, pageNo: number = 0, pageSize: number = 50): Observable<IAPIResponse> {
     let params = {
       searchKeyword: keyword
     }
-    return this.httpClient.get<IAPIResponse>(`${this.env.apiHost}${PaymentApi.GET_OR_ALL_WITH_SEARCH.replace('{pageNo}',pageNo.toString()).replace('{pageSize}', pageSize.toString())}`, {params});
+    return this.httpClient.get<IAPIResponse>(`${this.env.apiHost}${PaymentApi.GET_OR_ALL_WITH_SEARCH.replace('{pageNo}', pageNo.toString()).replace('{pageSize}', pageSize.toString())}`, { params });
   }
 
   generateNewORNo(): Observable<IAPIResponse> {
@@ -204,7 +205,7 @@ export class ApiService {
   }
 
   voidOR(id: string): Observable<IAPIResponse> {
-    return this.httpClient.delete<IAPIResponse>(`${this.env.apiHost}${PaymentApi.VOID_OR_RECORD.replace('{id}',id)}`);
+    return this.httpClient.delete<IAPIResponse>(`${this.env.apiHost}${PaymentApi.VOID_OR_RECORD.replace('{id}', id)}`);
   }
 
   //OTHER PAYMENTS APIs
@@ -213,23 +214,23 @@ export class ApiService {
     return this.httpClient.post<IAPIResponse>(`${this.env.apiHost}${PaymentApi.CREATE_OTHER_PAYMENT}`, params);
   }
 
-  getAllOtherPayments(pageNo:number = 0, pageSize: number = 50): Observable<IAPIResponse> {
-    return this.httpClient.get<IAPIResponse>(`${this.env.apiHost}${PaymentApi.GET_ALL_OTHER_PAYMENTS}`.replace('{pageNo}',pageNo.toString()).replace('{pageSize}',pageSize.toString()));
+  getAllOtherPayments(pageNo: number = 0, pageSize: number = 50): Observable<IAPIResponse> {
+    return this.httpClient.get<IAPIResponse>(`${this.env.apiHost}${PaymentApi.GET_ALL_OTHER_PAYMENTS}`.replace('{pageNo}', pageNo.toString()).replace('{pageSize}', pageSize.toString()));
   }
 
   getAllOtherPaymentsWithCustomerInfo(pageNo: number = 0, pageSize: number = 50): Observable<IAPIResponse> {
-    return this.httpClient.get<IAPIResponse>(`${this.env.apiHost}${PaymentApi.GET_ALL_OTHER_PAYMENTS_WITH_CUSTOMER_INFO}`.replace('{pageNo}',pageNo.toString()).replace('{pageSize}',pageSize.toString()));
+    return this.httpClient.get<IAPIResponse>(`${this.env.apiHost}${PaymentApi.GET_ALL_OTHER_PAYMENTS_WITH_CUSTOMER_INFO}`.replace('{pageNo}', pageNo.toString()).replace('{pageSize}', pageSize.toString()));
   }
 
   getOtherPaymentWithCustomerInfoById(orId: string): Observable<IAPIResponse> {
-    return this.httpClient.get<IAPIResponse>(`${this.env.apiHost}${PaymentApi.GET_ALL_OTHER_PAYMENTS_WITH_CUSTOMER_INFO_BY_ID}`.replace('{id}',orId));
+    return this.httpClient.get<IAPIResponse>(`${this.env.apiHost}${PaymentApi.GET_ALL_OTHER_PAYMENTS_WITH_CUSTOMER_INFO_BY_ID}`.replace('{id}', orId));
   }
 
-  getAllOtherPaymentsWithSearch(keyword: string, pageNo: number = 0, pageSize:number = 50): Observable<IAPIResponse> {
+  getAllOtherPaymentsWithSearch(keyword: string, pageNo: number = 0, pageSize: number = 50): Observable<IAPIResponse> {
     let params = {
       searchKeyword: keyword
     }
-    return this.httpClient.get<IAPIResponse>(`${this.env.apiHost}${PaymentApi.GET_ALL_OTHER_PAYMENTS_WITH_SEARCH.replace('{pageNo}',pageNo.toString()).replace('{pageSize}', pageSize.toString())}`, {params});
+    return this.httpClient.get<IAPIResponse>(`${this.env.apiHost}${PaymentApi.GET_ALL_OTHER_PAYMENTS_WITH_SEARCH.replace('{pageNo}', pageNo.toString()).replace('{pageSize}', pageSize.toString())}`, { params });
   }
 
   //GENERIC OR APIs
@@ -239,23 +240,23 @@ export class ApiService {
       status: status
     }
 
-    return this.httpClient.post<IAPIResponse>(`${this.env.apiHost}${PaymentApi.UPDATE_STATUS}`,params);
+    return this.httpClient.post<IAPIResponse>(`${this.env.apiHost}${PaymentApi.UPDATE_STATUS}`, params);
   }
 
   deleteRecord(id: string): Observable<IAPIResponse> {
-    return this.httpClient.delete<IAPIResponse>(`${this.env.apiHost}${PaymentApi.DELETE_RECORD}`.replace('{id}',id));
+    return this.httpClient.delete<IAPIResponse>(`${this.env.apiHost}${PaymentApi.DELETE_RECORD}`.replace('{id}', id));
   }
 
   printORPdf(id: string): Observable<any> {
-    return this.httpClient.get<IAPIResponse>(`${this.env.apiHost}${PaymentApi.PRINT_OR_PDF}`.replace('{id}',id), { responseType: 'arraybuffer' as 'json' });
+    return this.httpClient.get<IAPIResponse>(`${this.env.apiHost}${PaymentApi.PRINT_OR_PDF}`.replace('{id}', id), { responseType: 'arraybuffer' as 'json' });
   }
 
   printORExcel(id: string): Observable<any> {
-    return this.httpClient.get<IAPIResponse>(`${this.env.apiHost}${PaymentApi.PRINT_OR_EXCEL}`.replace('{id}',id), { responseType: 'arraybuffer' as 'json' }) ;
+    return this.httpClient.get<IAPIResponse>(`${this.env.apiHost}${PaymentApi.PRINT_OR_EXCEL}`.replace('{id}', id), { responseType: 'arraybuffer' as 'json' });
   }
 
   getShareSummaryByCustomerId(id: string): Observable<IAPIResponse> {
-    return this.httpClient.get<IAPIResponse>(`${this.env.apiHost}${PaymentApi.GET_SHARE_SUMMARY_BY_CUSTOMER_ID}`.replace('{customerId}',id));
+    return this.httpClient.get<IAPIResponse>(`${this.env.apiHost}${PaymentApi.GET_SHARE_SUMMARY_BY_CUSTOMER_ID}`.replace('{customerId}', id));
   }
 
   updateShareSummary(params: IShareSummary): Observable<IAPIResponse> {
@@ -272,7 +273,7 @@ export class ApiService {
   }
 
   //used this api for dropdown
-  getPartsListing(): Observable<IAPIResponse> { 
+  getPartsListing(): Observable<IAPIResponse> {
     return this.httpClient.get<IAPIResponse>(`${this.env.apiHost}${PartsApi.GET_PARTS_LIST}`);
   }
 
@@ -289,10 +290,21 @@ export class ApiService {
   }
 
 
-  
+
   //Reports APIs
+
+  generateReport(params: IReportFilters, api: string): Observable<ArrayBuffer> {
+    let uri: string = api;
+
+    Object.entries(params).forEach(([key, val]) => {
+      uri = uri.replace(`{${key}}`, `${val}`)
+    });
+
+    return this.httpClient.get(`${this.env.apiHost}${uri}`, { responseType: 'arraybuffer' });
+  }
+
   getDashboardData(startDate: string, endDate: string): Observable<IAPIResponse> {
-    return this.httpClient.get<IAPIResponse>(`${this.env.apiHost}${ReportsApi.GET_DASHBOARD_DATA}`.replace('{startDate}', startDate).replace('{endDate}', endDate));  
+    return this.httpClient.get<IAPIResponse>(`${this.env.apiHost}${ReportsApi.GET_DASHBOARD_DATA}`.replace('{startDate}', startDate).replace('{endDate}', endDate));
   }
 
 
@@ -302,7 +314,7 @@ export class ApiService {
   getDefaultValues(): Observable<IAPIResponse> {
     return this.httpClient.get<IAPIResponse>(`${this.env.apiHost}${DefaultValuesApi.GET_DEFAULT_VALUES}`);
   }
-  
+
   updateDefaultValues(params: IDefaultValues): Observable<IAPIResponse> {
     return this.httpClient.post<IAPIResponse>(`${this.env.apiHost}${DefaultValuesApi.UPDATE_DEFAULT_VALUES}`, params);
   }

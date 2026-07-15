@@ -38,6 +38,11 @@ export class ApiService {
     return this.httpClient.get<IAPIResponse>(`${this.env.apiHost}${UserApi.GET_USERNAME.replace('{id}', id)}`);
   }
 
+  getAllUser(): Observable<IAPIResponse> {
+    return this.httpClient.get<IAPIResponse>(`${this.env.apiHost}${UserApi.GET_USERS}`);
+  }
+
+
   // customer APIs
 
   getCustomerList(pageNo: number = 0, pageSize: number = 50): Observable<IAPIResponse> {

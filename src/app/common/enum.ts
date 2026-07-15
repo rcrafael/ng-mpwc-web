@@ -85,7 +85,23 @@ import { IBranchCode, IGender, ICustomerType, IPhase, ITransactionStatus, ISideB
           label:'Default Values'
         },
       ]
-    } 
+    },
+    {
+      id: 9,
+      name:'admin',
+      url: '/admin',
+      label:'Administration',
+      icon: '/assets/icons/admin-panel.svg',
+      visible: true,
+      subItems: [
+        {
+          id: 1,
+          name: 'users',
+          url: '/admin/users',
+          label:'Users'
+        },
+      ]
+    }
   ]
 
 

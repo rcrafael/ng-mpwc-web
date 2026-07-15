@@ -68,6 +68,7 @@ export class AuthApi {
 
 export class UserApi {
      public static GET_USERNAME = '/user/username/{id}';
+     public static GET_USERS = '/user/getAllUser';
 }
 
 export class SeptageFeeApi {

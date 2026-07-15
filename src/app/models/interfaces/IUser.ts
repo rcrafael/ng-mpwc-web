@@ -19,5 +19,13 @@ export interface IUserProfile {
 }
 
 
-
+export interface IUserList {
+     id: string;
+     username: string;
+     email: string;
+     lname: string;
+     fname: string;
+     mname: string;
+     role: string[];
+}
 

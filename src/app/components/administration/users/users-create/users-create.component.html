@@ -1,0 +1,125 @@
+<div class="p-5 shadow-xl h-auto border rounded-md border-slate-200">
+
+     <form [formGroup]="fg" (ngSubmit)="onSubmit()">
+
+          <div class="flex flex-col-12 w-full pb-5 ">
+               <div class="flex col-span-6 col-start-1 w-full  place-items-center ">
+                    <span class="font-bold">CREATE USER</span>
+               </div>
+               <div class="flex col-span-6 col-start-7 w-full place-content-end">
+                    <button type="button" class="p-2 bg-red-300 font-bold border border-solid border-black rounded-md px-3 mr-3" >Reset</button>
+                    <button type="submit" class="p-2 bg-green-300 font-bold border border-solid border-black rounded-md px-3" >Save</button>
+               </div>
+          </div>
+
+          <div class="grid grid-col grid-cols-12 w-full gap-12">
+               <!-- first column -->
+               <div class="col-span-6 col-start-1">
+                    <div class="grid grid-row gap-3">
+
+                         <div class="grid grid-cols-12">
+                              <div class="col-span-3">
+                                   <label for="accountNo"> Username: </label>
+                              </div>
+                              <div class="col-start-4 col-span-9">
+                                   <input type="text" id="accountNo" formControlName="username"
+                                        class="border border-gray-400 rounded-md" />
+                              </div>
+                         </div>
+
+                         <div class="grid grid-cols-12">
+                              <div class="col-span-3">
+                                   <label for="accountNo"> Email: </label>
+                              </div>
+                              <div class="col-start-4 col-span-9">
+                                   <input type="text" id="accountNo" formControlName="email"
+                                        class="border border-gray-400 rounded-md" />
+                              </div>
+                         </div>
+
+                         <div class="grid grid-cols-12">
+                              <div class="col-span-3">
+                                   <label for="lastName"> Last Name: </label>
+                              </div>
+                              <div class="col-start-4 col-span-9">
+                                   <input type="text" id="lastName" formControlName="lname" (blur)="generateUsername()"
+                                        class="border border-gray-400 rounded-md" />
+                              </div>
+                         </div>
+
+                         <div class="grid grid-cols-12">
+                              <div class="col-span-3">
+                                   <label for="firstName"> First Name: </label>
+                              </div>
+                              <div class="col-start-4 col-span-9">
+                                   <input type="text" id="firstName" formControlName="fname" (blur)="generateUsername()"
+                                        class="border border-gray-400 rounded-md" />
+                              </div>
+                         </div>
+
+                         <div class="grid grid-cols-12">
+                              <div class="col-span-3">
+                                   <label for="middleName"> Middle Name: </label>
+                              </div>
+                              <div class="col-start-4 col-span-9">
+                                   <input type="text" id="middleName" formControlName="mname" (blur)="generateUsername()"
+                                        class="border border-gray-400 rounded-md" />
+                              </div>
+                         </div>
+
+                         <div class="grid grid-cols-12">
+                              <div class="col-span-3">
+                                   <label for="role"> Role: </label>
+                              </div>
+                              <div class="col-start-4 col-span-9">
+                                   <select id="role" formControlName="roleId" class="border border-gray-400 rounded-md">
+                                        @for(role of roles; track role.id) {
+                                             <option value={{role.id}}>{{role.role}}</option>
+                                        }
+                                   </select>
+                              </div>
+                         </div>
+
+                         <div class="grid grid-cols-12">
+                              <div class="col-span-3">
+                                   <label for="password"> Password: </label>
+                              </div>
+                              <div class="col-start-4 col-span-9">
+                                   <input type="password" id="password" formControlName="password"
+                                        class="border border-gray-400 rounded-md" />
+                              </div>
+                         </div>
+
+                         <div class="grid grid-cols-12"> 
+                              <div class="col-span-3">
+                                   
+                              </div>
+                              <div class="col-start-4 col-span-9">
+                                   <app-users-password-criteria [password]="pwd"></app-users-password-criteria>
+                              </div>
+                         </div>
+
+                          <div class="grid grid-cols-12">
+                              <div class="col-span-3">
+                                   <label for="confirmPassword"> Re-type Password: </label>
+                              </div>
+                              <div class="col-start-4 col-span-9">
+                                   <input type="password" id="confirmPassword" formControlName="confirmPassword"
+                                        class="border border-gray-400 rounded-md" />
+                              </div>
+                              
+                         </div>
+                         <div class="grid grid-cols-12">
+                              <div class="col-span-3">
+                                   
+                              </div>
+                              <div class="col-start-4 col-span-9">
+                                   <span class="text-red-700 text-sm" *ngIf="fg.controls.password.value !== fg.controls.confirmPassword.value && fg.controls.confirmPassword.touched">Passwords do not match</span>
+                              </div>
+                         </div>
+                    </div>
+               </div>
+          </div>
+     </form>
+
+</div>

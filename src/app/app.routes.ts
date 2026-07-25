@@ -33,6 +33,7 @@ export const routes: Routes = [
                { path: 'reports/collection', loadComponent: () => import('./components/report/collection/collection.component').then(m => m.CollectionComponent) },
 
                { path: 'admin/users', loadComponent: () => import('./components/administration/users/users-list/users-list.component').then(m => m.UsersListComponent) },
+               { path: 'admin/users/create', loadComponent: () => import('./components/administration/users/users-create/users-create.component').then(m => m.UsersCreateComponent) },
           ]
      },
      {

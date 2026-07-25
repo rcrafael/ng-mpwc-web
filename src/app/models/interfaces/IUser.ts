@@ -29,3 +29,15 @@ export interface IUserList {
      role: string[];
 }
 
+export interface IUserRegister {
+     username: string;
+     email: string;
+     lname: string;
+     fname: string;
+     mname: string;
+     roleId: string;
+     password: string;
+}
+
+
+

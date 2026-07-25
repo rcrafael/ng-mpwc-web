@@ -71,7 +71,7 @@ export class UsersListComponent implements OnInit {
 
 
   onCreateNewClick(): void {
-    this.router.navigateByUrl('/admin/user/create');
+    this.router.navigateByUrl('/admin/users/create');
   }
 
 

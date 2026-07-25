@@ -1,13 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { AuthApi, BillingApi, Constants, CustomerApi, DefaultValuesApi, PartsApi, PaymentApi, ReportsApi, SeptageFeeApi, UserApi, WaterRatesApi } from '../../common/constants';
+import { AuthApi, BillingApi, Constants, CustomerApi, DefaultValuesApi, PartsApi, PaymentApi, ReportsApi, RoleApi, SeptageFeeApi, UserApi, WaterRatesApi } from '../../common/constants';
 import { firstValueFrom, Observable, ObservedValueOf } from 'rxjs';
 import { IAPIResponse } from '../../models/interfaces/IApiResponse';
 import { IBillingInfo, IUpdateBilling } from '../../models/interfaces/IBilling';
 import { IMeterDetails } from '../../models/interfaces/IMeter';
 import { ICustomerProfile } from '../../models/interfaces/ICustomer';
 import { IOfficialReceipt } from '../../models/interfaces/IOfficialReceipt';
-import { ILogin } from '../../models/interfaces/IUser';
+import { ILogin, IUserRegister } from '../../models/interfaces/IUser';
 import { EnvService } from './env.service';
 import { IOtherPaymentPayload } from '../../models/interfaces/IOtherPayments';
 import { IPartDetails } from '../../models/interfaces/IParts';
@@ -42,6 +42,14 @@ export class ApiService {
     return this.httpClient.get<IAPIResponse>(`${this.env.apiHost}${UserApi.GET_USERS}`);
   }
 
+  registerUser(user: IUserRegister): Observable<IAPIResponse> {
+    return this.httpClient.post<IAPIResponse>(`${this.env.apiHost}${UserApi.REGISTER}`, user);
+  }
+
+
+  getRoles(): Observable<IAPIResponse> {
+    return this.httpClient.get<IAPIResponse>(`${this.env.apiHost}${RoleApi.GET_ROLES}`);
+  }
 
   // customer APIs
 

@@ -69,6 +69,11 @@ export class AuthApi {
 export class UserApi {
      public static GET_USERNAME = '/user/username/{id}';
      public static GET_USERS = '/user/getAllUser';
+     public static REGISTER = '/user/register';
+}
+
+export class RoleApi {
+     public static GET_ROLES = '/role';
 }
 
 export class SeptageFeeApi {

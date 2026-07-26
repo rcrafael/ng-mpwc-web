@@ -1,3 +1,5 @@
+import { IRole } from "./IRoles";
+
 export interface ILogin {
      email: string;
      password: string;
@@ -39,5 +41,25 @@ export interface IUserRegister {
      password: string;
 }
 
+export interface IUserUpdate {
+     id: string;
+     username: string;
+     email: string;
+     lname: string;
+     fname: string;
+     mname: string;
+     roleId: string;
+     password: string;
+}
+
+export interface IUserData {
+     id: string;
+     username: string;
+     email: string;
+     lname: string;
+     fname: string;
+     mname: string;
+     role: IRole;
+}
 
 

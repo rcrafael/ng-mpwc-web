@@ -7,7 +7,7 @@ import { IBillingInfo, IUpdateBilling } from '../../models/interfaces/IBilling';
 import { IMeterDetails } from '../../models/interfaces/IMeter';
 import { ICustomerProfile } from '../../models/interfaces/ICustomer';
 import { IOfficialReceipt } from '../../models/interfaces/IOfficialReceipt';
-import { ILogin, IUserRegister } from '../../models/interfaces/IUser';
+import { ILogin, IUserRegister, IUserUpdate } from '../../models/interfaces/IUser';
 import { EnvService } from './env.service';
 import { IOtherPaymentPayload } from '../../models/interfaces/IOtherPayments';
 import { IPartDetails } from '../../models/interfaces/IParts';
@@ -46,7 +46,16 @@ export class ApiService {
     return this.httpClient.post<IAPIResponse>(`${this.env.apiHost}${UserApi.REGISTER}`, user);
   }
 
+  getUserById(id: string): Observable<IAPIResponse> {
+    return this.httpClient.get<IAPIResponse>(`${this.env.apiHost}${UserApi.GET_USER_BY_ID.replace('{userId}', id)}`);
+  }
 
+  updateUser(user: IUserUpdate): Observable<IAPIResponse> {
+    return this.httpClient.post<IAPIResponse>(`${this.env.apiHost}${UserApi.UPDATE_USER}`, user);
+  }
+
+
+  //roles APIs
   getRoles(): Observable<IAPIResponse> {
     return this.httpClient.get<IAPIResponse>(`${this.env.apiHost}${RoleApi.GET_ROLES}`);
   }

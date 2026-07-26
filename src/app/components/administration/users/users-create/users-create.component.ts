@@ -3,13 +3,14 @@ import { AbstractControl, FormControl, FormGroup, ReactiveFormsModule, Validatio
 import { RoleService } from '../../../../services/role.service';
 import { CommonService } from '../../../../services/common.service';
 import { IAPIResponse } from '../../../../models/interfaces/IApiResponse';
-import { IRoles } from '../../../../models/interfaces/IRoles';
+import { IRole } from '../../../../models/interfaces/IRoles';
 import { ToastrMessage, ToastrTitle } from '../../../../common/constants';
 import { ToastrService } from 'ngx-toastr';
 import { UserService } from '../../../../services/user.service';
 import { IUserRegister } from '../../../../models/interfaces/IUser';
 import { UsersPasswordCriteriaComponent } from "../users-password-criteria/users-password-criteria.component";
 import { NgIf } from '@angular/common';
+import { CustomValidator } from '../../../../common/custom-validator';
 
 
 @Component({
@@ -33,36 +34,9 @@ export class UsersCreateComponent implements OnInit {
     private toast: ToastrService
   ) { }
 
-  roles: IRoles[] = [];
-  toastTitlePrefix = 'User - '
+  roles: IRole[] = [];
+  toastTitlePrefix = 'Create User - '
   pwd: string = '';
-
-  isValidPassword:  ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
-
-    const validCharacters = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
-    
-    if (control.value.length < 8) {
-      return { invalidPasswordLength : true };
-    }
-
-    if(validCharacters.test(control.value) === false) {
-      return { invalidCharacters: true };
-    }
-
-    return null;
-  }
-
-  isPasswordMatch: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
-
-    const pwd1 = control.get('password')?.value;
-    const pwd2 = control.get('confirmPassword')?.value;
-
-    if(pwd1 !== pwd2) {
-      return { passwordMismatch: true };
-    }
-
-    return null;
-  }
 
   fg = new FormGroup({
     username: new FormControl<string>({value: '', disabled: true},Validators.required),
@@ -71,9 +45,9 @@ export class UsersCreateComponent implements OnInit {
     fname: new FormControl<string>('', Validators.required),
     mname: new FormControl<string>(''),
     roleId: new FormControl<string|null>(null, Validators.required),
-    password: new FormControl<string>('', [Validators.required, this.isValidPassword]),
+    password: new FormControl<string>('', [Validators.required, CustomValidator.isValidPassword]),
     confirmPassword: new FormControl<string>('',Validators.required)
-  }, { validators: this.isPasswordMatch });
+  }, { validators: CustomValidator.isPasswordMatch });
 
 
   ngOnInit(): void {
@@ -81,7 +55,7 @@ export class UsersCreateComponent implements OnInit {
     
     this.roleService.getAllRoles().then((response: IAPIResponse) => {
       console.log('ROLES: ', response);
-      this.roles = response.result as IRoles[];
+      this.roles = response.result as IRole[];
     }).catch((error: any) => {
       
     }).finally(() => {

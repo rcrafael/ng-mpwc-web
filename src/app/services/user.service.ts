@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, firstValueFrom } from 'rxjs';
-import { IUserProfile, IUserRegister } from '../models/interfaces/IUser';
+import { IUserProfile, IUserRegister, IUserUpdate } from '../models/interfaces/IUser';
 import { ApiService } from './apis/api.service';
 import { IAPIResponse } from '../models/interfaces/IApiResponse';
 
@@ -24,6 +24,14 @@ export class UserService {
 
   public async registerUser(user: IUserRegister): Promise<IAPIResponse> {
     return firstValueFrom(this.http.registerUser(user));
+  }
+
+  public async getUserById(id: string): Promise<IAPIResponse> {
+    return firstValueFrom(this.http.getUserById(id));
+  }
+
+  public async updateUser(user: IUserUpdate): Promise<IAPIResponse> {
+    return firstValueFrom(this.http.updateUser(user));
   }
 
 }

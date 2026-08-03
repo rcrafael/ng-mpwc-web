@@ -51,7 +51,7 @@ export class ApiService {
   }
 
   updateUser(user: IUserUpdate): Observable<IAPIResponse> {
-    return this.httpClient.post<IAPIResponse>(`${this.env.apiHost}${UserApi.UPDATE_USER}`, user);
+    return this.httpClient.put<IAPIResponse>(`${this.env.apiHost}${UserApi.UPDATE_USER}`, user);
   }
 
 
@@ -107,6 +107,10 @@ export class ApiService {
       searchKeyword: keyword
     }
     return this.httpClient.get<IAPIResponse>(`${this.env.apiHost}${CustomerApi.GET_CUSTOMER_SEARCH.replace('{pageNo}', pageNo.toString()).replace('{pageSize}', pageSize.toString())}`, { params });
+  }
+
+  updateMeterStatus(params: any): Observable<IAPIResponse> {
+    return this.httpClient.put<IAPIResponse>(`${this.env.apiHost}${CustomerApi.UPDATE_METER_STATUS}`, params)
   }
 
 

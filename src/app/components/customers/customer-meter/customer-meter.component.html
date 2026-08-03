@@ -20,7 +20,12 @@
                               Cancel
                          </button>
                          <button type="submit" class="bg-blue-300 font-bold border border-solid border-black rounded-md py-2 px-3">
-                              Save
+                              @if(!isUpdateMeter) {
+                                   Save
+                              }
+                              @else {
+                                   Update
+                              }
                          </button>
                     </ng-container>
                </div>
@@ -182,16 +187,19 @@
                                    fontIcon="edit"
                                    matTooltip="Edit Meter Info"
                                    class="cursor-pointer text-blue-500" 
+                                   (click)="onUpdateActionClick(element)"
                               ></mat-icon>
                               <mat-icon 
                                    fontIcon="cancel"
                                    matTooltip="Deactivate Meter"
                                    class="cursor-pointer text-black" 
+                                   (click)="onDeactivateMeterActionClick(element)"
                               ></mat-icon>
                               <mat-icon 
                                    fontIcon="delete_forever"
                                    matTooltip="Delete Meter"
                                    class="cursor-pointer text-red-500" 
+                                   (click)="onDeleteMeterActionClick(element)"
                               ></mat-icon>
                          </div>
                     </td>

@@ -41,12 +41,9 @@ export class CustomerService {
     return firstValueFrom(this.http.getMeterByMeterNo(meterNo));
   }
 
-  
-
   updateMeterNo(params: IMeterDetails): Promise<IAPIResponse> {
     return firstValueFrom(this.http.updateMeterNo(params));
   }
-
 
   createMeterNo(params: any): Promise<IAPIResponse> {
     return firstValueFrom(this.http.createMeterNo(params));
@@ -54,6 +51,10 @@ export class CustomerService {
 
   getCustomerWithSearch(keyword: string, pageNo: number = 0, pageSize: number = 50): Promise<IAPIResponse> {
     return firstValueFrom(this.http.getCustomerWithSearch(keyword, pageNo, pageSize));
+  }
+
+  updateMeterStatus(params: any): Promise<IAPIResponse> {
+    return firstValueFrom(this.http.updateMeterStatus(params));
   }
 
 }

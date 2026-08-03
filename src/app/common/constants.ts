@@ -15,6 +15,7 @@ export class CustomerApi {
      public static GET_METER_BY_METER_NO = '/customer/meter/{meterNo}';
      public static UPDATE_METER_NO = '/customer/meter/single-update';
      public static CREATE_METER_NO = '/customer/meter';
+     public static UPDATE_METER_STATUS = '/customer/meter/status-update';
 
 }
 

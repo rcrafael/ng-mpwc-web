@@ -9,15 +9,19 @@ export interface IReportFilters {
      endDate: string;
      branchCode: string;
      phase: string;
+     year: number;
 }
 
 export interface IReportTypes {
      id: number;
      title: string;
      api: string;
+     type: string;
+     icon?: string;
      filters: {
           startDate: boolean;
           endDate: boolean;
+          yearOnly: boolean;
           branchCode: boolean;
           phase: boolean;
      }

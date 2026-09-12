@@ -30,7 +30,7 @@ export const routes: Routes = [
                { path: 'settings/default-values', loadComponent: () => import('./components/settings/default-values/default-values.component').then(m => m.DefaultValuesComponent) },
 
                { path: 'reports', loadComponent: () => import('./components/report/report.component').then(m => m.ReportComponent) },
-               { path: 'reports/collection', loadComponent: () => import('./components/report/collection/collection.component').then(m => m.CollectionComponent) },
+               { path: 'reports/collection', redirectTo: 'reports', pathMatch: 'full' },
 
                { path: 'admin/users', loadComponent: () => import('./components/administration/users/users-list/users-list.component').then(m => m.UsersListComponent) },
                { path: 'admin/users/create', loadComponent: () => import('./components/administration/users/users-create/users-create.component').then(m => m.UsersCreateComponent) },

@@ -265,7 +265,35 @@ export class CustomerMeterComponent implements OnInit {
   }
 
   async onDeleteMeterActionClick(meterDetails: IMeterDetails): Promise<void> {
-    
+    var confirmed = confirm('Are you sure you want to DELETE this meter? This action cannot be reversed.');
+    if(!confirmed) return;
+
+    const params: any = {
+      meterId: meterDetails.id,
+      status: 9 //9 = deleted
+    }
+
+    this.commonService.showSpinner(true);
+    this.customerService.updateMeterStatus(params).then(async (response) => {
+      console.log('respose', response);
+      if(!response.result) {
+        this.toast.error(`${ToastrMessage.ERROR_DELETE} : ${params.meterId}`, this.toastTitlePrefix + ToastrTitle.ERROR);
+        return;
+      }
+
+      this.toast.success(`${ToastrMessage.SUCCESS_DELETE} : ${params.meterId}`, this.toastTitlePrefix + ToastrTitle.SUCCESS);
+      await this.loadData();
+    }).catch(err => {
+
+      if(err instanceof HttpErrorResponse) {
+        this.toast.error(`${ToastrMessage.ERROR_DELETE} : ${err.error.message}`, this.toastTitlePrefix + ToastrTitle.ERROR);
+      } else {
+        this.toast.error(`${ToastrMessage.ERROR_DELETE} : ${params.meterId}`, this.toastTitlePrefix + ToastrTitle.ERROR);
+        console.log('Error:', err);
+      }
+    }).finally(() => {
+      this.commonService.showSpinner(false);
+    });
   }
 
 

@@ -101,6 +101,8 @@ export class WaterRatesApi {
 
 export class ReportsApi {
      public static GET_DASHBOARD_DATA = '/reports/getDashboardData/{startDate}/{endDate}';
+     public static GET_COLLECTION_REPORT_SUMMARY = '/reports/generateCollectionReportSummary/{startDate}/{endDate}';
+     public static GET_CUSTOMER_METER_USAGE_SUMMARY = '/reports/getCustomerMeterUsagePerYear/{year}';
 }
 
 export class DefaultValuesApi {

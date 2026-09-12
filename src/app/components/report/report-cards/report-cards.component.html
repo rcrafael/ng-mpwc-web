@@ -1,11 +1,14 @@
-<div class="flex flex-row bg-blue-500 rounded-md drop-shadow-lg gap-3 p-2 items-center justify-stretch cursor-pointer">
+<div class="flex flex-row rounded-md drop-shadow-md gap-3 p-3 items-center justify-stretch cursor-pointer transition-all duration-200"
+    [ngClass]="isSelected 
+        ? 'bg-blue-700 ring-4 ring-blue-300 shadow-lg scale-[1.02]' 
+        : 'bg-blue-500 hover:bg-blue-600'">
 
-    <div class="w-12 h-12 bg-white" [ngStyle]="{
-        mask: 'url(' + icon + ') center / 1.5rem no-repeat',
-        WebkitMask: 'url(' + icon + ') center / 1.5rem no-repeat'
+    <div class="w-10 h-10 shrink-0 bg-white rounded-md flex items-center justify-center" [ngStyle]="{
+        mask: 'url(' + (icon || '/assets/icons/reports.svg') + ') center / 1.5rem no-repeat',
+        WebkitMask: 'url(' + (icon || '/assets/icons/reports.svg') + ') center / 1.5rem no-repeat'
         }">
     </div>
 
-    <div class="font-bold text-white">{{ title }}</div>
+    <div class="font-bold text-white text-sm md:text-base select-none">{{ title }}</div>
 
 </div>

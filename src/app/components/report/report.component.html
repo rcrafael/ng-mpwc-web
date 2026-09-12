@@ -1,19 +1,95 @@
 <div class="h-screen flex flex-col m-1">
+    <!-- Page Header -->
     <div class="flex flex-row w-full mb-1 bg-slate-200 rounded-md p-1">
         <div class="flex flex-col-12 w-full">
-            <div class="flex col-span-6 col-start-1 w-full  place-items-center ">
-                <span class="p-2 font-bold">REPORTS</span>
+            <div class="flex col-span-6 col-start-1 w-full place-items-center">
+                <span class="p-2 font-bold text-gray-800">REPORTS</span>
             </div>
         </div>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 m-5">
+    <!-- Filters Form -->
+    <form [formGroup]="formGroup">
+        <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6 m-5 border border-gray-200 rounded-md p-4 bg-white shadow-sm">
+            <!-- Slot 1: Start Date OR Start Year -->
+            <div class="flex flex-col">
+                @if (isYearOnly) {
+                <label for="startYear" class="font-medium text-sm text-gray-700 mb-1">Start Year:</label>
+                <select id="startYear" [ngClass]="commonStyles.selectStyle" [value]="formGroup.get('year')?.value"
+                    (change)="onYearChange($any($event.target).value)">
+                    @for (yr of availableYears; track yr) {
+                    <option [value]="yr" [selected]="yr === formGroup.get('year')?.value">{{ yr }}</option>
+                    }
+                </select>
+                } @else {
+                <label for="startDate" class="font-medium text-sm text-gray-700 mb-1">Start Date:</label>
+                <input type="date" id="startDate" formControlName="startDate" [ngClass]="commonStyles.inputDateStyle">
+                }
+            </div>
 
-        @for(report of reportNav; track report.route){
-        <app-report-cards [title]="report.title" [icon]="report.icon" (click)="handleReportOnClick(report.route)">
-        </app-report-cards>
+            <!-- Slot 2: End Date OR End Year -->
+            <div class="flex flex-col">
+                @if (isYearOnly) {
+                <label for="endYear" class="font-medium text-sm text-gray-700 mb-1">End Year:</label>
+                <select id="endYear" [ngClass]="commonStyles.selectStyle" [value]="formGroup.get('year')?.value"
+                    (change)="onYearChange($any($event.target).value)">
+                    @for (yr of availableYears; track yr) {
+                    <option [value]="yr" [selected]="yr === formGroup.get('year')?.value">{{ yr }}</option>
+                    }
+                </select>
+                } @else {
+                <label for="endDate" class="font-medium text-sm text-gray-700 mb-1">End Date:</label>
+                <input type="date" id="endDate" formControlName="endDate" [ngClass]="commonStyles.inputDateStyle">
+                }
+            </div>
+
+            <!-- Slot 3: Branch Code -->
+            <div class="flex flex-col">
+                <label for="branchCode" class="font-medium text-sm text-gray-700 mb-1">Branch Code:</label>
+                <select id="branchCode" [ngClass]="commonStyles.selectStyle" formControlName="branchCode">
+                    <option value="-1">All</option>
+                    <option value="1">Branch 1</option>
+                    <option value="2">Branch 2</option>
+                </select>
+            </div>
+
+            <!-- Slot 4: Phase -->
+            <div class="flex flex-col">
+                <label for="phase" class="font-medium text-sm text-gray-700 mb-1">Phase:</label>
+                <select id="phase" [ngClass]="commonStyles.selectStyle" formControlName="phase">
+                    <option value="-1">All</option>
+                    <option value="1">Phase 1</option>
+                    <option value="2">Phase 2</option>
+                </select>
+            </div>
+
+            <!-- Slot 5: Generate Report Button -->
+            <div class="flex items-end">
+                <button type="button" class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-md shadow disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                    [disabled]="isGenerating || !selectedReportType"
+                    (click)="onGenerateReportClick()">
+                    {{ isGenerating ? 'Generating...' : 'Generate Report' }}
+                </button>
+            </div>
+        </div>
+    </form>
+
+    <!-- Reports Section Grouped by Type -->
+    <div class="flex flex-col gap-6 m-5">
+        @for (group of groupedReports; track group.type) {
+        <div class="border border-gray-200 rounded-md p-4 bg-white shadow-sm">
+            <h3 class="font-bold text-gray-700 uppercase tracking-wide mb-3 text-sm flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-blue-500"></span>
+                {{ group.type }} Reports
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                @for (report of group.reports; track report.id) {
+                <app-report-cards [title]="report.title" [icon]="report.icon || '/assets/icons/reports.svg'"
+                    [isSelected]="activeCard === report.id" (click)="onReportTypeClick(report)">
+                </app-report-cards>
+                }
+            </div>
+        </div>
         }
-
     </div>
-
 </div>

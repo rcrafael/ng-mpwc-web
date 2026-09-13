@@ -224,6 +224,7 @@ export class PaymentOfficialReceiptViewComponent implements OnInit {
 
     const VOID_STATUS_ID = 4;
     try {
+      this.commonService.showSpinner(true);
       const response = await this.paymentService.voidRecord(this.orId!);
       console.log('RESPONSE: ', response);
       this.fg.patchValue({
@@ -233,6 +234,8 @@ export class PaymentOfficialReceiptViewComponent implements OnInit {
     } catch (err) {
       console.error('ERROR VOIDING OTHER PAYMENT RECORD: ', err);
       this.toast.error(`${ToastrMessage.ERROR_UPDATE}: ${err}`, this.toastTitlePrefix + ToastrTitle.ERROR);
+    } finally {
+      this.commonService.showSpinner(false);
     }
   }
 
@@ -241,6 +244,7 @@ export class PaymentOfficialReceiptViewComponent implements OnInit {
     if(!isConfirm) return;
     
     try {
+      this.commonService.showSpinner(true);
       const response = await this.paymentService.deleteRecord(this.orId!);
       console.log('RESPONSE: ', response);
       this.toast.success(`${ToastrMessage.SUCCESS_DELETE}`, this.toastTitlePrefix + ToastrTitle.SUCCESS);
@@ -248,6 +252,8 @@ export class PaymentOfficialReceiptViewComponent implements OnInit {
     } catch (err) {
       console.error('ERROR DELETING OTHER PAYMENT RECORD: ', err);
       this.toast.error(`${ToastrMessage.ERROR_DELETE}: ${err}`, this.toastTitlePrefix + ToastrTitle.ERROR);
+    } finally {
+      this.commonService.showSpinner(false);
     }
   }
 

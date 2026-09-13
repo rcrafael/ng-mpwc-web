@@ -185,7 +185,6 @@ export class PaymentOfficialReceiptListComponent implements OnInit {
     } finally {
       this.commonService.showSpinner(false);
     }
-    
 
   }
 
@@ -195,6 +194,7 @@ export class PaymentOfficialReceiptListComponent implements OnInit {
     if(!isConfirm) return;
     
     try {
+      this.commonService.showSpinner(true);
       const response = await this.paymentService.deleteRecord(orId);
       console.log('RESPONSE: ', response);
       this.toast.success(`${ToastrMessage.SUCCESS_DELETE}`, this.toastTitlePrefix + ToastrTitle.SUCCESS);
@@ -202,6 +202,8 @@ export class PaymentOfficialReceiptListComponent implements OnInit {
     } catch (err) {
       console.error('ERROR DELETING OTHER PAYMENT RECORD: ', err);
       this.toast.error(`${ToastrMessage.ERROR_DELETE}: ${err}`, this.toastTitlePrefix + ToastrTitle.ERROR);
+    } finally {
+      this.commonService.showSpinner(false);
     }
   }
 

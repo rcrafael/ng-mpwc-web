@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AuthApi, BillingApi, Constants, CustomerApi, DefaultValuesApi, PartsApi, PaymentApi, ReportsApi, RoleApi, SeptageFeeApi, UserApi, WaterRatesApi } from '../../common/constants';
 import { firstValueFrom, Observable, ObservedValueOf } from 'rxjs';
@@ -319,22 +319,28 @@ export class ApiService {
 
   //Reports APIs
 
-  generateReport(params: IReportFilters, api: string): Observable<ArrayBuffer> {
+  generateReport(params: Record<string, any> | IReportFilters, api: string): Observable<ArrayBuffer> {
     let uri: string = api;
+    let httpParams = new HttpParams();
 
     Object.entries(params).forEach(([key, val]) => {
-      uri = uri.replace(`{${key}}`, `${val}`)
+      const placeholder = `{${key}}`;
+      if (uri.includes(placeholder)) {
+        uri = uri.replace(placeholder, encodeURIComponent(`${val}`));
+      } else if (val !== null && val !== undefined && val !== '') {
+        httpParams = httpParams.set(key, `${val}`);
+      }
     });
 
-    return this.httpClient.get(`${this.env.apiHost}${uri}`, { responseType: 'arraybuffer' });
+    return this.httpClient.get(`${this.env.apiHost}${uri}`, {
+      params: httpParams,
+      responseType: 'arraybuffer'
+    });
   }
 
   getDashboardData(startDate: string, endDate: string): Observable<IAPIResponse> {
     return this.httpClient.get<IAPIResponse>(`${this.env.apiHost}${ReportsApi.GET_DASHBOARD_DATA}`.replace('{startDate}', startDate).replace('{endDate}', endDate));
   }
-
-
-
 
   //Default Values APIs
   getDefaultValues(): Observable<IAPIResponse> {

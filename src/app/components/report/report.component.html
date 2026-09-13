@@ -34,7 +34,7 @@
                 <select id="endYear" [ngClass]="commonStyles.selectStyle" [value]="formGroup.get('year')?.value"
                     (change)="onYearChange($any($event.target).value)">
                     @for (yr of availableYears; track yr) {
-                    <option [value]="yr" [selected]="yr === formGroup.get('year')?.value">{{ yr }}</option>
+                        <option [value]="yr" [selected]="yr === formGroup.get('year')?.value">{{ yr }}</option>
                     }
                 </select>
                 } @else {
@@ -48,8 +48,9 @@
                 <label for="branchCode" class="font-medium text-sm text-gray-700 mb-1">Branch Code:</label>
                 <select id="branchCode" [ngClass]="commonStyles.selectStyle" formControlName="branchCode">
                     <option value="-1">All</option>
-                    <option value="1">Branch 1</option>
-                    <option value="2">Branch 2</option>
+                    @for (branch of branchCodes; track branch.id) {
+                        <option [value]="branch.id">{{ branch.name }}</option>
+                    }
                 </select>
             </div>
 
@@ -58,8 +59,9 @@
                 <label for="phase" class="font-medium text-sm text-gray-700 mb-1">Phase:</label>
                 <select id="phase" [ngClass]="commonStyles.selectStyle" formControlName="phase">
                     <option value="-1">All</option>
-                    <option value="1">Phase 1</option>
-                    <option value="2">Phase 2</option>
+                    @for (ph of phases; track ph.id) {
+                        <option [value]="ph.id">{{ ph.name }}</option>
+                    }
                 </select>
             </div>
 

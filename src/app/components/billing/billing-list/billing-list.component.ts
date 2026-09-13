@@ -177,9 +177,9 @@ export class BillingListComponent implements OnInit {
 
       } catch (err) {
         console.error('ERROR VOIDING BILLING RECORD: ', err);
+        this.toast.error(ToastrMessage.ERROR_VOID + ' : ' + billing.readingNo, this.toastTitlePrefix + ToastrTitle.ERROR);
       } finally {
         this.commonService.showSpinner(false);
-        this.toast.error(ToastrMessage.ERROR_VOID + ' : ' + billing.readingNo, this.toastTitlePrefix + ToastrTitle.ERROR);
       }
     } else {
       this.toast.warning(`${ToastrMessage.ERROR_VOID} : Cannot be voided.`, this.toastTitlePrefix + ToastrTitle.WARNING);
@@ -201,9 +201,9 @@ export class BillingListComponent implements OnInit {
         await this.loadData(this.pageIdx, this.pageSize);
       } catch (err) {
         console.error('ERROR DELETING BILLING RECORD: ', err);
+        this.toast.error(ToastrMessage.ERROR_DELETE + ' : ' + billing.readingNo, this.toastTitlePrefix + ToastrTitle.ERROR);
       } finally {
         this.commonService.showSpinner(false);
-        this.toast.error(ToastrMessage.ERROR_DELETE + ' : ' + billing.readingNo, this.toastTitlePrefix + ToastrTitle.ERROR);
       }
     } else {
       this.toast.warning(`${ToastrMessage.ERROR_DELETE} : Cannot be deleted.`, this.toastTitlePrefix + ToastrTitle.WARNING);

@@ -102,16 +102,13 @@ export class WaterRatesApi {
 export class ReportsApi {
      public static GET_DASHBOARD_DATA = '/reports/getDashboardData/{startDate}/{endDate}';
      public static GET_COLLECTION_REPORT_SUMMARY = '/reports/generateCollectionReportSummary/{startDate}/{endDate}';
+     public static GET_COLLECTION_REPORT_DETAILED = '/reports/generateCollectionReportDetails/{startDate}/{endDate}';
      public static GET_CUSTOMER_METER_USAGE_SUMMARY = '/reports/getCustomerMeterUsagePerYear/{year}';
 }
 
 export class DefaultValuesApi {
      public static GET_DEFAULT_VALUES = '/settings/default-values';
      public static UPDATE_DEFAULT_VALUES = '/settings/default-values';
-}
-
-export class CollectionApi {
-     public static GET_COLLECTION_REPORT_SUMMARY = '/reports/generateCollectionReportSummary/{startDate}/{endDate}';
 }
 
 export class ToastrTitle {

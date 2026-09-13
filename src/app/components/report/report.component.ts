@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ɵbypassSanitizationTrustResourceUrl } from '@angular/core';
 import { CommonStyles } from '../../common/common-styles';
 import { NgClass } from '@angular/common';
 import { Utils } from '../../common/util';
@@ -8,6 +8,8 @@ import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angul
 import { ReportsService } from '../../services/reports.service';
 import { ToastrService } from 'ngx-toastr';
 import { ReportCardsComponent } from './report-cards/report-cards.component';
+import { branchCodeData, phaseData } from '../../common/enum';
+import { IBranchCode, IPhase } from '../../models/interfaces/ICommon';
 
 @Component({
   selector: 'app-report',
@@ -35,6 +37,8 @@ export class ReportComponent implements OnInit {
   isGenerating: boolean = false;
 
   availableYears: number[] = Array.from({ length: 11 }, (_, i) => new Date().getFullYear() - i);
+  branchCodes: IBranchCode[] = branchCodeData;
+  phases: IPhase[] = phaseData;
 
   reports: IReportTypes[] = [
     {
@@ -46,13 +50,27 @@ export class ReportComponent implements OnInit {
       filters: {
         startDate: true,
         endDate: true,
-        branchCode: false,
-        phase: false,
+        branchCode: true,
+        phase: true,
         yearOnly: false
       }
     },
     {
       id: 2,
+      title: "Collection Report Detailed",
+      type: "collection",
+      icon: "/assets/icons/payments.svg",
+      api: ReportsApi.GET_COLLECTION_REPORT_DETAILED,
+      filters: {
+        startDate: true,
+        endDate: true,
+        branchCode: true,
+        phase: true,
+        yearOnly: false
+      }
+    },
+    {
+      id: 3,
       title: "Customer Meter Usage Summary",
       type: "customer",
       icon: "/assets/icons/group.svg",
@@ -160,9 +178,10 @@ export class ReportComponent implements OnInit {
     }
 
     this.isGenerating = true;
-    const params = this.formGroup.getRawValue();
+    const rawParams = this.formGroup.getRawValue();
+    const activeParams = this.formGroup.value;
 
-    this.reportService.generateReport(params, this.selectedReportType.api)
+    this.reportService.generateReport(activeParams, this.selectedReportType.api)
       .then((buffer: ArrayBuffer) => {
         const blob = new Blob([buffer], {
           type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
@@ -173,8 +192,8 @@ export class ReportComponent implements OnInit {
         anchor.href = url;
 
         const fileSuffix = this.selectedReportType.filters.yearOnly
-          ? `${params.year}`
-          : `${params.startDate}_${params.endDate}`;
+          ? `${rawParams.year}`
+          : `${rawParams.startDate}_${rawParams.endDate}`;
         anchor.download = `${this.selectedReportType.title}_${fileSuffix}.xlsx`;
         anchor.click();
         window.URL.revokeObjectURL(url);

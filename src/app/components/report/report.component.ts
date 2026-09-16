@@ -3,7 +3,7 @@ import { CommonStyles } from '../../common/common-styles';
 import { NgClass } from '@angular/common';
 import { Utils } from '../../common/util';
 import { IReportFilters, IReportTypes } from '../../models/interfaces/IReports';
-import { ReportsApi } from '../../common/constants';
+import { IconPaths, ReportsApi } from '../../common/constants';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ReportsService } from '../../services/reports.service';
 import { ToastrService } from 'ngx-toastr';
@@ -31,7 +31,7 @@ export class ReportComponent implements OnInit {
   ) { }
 
   commonStyles = new CommonStyles();
-  activeCard: number = 0;
+  activeCard: string = '';
   yearDefault: number = new Date().getFullYear();
   dateFormatter = Utils.dateFormatter;
   isGenerating: boolean = false;
@@ -42,10 +42,10 @@ export class ReportComponent implements OnInit {
 
   reports: IReportTypes[] = [
     {
-      id: 1,
+      id: self.crypto.randomUUID(),
       title: "Collection Report Summary",
       type: "collection",
-      icon: "/assets/icons/payments.svg",
+      icon: IconPaths.PAYMENTS,
       api: ReportsApi.GET_COLLECTION_REPORT_SUMMARY,
       filters: {
         startDate: true,
@@ -56,10 +56,10 @@ export class ReportComponent implements OnInit {
       }
     },
     {
-      id: 2,
+      id: self.crypto.randomUUID(),
       title: "Collection Report Detailed",
       type: "collection",
-      icon: "/assets/icons/payments.svg",
+      icon: IconPaths.PAYMENTS,
       api: ReportsApi.GET_COLLECTION_REPORT_DETAILED,
       filters: {
         startDate: true,
@@ -70,10 +70,10 @@ export class ReportComponent implements OnInit {
       }
     },
     {
-      id: 3,
+      id: self.crypto.randomUUID(),
       title: "Customer Meter Usage Summary",
       type: "customer",
-      icon: "/assets/icons/group.svg",
+      icon: IconPaths.GROUP,
       api: ReportsApi.GET_CUSTOMER_METER_USAGE_SUMMARY,
       filters: {
         startDate: false,
@@ -82,7 +82,64 @@ export class ReportComponent implements OnInit {
         phase: false,
         yearOnly: true
       }
-    }
+    },
+    {
+      id: self.crypto.randomUUID(),
+      title: "Other Collection Report Summary",
+      type: "collection",
+      icon: IconPaths.PAYMENTS,
+      api: ReportsApi.GET_OTHER_COLLECTION_REPORT_SUMMARY,
+      filters: {
+        startDate: true,
+        endDate: true,
+        branchCode: false,
+        phase: false,
+        yearOnly: false
+      }
+    },
+    {
+      id: self.crypto.randomUUID(),
+      title: "Other Collection Report Detailed",
+      type: "collection",
+      icon: IconPaths.PAYMENTS,
+      api: ReportsApi.GET_OTHER_COLLECTION_REPORT_DETAILED,
+      filters: {
+        startDate: true,
+        endDate: true,
+        branchCode: false,
+        phase: false,
+        yearOnly: false
+      }
+    },
+    {
+      id: self.crypto.randomUUID(),
+      title: "Outside Collection Report Summary",
+      type: "collection",
+      icon: IconPaths.PAYMENTS,
+      api: ReportsApi.GET_OUTSIDE_COLLECTION_REPORT_SUMMARY,
+      filters: {
+        startDate: true,
+        endDate: true,
+        branchCode: false,
+        phase: false,
+        yearOnly: false
+      }
+    },
+    {
+      id: self.crypto.randomUUID(),
+      title: "Outside Collection Report Detailed",
+      type: "collection",
+      icon: IconPaths.PAYMENTS,
+      api: ReportsApi.GET_OUTSIDE_COLLECTION_REPORT_DETAILED,
+      filters: {
+        startDate: true,
+        endDate: true,
+        branchCode: false,
+        phase: false,
+        yearOnly: false
+      }
+    },
+
   ];
 
   reportFilters: IReportFilters = {
@@ -130,6 +187,7 @@ export class ReportComponent implements OnInit {
     });
 
     if (this.reports.length > 0) {
+      console.log('REPORT TYPES AVAILABLE:', this.reports);
       this.onReportTypeClick(this.reports[0]);
     }
   }

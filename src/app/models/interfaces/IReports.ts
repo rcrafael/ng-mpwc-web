@@ -13,7 +13,7 @@ export interface IReportFilters {
 }
 
 export interface IReportTypes {
-     id: number;
+     id: string;
      title: string;
      api: string;
      type: string;

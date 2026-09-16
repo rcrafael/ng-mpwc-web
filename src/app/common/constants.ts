@@ -103,7 +103,14 @@ export class ReportsApi {
      public static GET_DASHBOARD_DATA = '/reports/getDashboardData/{startDate}/{endDate}';
      public static GET_COLLECTION_REPORT_SUMMARY = '/reports/generateCollectionReportSummary/{startDate}/{endDate}';
      public static GET_COLLECTION_REPORT_DETAILED = '/reports/generateCollectionReportDetails/{startDate}/{endDate}';
+     public static GET_OTHER_COLLECTION_REPORT_SUMMARY = '/reports/generateOtherCollectionReportSummary/{startDate}/{endDate}';
+     public static GET_OTHER_COLLECTION_REPORT_DETAILED = '/reports/generateOtherCollectionReportDetails/{startDate}/{endDate}';
+     public static GET_OUTSIDE_COLLECTION_REPORT_SUMMARY = '/reports/generateOutsideCollectionReportSummary/{startDate}/{endDate}';
+     public static GET_OUTSIDE_COLLECTION_REPORT_DETAILED = '/reports/generateOutsideCollectionReportDetails/{startDate}/{endDate}';
+
+
      public static GET_CUSTOMER_METER_USAGE_SUMMARY = '/reports/getCustomerMeterUsagePerYear/{year}';
+
 }
 
 export class DefaultValuesApi {
@@ -134,5 +141,12 @@ export class ToastrMessage {
      public static ERROR_FETCHING_DATA = 'Failed fetching data';
      public static ERROR_VOID = 'Failed voiding';
 
+}
+
+export class IconPaths {
+     public static PAYMENTS = '/assets/icons/payments.svg';
+     public static GROUP = '/assets/icons/group.svg';
+     public static NEWSPAPER = '/assets/icons/newspaper.svg';
+     public static HANDYMAN = '/assets/icons/handyman.svg';
 }
 

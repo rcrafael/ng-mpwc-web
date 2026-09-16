@@ -17,6 +17,7 @@ import { IAPIResponse } from '../../../../models/interfaces/IApiResponse';
 import { ToastrService } from 'ngx-toastr';
 import { ToastrMessage, ToastrTitle } from '../../../../common/constants';
 import { CommonService } from '../../../../services/common.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-other-payment-create',
@@ -36,7 +37,8 @@ export class OtherPaymentCreateComponent implements OnInit {
     private authService: AuthService,
     private paymentService: PaymentService,
     private toast: ToastrService,
-    private commonService: CommonService
+    private commonService: CommonService,
+    private router: Router
   ) {
     this.fg.patchValue({
       createdBy: this.authService.getUserName()
@@ -126,7 +128,7 @@ export class OtherPaymentCreateComponent implements OnInit {
     const formData = this.fg.value;
 
     if(!this.fg.valid) {
-      console.log('INVALID INPUT',this.fg);
+      console.log('INVALID INPUT', this.fg);
       this.toast.error(ToastrMessage.INVALID_INPUT, this.toastTitlePrefix + ToastrTitle.ERROR);
       return;
     }
@@ -172,13 +174,13 @@ export class OtherPaymentCreateComponent implements OnInit {
     await this.paymentService.createOtherPayment(params).then((response: IAPIResponse) => {
       console.log('API RESPONSE: ', response);
       this.toast.success(ToastrMessage.SUCCESS_CREATE, this.toastTitlePrefix + ToastrTitle.SUCCESS);
+      this.router.navigate(['/payment/other-receipt']);
     })
     .catch((error: Error) => {
       console.error('ERROR CREATING OTHER PAYMENT: ', error);
       this.toast.error(ToastrMessage.ERROR_CREATE + ': ' + error.message, this.toastTitlePrefix + ToastrTitle.ERROR);
     })
     .finally(() => {
-      this.fg.reset();
       this.dataSource = new MatTableDataSource<IOtherPaymentTableDetails>([]);
       this.commonService.showSpinner(false);
     });
@@ -208,7 +210,6 @@ export class OtherPaymentCreateComponent implements OnInit {
     });
 
   }
-
 
   openDetailFormDialog(): void {
     const dialogRef = this.dialog.open(AddDetailsModalComponent, {

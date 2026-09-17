@@ -169,23 +169,29 @@ export class PaymentOfficialReceiptListComponent implements OnInit {
     this.paginator.pageIndex = 0;
   }
 
-  async handleVoidRecord(orId: string) {
+  async handleVoidRecord(data: any) {
+    console.log('DATA: ', data);
+    console.log('STATUS: ', data.status);
+    if (data.status === 1) {
+      const isConfirm = await AlertService.confirm('Are you sure you want to VOID this record?', 'Void Official Receipt');
+      if(!isConfirm) return;
 
-    const isConfirm = await AlertService.confirm('Are you sure you want to VOID this record?', 'Void Official Receipt');
-    if(!isConfirm) return;
-
-    try {
-      this.commonService.showSpinner(true);
-      const response = await this.paymentService.voidRecord(orId);
-      console.log('RESPONSE: ', response);
-      this.toast.success(`${ToastrMessage.SUCCESS_UPDATE}`, this.toastTitlePrefix + ToastrTitle.SUCCESS);
-      await this.loadORData(this.pageIdx, this.pageSize);
-    } catch (err) {
-      console.error('ERROR VOIDING OTHER PAYMENT RECORD: ', err);
-      this.toast.error(`${ToastrMessage.ERROR_UPDATE}: ${err}`, this.toastTitlePrefix + ToastrTitle.ERROR);
-    } finally {
-      this.commonService.showSpinner(false);
+      try {
+        this.commonService.showSpinner(true);
+        const response = await this.paymentService.voidRecord(data.id);
+        console.log('RESPONSE: ', response);
+        this.toast.success(`${ToastrMessage.SUCCESS_UPDATE}`, this.toastTitlePrefix + ToastrTitle.SUCCESS);
+        await this.loadORData(this.pageIdx, this.pageSize);
+      } catch (err) {
+        console.error('ERROR VOIDING OTHER PAYMENT RECORD: ', err);
+        this.toast.error(`${ToastrMessage.ERROR_UPDATE}: ${err}`, this.toastTitlePrefix + ToastrTitle.ERROR);
+      } finally {
+        this.commonService.showSpinner(false);
+      }
+    } else {
+      this.toast.warning(`${ToastrMessage.ERROR_VOID} : Cannot be voided.`, this.toastTitlePrefix + ToastrTitle.WARNING);
     }
+    
 
   }
 

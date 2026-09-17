@@ -166,23 +166,29 @@ export class OtherPaymentListComponent implements OnInit {
   }
 
 
-  async handleVoidRecord(orId: string) {
+  async handleVoidRecord(data: any) {
 
-    const isConfirm = await AlertService.confirm('Are you sure you want to VOID this record?', 'Void Payment Record');
-    if(!isConfirm) return;
+    if (data.status === 1) {
+      const isConfirm = await AlertService.confirm('Are you sure you want to VOID this record?', 'Void Payment Record');
+      if(!isConfirm) return;
 
-    const VOID_STATUS_ID = 4;
-    try {
-      this.commonService.showSpinner(true);
-      const response = await this.paymentService.updateStatus(orId, VOID_STATUS_ID);
-      console.log('RESPONSE: ', response);
-      await this.getOtherPaymentList(this.pageIdx, this.pageSize);
-    } catch (err) {
-      console.error('ERROR VOIDING OTHER PAYMENT RECORD: ', err);
-      this.toast.error(`${ToastrMessage.ERROR_UPDATE}: ${err}`, this.toastTitlePrefix + ToastrTitle.ERROR);
-    } finally {
-      this.commonService.showSpinner(false);
+      const VOID_STATUS_ID = 4;
+      try {
+        this.commonService.showSpinner(true);
+        const response = await this.paymentService.updateStatus(data.id, VOID_STATUS_ID);
+        console.log('RESPONSE: ', response);
+        await this.getOtherPaymentList(this.pageIdx, this.pageSize);
+      } catch (err) {
+        console.error('ERROR VOIDING OTHER PAYMENT RECORD: ', err);
+        this.toast.error(`${ToastrMessage.ERROR_UPDATE}: ${err}`, this.toastTitlePrefix + ToastrTitle.ERROR);
+      } finally {
+        this.commonService.showSpinner(false);
+      }
+    } else {
+      this.toast.warning(`${ToastrMessage.ERROR_VOID} : Cannot be voided.`, this.toastTitlePrefix + ToastrTitle.WARNING);
     }
+
+    
     
 
   }

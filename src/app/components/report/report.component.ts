@@ -139,6 +139,35 @@ export class ReportComponent implements OnInit {
         yearOnly: false
       }
     },
+    {
+      id: self.crypto.randomUUID(),
+      title: "Billing Report Summary",
+      type: "billing",
+      icon: IconPaths.NEWSPAPER,
+      api: ReportsApi.GET_BILLING_REPORT_SUMMARY,
+      filters: {
+        startDate: true,
+        endDate: true,
+        branchCode: true,
+        phase: true,
+        yearOnly: false
+      }
+    },
+    {
+      id: self.crypto.randomUUID(),
+      title: "Billing Report Detailed",
+      type: "billing",
+      icon: IconPaths.NEWSPAPER,
+      api: ReportsApi.GET_BILLING_REPORT_DETAILED,
+      filters: {
+        startDate: true,
+        endDate: true,
+        branchCode: true,
+        phase: true,
+        yearOnly: false
+      }
+    },
+
 
   ];
 

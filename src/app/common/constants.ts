@@ -101,15 +101,17 @@ export class WaterRatesApi {
 
 export class ReportsApi {
      public static GET_DASHBOARD_DATA = '/reports/getDashboardData/{startDate}/{endDate}';
-     public static GET_COLLECTION_REPORT_SUMMARY = '/reports/generateCollectionReportSummary/{startDate}/{endDate}';
-     public static GET_COLLECTION_REPORT_DETAILED = '/reports/generateCollectionReportDetails/{startDate}/{endDate}';
-     public static GET_OTHER_COLLECTION_REPORT_SUMMARY = '/reports/generateOtherCollectionReportSummary/{startDate}/{endDate}';
-     public static GET_OTHER_COLLECTION_REPORT_DETAILED = '/reports/generateOtherCollectionReportDetails/{startDate}/{endDate}';
-     public static GET_OUTSIDE_COLLECTION_REPORT_SUMMARY = '/reports/generateOutsideCollectionReportSummary/{startDate}/{endDate}';
-     public static GET_OUTSIDE_COLLECTION_REPORT_DETAILED = '/reports/generateOutsideCollectionReportDetails/{startDate}/{endDate}';
+     public static GET_COLLECTION_REPORT_SUMMARY = '/reports/collection/generateCollectionReportSummary/{startDate}/{endDate}';
+     public static GET_COLLECTION_REPORT_DETAILED = '/reports/collection/generateCollectionReportDetails/{startDate}/{endDate}';
+     public static GET_OTHER_COLLECTION_REPORT_SUMMARY = '/reports/collection/generateOtherCollectionReportSummary/{startDate}/{endDate}';
+     public static GET_OTHER_COLLECTION_REPORT_DETAILED = '/reports/collection/generateOtherCollectionReportDetails/{startDate}/{endDate}';
+     public static GET_OUTSIDE_COLLECTION_REPORT_SUMMARY = '/reports/collection/generateOutsideCollectionReportSummary/{startDate}/{endDate}';
+     public static GET_OUTSIDE_COLLECTION_REPORT_DETAILED = '/reports/collection/generateOutsideCollectionReportDetails/{startDate}/{endDate}';
 
+     public static GET_BILLING_REPORT_SUMMARY = '/reports/billing/generateBillingReportSummary/{startDate}/{endDate}';
+     public static GET_BILLING_REPORT_DETAILED = '/reports/billing/generateBillingReportDetailed/{startDate}/{endDate}';
 
-     public static GET_CUSTOMER_METER_USAGE_SUMMARY = '/reports/getCustomerMeterUsagePerYear/{year}';
+     public static GET_CUSTOMER_METER_USAGE_SUMMARY = '/reports/collection/getCustomerMeterUsagePerYear/{year}';
 
 }
 

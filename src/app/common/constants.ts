@@ -100,7 +100,7 @@ export class WaterRatesApi {
 }
 
 export class ReportsApi {
-     public static GET_DASHBOARD_DATA = '/reports/getDashboardData/{startDate}/{endDate}';
+     public static GET_DASHBOARD_DATA = '/reports/collection/getDashboardData/{startDate}/{endDate}';
      public static GET_COLLECTION_REPORT_SUMMARY = '/reports/collection/generateCollectionReportSummary/{startDate}/{endDate}';
      public static GET_COLLECTION_REPORT_DETAILED = '/reports/collection/generateCollectionReportDetails/{startDate}/{endDate}';
      public static GET_OTHER_COLLECTION_REPORT_SUMMARY = '/reports/collection/generateOtherCollectionReportSummary/{startDate}/{endDate}';

@@ -17,6 +17,7 @@ import { ToastrMessage, ToastrTitle } from '../../../common/constants';
 import { debounceTime, distinctUntilChanged, Subject, Subscription } from 'rxjs';
 import { FormsModule, NgModel } from '@angular/forms';
 import { NoDataToDisplayComponent } from "../../common/no-data-to-display/no-data-to-display.component";
+import { AlertService } from '../../../services/alert.service';
 
 @Component({
   selector: 'app-billing-list',
@@ -164,7 +165,7 @@ export class BillingListComponent implements OnInit {
   async handleVoidRecord(billing:any) {
 
     if(billing.status === 2) { //2 = INCOMPLETE
-      const isConfirm = confirm('Are you sure you want to VOID this record?');
+      const isConfirm = await AlertService.confirm('Are you sure you want to VOID this record?', 'Void Billing Record');
       if(!isConfirm) return;
 
       try {
@@ -190,7 +191,7 @@ export class BillingListComponent implements OnInit {
   async handleDeleteRecord(billing: any) {
 
     if(billing.status === 2) { //2 = INCOMPLETE
-      const isConfirm = confirm('Are you sure you want to DELETE this record?');
+      const isConfirm = await AlertService.confirm('Are you sure you want to DELETE this record?', 'Delete Billing Record');
       if(!isConfirm) return;
       
       try {

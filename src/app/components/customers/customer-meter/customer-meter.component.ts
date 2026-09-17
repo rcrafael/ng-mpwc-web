@@ -15,6 +15,7 @@ import { ToastrService } from 'ngx-toastr';
 import { ToastrMessage, ToastrTitle } from '../../../common/constants';
 import { MatTooltip } from '@angular/material/tooltip';
 import { HttpErrorResponse } from '@angular/common/http';
+import { AlertService } from '../../../services/alert.service';
 
 @Component({
   selector: 'app-customer-meter',
@@ -96,7 +97,7 @@ export class CustomerMeterComponent implements OnInit {
       return;
     }
 
-    var confirmed = confirm('Are you sure you want to save meter details?');
+    var confirmed = await AlertService.confirm('Are you sure you want to save meter details?', 'Save Meter Details');
     console.log('CONFIRMED?', confirmed);
 
     if(!confirmed) {
@@ -231,7 +232,7 @@ export class CustomerMeterComponent implements OnInit {
       return;
     }
 
-    var confirmed = confirm('Are you sure you want to deactivate this meter? This action cannot be reversed.');
+    var confirmed = await AlertService.confirm('Are you sure you want to deactivate this meter? This action cannot be reversed.', 'Deactivate Meter');
     if(!confirmed) return;
 
     const params: any = {
@@ -265,7 +266,7 @@ export class CustomerMeterComponent implements OnInit {
   }
 
   async onDeleteMeterActionClick(meterDetails: IMeterDetails): Promise<void> {
-    var confirmed = confirm('Are you sure you want to DELETE this meter? This action cannot be reversed.');
+    var confirmed = await AlertService.confirm('Are you sure you want to DELETE this meter? This action cannot be reversed.', 'Delete Meter');
     if(!confirmed) return;
 
     const params: any = {

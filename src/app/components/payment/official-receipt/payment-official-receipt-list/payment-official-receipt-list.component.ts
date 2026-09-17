@@ -19,6 +19,7 @@ import { ToastrService } from 'ngx-toastr';
 import { ToastrMessage, ToastrTitle } from '../../../../common/constants';
 import { DomSanitizer } from '@angular/platform-browser';
 import { NoDataToDisplayComponent } from "../../../common/no-data-to-display/no-data-to-display.component";
+import { AlertService } from '../../../../services/alert.service';
 
 @Component({
   selector: 'app-payment-official-receipt-list',
@@ -170,7 +171,7 @@ export class PaymentOfficialReceiptListComponent implements OnInit {
 
   async handleVoidRecord(orId: string) {
 
-    const isConfirm = confirm('Are you sure you want to VOID this record?');
+    const isConfirm = await AlertService.confirm('Are you sure you want to VOID this record?', 'Void Official Receipt');
     if(!isConfirm) return;
 
     try {
@@ -190,7 +191,7 @@ export class PaymentOfficialReceiptListComponent implements OnInit {
 
   async handleDeleteRecord(orId: string) {
 
-    const isConfirm = confirm('Are you sure you want to DELETE this record?');
+    const isConfirm = await AlertService.confirm('Are you sure you want to DELETE this record?', 'Delete Official Receipt');
     if(!isConfirm) return;
     
     try {

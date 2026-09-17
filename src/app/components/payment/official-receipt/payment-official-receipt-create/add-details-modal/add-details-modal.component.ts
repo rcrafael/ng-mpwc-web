@@ -10,6 +10,7 @@ import { ToastrService } from 'ngx-toastr';
 import { ToastrMessage, ToastrTitle } from '../../../../../common/constants';
 import { IDefaultValues } from '../../../../../models/interfaces/IDefaultValues';
 import { DefaultValuesService } from '../../../../../services/default-values.service';
+import { AlertService } from '../../../../../services/alert.service';
 
 @Component({
   selector: 'app-add-details-modal',
@@ -249,16 +250,19 @@ export class AddDetailsModalComponent implements OnInit {
     return due < currentDate;
   }
 
-  autoProcessPenalty(): void {
+  async autoProcessPenalty(): Promise<void> {
     
-    const conf = confirm('Due Date already passed. Are you sure you want to add penalty?');
+    const conf = await AlertService.confirm('Due Date already passed. Are you sure you want to add penalty?', 'Add Penalty');
     console.log('CONFIRM PENALTY? ', conf);
     if(!conf) return;
 
     const chk = document.getElementById('isPenalty') as HTMLInputElement;
-    chk.checked = true;
+    if (chk) {
+      chk.checked = true;
+    }
 
     this.computePenalty();
+    this.computeTotalAmount();
   }
 
 }

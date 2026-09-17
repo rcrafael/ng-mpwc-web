@@ -56,7 +56,7 @@ export class CommercialComponent implements OnInit {
     const formDate = this.fg.value;
     console.log('form', this.fg);
     if (!this.fg.valid) {
-      alert('Please provide valid inputs.');
+      //alert('Please provide valid inputs.');
       this.toast.warning(ToastrMessage.INVALID_INPUT, this.toastTitlePrefix + ToastrTitle.INVALID_INPUT);
       return;
     }

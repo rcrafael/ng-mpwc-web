@@ -14,6 +14,7 @@ import { ToastrService } from 'ngx-toastr';
 import { ToastrMessage, ToastrTitle } from '../../../../common/constants';
 import { CommonService } from '../../../../services/common.service';
 import { utils } from 'xlsx';
+import { AlertService } from '../../../../services/alert.service';
 
 @Component({
   selector: 'app-payment-official-receipt-view',
@@ -219,7 +220,7 @@ export class PaymentOfficialReceiptViewComponent implements OnInit {
   }
 
   async handleVoid(): Promise<void> {
-    const isConfirm = confirm('Are you sure you want to VOID this record?');
+    const isConfirm = await AlertService.confirm('Are you sure you want to VOID this record?', 'Void Official Receipt');
     if(!isConfirm) return;
 
     const VOID_STATUS_ID = 4;
@@ -240,7 +241,7 @@ export class PaymentOfficialReceiptViewComponent implements OnInit {
   }
 
   async handleDelete(): Promise<void> {
-    const isConfirm = confirm('Are you sure you want to DELETE this record?');
+    const isConfirm = await AlertService.confirm('Are you sure you want to DELETE this record?', 'Delete Official Receipt');
     if(!isConfirm) return;
     
     try {

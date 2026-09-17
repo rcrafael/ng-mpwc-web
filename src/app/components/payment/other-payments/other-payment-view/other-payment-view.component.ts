@@ -13,6 +13,7 @@ import { AuthService } from '../../../../services/auth.service';
 import { ToastrService } from 'ngx-toastr';
 import { ToastrMessage, ToastrTitle } from '../../../../common/constants';
 import { CommonService } from '../../../../services/common.service';
+import { AlertService } from '../../../../services/alert.service';
 
 @Component({
   selector: 'app-other-payment-view',
@@ -195,7 +196,7 @@ export class OtherPaymentViewComponent implements OnInit {
   }
 
   async handleVoid(): Promise<void> {
-    const isConfirm = confirm('Are you sure you want to VOID this record?');
+    const isConfirm = await AlertService.confirm('Are you sure you want to VOID this record?', 'Void Payment Record');
     if(!isConfirm) return;
 
     const VOID_STATUS_ID = 4;
@@ -213,7 +214,7 @@ export class OtherPaymentViewComponent implements OnInit {
   }
 
   async handleDelete(): Promise<void> {
-    const isConfirm = confirm('Are you sure you want to DELETE this record?');
+    const isConfirm = await AlertService.confirm('Are you sure you want to DELETE this record?', 'Delete Payment Record');
     if(!isConfirm) return;
     
     try {

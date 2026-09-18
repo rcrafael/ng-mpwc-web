@@ -110,6 +110,7 @@ export class ReportsApi {
 
      public static GET_BILLING_REPORT_SUMMARY = '/reports/billing/generateBillingReportSummary/{startDate}/{endDate}';
      public static GET_BILLING_REPORT_DETAILED = '/reports/billing/generateBillingReportDetailed/{startDate}/{endDate}';
+     public static GET_UNPAID_BILLING_REPORT = '/reports/billing/generateUnpaidBillingReport/{startDate}/{endDate}';
 
      public static GET_CUSTOMER_METER_USAGE_SUMMARY = '/reports/collection/getCustomerMeterUsagePerYear/{year}';
 

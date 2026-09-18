@@ -167,6 +167,20 @@ export class ReportComponent implements OnInit {
         yearOnly: false
       }
     },
+    {
+      id: self.crypto.randomUUID(),
+      title: "Unpaid Billing Report",
+      type: "billing",
+      icon: IconPaths.NEWSPAPER,
+      api: ReportsApi.GET_UNPAID_BILLING_REPORT,
+      filters: {
+        startDate: true,
+        endDate: true,
+        branchCode: true,
+        phase: true,
+        yearOnly: false
+      }
+    },
 
 
   ];

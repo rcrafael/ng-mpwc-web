@@ -42,7 +42,7 @@ export class ReportComponent implements OnInit {
 
   reports: IReportTypes[] = [
     {
-      id: self.crypto.randomUUID(),
+      id: `1`,
       title: "Collection Report Summary",
       type: "collection",
       icon: IconPaths.PAYMENTS,
@@ -56,7 +56,7 @@ export class ReportComponent implements OnInit {
       }
     },
     {
-      id: self.crypto.randomUUID(),
+      id: `2`,
       title: "Collection Report Detailed",
       type: "collection",
       icon: IconPaths.PAYMENTS,
@@ -70,7 +70,7 @@ export class ReportComponent implements OnInit {
       }
     },
     {
-      id: self.crypto.randomUUID(),
+      id: `3`,
       title: "Customer Meter Usage Summary",
       type: "customer",
       icon: IconPaths.GROUP,
@@ -84,7 +84,7 @@ export class ReportComponent implements OnInit {
       }
     },
     {
-      id: self.crypto.randomUUID(),
+      id: `4`,
       title: "Other Collection Report Summary",
       type: "collection",
       icon: IconPaths.PAYMENTS,
@@ -98,7 +98,7 @@ export class ReportComponent implements OnInit {
       }
     },
     {
-      id: self.crypto.randomUUID(),
+      id: `5`,
       title: "Other Collection Report Detailed",
       type: "collection",
       icon: IconPaths.PAYMENTS,
@@ -112,7 +112,7 @@ export class ReportComponent implements OnInit {
       }
     },
     {
-      id: self.crypto.randomUUID(),
+      id: `6`,
       title: "Outside Collection Report Summary",
       type: "collection",
       icon: IconPaths.PAYMENTS,
@@ -126,7 +126,7 @@ export class ReportComponent implements OnInit {
       }
     },
     {
-      id: self.crypto.randomUUID(),
+      id: `7`,
       title: "Outside Collection Report Detailed",
       type: "collection",
       icon: IconPaths.PAYMENTS,
@@ -140,7 +140,7 @@ export class ReportComponent implements OnInit {
       }
     },
     {
-      id: self.crypto.randomUUID(),
+      id: `8`,
       title: "Billing Report Summary",
       type: "billing",
       icon: IconPaths.NEWSPAPER,
@@ -154,7 +154,7 @@ export class ReportComponent implements OnInit {
       }
     },
     {
-      id: self.crypto.randomUUID(),
+      id: `9`,
       title: "Billing Report Detailed",
       type: "billing",
       icon: IconPaths.NEWSPAPER,
@@ -168,7 +168,7 @@ export class ReportComponent implements OnInit {
       }
     },
     {
-      id: self.crypto.randomUUID(),
+      id: `10`,
       title: "Unpaid Billing Report",
       type: "billing",
       icon: IconPaths.NEWSPAPER,

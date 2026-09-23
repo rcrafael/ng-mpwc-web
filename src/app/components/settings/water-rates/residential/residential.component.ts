@@ -127,17 +127,6 @@ export class ResidentialComponent implements OnInit {
   }
 
   updateForm(): void {
-    // this.fg.patchValue({
-    //   lessEqualToFive: this.formatNumber(this.waterRates[0].ratingValue),
-    //   sixToTen: this.formatNumber(this.waterRates[1].ratingValue),
-    //   elevenToTwenty: this.formatNumber(this.waterRates[2].ratingValue),
-    //   twentyOneToThirty: this.formatNumber(this.waterRates[3].ratingValue),
-    //   thirtyOneToFourty: this.formatNumber(this.waterRates[4].ratingValue),
-    //   fourtyOneToFifty: this.formatNumber(this.waterRates[5].ratingValue),
-    //   fiftyOneToSeventy: this.formatNumber(this.waterRates[6].ratingValue),
-    //   seventyOneToNinety: this.formatNumber(this.waterRates[7].ratingValue),
-    //   greaterThanNinetyOne: this.formatNumber(this.waterRates[8].ratingValue),
-    // });
 
     this.fg.patchValue({
       lessEqualToFive: this.formatNumber(this.waterRates[0].ratingValue),
@@ -156,18 +145,6 @@ export class ResidentialComponent implements OnInit {
   }
 
   handleReset(): void {
-    // this.fg.reset({
-    //   lessEqualToFive: this.formatNumber(this.oldWaterRates[0].ratingValue),
-    //   sixToTen: this.formatNumber(this.oldWaterRates[1].ratingValue),
-    //   elevenToTwenty: this.formatNumber(this.oldWaterRates[2].ratingValue),
-    //   twentyOneToThirty: this.formatNumber(this.oldWaterRates[3].ratingValue),
-    //   thirtyOneToFourty: this.formatNumber(this.oldWaterRates[4].ratingValue),
-    //   fourtyOneToFifty: this.formatNumber(this.oldWaterRates[5].ratingValue),
-    //   fiftyOneToSeventy: this.formatNumber(this.oldWaterRates[6].ratingValue),
-    //   seventyOneToNinety: this.formatNumber(this.oldWaterRates[7].ratingValue),
-    //   greaterThanNinetyOne: this.formatNumber(this.oldWaterRates[8].ratingValue),
-    // })
-
     this.fg.reset({
       lessEqualToFive: this.formatNumber(this.oldWaterRates[0].ratingValue),
       sixToTen: this.formatNumber(this.oldWaterRates[1].ratingValue),

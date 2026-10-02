@@ -6,8 +6,9 @@
                     <span class="font-bold">CREATE BILLING</span>
                </div>
                <div class="flex col-span-6 col-start-7 w-full place-content-end">
-                    <button type="button" class="p-2 bg-red-300 font-bold border border-solid border-black rounded-md px-3 mr-3" >Reset</button>
-                    <button type="submit" class="p-2 bg-green-300 font-bold border border-solid border-black rounded-md px-3" >Save</button>
+                    <button type="button" class="p-2 bg-red-300 font-bold border border-solid border-black rounded-md px-3 mr-3" (click)="onResetForm()" >Reset</button>
+                    <button type="submit" class="p-2 bg-green-300 font-bold border border-solid border-black rounded-md px-3 mr-3" >Save</button>
+                    <button type="button" class="p-2 bg-green-300 font-bold border border-solid border-black rounded-md px-3" (click)="onSaveNewBilling()">Save & New</button>
                </div>
           </div>
 
@@ -168,15 +169,15 @@
                               </div>
                          </div>
 
-                         <!-- <div class="grid grid-cols-12">
+                         <div class="grid grid-cols-12">
                               <div class="col-start-1 col-span-6">
                                    <label for="rememberSettings"> Remember Date Settings </label>
                               </div>
                               <div class="col-start-7 col-span-6">
                                    <input type="checkbox" id="rememberSettings"
-                                        class="border border-gray-400 rounded-md">
+                                        class="border border-gray-400 rounded-md" [(ngModel)]="rememberDates" [ngModelOptions]="{standalone: true}">
                               </div>
-                         </div> -->
+                         </div>
 
                          <mat-divider />
 

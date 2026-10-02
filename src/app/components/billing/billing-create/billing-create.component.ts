@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, NgModule, OnInit } from '@angular/core';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDivider } from '@angular/material/divider';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatIconModule } from '@angular/material/icon';
@@ -30,7 +30,8 @@ import { DefaultValuesService } from '../../../services/default-values.service';
     ReactiveFormsModule,
     MatExpansionModule,
     MatIconModule,
-    MatDivider
+    MatDivider,
+    FormsModule
   ],
   templateUrl: './billing-create.component.html',
   styleUrl: './billing-create.component.css'
@@ -57,6 +58,7 @@ export class BillingCreateComponent implements OnInit {
   totalBilingAmount: number = 0;
   maxRateUsed: number = 0;
   septageFees!: any;
+  rememberDates: boolean = true;
 
   currentMonth = new Date().getMonth() + 1; //getMonth() is 0 to 11
   currentDate = formatDate(new Date(),'yyyy-MM-dd','en-PH');
@@ -110,61 +112,8 @@ export class BillingCreateComponent implements OnInit {
     }
   }
   
-  async onSubmit(): Promise<void> {
-    if(!this.fg.valid) {
-      this.toast.warning(ToastrMessage.INVALID_INPUT, this.toastTitlePrefix + ToastrTitle.ERROR);
-      return;
-    }
-
-    const frm = this.fg.value;
-
-    let params: IBillingInfo = {
-      readingNo: frm.readingNo!,
-      meterNo: frm.meterNo!,
-      customerId: this.selectedCustomerInfo.id!,
-      monthOf: frm.monthOf!,
-      dateFrom: frm.dateFrom!, 
-      dateTo: frm.dateTo!,
-      dueDate: frm.dueDate!,
-      previous: frm.previous!,
-      present: frm.present!,
-      m3Used: frm.m3Used!,
-      rating: this.maxRateUsed,
-      readingAmount: this.sanitizeAmount(frm.readingAmount || '0'),
-      parts: this.sanitizeAmount(frm.parts || '0'),
-      maintenanceFee: this.sanitizeAmount(frm.maintenanceFee || '0'),
-      lessAmount: this.sanitizeAmount(frm.lessAmount || '0'),
-      totalAmount: this.sanitizeAmount(frm.totalAmount || '0'),
-      septageFee:this.sanitizeAmount(frm.septageFee || '0'),
-      remarks: '',
-      status: 2 //2 = incomplete; by default
-    }
-
-    this.commonService.showSpinner(true);
-    await this.billingService.createBilling(params).then(async mainResponse => {
-
-      let params: IMeterDetails = this.selectedMeterNo;
-      params.previous = this.selectedMeterNo.present;
-      params.present = frm.present ?? 0;
-
-      await this.customerService.updateMeterNo(params).then( secondResponse => {
-        this.toast.success(ToastrMessage.SUCCESS_CREATE, this.toastTitlePrefix + ToastrTitle.SUCCESS);
-        this.router.navigateByUrl('billing');
-      })
-      .catch((err: Error) => {
-        this.toast.error(ToastrMessage.ERROR_CREATE + ': ' + err.message, this.toastTitlePrefix + ToastrTitle.ERROR);
-        console.log('Error:', err);
-        throw err;
-      })
-    })
-    .catch((err: Error) => {
-      this.toast.error(ToastrMessage.ERROR_CREATE + ': ' + err.message, this.toastTitlePrefix + ToastrTitle.ERROR);
-      console.log('Error:', err);
-    })
-    .finally(() => {
-      this.commonService.showSpinner(false);
-    });
-
+  onSubmit(): void {
+    this.saveBilling();
   }
 
   openCustomerDialog(): void {
@@ -417,5 +366,98 @@ export class BillingCreateComponent implements OnInit {
     } 
 
   }
+
+  async saveBilling(isNew: boolean = false): Promise<void> {
+    if(!this.fg.valid) {
+      this.toast.warning(ToastrMessage.INVALID_INPUT, this.toastTitlePrefix + ToastrTitle.ERROR);
+      return;
+    }
+
+    const frm = this.fg.value;
+
+    let params: IBillingInfo = {
+      readingNo: frm.readingNo!,
+      meterNo: frm.meterNo!,
+      customerId: this.selectedCustomerInfo.id!,
+      monthOf: frm.monthOf!,
+      dateFrom: frm.dateFrom!, 
+      dateTo: frm.dateTo!,
+      dueDate: frm.dueDate!,
+      previous: frm.previous!,
+      present: frm.present!,
+      m3Used: frm.m3Used!,
+      rating: this.maxRateUsed,
+      readingAmount: this.sanitizeAmount(frm.readingAmount || '0'),
+      parts: this.sanitizeAmount(frm.parts || '0'),
+      maintenanceFee: this.sanitizeAmount(frm.maintenanceFee || '0'),
+      lessAmount: this.sanitizeAmount(frm.lessAmount || '0'),
+      totalAmount: this.sanitizeAmount(frm.totalAmount || '0'),
+      septageFee:this.sanitizeAmount(frm.septageFee || '0'),
+      remarks: '',
+      status: 2 //2 = incomplete; by default
+    }
+
+    this.commonService.showSpinner(true);
+    await this.billingService.createBilling(params).then(async mainResponse => {
+
+      let params: IMeterDetails = this.selectedMeterNo;
+      params.previous = this.selectedMeterNo.present;
+      params.present = frm.present ?? 0;
+
+      await this.customerService.updateMeterNo(params).then( secondResponse => {
+        this.toast.success(ToastrMessage.SUCCESS_CREATE, this.toastTitlePrefix + ToastrTitle.SUCCESS);
+        !isNew && this.router.navigateByUrl('billing');
+      })
+      .catch((err: Error) => {
+        this.toast.error(ToastrMessage.ERROR_CREATE + ': ' + err.message, this.toastTitlePrefix + ToastrTitle.ERROR);
+        console.log('Error:', err);
+        throw err;
+      })
+    })
+    .catch((err: Error) => {
+      this.toast.error(ToastrMessage.ERROR_CREATE + ': ' + err.message, this.toastTitlePrefix + ToastrTitle.ERROR);
+      console.log('Error:', err);
+    })
+    .finally(() => {
+      this.commonService.showSpinner(false);
+    });
+  }
+
+  async onSaveNewBilling(): Promise<void> {
+    await this.saveBilling(true);
+    await this.onResetForm();
+  }
+
+  async onResetForm(): Promise<void> {
+
+    let month = new Date().getMonth() + 1;
+    let dateFrom = formatDate(new Date(),'yyyy-MM-dd','en-PH');
+    let dateTo = formatDate(new Date(),'yyyy-MM-dd','en-PH');
+    let dueDate = formatDate(new Date(),'yyyy-MM-dd','en-PH');
+
+    if(this.rememberDates) {
+      month = this.fg.get('monthOf')?.value ?? new Date().getMonth() + 1;
+      dateFrom = this.fg.get('dateFrom')?.value ?? formatDate(new Date(),'yyyy-MM-dd','en-PH');
+      dateTo = this.fg.get('dateTo')?.value ?? formatDate(new Date(),'yyyy-MM-dd','en-PH');
+      dueDate = this.fg.get('dueDate')?.value ?? formatDate(new Date(),'yyyy-MM-dd','en-PH');
+    } else {
+      month = this.currentMonth
+      dateFrom = this.currentDate;
+      dateTo = this.currentDate;
+      dueDate = this.currentDate
+    }
+
+    this.fg.reset();
+
+    this.fg.patchValue({
+      monthOf: month,
+      dateFrom: dateFrom,
+      dateTo: dateTo,
+      dueDate: dueDate
+    })
+
+    await this.generateReadingNo();
+  }
+
 
 }

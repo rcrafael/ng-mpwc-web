@@ -126,12 +126,19 @@ export class BillingCreateComponent implements OnInit {
       if(data !== null) {
         console.log('RECEIVED FROM Customer DIALOG: ', data);
         this.selectedCustomerInfo = data;
+        this.onResetForm();
         this.updateFormFromCustomer();
       }
     })
   }
 
   openMeterDialog(): void {
+
+    if(this.fg.get('accountNo')?.value === '') {
+      this.toast.warning('Please select a customer first.', this.toastTitlePrefix + ToastrTitle.WARNING);
+      return;
+    }
+
       const dialogRef = this.dialog.open(BrowseMeterNoComponent, {
         data: this.selectedCustomerInfo.id,
         width: '70%',

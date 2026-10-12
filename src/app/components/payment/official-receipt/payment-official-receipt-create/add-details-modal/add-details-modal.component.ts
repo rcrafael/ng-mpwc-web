@@ -70,24 +70,44 @@ export class AddDetailsModalComponent implements OnInit {
   formatNumber = Utils.formatNumber;
   sanitizeAmount = Utils.sanitizeAmount;
 
+  formInitVal = {
+    readingNo: '',
+    meterNo: '',
+    readingAmount: '0.00',
+    parts: '0.00',
+    maintenanceFee: '0.00',
+    membershipFee: '0.00',
+    subReceivable: '0.00',
+    tapping: '0.00',
+    reconnection: '0.00',
+    calibration: '0.00',
+    septageFee: '0.00',
+    otherCollection: '0.00',
+    otherDescription: '',
+    seniorDiscount: '0.00',
+    penalty: '0.00',
+    totalAmount: '0.00',
+    remarks: '',
+  }
+
   fg = new FormGroup({
-    readingNo: new FormControl<string>('', Validators.required),
-    meterNo: new FormControl<string>('',),
-    readingAmount: new FormControl<string>('0.00'),
-    parts: new FormControl<string>('0.00'),
-    maintenanceFee: new FormControl<string>('0.00'),
-    membershipFee: new FormControl<string>('0.00'),
-    subReceivable: new FormControl<string>('0.00'),
-    tapping: new FormControl<string>('0.00'),
-    reconnection: new FormControl<string>('0.00'),
-    calibration: new FormControl<string>('0.00'),
-    septageFee: new FormControl<string>('0.00'),
-    otherCollection: new FormControl<string>('0.00'),
-    otherDescription: new FormControl<string>(''),
-    seniorDiscount: new FormControl<string>('0.00'),
-    penalty: new FormControl<string>('0.00'),
-    totalAmount: new FormControl<string>('0.00'),
-    remarks: new FormControl<string>(''),
+    readingNo: new FormControl<string>(this.formInitVal.readingNo, Validators.required),
+    meterNo: new FormControl<string>(this.formInitVal.meterNo),
+    readingAmount: new FormControl<string>(this.formInitVal.readingAmount),
+    parts: new FormControl<string>(this.formInitVal.parts),
+    maintenanceFee: new FormControl<string>(this.formInitVal.maintenanceFee),
+    membershipFee: new FormControl<string>(this.formInitVal.membershipFee),
+    subReceivable: new FormControl<string>(this.formInitVal.subReceivable),
+    tapping: new FormControl<string>(this.formInitVal.tapping),
+    reconnection: new FormControl<string>(this.formInitVal.reconnection),
+    calibration: new FormControl<string>(this.formInitVal.calibration),
+    septageFee: new FormControl<string>(this.formInitVal.septageFee),
+    otherCollection: new FormControl<string>(this.formInitVal.otherCollection),
+    otherDescription: new FormControl<string>(this.formInitVal.otherDescription),
+    seniorDiscount: new FormControl<string>(this.formInitVal.seniorDiscount),
+    penalty: new FormControl<string>(this.formInitVal.penalty),
+    totalAmount: new FormControl<string>(this.formInitVal.totalAmount),
+    remarks: new FormControl<string>(this.formInitVal.remarks),
   })
 
   ngOnInit(): void {
@@ -151,6 +171,9 @@ export class AddDetailsModalComponent implements OnInit {
     this.billingList.push(orDetails);
     console.log('DETAILS ADDED:', orDetails);
     this.datasource = new MatTableDataSource<IOfficialReceiptDetail>(this.billingList);
+
+    this.fg.reset(this.formInitVal, {emitEvent: false});
+
   }
 
   openBillingListDialog(): void {
@@ -162,6 +185,16 @@ export class AddDetailsModalComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(data => {
       if(data) {
+
+        //validate if the selected billing is using different meter number than the existing billing list
+        if(this.billingList.length > 0) {
+          const existingMeterNo = this.billingList[0].meterNo;
+          if(existingMeterNo !== data.meterNo) {
+            this.toast.warning('Selected billing has different meter number than the existing billing list', this.toastTitlePrefix + ToastrTitle.INVALID_INPUT);
+            return;
+          }
+        }
+
         console.log('SELECTED BILLING DATA: ', data);
         this.billingAmount = data.readingAmount;
 

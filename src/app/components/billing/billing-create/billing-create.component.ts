@@ -68,30 +68,56 @@ export class BillingCreateComponent implements OnInit {
   formatNumber = Utils.formatNumber;
   sanitizeAmount = Utils.sanitizeAmount;
 
+  formInitVal = {
+    readingNo: '',
+    meterNo: '',
+    accountNo: '',
+    alias: '',
+    customerName: '',
+    branchCode: '',
+    phase: '',
+    customerType: '',
+    address: '',
+    monthOf: this.currentMonth,
+    dateFrom: this.currentDate,
+    dateTo: this.currentDate,
+    dueDate: this.currentDate,
+    previous: 0,
+    present: 0,
+    m3Used: 0,
+    readingAmount: '0.00',
+    parts: '0.00',
+    maintenanceFee: '0.00',
+    lessAmount: '0.00',
+    septageFee: '0.00',
+    totalAmount: this.formatNumber(this.totalBilingAmount) ?? '0.00' ,
+    status: ''
+  };
+
   public fg = new FormGroup({
-    readingNo: new FormControl<string>({value: '', disabled: true}, Validators.required),
-    meterNo: new FormControl<string>('', Validators.required),
-    accountNo: new FormControl<string>('',Validators.required),
-    alias: new FormControl<string>(''),
-    customerName: new FormControl<string>(''),
-    branchCode: new FormControl<string>(''),
-    phase: new FormControl<string>(''),
-    customerType: new FormControl<string>(''),
-    address: new FormControl<string>(''),
+    readingNo: new FormControl<string>({value: this.formInitVal.readingNo, disabled: true}, Validators.required),
+    meterNo: new FormControl<string>(this.formInitVal.meterNo, Validators.required),
+    accountNo: new FormControl<string>(this.formInitVal.accountNo, Validators.required),
+    alias: new FormControl<string>(this.formInitVal.alias),
+    customerName: new FormControl<string>(this.formInitVal.customerName),
+    branchCode: new FormControl<string>(this.formInitVal.branchCode),
+    phase: new FormControl<string>(this.formInitVal.phase),
+    customerType: new FormControl<string>(this.formInitVal.customerType),
+    address: new FormControl<string>(this.formInitVal.address),
     monthOf: new FormControl<number>(this.currentMonth),
     dateFrom: new FormControl<string>(this.currentDate),
     dateTo: new FormControl<string>(this.currentDate),
     dueDate: new FormControl<string>(this.currentDate),
-    previous: new FormControl<number>(0),
-    present: new FormControl<number>(0),
-    m3Used: new FormControl(0),
-    readingAmount: new FormControl<string>('0.00'),
-    parts: new FormControl<string>('0.00'),
-    maintenanceFee: new FormControl<string>('0.00'),
-    lessAmount: new FormControl<string>('0.00'),
-    septageFee: new FormControl<string>('0.00'),
-    totalAmount: new FormControl<string>(this.formatNumber(this.totalBilingAmount) ?? '0.00'),
-    status: new FormControl({value:'', disabled: true}),
+    previous: new FormControl<number>(this.formInitVal.previous),
+    present: new FormControl<number>(this.formInitVal.present),
+    m3Used: new FormControl<number>(this.formInitVal.m3Used),
+    readingAmount: new FormControl<string>(this.formInitVal.readingAmount),
+    parts: new FormControl<string>(this.formInitVal.parts),
+    maintenanceFee: new FormControl<string>(this.formInitVal.maintenanceFee),
+    lessAmount: new FormControl<string>(this.formInitVal.lessAmount),
+    septageFee: new FormControl<string>(this.formInitVal.septageFee),
+    totalAmount: new FormControl<string>(this.formInitVal.totalAmount),
+    status: new FormControl({value: this.formInitVal.status, disabled: true}),
   });
 
 
@@ -454,7 +480,7 @@ export class BillingCreateComponent implements OnInit {
       dueDate = this.currentDate
     }
 
-    this.fg.reset();
+    this.fg.reset(this.formInitVal);
 
     this.fg.patchValue({
       monthOf: month,

@@ -29,6 +29,7 @@ export interface IUserList {
      fname: string;
      mname: string;
      role: string[];
+     pageAccess?: string[];
 }
 
 export interface IUserRegister {
@@ -39,6 +40,7 @@ export interface IUserRegister {
      mname: string;
      roleId: string;
      password: string;
+     pageAccess?: string[];
 }
 
 export interface IUserUpdate {
@@ -49,7 +51,8 @@ export interface IUserUpdate {
      fname: string;
      mname: string;
      roleId: string;
-     password: string;
+     password?: string;
+     pageAccess?: string[];
 }
 
 export interface IUserData {
@@ -60,6 +63,7 @@ export interface IUserData {
      fname: string;
      mname: string;
      role: IRole;
+     pageAccess?: string[];
 }
 
 

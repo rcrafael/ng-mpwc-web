@@ -1,6 +1,23 @@
 import { IBranchCode, IGender, ICustomerType, IPhase, ITransactionStatus, ISideBarMenu } from "../models/interfaces/ICommon"
 
 
+export interface IPageDefinition {
+  code: string;
+  label: string;
+  description: string;
+}
+
+export const ALL_PAGE_DEFINITIONS: IPageDefinition[] = [
+  { code: 'dashboard', label: 'Dashboard', description: 'Overview and analytical charts' },
+  { code: 'customer', label: 'Customer', description: 'Customer profiles and meter assignments' },
+  { code: 'billing', label: 'Billing', description: 'Meter readings and bill creation' },
+  { code: 'payment_or', label: 'OR Payment', description: 'Official receipt payment processing' },
+  { code: 'payment_other', label: 'Other Payment', description: 'Miscellaneous and non-OR collections' },
+  { code: 'reports', label: 'Reports', description: 'Collection and billing reports' },
+  { code: 'settings', label: 'Settings', description: 'Water rates, parts master list, and default values' },
+  { code: 'admin_users', label: 'Administration', description: 'User accounts and page access configuration' },
+];
+
  export const naviMenus: ISideBarMenu[] = [
     {
       id: 1,
@@ -8,7 +25,8 @@ import { IBranchCode, IGender, ICustomerType, IPhase, ITransactionStatus, ISideB
       url: '/dashboard',
       label:'Dashboard',
       icon: '/assets/icons/chart-pie.svg',
-      visible: true
+      visible: true,
+      pageCode: 'dashboard'
     },
     {
       id: 2,
@@ -16,7 +34,8 @@ import { IBranchCode, IGender, ICustomerType, IPhase, ITransactionStatus, ISideB
       url: '/customer',
       label:'Customer',
       icon: '/assets/icons/group.svg',
-      visible: true
+      visible: true,
+      pageCode: 'customer'
     },
     {
       id: 3,
@@ -24,7 +43,8 @@ import { IBranchCode, IGender, ICustomerType, IPhase, ITransactionStatus, ISideB
       url: '/payment/official-receipt',
       label:'OR Payment',
       icon: '/assets/icons/payments.svg',
-      visible: true
+      visible: true,
+      pageCode: 'payment_or'
     },
     {
       id: 4,
@@ -32,7 +52,8 @@ import { IBranchCode, IGender, ICustomerType, IPhase, ITransactionStatus, ISideB
       url: '/payment/other-receipt',
       label:'Other Payment',
       icon: '/assets/icons/bank-notes.svg',
-      visible: true
+      visible: true,
+      pageCode: 'payment_other'
     },
     {
       id: 5,
@@ -40,7 +61,8 @@ import { IBranchCode, IGender, ICustomerType, IPhase, ITransactionStatus, ISideB
       url: '/billing',
       label:'Billing',
       icon: '/assets/icons/newspaper.svg',
-      visible: true
+      visible: true,
+      pageCode: 'billing'
     },
     {
       id: 6,
@@ -56,7 +78,8 @@ import { IBranchCode, IGender, ICustomerType, IPhase, ITransactionStatus, ISideB
       url: '/reports',
       label:'Reports',
       icon: '/assets/icons/reports.svg',
-      visible: true
+      visible: true,
+      pageCode: 'reports'
     },
     {
       id: 8,
@@ -65,24 +88,28 @@ import { IBranchCode, IGender, ICustomerType, IPhase, ITransactionStatus, ISideB
       label:'Settings',
       icon: '/assets/icons/settings-gear.svg',
       visible: true,
+      pageCode: 'settings',
       subItems: [
         {
           id: 1,
-          name: 'parts',
+          name: 'water-rates',
           url: '/settings/water-rates',
-          label:'Water Rates'
+          label:'Water Rates',
+          pageCode: 'settings'
         },
         {
           id: 2,
           name: 'parts',
           url: '/settings/parts',
-          label:'Parts Master List'
+          label:'Parts Master List',
+          pageCode: 'settings'
         },
         {
           id: 3,
           name: 'default-values',
           url: '/settings/default-values',
-          label:'Default Values'
+          label:'Default Values',
+          pageCode: 'settings'
         },
       ]
     },
@@ -93,12 +120,21 @@ import { IBranchCode, IGender, ICustomerType, IPhase, ITransactionStatus, ISideB
       label:'Administration',
       icon: '/assets/icons/admin-panel.svg',
       visible: true,
+      pageCode: 'admin_users',
       subItems: [
         {
           id: 1,
           name: 'users',
           url: '/admin/users',
-          label:'Users'
+          label:'Users',
+          pageCode: 'admin_users'
+        },
+        {
+          id: 2,
+          name: 'page-access',
+          url: '/admin/page-access',
+          label:'Page Access',
+          pageCode: 'admin_users'
         },
       ]
     }

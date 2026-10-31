@@ -7,14 +7,16 @@ export interface ISideBarMenu {
      label: string,
      icon: string,
      subItems?: ISideBarMenuSubItem[],
-     visible: boolean
+     visible: boolean,
+     pageCode?: string
 }
 
 export interface ISideBarMenuSubItem {
      id: number,
      name: string,
      url: string,
-     label: string
+     label: string,
+     pageCode?: string
 }
 
 export interface IBranchCode {

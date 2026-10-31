@@ -28,7 +28,7 @@ export class SidebarComponent {
   };
 
   constructor(private authService: AuthService, private router: Router) {
-    this.user.name = 'Account';
+    this.user.name = this.authService.getUserName() || 'Account';
   }
 
   activePopupItem: ISideBarMenu | null = null;
@@ -65,6 +65,34 @@ export class SidebarComponent {
     this.router.navigate(['/auth/login']);
   }
 
-  menuItems: ISideBarMenu[] = naviMenus;
+  get menuItems(): ISideBarMenu[] {
+    return naviMenus
+      .filter(item => {
+        if (!item.visible) return false;
+        if (item.pageCode && !this.authService.hasPageAccess(item.pageCode)) {
+          return false;
+        }
+        return true;
+      })
+      .map(item => {
+        if (!item.subItems) return item;
+        const filteredSubs = item.subItems.filter(sub => {
+          if (sub.pageCode && !this.authService.hasPageAccess(sub.pageCode)) {
+            return false;
+          }
+          return true;
+        });
+        return {
+          ...item,
+          subItems: filteredSubs
+        };
+      })
+      .filter(item => {
+        if (item.subItems && item.subItems.length === 0) {
+          return false;
+        }
+        return true;
+      });
+  }
 
 }

@@ -54,6 +54,10 @@ export class ApiService {
     return this.httpClient.put<IAPIResponse>(`${this.env.apiHost}${UserApi.UPDATE_USER}`, user);
   }
 
+  getPageDefinitions(): Observable<IAPIResponse> {
+    return this.httpClient.get<IAPIResponse>(`${this.env.apiHost}${UserApi.GET_PAGES}`);
+  }
+
 
   //roles APIs
   getRoles(): Observable<IAPIResponse> {

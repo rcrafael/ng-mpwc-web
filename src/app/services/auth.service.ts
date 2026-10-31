@@ -4,6 +4,8 @@ import { firstValueFrom } from 'rxjs';
 import { IAPIResponse } from '../models/interfaces/IApiResponse';
 import { ILogin } from '../models/interfaces/IUser';
 
+import { ALL_PAGE_DEFINITIONS } from '../common/enum';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -42,9 +44,45 @@ export class AuthService {
   }
 
   decodeToken(): any {
-    const token = this.getToken();
-    const tokenPayload = token.split('.')[1];
-    return JSON.parse(atob(tokenPayload));
+    try {
+      const token = this.getToken();
+      if (!token) return null;
+      const tokenPayload = token.split('.')[1];
+      if (!tokenPayload) return null;
+      return JSON.parse(atob(tokenPayload));
+    } catch {
+      return null;
+    }
+  }
+
+  isSuperAdmin(): boolean {
+    try {
+      const decoded = this.decodeToken();
+      if (!decoded) return false;
+      const roleVal = decoded.role?.role || decoded.role || '';
+      return typeof roleVal === 'string' && roleVal.toLowerCase() === 'superadmin';
+    } catch {
+      return false;
+    }
+  }
+
+  getUserPages(): string[] {
+    try {
+      if (this.isSuperAdmin()) {
+        return ALL_PAGE_DEFINITIONS.map(p => p.code);
+      }
+      const decoded = this.decodeToken();
+      if (!decoded || !decoded.pageAccess) return [];
+      return Array.isArray(decoded.pageAccess) ? decoded.pageAccess : [];
+    } catch {
+      return [];
+    }
+  }
+
+  hasPageAccess(pageCode: string): boolean {
+    if (!pageCode) return true;
+    if (this.isSuperAdmin()) return true;
+    return this.getUserPages().includes(pageCode);
   }
 
 }

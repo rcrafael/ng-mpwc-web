@@ -34,4 +34,8 @@ export class UserService {
     return firstValueFrom(this.http.updateUser(user));
   }
 
+  public async getPageDefinitions(): Promise<IAPIResponse> {
+    return firstValueFrom(this.http.getPageDefinitions());
+  }
+
 }

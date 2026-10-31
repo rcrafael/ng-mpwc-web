@@ -73,6 +73,7 @@ export class UserApi {
      public static REGISTER = '/user/register';
      public static GET_USER_BY_ID = '/user/{userId}';
      public static UPDATE_USER = '/user';
+     public static GET_PAGES = '/user/pages';
 }
 
 export class RoleApi {

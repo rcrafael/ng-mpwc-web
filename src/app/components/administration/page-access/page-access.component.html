@@ -1,0 +1,261 @@
+<div class="flex flex-col h-full m-1">
+
+  <!-- Top Header Bar -->
+  <div class="flex flex-row w-full mb-2 bg-slate-200 rounded-md p-2 items-center justify-between shadow-sm">
+    <div class="flex items-center space-x-2">
+      <span class="font-bold text-gray-800 tracking-wide text-base">USER PAGE ACCESS MANAGEMENT</span>
+    </div>
+    <div class="flex items-center space-x-2">
+      <button 
+        type="button" 
+        (click)="loadUsers()" 
+        title="Refresh users list"
+        class="flex items-center px-3 py-1 bg-white hover:bg-gray-100 border border-gray-400 rounded-md text-xs font-semibold text-gray-700 transition">
+        <mat-icon class="text-sm mr-1 !w-4 !h-4 !text-base">refresh</mat-icon> Refresh
+      </button>
+    </div>
+  </div>
+
+  <!-- Side-by-Side Main Content -->
+  <div class="grid grid-cols-12 gap-3 flex-1 min-h-0">
+
+    <!-- Left Column: User Table (6 cols on lg) -->
+    <div class="col-span-12 lg:col-span-6 flex flex-col border rounded-md border-slate-300 bg-white p-3 shadow-sm min-h-0">
+      
+      <!-- User List Header & Search Filter -->
+      <div class="flex flex-col gap-2 mb-3">
+        <div class="flex items-center justify-between">
+          <span class="font-bold text-gray-700 text-sm">SELECT USER</span>
+          <span class="text-xs text-gray-500 font-medium">{{ filteredUsers.length }} of {{ users.length }} users</span>
+        </div>
+        <div class="relative w-full">
+          <input 
+            type="text" 
+            [(ngModel)]="searchTerm" 
+            (ngModelChange)="onSearchChange()"
+            placeholder="Filter by username, name, or role..." 
+            class="w-full text-xs p-2 pl-8 border border-gray-400 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500" />
+          <mat-icon class="absolute left-2 top-2 !w-4 !h-4 !text-base text-gray-400">search</mat-icon>
+        </div>
+      </div>
+
+      <!-- Users Table Container -->
+      <div class="flex-1 overflow-auto min-h-0 border border-gray-200 rounded-md">
+        @if (filteredUsers.length === 0) {
+          <div class="flex flex-col items-center justify-center h-48 text-gray-500">
+            <app-no-data-to-display></app-no-data-to-display>
+            <span class="text-xs mt-2">No users found</span>
+          </div>
+        } @else {
+          <table mat-table [dataSource]="dataSource" class="w-full border-collapse text-xs">
+
+            <!-- Username Column -->
+            <ng-container matColumnDef="Username">
+              <th mat-header-cell *matHeaderCellDef class="bg-gray-100 text-gray-700 font-bold p-2">Username</th>
+              <td mat-cell *matCellDef="let element" class="p-2">
+                <span class="font-medium text-gray-800">{{ element.username }}</span>
+              </td>
+            </ng-container>
+
+            <!-- Name Column -->
+            <ng-container matColumnDef="Name">
+              <th mat-header-cell *matHeaderCellDef class="bg-gray-100 text-gray-700 font-bold p-2">Name</th>
+              <td mat-cell *matCellDef="let element" class="p-2 text-gray-600">
+                {{ element.fname }} {{ element.lname }}
+              </td>
+            </ng-container>
+
+            <!-- Role Column -->
+            <ng-container matColumnDef="Role">
+              <th mat-header-cell *matHeaderCellDef class="bg-gray-100 text-gray-700 font-bold p-2">Role</th>
+              <td mat-cell *matCellDef="let element" class="p-2">
+                <span 
+                  class="px-2 py-0.5 rounded-full text-[10px] font-semibold"
+                  [ngClass]="{
+                    'bg-purple-100 text-purple-800 border border-purple-300': isUserSuperAdmin(element),
+                    'bg-blue-100 text-blue-800 border border-blue-300': getRoleName(element).toLowerCase() === 'admin',
+                    'bg-gray-100 text-gray-700 border border-gray-300': !isUserSuperAdmin(element) && getRoleName(element).toLowerCase() !== 'admin'
+                  }">
+                  {{ getRoleName(element) }}
+                </span>
+              </td>
+            </ng-container>
+
+            <!-- Access Count Column -->
+            <ng-container matColumnDef="AccessCount">
+              <th mat-header-cell *matHeaderCellDef class="bg-gray-100 text-gray-700 font-bold p-2 text-center">Access</th>
+              <td mat-cell *matCellDef="let element" class="p-2 text-center">
+                <span class="px-2 py-0.5 rounded bg-slate-100 text-gray-700 font-mono text-[11px] border border-slate-300">
+                  {{ getUserPageCount(element) }}/{{ pageDefinitions.length }}
+                </span>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="tableCols; sticky: true" class="border-b border-gray-300"></tr>
+            <tr 
+              mat-row 
+              *matRowDef="let row; columns: tableCols;"
+              (click)="selectUser(row)"
+              class="cursor-pointer border-b border-gray-200 hover:bg-blue-50 transition-colors"
+              [ngClass]="{ 'bg-blue-100 !border-l-4 !border-l-blue-600 font-semibold': selectedUser?.id === row.id }">
+            </tr>
+
+          </table>
+        }
+      </div>
+
+    </div>
+
+    <!-- Right Column: Page Access Checklist (6 cols on lg) -->
+    <div class="col-span-12 lg:col-span-6 flex flex-col border rounded-md border-slate-300 bg-white p-4 shadow-sm min-h-0">
+
+      @if (!selectedUser) {
+        <div class="flex-1 flex flex-col items-center justify-center text-gray-400 p-8">
+          <mat-icon class="!w-12 !h-12 !text-5xl text-gray-300 mb-2">lock_person</mat-icon>
+          <span class="text-sm font-medium">Select a user from the table on the left to configure page access.</span>
+        </div>
+      } @else {
+
+        <!-- Selected User Summary Header -->
+        <div class="flex flex-col bg-slate-50 border border-slate-200 rounded-lg p-3 mb-3">
+          <div class="flex flex-row items-center justify-between">
+            <div class="flex items-center space-x-3">
+              <div class="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-base">
+                {{ selectedUser.fname ? selectedUser.fname.charAt(0).toUpperCase() : 'U' }}
+              </div>
+              <div class="flex flex-col">
+                <div class="flex items-center space-x-2">
+                  <span class="font-bold text-gray-800 text-sm">{{ selectedUser.fname }} {{ selectedUser.lname }}</span>
+                  <span class="text-xs text-gray-500">(&#64;{{ selectedUser.username }})</span>
+                </div>
+                <span class="text-xs text-gray-600">{{ selectedUser.email }}</span>
+              </div>
+            </div>
+
+            <!-- Role Badge -->
+            <div>
+              <span 
+                class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider"
+                [ngClass]="{
+                  'bg-purple-200 text-purple-900 border border-purple-400': isUserSuperAdmin(selectedUser),
+                  'bg-blue-200 text-blue-900 border border-blue-400': getRoleName(selectedUser).toLowerCase() === 'admin',
+                  'bg-gray-200 text-gray-800 border border-gray-400': !isUserSuperAdmin(selectedUser) && getRoleName(selectedUser).toLowerCase() !== 'admin'
+                }">
+                {{ getRoleName(selectedUser) }}
+              </span>
+            </div>
+          </div>
+
+          <!-- Superadmin Info Callout -->
+          @if (isUserSuperAdmin(selectedUser)) {
+            <div class="mt-2 p-2 bg-amber-50 border border-amber-300 rounded text-amber-800 text-xs flex items-center">
+              <mat-icon class="text-amber-600 mr-2 !w-4 !h-4 !text-base">info</mat-icon>
+              <span><strong>Superadmin</strong> accounts possess universal access to all system pages by default. Permissions are non-restrictable.</span>
+            </div>
+          }
+        </div>
+
+        <!-- Permissions Toolbar -->
+        <div class="flex items-center justify-between pb-2 mb-2 border-b border-gray-200">
+          <div class="flex items-center space-x-2">
+            <span class="font-bold text-gray-700 text-xs tracking-wide">PAGE PERMISSIONS</span>
+            <span class="px-2 py-0.5 bg-blue-50 text-blue-700 font-mono text-xs rounded border border-blue-200">
+              {{ isUserSuperAdmin(selectedUser) ? pageDefinitions.length : selectedPageCodes.size }} of {{ pageDefinitions.length }} granted
+            </span>
+          </div>
+
+          @if (!isUserSuperAdmin(selectedUser)) {
+            <div class="flex items-center space-x-2">
+              <button 
+                type="button" 
+                (click)="selectAll()"
+                class="px-2 py-1 bg-gray-100 hover:bg-gray-200 text-gray-700 border border-gray-400 rounded text-xs font-semibold transition">
+                Select All
+              </button>
+              <button 
+                type="button" 
+                (click)="deselectAll()"
+                class="px-2 py-1 bg-gray-100 hover:bg-gray-200 text-gray-700 border border-gray-400 rounded text-xs font-semibold transition">
+                Deselect All
+              </button>
+            </div>
+          }
+        </div>
+
+        <!-- Checklist Container (Scrollable) -->
+        <div class="flex-1 overflow-y-auto space-y-2 pr-1 min-h-0">
+          @for (page of pageDefinitions; track page.code) {
+            <div 
+              (click)="togglePage(page.code)"
+              class="flex items-start p-2.5 rounded-lg border transition-all"
+              [ngClass]="{
+                'border-blue-500 bg-blue-50/50 shadow-xs': isPageSelected(page.code),
+                'border-gray-200 bg-white hover:bg-gray-50': !isPageSelected(page.code),
+                'cursor-pointer': !isUserSuperAdmin(selectedUser),
+                'cursor-default opacity-85': isUserSuperAdmin(selectedUser)
+              }">
+
+              <!-- Checkbox -->
+              <div class="flex items-center h-5 mr-3 pt-0.5">
+                <input 
+                  type="checkbox" 
+                  [checked]="isPageSelected(page.code)" 
+                  [disabled]="isUserSuperAdmin(selectedUser)"
+                  (click)="$event.stopPropagation(); togglePage(page.code)"
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 cursor-pointer disabled:cursor-not-allowed" />
+              </div>
+
+              <!-- Page Details -->
+              <div class="flex flex-col flex-1 min-w-0">
+                <div class="flex items-center justify-between mb-0.5">
+                  <span class="font-bold text-gray-800 text-xs">{{ page.label }}</span>
+                  <span class="font-mono text-[10px] text-gray-500 px-1.5 py-0.5 bg-gray-100 rounded border border-gray-200">
+                    {{ page.code }}
+                  </span>
+                </div>
+                <p class="text-[11px] text-gray-500 line-clamp-2">{{ page.description }}</p>
+              </div>
+
+            </div>
+          }
+        </div>
+
+        <!-- Bottom Action Buttons -->
+        <div class="flex items-center justify-between pt-3 mt-2 border-t border-gray-200">
+          <div>
+            @if (hasChanges) {
+              <span class="text-xs text-amber-600 font-semibold flex items-center">
+                <mat-icon class="!w-4 !h-4 !text-sm mr-1">warning</mat-icon> Unsaved changes
+              </span>
+            }
+          </div>
+
+          <div class="flex items-center space-x-2">
+            <button 
+              type="button" 
+              (click)="resetAccess()"
+              [disabled]="!hasChanges || isSaving || isUserSuperAdmin(selectedUser)"
+              class="p-2 bg-red-300 font-bold border border-solid border-black rounded-md px-3 text-xs disabled:opacity-50 disabled:cursor-not-allowed hover:bg-red-400 transition">
+              Reset
+            </button>
+            <button 
+              type="button" 
+              (click)="saveAccess()"
+              [disabled]="!hasChanges || isSaving || isUserSuperAdmin(selectedUser)"
+              class="p-2 bg-green-300 font-bold border border-solid border-black rounded-md px-4 text-xs disabled:opacity-50 disabled:cursor-not-allowed hover:bg-green-400 transition flex items-center">
+              @if (isSaving) {
+                <span>Saving...</span>
+              } @else {
+                <span>Save Access</span>
+              }
+            </button>
+          </div>
+        </div>
+
+      }
+
+    </div>
+
+  </div>
+
+</div>

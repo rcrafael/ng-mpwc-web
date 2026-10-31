@@ -26,6 +26,7 @@ export class AuthLoginComponent implements OnInit {
   ) { }
 
   private login!: ILogin;
+  isLoading: boolean = false;
   toastTitlePrefix = 'Login - ';
 
   ngOnInit(): void {
@@ -45,27 +46,29 @@ export class AuthLoginComponent implements OnInit {
     this.fg.markAllAsTouched();
     if (this.fg.valid) {
 
+      this.isLoading = true;
+
       const params: ILogin = {
         email: login.email!,
         password: login.password!
       }
 
-      this.authService.login(params).then((response: IAPIResponse) => {
-        console.log('login successful!');
-        this.router.navigateByUrl('dashboard')
-
-        const result = response.result as any;
-        localStorage.setItem('accessToken', result.access_token);
-      })
+      this.authService.login(params)
+        .then((response: IAPIResponse) => {
+          console.log('login successful!');
+          const result = response.result as any;
+          localStorage.setItem('accessToken', result.access_token);
+          this.router.navigateByUrl('dashboard');
+        })
         .catch((error: Error) => {
           console.error('ERROR LOGIN: ', error);
           localStorage.removeItem('accessToken');
           // alert('Invalid email or password.');
           this.toast.error(ToastrMessage.ERROR_LOGIN, this.toastTitlePrefix + ToastrTitle.LOGIN_FAILED);
         })
-
-
-
+        .finally(() => {
+          this.isLoading = false;
+        });
 
     }
 

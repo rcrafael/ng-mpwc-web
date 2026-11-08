@@ -21,13 +21,13 @@ import { AlertService } from '../../../services/alert.service';
   selector: 'app-customer-meter',
   standalone: true,
   imports: [
-      MatTableModule,
-      MatExpansionModule,
-      MatIcon,
-      NgIf,
-      ReactiveFormsModule,
-      MatTooltip
-    ],
+    MatTableModule,
+    MatExpansionModule,
+    MatIcon,
+    NgIf,
+    ReactiveFormsModule,
+    MatTooltip
+  ],
   templateUrl: './customer-meter.component.html',
   styleUrl: './customer-meter.component.css'
 })
@@ -37,7 +37,7 @@ export class CustomerMeterComponent implements OnInit {
     private commonService: CommonService,
     private customerService: CustomerService,
     private toast: ToastrService
-  ) {}
+  ) { }
 
   @Input() customerId: string = '';
 
@@ -50,7 +50,7 @@ export class CustomerMeterComponent implements OnInit {
   phase: IPhase[] = phaseData;
   isUpdateMeter: boolean = false;
   selectedMeter: IMeterDetails = {} as IMeterDetails;
-  
+
   getStatus = Utils.getStatusName;
   getBranchCode = Utils.getBranchCode;
   getPhase = Utils.getPhase;
@@ -61,7 +61,7 @@ export class CustomerMeterComponent implements OnInit {
 
   fg = new FormGroup({
     meterNo: new FormControl<string>('', Validators.required),
-    serialNo: new FormControl<string>('',Validators.required),
+    serialNo: new FormControl<string>('', Validators.required),
     alias: new FormControl<string>(''),
     previous: new FormControl<number>(0),
     present: new FormControl<number>(0),
@@ -86,12 +86,17 @@ export class CustomerMeterComponent implements OnInit {
     this.fg.reset();
     this.isFieldsVisible = true;
     this.isUpdateMeter = false;
+
+    const meterNoControl = this.fg.get('meterNo');
+    meterNoControl?.setValidators(Validators.required);
+    meterNoControl?.updateValueAndValidity();
+    meterNoControl?.enable();
   }
-  
+
   async onSaveClick(): Promise<void> {
     // Save the new meter data
 
-    if(!this.fg.valid) {
+    if (!this.fg.valid) {
       this.toast.error(ToastrMessage.INVALID_INPUT, this.toastTitlePrefix + ToastrTitle.ERROR);
       event?.preventDefault();
       return;
@@ -100,12 +105,12 @@ export class CustomerMeterComponent implements OnInit {
     var confirmed = await AlertService.confirm('Are you sure you want to save meter details?', 'Save Meter Details');
     console.log('CONFIRMED?', confirmed);
 
-    if(!confirmed) {
+    if (!confirmed) {
       event?.preventDefault();
       return;
     }
 
-    if(!this.isUpdateMeter) {
+    if (!this.isUpdateMeter) {
       await this.createNew();
     } else {
       await this.updateMeter();
@@ -116,7 +121,7 @@ export class CustomerMeterComponent implements OnInit {
     event?.preventDefault();
   }
 
-  onCancelClick():void {
+  onCancelClick(): void {
     this.fg.reset();
     this.isFieldsVisible = false;
   }
@@ -141,7 +146,7 @@ export class CustomerMeterComponent implements OnInit {
     this.commonService.showSpinner(true);
     await this.customerService.createMeterNo(params).then(async (response) => {
       console.log('respose', response);
-      if(!response.result) {
+      if (!response.result) {
         this.toast.error(`${ToastrMessage.ERROR_UPDATE} : ${params.meterNo}`, this.toastTitlePrefix + ToastrTitle.ERROR);
         return;
       }
@@ -149,19 +154,19 @@ export class CustomerMeterComponent implements OnInit {
       this.toast.success(`${ToastrMessage.SUCCESS_UPDATE} : ${params.meterNo}`, this.toastTitlePrefix + ToastrTitle.SUCCESS);
       await this.loadData();
     })
-    .catch(err => {
+      .catch(err => {
 
-      if(err instanceof HttpErrorResponse) {
-        this.toast.error(`${ToastrMessage.ERROR_UPDATE} : ${err.error.message}`, this.toastTitlePrefix + ToastrTitle.ERROR);
-      } else {
-        this.toast.error(`${ToastrMessage.ERROR_UPDATE} : ${params.meterNo}`, this.toastTitlePrefix + ToastrTitle.ERROR);
-        console.log('Error:', err);
-      }
+        if (err instanceof HttpErrorResponse) {
+          this.toast.error(`${ToastrMessage.ERROR_UPDATE} : ${err.error.message}`, this.toastTitlePrefix + ToastrTitle.ERROR);
+        } else {
+          this.toast.error(`${ToastrMessage.ERROR_UPDATE} : ${params.meterNo}`, this.toastTitlePrefix + ToastrTitle.ERROR);
+          console.log('Error:', err);
+        }
 
-    })
-    .finally(() => {
-      this.commonService.showSpinner(false);
-    });
+      })
+      .finally(() => {
+        this.commonService.showSpinner(false);
+      });
 
   }
 
@@ -170,6 +175,11 @@ export class CustomerMeterComponent implements OnInit {
     this.isUpdateMeter = true;
     this.selectedMeter = meterDetails;
     console.log('METER DETAILS:', meterDetails);
+
+    const meterNoControl = this.fg.get('meterNo');
+    meterNoControl?.clearValidators();
+    meterNoControl?.updateValueAndValidity();
+    meterNoControl?.disable();
 
     this.fg.get('meterNo')?.setValue(meterDetails.meterNo!);
     this.fg.get('serialNo')?.setValue(meterDetails.serialNo!);
@@ -201,7 +211,7 @@ export class CustomerMeterComponent implements OnInit {
     this.commonService.showSpinner(true);
     await this.customerService.updateMeterNo(params).then(async (response) => {
       console.log('respose', response);
-      if(!response.result) {
+      if (!response.result) {
         this.toast.error(`${ToastrMessage.ERROR_CREATE} : ${params.meterNo}`, this.toastTitlePrefix + ToastrTitle.ERROR);
         return;
       }
@@ -209,31 +219,31 @@ export class CustomerMeterComponent implements OnInit {
       this.toast.success(`${ToastrMessage.SUCCESS_CREATE} : ${params.meterNo}`, this.toastTitlePrefix + ToastrTitle.SUCCESS);
       await this.loadData();
     })
-    .catch(err => {
+      .catch(err => {
 
-      if(err instanceof HttpErrorResponse) {
-        this.toast.error(`${ToastrMessage.ERROR_CREATE} : ${err.error.message}`, this.toastTitlePrefix + ToastrTitle.ERROR);
-      } else {
-        this.toast.error(`${ToastrMessage.ERROR_CREATE} : ${params.meterNo}`, this.toastTitlePrefix + ToastrTitle.ERROR);
-        console.log('Error:', err);
-      }
+        if (err instanceof HttpErrorResponse) {
+          this.toast.error(`${ToastrMessage.ERROR_CREATE} : ${err.error.message}`, this.toastTitlePrefix + ToastrTitle.ERROR);
+        } else {
+          this.toast.error(`${ToastrMessage.ERROR_CREATE} : ${params.meterNo}`, this.toastTitlePrefix + ToastrTitle.ERROR);
+          console.log('Error:', err);
+        }
 
-    })
-    .finally(() => {
-      this.commonService.showSpinner(false);
-    });
+      })
+      .finally(() => {
+        this.commonService.showSpinner(false);
+      });
   }
 
   async onDeactivateMeterActionClick(meterDetails: IMeterDetails): Promise<void> {
-    
 
-    if(meterDetails.status == 7) {
+
+    if (meterDetails.status == 7) {
       this.toast.warning(`${meterDetails.meterNo} is already deactivated`, this.toastTitlePrefix + ToastrTitle.WARNING);
       return;
     }
 
     var confirmed = await AlertService.confirm('Are you sure you want to deactivate this meter? This action cannot be reversed.', 'Deactivate Meter');
-    if(!confirmed) return;
+    if (!confirmed) return;
 
     const params: any = {
       meterId: meterDetails.id,
@@ -243,7 +253,7 @@ export class CustomerMeterComponent implements OnInit {
     this.commonService.showSpinner(true);
     this.customerService.updateMeterStatus(params).then(async (response) => {
       console.log('respose', response);
-      if(!response.result) {
+      if (!response.result) {
         this.toast.error(`${ToastrMessage.ERROR_UPDATE} : ${params.meterId}`, this.toastTitlePrefix + ToastrTitle.ERROR);
         return;
       }
@@ -252,7 +262,7 @@ export class CustomerMeterComponent implements OnInit {
       await this.loadData();
     }).catch(err => {
 
-      if(err instanceof HttpErrorResponse) {
+      if (err instanceof HttpErrorResponse) {
         this.toast.error(`${ToastrMessage.ERROR_UPDATE} : ${err.error.message}`, this.toastTitlePrefix + ToastrTitle.ERROR);
       } else {
         this.toast.error(`${ToastrMessage.ERROR_UPDATE} : ${params.meterId}`, this.toastTitlePrefix + ToastrTitle.ERROR);
@@ -267,7 +277,7 @@ export class CustomerMeterComponent implements OnInit {
 
   async onDeleteMeterActionClick(meterDetails: IMeterDetails): Promise<void> {
     var confirmed = await AlertService.confirm('Are you sure you want to DELETE this meter? This action cannot be reversed.', 'Delete Meter');
-    if(!confirmed) return;
+    if (!confirmed) return;
 
     const params: any = {
       meterId: meterDetails.id,
@@ -277,7 +287,7 @@ export class CustomerMeterComponent implements OnInit {
     this.commonService.showSpinner(true);
     this.customerService.updateMeterStatus(params).then(async (response) => {
       console.log('respose', response);
-      if(!response.result) {
+      if (!response.result) {
         this.toast.error(`${ToastrMessage.ERROR_DELETE} : ${params.meterId}`, this.toastTitlePrefix + ToastrTitle.ERROR);
         return;
       }
@@ -286,7 +296,7 @@ export class CustomerMeterComponent implements OnInit {
       await this.loadData();
     }).catch(err => {
 
-      if(err instanceof HttpErrorResponse) {
+      if (err instanceof HttpErrorResponse) {
         this.toast.error(`${ToastrMessage.ERROR_DELETE} : ${err.error.message}`, this.toastTitlePrefix + ToastrTitle.ERROR);
       } else {
         this.toast.error(`${ToastrMessage.ERROR_DELETE} : ${params.meterId}`, this.toastTitlePrefix + ToastrTitle.ERROR);

@@ -19,8 +19,8 @@ import { CustomValidator } from '../../../../common/custom-validator';
   imports: [
     ReactiveFormsModule,
     UsersPasswordCriteriaComponent,
-    NgIf  
-],
+    NgIf
+  ],
   templateUrl: './users-create.component.html',
   styleUrl: './users-create.component.css'
 })
@@ -39,25 +39,25 @@ export class UsersCreateComponent implements OnInit {
   pwd: string = '';
 
   fg = new FormGroup({
-    username: new FormControl<string>({value: '', disabled: true},Validators.required),
+    username: new FormControl<string>({ value: '', disabled: true }, Validators.required),
     email: new FormControl<string>('', Validators.email),
     lname: new FormControl<string>('', Validators.required),
     fname: new FormControl<string>('', Validators.required),
     mname: new FormControl<string>(''),
-    roleId: new FormControl<string|null>(null, Validators.required),
+    roleId: new FormControl<string | null>(null, Validators.required),
     password: new FormControl<string>('', [Validators.required, CustomValidator.isValidPassword]),
-    confirmPassword: new FormControl<string>('',Validators.required)
+    confirmPassword: new FormControl<string>('', Validators.required)
   }, { validators: CustomValidator.isPasswordMatch });
 
 
   ngOnInit(): void {
     this.commonService.showSpinner(true);
-    
+
     this.roleService.getAllRoles().then((response: IAPIResponse) => {
       console.log('ROLES: ', response);
       this.roles = response.result as IRole[];
     }).catch((error: any) => {
-      
+
     }).finally(() => {
       this.commonService.showSpinner(false);
     });
@@ -72,7 +72,7 @@ export class UsersCreateComponent implements OnInit {
 
   async onSubmit(): Promise<void> {
     const formValue = this.fg.getRawValue();
-    if(!this.fg.valid) {
+    if (!this.fg.valid) {
       this.toast.warning(ToastrMessage.INVALID_INPUT, this.toastTitlePrefix + ToastrTitle.ERROR);
       console.log('INVALID INPUT:', this.fg);
       return;
@@ -94,7 +94,7 @@ export class UsersCreateComponent implements OnInit {
       this.resetForm();
     }).catch((error: any) => {
       this.toast.error(ToastrMessage.ERROR_CREATE, this.toastTitlePrefix + ToastrTitle.ERROR);
-      console.log('ERROR CREATING USER: ' , error);
+      console.log('ERROR CREATING USER: ', error);
     }).finally(() => {
       this.commonService.showSpinner(false);
     });
@@ -110,17 +110,17 @@ export class UsersCreateComponent implements OnInit {
     const lastName = fgValue.lname?.replaceAll(' ', '');
     const firstName = fgValue.fname;
     const middleName = fgValue.mname;
-    
+
     const firstNameInitial = firstName?.charAt(0).toLowerCase();
     const middleNameInitial = middleName?.charAt(0).toLowerCase();
 
-    this.fg.patchValue({username: `${firstNameInitial}${middleNameInitial}${lastName}`}); 
+    this.fg.patchValue({ username: `${firstNameInitial}${middleNameInitial}${lastName}` });
 
   }
 
 
-  
 
-  
+
+
 
 }

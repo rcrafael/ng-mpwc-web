@@ -1,11 +1,10 @@
-import { CommonModule, NgClass } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit, ViewChild } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
 import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatTooltip } from '@angular/material/tooltip';
 import { Router, RouterModule } from '@angular/router';
-import { IPaginator } from '../../../../models/interfaces/IPaginator';
 import { PartsService } from '../../../../services/parts.service';
 import { IAPIResponse } from '../../../../models/interfaces/IApiResponse';
 import { Utils } from '../../../../common/util';
@@ -29,7 +28,7 @@ import { NoDataToDisplayComponent } from "../../../common/no-data-to-display/no-
     MatPaginatorModule,
     MatTooltip,
     NoDataToDisplayComponent
-],
+  ],
   templateUrl: './parts-list.component.html',
   styleUrl: './parts-list.component.css'
 })
@@ -42,11 +41,11 @@ export class PartsListComponent implements OnInit {
     private toast: ToastrService
   ) { }
 
-  @ViewChild(MatPaginator, {static: true}) paginator!: MatPaginator;
-  
+  @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
+
   toastTitlePrefix = 'Parts List - '
 
-  tableCols = ['Description','Measurement','Unit Cost', 'Selling Price', 'Actions'];
+  tableCols = ['Description', 'Measurement', 'Unit Cost', 'Selling Price', 'Actions'];
   dataSource = new MatTableDataSource([]);
 
   dialog = inject(MatDialog);
@@ -55,7 +54,7 @@ export class PartsListComponent implements OnInit {
 
 
   async ngOnInit(): Promise<void> {
-      await this.loadData(0, 50);
+    await this.loadData(0, 50);
   }
 
   onCreateNewClick() {
@@ -66,24 +65,30 @@ export class PartsListComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(async data => {
-      
-      if(data){
+
+      if (data) {
+        console.log('Data received from dialog:', data);
         this.commonService.showSpinner(true);
-        let params: IPartDetails = data;
+        let params: IPartDetails = {
+          description: data.description,
+          measurement: data.measurement,
+          unitCost: Utils.sanitizeAmount(data.unitCost),
+          sellingPrice: Utils.sanitizeAmount(data.sellingPrice)
+        };
         await this.partService.createPart(params).then(async (response: IAPIResponse) => {
-          if(response.result !== null){
+          if (response.result !== null) {
             await this.loadData(0, 50);
           }
           this.toast.success(`${ToastrMessage.SUCCESS_CREATE} : ${params.description}`, this.toastTitlePrefix + ToastrTitle.SUCCESS);
         })
-        .catch(async (error: Error) => {
-          this.toast.error(`${ToastrMessage.ERROR_CREATE} : ${params.description} - ${error.message}`, this.toastTitlePrefix + ToastrTitle.ERROR);
-          console.error('Error creating part:', error);
-        })
-        .finally(async () => {
-          console.log('finally');
-          this.commonService.showSpinner(false);
-        });
+          .catch(async (error: Error) => {
+            this.toast.error(`${ToastrMessage.ERROR_CREATE} : ${params.description} - ${error.message}`, this.toastTitlePrefix + ToastrTitle.ERROR);
+            console.error('Error creating part:', error);
+          })
+          .finally(async () => {
+            console.log('finally');
+            this.commonService.showSpinner(false);
+          });
       }
 
     });
@@ -98,24 +103,29 @@ export class PartsListComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(async data => {
-      if(data){
-        this
-        let params: IPartDetails = data;
-        params.id = id;
+      if (data) {
+        this.commonService.showSpinner(true);
+        let params: IPartDetails = {
+          id: id,
+          description: data.description,
+          measurement: data.measurement,
+          unitCost: Utils.sanitizeAmount(data.unitCost),
+          sellingPrice: Utils.sanitizeAmount(data.sellingPrice)
+        };
+
         await this.partService.updatePart(params).then(async (response: IAPIResponse) => {
-          if(response.result !== null){
+          if (response.result !== null) {
             await this.loadData(0, 50);
           }
           this.toast.success(`${ToastrMessage.SUCCESS_UPDATE} : ${params.description}`, this.toastTitlePrefix + ToastrTitle.SUCCESS);
         })
-        .catch(async (error: Error) => {
-          this.toast.error(`${ToastrMessage.ERROR_UPDATE} : ${params.description} - ${error.message}`, this.toastTitlePrefix + ToastrTitle.ERROR);
-          console.error('Error updating part:', error);
-        })
-        .finally(async () => {
-          console.log('finally');
-          this.commonService.showSpinner(false);
-        });
+          .catch(async (error: Error) => {
+            this.toast.error(`${ToastrMessage.ERROR_UPDATE} : ${params.description} - ${error.message}`, this.toastTitlePrefix + ToastrTitle.ERROR);
+            console.error('Error updating part:', error);
+          })
+          .finally(async () => {
+            this.commonService.showSpinner(false);
+          });
       }
     })
   }
@@ -135,21 +145,21 @@ export class PartsListComponent implements OnInit {
   async loadData(pageIdx: number, pageSize: number) {
     this.commonService.showSpinner(true);
     await this.partService.getParts(pageIdx, pageSize).then((response: IAPIResponse) => {
-      if(response.result !== null) {
+      if (response.result !== null) {
         const result: any = response.result;
         this.dataSource.data = result.data;
         this.paginator.pageIndex = result.paginator.pageNumber;
         this.paginator.pageSize = result.paginator.pageSize;
-        this.paginator.length =  result.paginator.totalRecordCount;
+        this.paginator.length = result.paginator.totalRecordCount;
       }
     })
-    .catch(async (error: Error) => {
-      this.toast.error(ToastrMessage.ERROR_FETCHING_DATA + ': ' + error.message, this.toastTitlePrefix + ToastrTitle.ERROR);
-      console.error('Error fetching parts list:', error);
-    })
-    .finally(async () => {
-      this.commonService.showSpinner(false);
-    });
+      .catch(async (error: Error) => {
+        this.toast.error(ToastrMessage.ERROR_FETCHING_DATA + ': ' + error.message, this.toastTitlePrefix + ToastrTitle.ERROR);
+        console.error('Error fetching parts list:', error);
+      })
+      .finally(async () => {
+        this.commonService.showSpinner(false);
+      });
 
   }
 
